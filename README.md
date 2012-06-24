@@ -25,20 +25,11 @@ Supported formats
 
 ### Videos ###
 
-* webm
-* ogg
-* mp4
+* webm,webmv
+* ogg,ogv
+* mp4,mp4
 
 <u>Note</u> : [videojs compatibility](http://videojs.com/#section4)
-<u>Note</u> : You should also make sure that the webserver is sending the correct type for the given file.
-
-``
-AddType video/mp4 mp4
-AddType video/mp4 m4v
-AddType video/ogg ogv
-AddType video/webm webm
-AddType video/webm webmv
-``
 
 
 Usage
@@ -54,9 +45,9 @@ Basically, medias will be inserted in a same way as standard pictures :
 Credit
 ------
 
-* [piwigo-jplayer](https://github.com/d-matt/piwigo-jplayer)
 * [videojs](http://videojs.com/)
 * [getid3](http://getid3.sourceforge.net/)
+* [piwigo-jplayer](https://github.com/d-matt/piwigo-jplayer)
 
 Licence
 -------
