@@ -1,6 +1,6 @@
-<?php 
+<?php
 /*
-Version: 0.1
+Version: 0.3
 Plugin Name: videojs
 Plugin URI: https://github.com/xbmgsharp/piwigo-videojs
 Author: xbmgsharp
@@ -18,11 +18,11 @@ global $conf;
 // Register the allowed extentions to the global conf in order
 // to sync them with other contents
 $videojs_extensions = array(
-    'ogg', 
-    'mp4', 
-    'm4v', 
-    'ogv', 
-    'webm', 
+    'ogg',
+    'mp4',
+    'm4v',
+    'ogv',
+    'webm',
     'webmv',
 );
 $conf['file_ext'] = array_merge($conf['file_ext'], $videojs_extensions);
@@ -53,19 +53,19 @@ function render_media($content, $picture)
 	//print_r( $picture['current']);
     // do nothing if the current picture is actually an image !
 	// but doesn't not work ???
-    if ( @$picture['current']['is_picture'] ) 
-	{
+    if ( @$picture['current']['is_picture'] )
+    {
 		return $content;
-	}
-	
+    }
+
     // In case, the we handle a large video, we define a MAX_WIDTH
     // variable to limit the display size.
     if (isset($user['maxwidth']) and $user['maxwidth']!='')
-	{
+    {
         $MAX_WIDTH = $user['maxwidth'];
     }
     else
-	{
+    {
         $MAX_WIDTH = '720';
     }
 	//print "$MAX_WIDTH=" . $MAX_WIDTH;
@@ -95,12 +95,12 @@ function render_media($content, $picture)
             $height = $fileinfo['video']['resolution_y'];
         }
         if ( !isset($width) || !isset($height))
-		{
+	{
             // If guess was unsuccessful, fallback to default 16/9 resolution
-            // This is the case for ogv video for example. 
+            // This is the case for ogv video for example.
             $width = $MAX_WIDTH;
             $height = intval( 9 * ($width / 16 ));
-        } 
+        }
     }
 	else // Not a supported video format or an image
 	{
@@ -109,7 +109,7 @@ function render_media($content, $picture)
 
     // Resize if video is too large
     if ( $width > $MAX_WIDTH )
-	{
+    {
         //$height = intval($height * ($MAX_WIDTH / $width));
         //$width  = $MAX_WIDTH;
 		$height = intval($height / 2);
@@ -126,7 +126,7 @@ function render_media($content, $picture)
         $AUTOPLAY = 'play';
     }
 
-    // Load parameter, fallback to blue monday if unset 
+    // Load parameter, fallback to blue monday if unset
     $skin = isset($conf['videojs_skin']) ? $conf['videojs_skin'] : 'vjs-default-skin';
 
     // Select the template
@@ -139,7 +139,7 @@ function render_media($content, $picture)
 	//print $thumb;
 
     // Assign the template variables
-    // We use here the piwigo's get_gallery_home_url function to build 
+    // We use here the piwigo's get_gallery_home_url function to build
     // the full URL as suggested by videojs for flash fallback compatibility
     $template->assign(
         array(
