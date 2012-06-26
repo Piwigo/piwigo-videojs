@@ -1,8 +1,9 @@
 <?php
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
+
 // Setup plugin Language
-load_language('plugin.lang', LLGBO_PATH);
+load_language('plugin.lang', VIDEOJS_PATH);
 
 // Fetch the template.
 global $template, $conf, $lang;
@@ -10,10 +11,10 @@ global $template, $conf, $lang;
 // Load parameter
 $skin = $conf['vjs_skin'];
 $preload = $conf['vjs_preload'];
-$control = $conf['vjs_controls'];
-$autoplay = $conf['vjs_autoplay'];
-$loop = $conf['vjs_loop'];
-$max_width = $conf['max_width'];
+$controls = $conf['vjs_controls'] ? 'true' : 'false';
+$autoplay = $conf['vjs_autoplay'] ? 'true' : 'false';
+$loop = $conf['vjs_loop'] ? 'true' : 'false';
+$max_width = $conf['vjs_max_width'];
 
 // Available skins
 $available_skins = array(
@@ -35,42 +36,42 @@ $available_width = array(
 );
 
 // Update conf if submitted in admin site
-if (isset($_POST['submit']) && !empty($_POST['skin']))
+if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 {
-	$query = "UPDATE ". CONFIG_TABLE SET value='". $_POST['skin'] . "' WHERE param='vjs_skin'";
+	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_skin'] ."' WHERE param='vjs_skin'";
 	pwg_query($query);
-	$query = "UPDATE ". CONFIG_TABLE SET value='". $_POST['preload'] . "' WHERE param='vjs_preload'";
+	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_preload'] ."' WHERE param='vjs_preload'";
 	pwg_query($query);
-	$query = "UPDATE ". CONFIG_TABLE SET value='". $_POST['vjs_controls'] . "' WHERE param='vjs_controls'";
+	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_controls'] ."' WHERE param='vjs_controls'";
 	pwg_query($query);
-	$query = "UPDATE ". CONFIG_TABLE SET value='". $_POST['vjs_autoplay'] . "' WHERE param='vjs_autoplay'";
+	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_autoplay'] ."' WHERE param='vjs_autoplay'";
 	pwg_query($query);
-	$query = "UPDATE ". CONFIG_TABLE SET value='". $_POST['vjs_loop'] . "' WHERE param='vjs_loop'";
+	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_loop'] ."' WHERE param='vjs_loop'";
 	pwg_query($query);
-	$query = "UPDATE ". CONFIG_TABLE SET value='". $_POST['max_width'] . "' WHERE param='max_width'";
+	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_max_width'] ."' WHERE param='vjs_max_width'";
 	pwg_query($query);
 
 	// keep the value in the admin form
-	$skin = $_POST['skin'];
-	$preload = $_POST['preload'];
-	$control = $_POST['control'];
-	$autoplay = $_POST['autoplay'];
-	$loop = $_POST['loop'];
-	$max_width = $_POST['max_width'];
+	$skin = $_POST['vjs_skin'];
+	$preload = $_POST['vjs_preload'];
+	$controls = $_POST['vjs_controls'];
+	$autoplay = $_POST['vjs_autoplay'];
+	$loop = $_POST['vjs_loop'];
+	$max_width = $_POST['vjs_max_width'];
 }
 
-// 
+// send value to template
 $template->assign(
 	array(
-		'SELECTED_SKIN'   => $skin,
-		'AVAILABLE_SKINS' => $available_skins,
-		'SELECTED_PRELOAD'  => $preload,
-		'AVAILABLE_PRELOAD' => $available_preload,
-		'SELECTED_WIDTH'  => $max_width,
-		'AVAILABLE_WIDTH' => $available_width,
-		'CONTROLS' => $control,
-		'AUTOPLAY' => $autoplay,
-		'LOOP' => $loop,
+		'SELECTED_SKIN'		=> $skin,
+		'AVAILABLE_SKINS'	=> $available_skins,
+		'SELECTED_PRELOAD'	=> $preload,
+		'AVAILABLE_PRELOAD'	=> $available_preload,
+		'SELECTED_WIDTH'	=> $max_width,
+		'AVAILABLE_WIDTH'	=> $available_width,
+		'CONTROLS'			=> $controls,
+		'AUTOPLAY'			=> $autoplay,
+		'LOOP'				=> $loop,
 	)
 );
 

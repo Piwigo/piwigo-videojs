@@ -66,7 +66,7 @@ function render_media($content, $picture)
 	}
 	else
 	{
-		$MAX_WIDTH = '720';
+		$MAX_WIDTH = isset($conf['vjs_max_width']) ? $conf['vjs_max_width'] : '720';
 	}
 	//print "$MAX_WIDTH=" . $MAX_WIDTH;
 	//print_r($user);
@@ -119,15 +119,18 @@ function render_media($content, $picture)
 	// Slideshow : The video needs to be launch automatically in
 	// slideshow mode. The refresh of the page is set to the
 	// duration of the video.
-	$AUTOPLAY = '';
+	$autoplay = isset($conf['vjs_autoplay']) ? $conf['vjs_autoplay'] : 'False';
 	if ( $page['slideshow'] )
 	{
 		$refresh = $fileinfo['playtime_seconds'];
-		$AUTOPLAY = 'play';
+		$autoplay = 'True';
 	}
 
-	// Load parameter, fallback to blue monday if unset
-	$skin = isset($conf['videojs_skin']) ? $conf['videojs_skin'] : 'vjs-default-skin';
+	// Load parameter, fallback to default if unset
+	$skin = isset($conf['vjs_skin']) ? $conf['vjs_skin'] : 'vjs-default-skin';
+	$preload = isset($conf['vjs_preload']) ? $conf['vjs_preload'] : 'None';
+	$loop = isset($conf['vjs_loop']) ? $conf['vjs_loop'] : 'False';
+	$controls = isset($conf['vjs_controls']) ? $conf['vjs_controls'] : 'False';
 
 	// Select the template
 	$template->set_filenames(
@@ -145,13 +148,16 @@ function render_media($content, $picture)
 		array(
 			'VIDEOJS_MEDIA_URL'	=> embellish_url(get_gallery_home_url() . $picture['current']['element_url']),
 			'VIDEOJS_THUMB_URL'	=> $thumb,
-			'VIDEOJS_PATH'     => VIDEOJS_PATH,
-			'VIDEOJS_FULLPATH' => realpath(dirname(__FILE__)),
-			'WIDTH'            => $width,
-			'HEIGHT'           => $height,
-			'TYPE'             => $extension,
-			'AUTOPLAY'         => $AUTOPLAY,
-			'VJSSKIN'          => $skin,
+			'VIDEOJS_PATH'		=> VIDEOJS_PATH,
+			'VIDEOJS_FULLPATH'	=> realpath(dirname(__FILE__)),
+			'WIDTH'				=> $width,
+			'HEIGHT'			=> $height,
+			'TYPE'				=> $extension,
+			'AUTOPLAY'			=> $autoplay,
+			'LOOP'				=> $loop,
+			'CONTROLS'			=> $controls,
+			'PRELOAD'			=> $preload,
+			'VIDEOJS_SKIN'		=> $skin,
 		)
 	);
 
@@ -169,9 +175,9 @@ function get_mimetype_icon ($location, $element_info)
 				. basename(dirname(__FILE__))
 				. '/mimetypes/webm.png';
 		}
-			$location= 'plugins/'
-				. basename(dirname(__FILE__))
-				. '/mimetypes/' . $extension . '.png';
+		$location= 'plugins/'
+			. basename(dirname(__FILE__))
+			. '/mimetypes/' . $extension . '.png';
 	}
 	return $location;
 }
