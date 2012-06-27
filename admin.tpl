@@ -5,8 +5,12 @@
 <p>{'Howto'|@translate}</p>
 <div style="text-align:left">
 	<p>{'Howto1'|@translate}</p>
+	<hr />
 	<p>{'Howto2'|@translate}</p>
+	<hr />
 	<p>{'Howto3'|@translate}</p>
+	<hr />
+	<p>{'Howto4'|@translate}</p>
 </div>
 </fieldset>
 
