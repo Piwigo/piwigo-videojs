@@ -31,6 +31,8 @@ AddType video/webm .webm<br/>
 <br/>
 SetEnvIfNoCase Request_URI \.(og[gv]|mp4|m4v|webm)$ no-gzip dont-vary<br/>';
 
+$lang['Howto4'] = 'Please test your video and poster via the <a href="http://videojs.com/tag-builder/">HMTL5 Video Tag Builder </a> , Please check <a href="http://videojs.com/#section4">videojs compatibility</a> for supporterd video format and broswer.';
+
 $lang['pref'] = 'HTML5 video tag préférences';
 $lang['pref2'] = 'Plugin préférences';
 
