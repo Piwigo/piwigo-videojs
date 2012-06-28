@@ -28,10 +28,10 @@ $videojs_extensions = array(
 $conf['file_ext'] = array_merge($conf['file_ext'], $videojs_extensions);
 
 // Hook on to an event to display videos as standard images
-add_event_handler('render_element_content', 'render_media', 40, 2 );
+add_event_handler('render_element_content', 'render_media', 40, 2);
 
 // Hook to display a fallback thumbnail if not defined
-add_event_handler('get_thumbnail_location', 'get_mimetype_icon', 60, 2);
+add_event_handler('get_mimetype_location', 'get_mimetype_icon', 60, 2);
 
 // Hook to a admin config page
 add_event_handler('get_admin_plugin_menu_links', 'videojs_admin_menu' );
@@ -52,8 +52,8 @@ function render_media($content, $picture)
 	global $template, $picture, $page, $conf, $user, $refresh;
 	//print_r( $picture['current']);
 	// do nothing if the current picture is actually an image !
-	// but doesn't not work ???
-	if ( @$picture['current']['is_picture'] )
+	if ( (array_key_exists('src_image', @$picture['current']
+		&& @$picture['current']['src_image']->is_original()) )
 	{
 		return $content;
 	}
@@ -131,14 +131,14 @@ function render_media($content, $picture)
 	if ( $page['slideshow'] )
 	{
 		$refresh = $fileinfo['playtime_seconds'];
-		$autoplay = 'True';
+		$autoplay = 'true';
 	}
 
 	// Load parameter, fallback to default if unset
 	$skin = isset($conf['vjs_skin']) ? $conf['vjs_skin'] : 'vjs-default-skin';
-	$preload = isset($conf['vjs_preload']) ? $conf['vjs_preload'] : 'None';
-	$loop = isset($conf['vjs_loop']) ? $conf['vjs_loop'] : 'False';
-	$controls = isset($conf['vjs_controls']) ? $conf['vjs_controls'] : 'False';
+	$preload = isset($conf['vjs_preload']) ? $conf['vjs_preload'] : 'none';
+	$loop = isset($conf['vjs_loop']) ? $conf['vjs_loop'] : 'false';
+	$controls = isset($conf['vjs_controls']) ? $conf['vjs_controls'] : 'false';
 
 	// Select the template
 	$template->set_filenames(
@@ -146,8 +146,13 @@ function render_media($content, $picture)
 	);
 
 	$parts = pathinfo($picture['current']['element_url']);
-	$thumb = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".jpg";
-	//print $thumb;
+	$poster = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".jpg"
+	// Try to guess the poster extension
+	if (!file_exists($poster))
+	{
+		$poster = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".png";
+	}
+	//print $poster;
 
 	// Assign the template variables
 	// We use here the piwigo's get_gallery_home_url function to build
@@ -155,7 +160,7 @@ function render_media($content, $picture)
 	$template->assign(
 		array(
 			'VIDEOJS_MEDIA_URL'	=> embellish_url(get_gallery_home_url() . $picture['current']['element_url']),
-			'VIDEOJS_THUMB_URL'	=> $thumb,
+			'VIDEOJS_POSTER_URL'	=> $poster,
 			'VIDEOJS_PATH'		=> VIDEOJS_PATH,
 			'VIDEOJS_FULLPATH'	=> realpath(dirname(__FILE__)),
 			'WIDTH'			=> $width,
