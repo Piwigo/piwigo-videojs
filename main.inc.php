@@ -52,7 +52,7 @@ function render_media($content, $picture)
 	global $template, $picture, $page, $conf, $user, $refresh;
 	//print_r( $picture['current']);
 	// do nothing if the current picture is actually an image !
-	if ( (array_key_exists('src_image', @$picture['current']
+	if ( (array_key_exists('src_image', @$picture['current'])
 		&& @$picture['current']['src_image']->is_original()) )
 	{
 		return $content;
@@ -127,7 +127,7 @@ function render_media($content, $picture)
 	// Slideshow : The video needs to be launch automatically in
 	// slideshow mode. The refresh of the page is set to the
 	// duration of the video.
-	$autoplay = isset($conf['vjs_autoplay']) ? $conf['vjs_autoplay'] : 'False';
+	$autoplay = isset($conf['vjs_autoplay']) ? strbool($conf['vjs_autoplay']) : 'false';
 	if ( $page['slideshow'] )
 	{
 		$refresh = $fileinfo['playtime_seconds'];
@@ -137,8 +137,8 @@ function render_media($content, $picture)
 	// Load parameter, fallback to default if unset
 	$skin = isset($conf['vjs_skin']) ? $conf['vjs_skin'] : 'vjs-default-skin';
 	$preload = isset($conf['vjs_preload']) ? $conf['vjs_preload'] : 'none';
-	$loop = isset($conf['vjs_loop']) ? $conf['vjs_loop'] : 'false';
-	$controls = isset($conf['vjs_controls']) ? $conf['vjs_controls'] : 'false';
+	$loop = isset($conf['vjs_loop']) ? strbool($conf['vjs_loop']) : 'false';
+	$controls = isset($conf['vjs_controls']) ? strbool($conf['vjs_controls']) : 'false';
 
 	// Select the template
 	$template->set_filenames(
@@ -146,7 +146,7 @@ function render_media($content, $picture)
 	);
 
 	$parts = pathinfo($picture['current']['element_url']);
-	$poster = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".jpg"
+	$poster = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".jpg";
 	// Try to guess the poster extension
 	if (!file_exists($poster))
 	{
@@ -188,6 +188,11 @@ function get_mimetype_icon ($location, $element_info)
 			. '/mimetypes/' . $extension . '.png';
 	}
 	return $location;
+}
+
+function strbool($value)
+{
+    return $value ? 'true' : 'false';
 }
 
 ?>
