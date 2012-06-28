@@ -79,6 +79,14 @@ function render_media($content, $picture)
 	//print_r($fileinfo);
 
 	$extension = strtolower(get_extension($picture['current']['path']));
+	if ($extension == "m4v")
+	{
+		$extension = "mp4";
+	}
+	else if ($extension == "webmv")
+	{
+		$extension = "webm4";
+	}
 	//print "extension\n";
 	//print_r($extension);
 
@@ -150,13 +158,13 @@ function render_media($content, $picture)
 			'VIDEOJS_THUMB_URL'	=> $thumb,
 			'VIDEOJS_PATH'		=> VIDEOJS_PATH,
 			'VIDEOJS_FULLPATH'	=> realpath(dirname(__FILE__)),
-			'WIDTH'				=> $width,
-			'HEIGHT'			=> $height,
-			'TYPE'				=> $extension,
-			'AUTOPLAY'			=> $autoplay,
-			'LOOP'				=> $loop,
-			'CONTROLS'			=> $controls,
-			'PRELOAD'			=> $preload,
+			'WIDTH'			=> $width,
+			'HEIGHT'		=> $height,
+			'TYPE'			=> $extension,
+			'AUTOPLAY'		=> $autoplay,
+			'LOOP'			=> $loop,
+			'CONTROLS'		=> $controls,
+			'PRELOAD'		=> $preload,
 			'VIDEOJS_SKIN'		=> $skin,
 		)
 	);
@@ -170,11 +178,6 @@ function get_mimetype_icon ($location, $element_info)
 {
 	if ( empty( $element_info['tn_ext'] ) ) {
 		$extension = strtolower(get_extension($element_info['path']));
-		if ( $extension == 'webm') {
-			$location= 'plugins/'
-				. basename(dirname(__FILE__))
-				. '/mimetypes/webm.png';
-		}
 		$location= 'plugins/'
 			. basename(dirname(__FILE__))
 			. '/mimetypes/' . $extension . '.png';

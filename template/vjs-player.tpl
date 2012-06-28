@@ -7,7 +7,7 @@
 <div style="margin: 0 auto; width:{$WIDTH}px; min-width:480px">
 
 {literal}
-<video id="my_video_1" class="video-js {/literal}{$VJSSKIN}{literal}" controls preload="auto" width={/literal}"{$WIDTH}"{literal} height={/literal}"{$HEIGHT}"{literal} poster={/literal}"{$VIDEOJS_THUMB_URL}"{literal} data-setup="{}">
+<video id="my_video_1" class="video-js {/literal}{$VJSSKIN}{literal}" width={/literal}"{$WIDTH}"{literal} height={/literal}"{$HEIGHT}"{literal} poster={/literal}"{$VIDEOJS_THUMB_URL}"{literal} data-setup='{"controls":{/literal}{$CONTROLS}{literal}, "preload": {/literal}"{$PRELOAD}"{literal}, "autoplay": {/literal}{$AUTOPLAY}{literal}, loop: {/literal{$LOOP}{literal} }'>
   <source src={/literal}"{$VIDEOJS_MEDIA_URL}"{literal} type='video/{/literal}{$TYPE}{literal}'>
   <p>Video Playback Not Supported<br/>Your browser does not support the video tag.</p>
 </video>
