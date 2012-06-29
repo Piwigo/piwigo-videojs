@@ -146,13 +146,34 @@ function render_media($content, $picture)
 	);
 
 	$parts = pathinfo($picture['current']['element_url']);
-	$poster = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".jpg";
+	$poster = $fileinfo['filepath']  ."/thumbnail/TN-" . $parts['filename'] . ".jpg";
 	// Try to guess the poster extension
-	if (!file_exists($poster))
+	if (file_exists($poster))
+	{
+		$poster = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".jpg";
+	}
+	else
 	{
 		$poster = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".png";
 	}
 	//print $poster;
+
+	// Genrate HTML5 tags
+	// Why the data-setup attribute does not work if only one video
+	$options = "";
+	if ($controls == "true")
+	{
+		$options .= "controls";
+	}
+	if ($autoplay == "true")
+	{
+		$options .= " autoplay ";
+	}
+	if ($loop == "true")
+	{
+		$options .= " loop ";
+	}
+	$options .= ' preload="'. $preload .'"';
 
 	// Assign the template variables
 	// We use here the piwigo's get_gallery_home_url function to build
@@ -166,11 +187,8 @@ function render_media($content, $picture)
 			'WIDTH'			=> $width,
 			'HEIGHT'		=> $height,
 			'TYPE'			=> $extension,
-			'AUTOPLAY'		=> $autoplay,
-			'LOOP'			=> $loop,
-			'CONTROLS'		=> $controls,
-			'PRELOAD'		=> $preload,
-			'VIDEOJS_SKIN'		=> $skin,
+			'OPTIONS'		=> $options,
+			'VIDEOJS_SKIN'	=> $skin,
 		)
 	);
 
@@ -181,12 +199,9 @@ function render_media($content, $picture)
 
 function get_mimetype_icon ($location, $element_info)
 {
-	if ( empty( $element_info['tn_ext'] ) ) {
-		$extension = strtolower(get_extension($element_info['path']));
-		$location= 'plugins/'
-			. basename(dirname(__FILE__))
-			. '/mimetypes/' . $extension . '.png';
-	}
+	$location= 'plugins/'
+		. basename(dirname(__FILE__))
+		. '/mimetypes/' . $element_info . '.png';
 	return $location;
 }
 
