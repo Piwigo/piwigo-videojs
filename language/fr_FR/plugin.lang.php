@@ -1,20 +1,22 @@
 <?php
 $lang['submit'] = 'Valider';
 
-$lang['Howto'] = 'Ce plugin ajoute un lecture video HTML5 base sur le lecteur OpenSource <a href="http://videojs.com/">videojs</a>.';
-$lang['Howto1'] = 'Step by step demo:<br/>
-* Create a new Album (MyVideoClip) via the admin panel or directly in your \'galleries\' directory.<br/>
-* Download and upload both file in the newly album (eg: galleries/MyVideoClip):<br/>
-* The poster, http://video-js.zencoder.com/oceans-clip.jpg<br/>
-* The video, http://video-js.zencoder.com/oceans-clip.mp4<br/>
-* Rename the poster image to \'oceans-clip.jpg.poster\', this way it is not handle as an image.<br/>
+$lang['Howto'] = 'Ce plugin ajoute un lecture video HTML5 OpenSource <a href="http://videojs.com/">videojs</a>.';
+$lang['Howto1'] = 'Howto:<br/>
+* Create a new album (MyVideoClip) via the admin panel or directly in your \'galleries\' directory.<br/>
+* Upload your video into the new album (eg: galleries/MyVideoClip).<br/>
+* Create a directory in your new Album call \'thumbnail\' (eg: galleries/MyVideoClip/thumbnail)<br/>
+* Upload the poster image with the prefix \'TN-\' into the new thumbnail directory (eg: galleries/MyVideoClip/thumbnail/TN-oceans-clip.jpg).<br/>
 * Synchronize<br/>
 ';
 
-$lang['Howto2'] = 'Complete description:<br/>
+$lang['Howto2'] = 'Requirement:<br/>
 * The video clip must be a support format and must contain no space neither special character.<br/>
-* The poster must have the same size of the video and must be call \'.poster\'.<br/>
-* The original video size is keep as long as it is below 720px width.<br/>
+* The poster must have the same size of the video.<br/>
+* The poster must be in the subdirecotry of the album in thumbnail.<br/>
+* The poster must have the prefix \'TN-\'.<br/>
+* The poster can be a \'.jpg\' or \'.png\' file.<br/>
+* The original video size is keep as long as it is below the max_width parameter in the admin panel.<br/>
 If the video is HDReady (1280*720) or FullHD (1920*1080), the video will be scale via an impressive math formula (divide by 2).<br/>
 The display resolution will for HDReady will be 640*360 and for FullHD 960*540.<br/>';
 
@@ -31,7 +33,7 @@ AddType video/webm .webm<br/>
 <br/>
 SetEnvIfNoCase Request_URI \.(og[gv]|mp4|m4v|webm)$ no-gzip dont-vary<br/>';
 
-$lang['Howto4'] = 'Please test your video and poster via the <a href="http://videojs.com/tag-builder/">HMTL5 Video Tag Builder </a> , Please check <a href="http://videojs.com/#section4">videojs compatibility</a> for supporterd video format and broswer.';
+$lang['Howto4'] = 'Please test your video and poster via the <a href="http://videojs.com/tag-builder/">HMTL5 Video Tag Builder</a>.<br/>Please check <a href="http://videojs.com/#section4">videojs compatibility</a> for supporterd video format and broswer.';
 
 $lang['pref'] = 'HTML5 video tag préférences';
 $lang['pref2'] = 'Plugin préférences';

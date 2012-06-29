@@ -1,0 +1,15 @@
+Changes from v0.2 to v0.3
+- Removed: Windows CLR
+- Changed: Tabulation layout in all files
+- Improve: poster handling
+- Add: mimetype support
+- Add: Admin panel option for MAX_WIDTH and HTML5 video tags (Controls, Autoplay, Loop, preload)
+- Add: translation support
+
+Changes from v0.1 to v0.2
+- Fixed: Packaging
+
+Initial Release v0.1
+- Initial release
+- Initial documentation
+
