@@ -1,9 +1,10 @@
 <?php
 /*
-Version: 0.3
+Version: 0.4
 Plugin Name: videojs
-Plugin URI: https://github.com/xbmgsharp/piwigo-videojs
+Plugin URI: http://piwigo.org/ext/extension_view.php?eid=610
 Author: xbmgsharp
+Author URI: https://github.com/xbmgsharp/piwigo-videojs
 Description: videojs integration for piwigo
 */
 
@@ -35,6 +36,12 @@ add_event_handler('get_mimetype_location', 'get_mimetype_icon', 60, 2);
 
 // Hook to a admin config page
 add_event_handler('get_admin_plugin_menu_links', 'videojs_admin_menu' );
+
+// Hook to change the picture data to template
+//add_event_handler('picture_pictures_data', 'videojs_pictures_data' );
+
+// Hook to
+//add_event_handler('format_exif_data', 'videojs_format_exif', EVENT_HANDLER_PRIORITY_NEUTRAL, 3);
 
 function videojs_admin_menu($menu)
 {

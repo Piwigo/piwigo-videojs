@@ -1,3 +1,6 @@
+Changes from v0.3 to v0.4
+- Fixed: undefined variable on upgrade
+
 Changes from v0.2 to v0.3
 - Removed: Windows CLR
 - Changed: Tabulation layout in all files

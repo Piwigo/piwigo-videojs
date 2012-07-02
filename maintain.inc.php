@@ -23,6 +23,7 @@
 *
 ************************************************/
 
+if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 define('VIDEOJS_PATH' , PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)) . '/');
 
 function plugin_install()
@@ -54,18 +55,51 @@ function plugin_install()
 
 function plugin_uninstall() 
 {
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param = "vjs_skin";';
-	pwg_query( $q );
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param = "vjs_preload";';
-	pwg_query( $q );
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param = "vjs_controls";';
-	pwg_query( $q );
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param = "vjs_autoplay";';
-	pwg_query( $q );
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param = "vjs_loop";';
-	pwg_query( $q );
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param = "vjs_max_width";';
+	if (is_dir(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs'))
+	{
+		deltree(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs');
+	}
+	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "vjs_%" LIMIT 6;';
 	pwg_query( $q );
 	// TODO : Do we need to purge the videos from the images table?
 }
+
+function plugin_activate()
+{
+	global $conf;
+
+	if ( (!isset($conf['vjs_skin'])) or (!isset($conf['vjs_preload']))
+	or (!isset($conf['vjs_controls'])) or (!isset($conf['vjs_autoplay']))
+	or (!isset($conf['vjs_loop'])) or (!isset($conf['vjs_max_width']))
+	{
+		plugin_install();
+	}
+}
+
+function deltree($path)
+{
+	if (is_dir($path))
+	{
+		$fh = opendir($path);
+		while ($file = readdir($fh))
+		{
+			if ($file != '.' and $file != '..')
+			{
+				$pathfile = $path . '/' . $file;
+				if (is_dir($pathfile))
+				{
+					deltree($pathfile);
+				}
+				else
+				{
+					@unlink($pathfile);
+				}
+			}
+		}
+		closedir($fh);
+		return @rmdir($path);
+	}
+}
+
+
 ?>
