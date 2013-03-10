@@ -159,8 +159,8 @@ function render_media($content, $picture)
 	$extarr = array(".jpg", ".png");
 	foreach ($tmparr as $dir) {
 		foreach ($extarr as $ext) {
-			$poster = $fileinfo['filepath'] . $dir . $parts['filename'] . $ext;
-			if file_exists($poster) {
+			$tmp = $fileinfo['filepath'] . $dir . $parts['filename'] . $ext;
+			if (file_exists($tmp)) {
 				$poster = get_gallery_home_url() . $parts['dirname'] . $dir . $parts['filename'] . $ext;
 			}
 		}
