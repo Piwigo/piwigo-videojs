@@ -33,27 +33,27 @@ function plugin_install()
 	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param = "videojs_skin";';
 	pwg_query( $q );
 
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment) 
+	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
 		VALUES ("vjs_skin", "vjs-default-skin", "Skin used by the piwigo-videojs plugin");';
 	pwg_query( $q );
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment) 
+	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
 		VALUES ("vjs_preload", "auto", "HTML5 video tag used by the piwigo-videojs plugin");';
 	pwg_query( $q );
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment) 
+	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
 		VALUES ("vjs_controls", "true", "HTML5 video tag used by the piwigo-videojs plugin");';
 	pwg_query( $q );
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment) 
+	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
 		VALUES ("vjs_autoplay", "true", "HTML5 video tag used by the piwigo-videojs plugin");';
 	pwg_query( $q );
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment) 
+	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
 		VALUES ("vjs_loop", "false", "HTML5 video tag used by the piwigo-videojs plugin");';
 	pwg_query( $q );
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment) 
+	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
 		VALUES ("vjs_max_width", "720", "Max WITH used by the piwigo-videojs plugin");';
 	pwg_query( $q );
 }
 
-function plugin_uninstall() 
+function plugin_uninstall()
 {
 	if (is_dir(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs'))
 	{
@@ -70,7 +70,7 @@ function plugin_activate()
 
 	if ( (!isset($conf['vjs_skin'])) or (!isset($conf['vjs_preload']))
 	or (!isset($conf['vjs_controls'])) or (!isset($conf['vjs_autoplay']))
-	or (!isset($conf['vjs_loop'])) or (!isset($conf['vjs_max_width']))
+	or (!isset($conf['vjs_loop'])) or (!isset($conf['vjs_max_width'])) )
 	{
 		plugin_install();
 	}

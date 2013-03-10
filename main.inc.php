@@ -1,11 +1,11 @@
 <?php
 /*
-Version: 0.4
 Plugin Name: videojs
+Version: 0.4
+Description: videojs integration for piwigo
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=610
 Author: xbmgsharp
-Author URI: https://github.com/xbmgsharp/piwigo-videojs
-Description: videojs integration for piwigo
+Author URI: https://github.com/xbgmsharp/piwigo-videojs
 */
 
 // Chech whether we are indeed included by Piwigo.
@@ -164,6 +164,15 @@ function render_media($content, $picture)
 		$poster = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".png";
 	}
 	//print $poster;
+
+	$poster = $fileinfo['filepath']  ."/pwg_representative/". $parts['filename'] . ".jpg";
+	if (file_exists($poster)) {
+		$poster = get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/" . $parts['filename'] . ".jpg";
+	}
+	else
+	{
+		$poster = get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/" . $parts['filename'] . ".png";
+	}
 
 	// Genrate HTML5 tags
 	// Why the data-setup attribute does not work if only one video
