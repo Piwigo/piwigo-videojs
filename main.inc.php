@@ -153,25 +153,17 @@ function render_media($content, $picture)
 	);
 
 	$parts = pathinfo($picture['current']['element_url']);
-	$poster = $fileinfo['filepath']  ."/thumbnail/TN-" . $parts['filename'] . ".jpg";
 	// Try to guess the poster extension
-	if (file_exists($poster))
-	{
-		$poster = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".jpg";
-	}
-	else
-	{
-		$poster = get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-" . $parts['filename'] . ".png";
-	}
-	//print $poster;
-
-	$poster = $fileinfo['filepath']  ."/pwg_representative/". $parts['filename'] . ".jpg";
-	if (file_exists($poster)) {
-		$poster = get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/" . $parts['filename'] . ".jpg";
-	}
-	else
-	{
-		$poster = get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/" . $parts['filename'] . ".png";
+	$porter = "";
+	$tmparr = array("/thumbnail/TN-", "/pwg_representative/");
+	$extarr = array(".jpg", ".png");
+	foreach ($tmparr as $dir) {
+		foreach ($extarr as $ext) {
+			$poster = $fileinfo['filepath'] . $dir . $parts['filename'] . $ext;
+			if file_exists($poster) {
+				$poster = get_gallery_home_url() . $parts['dirname'] . $dir . $parts['filename'] . $ext;
+			}
+		}
 	}
 
 	// Genrate HTML5 tags
