@@ -94,6 +94,10 @@ function render_media($content, $picture)
 	{
 		$extension = "webm4";
 	}
+	else if ($extension == "ogv")
+	{
+		$extension = "ogg";
+	}
 	//print "extension\n";
 	//print_r($extension);
 
@@ -152,19 +156,23 @@ function render_media($content, $picture)
 		array('vjs_content' => dirname(__FILE__)."/template/vjs-player.tpl")
 	);
 
-	$parts = pathinfo($picture['current']['element_url']);
 	// Try to guess the poster extension
-	$porter = "";
-	$tmparr = array("/thumbnail/TN-", "/pwg_representative/");
-	$extarr = array(".jpg", ".png");
-	foreach ($tmparr as $dir) {
-		foreach ($extarr as $ext) {
-			$tmp = $fileinfo['filepath'] . $dir . $parts['filename'] . $ext;
-			if (file_exists($tmp)) {
-				$poster = get_gallery_home_url() . $parts['dirname'] . $dir . $parts['filename'] . $ext;
-			}
-		}
-	}
+	$parts = pathinfo($picture['current']['element_url']);
+	$poster = getposterfile (Array(
+		$fileinfo['filepath']."/".$parts['filename'].".png" =>
+			get_gallery_home_url() . $parts['dirname'] . "/".$parts['filename'].".png",
+		$fileinfo['filepath']."/".$parts['filename'].".jpg" =>
+			get_gallery_home_url() . $parts['dirname'] . "/".$parts['filename'].".jpg",
+		$fileinfo['filepath']."/thumbnail/TN-".$parts['filename'].".jpg" =>
+			get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-".$parts['filename'].".jpg",
+		$fileinfo['filepath']."/thumbnail/TN-".$parts['filename'].".png" =>
+			get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-".$parts['filename'].".png",
+		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".jpg" =>
+			get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
+		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".png" =>
+			get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
+	));
+	//print $poster;
 
 	// Genrate HTML5 tags
 	// Why the data-setup attribute does not work if only one video
@@ -215,7 +223,16 @@ function get_mimetype_icon ($location, $element_info)
 
 function strbool($value)
 {
-    return $value ? 'true' : 'false';
+	return $value ? 'true' : 'false';
+}
+
+function getposterfile($file_list)
+{
+	foreach ($file_list as $file=>$url) {
+		//print $file."=>".$url."<br/>\n";
+		if (file_exists($file)) return $url;
+	}
+	return '';
 }
 
 ?>
