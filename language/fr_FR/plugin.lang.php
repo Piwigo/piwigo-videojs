@@ -6,7 +6,9 @@ $lang['Howto1'] = 'Howto:<br/>
 * Create a new album (MyVideoClip) via the admin panel or directly in your \'galleries\' directory.<br/>
 * Upload your video into the new album (eg: galleries/MyVideoClip).<br/>
 * Create a directory in your new Album call \'thumbnail\' (eg: galleries/MyVideoClip/thumbnail)<br/>
-* Upload the poster image with the prefix \'TN-\' into the new thumbnail directory (eg: galleries/MyVideoClip/thumbnail/TN-oceans-clip.jpg).<br/>
+* Create a directory in your new Album call \'thumbnail\' or \'pwg_representative\' (eg: galleries/MyVideoClip/pwg_representative)<br/>
+* Upload the poster image with the prefix \'TN-\' into the new thumbnail (eg: galleries/MyVideoClip/thumbnail/TN-oceans-clip.jpg)<br/>
+* Or upload the poster image with NO prefix into the pwg_representative directory (eg: galleries/MyVideoClip/pwg_representative/oceans-clip.jpg).<br/>
 * Synchronize<br/>
 ';
 
@@ -18,7 +20,17 @@ $lang['Howto2'] = 'Requirement:<br/>
 * The poster can be a \'.jpg\' or \'.png\' file.<br/>
 * The original video size is keep as long as it is below the max_width parameter in the admin panel.<br/>
 If the video is HDReady (1280*720) or FullHD (1920*1080), the video will be scale via an impressive math formula (divide by 2).<br/>
-The display resolution will for HDReady will be 640*360 and for FullHD 960*540.<br/>';
+The display resolution will for HDReady will be 640*360 and for FullHD 960*540.<br/>
+Sample layout:<br/>
++-- honeymoon<br/>
+    |-- hotel.png<br/>
+    |-- video-from-plane.avi<br/>
+    |-- video-from-ski.mp4<br/>
+    +-- pwg_representative<br/>
+    |   +-- video-from-plane.jpg<br/>
+    +-- thumbnail<br/>
+        +-- TN-video-from-ski.png<br/>
+';
 
 $lang['Howto3'] = 'Independent note from the plugin or Piwigo:<br/>
 * Ensure your server is using the correct mime-types.<br/>

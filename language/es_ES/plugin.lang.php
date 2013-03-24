@@ -1,12 +1,13 @@
 <?php
 $lang['submit'] = 'Validar';
 
-$lang['Howto'] = 'Este plugin agrega reproductor de vídeo HTML5 OpenSource <a href="http://videojs.com/">videojs</a>.';
+$lang['Howto'] = 'Este plugin agrega reproductor de video HTML5 OpenSource <a href="http://videojs.com/">videojs</a>.';
 $lang['Howto1'] = 'Howto:<br/>
 * Create a new album (MyVideoClip) via the admin panel or directly in your \'galleries\' directory.<br/>
 * Upload your video into the new album (eg: galleries/MyVideoClip).<br/>
-* Create a directory in your new Album call \'thumbnail\' (eg: galleries/MyVideoClip/thumbnail)<br/>
-* Upload the poster image with the prefix \'TN-\' into the new thumbnail directory (eg: galleries/MyVideoClip/thumbnail/TN-oceans-clip.jpg).<br/>
+* Create a directory in your new Album call \'thumbnail\' or \'pwg_representative\' (eg: galleries/MyVideoClip/pwg_representative)<br/>
+* Upload the poster image with the prefix \'TN-\' into the new thumbnail (eg: galleries/MyVideoClip/thumbnail/TN-oceans-clip.jpg)<br/>
+* Or upload the poster image with NO prefix into the pwg_representative directory (eg: galleries/MyVideoClip/pwg_representative/oceans-clip.jpg).<br/>* Create a directory in your new Album call \'thumbnail\' (eg: galleries/MyVideoClip/thumbnail)<br/>
 * Synchronize<br/>
 ';
 
@@ -18,7 +19,17 @@ $lang['Howto2'] = 'Requirement:<br/>
 * The poster can be a \'.jpg\' or \'.png\' file.<br/>
 * The original video size is keep as long as it is below the max_width parameter in the admin panel.<br/>
 If the video is HDReady (1280*720) or FullHD (1920*1080), the video will be scale via an impressive math formula (divide by 2).<br/>
-The display resolution will for HDReady will be 640*360 and for FullHD 960*540.<br/>';
+The display resolution will for HDReady will be 640*360 and for FullHD 960*540.<br/>
+Sample layout:<br/>
++-- honeymoon<br/>
+    |-- hotel.png<br/>
+    |-- video-from-plane.avi<br/>
+    |-- video-from-ski.mp4<br/>
+    +-- pwg_representative<br/>
+    |   +-- video-from-plane.jpg<br/>
+    +-- thumbnail<br/>
+        +-- TN-video-from-ski.png<br/>
+';
 
 $lang['Howto3'] = 'Independent note from the plugin or Piwigo:<br/>
 * Ensure your server is using the correct mime-types.<br/>
@@ -29,7 +40,7 @@ AddType video/ogg  .ogv<br/>
 AddType video/mp4  .mp4<br/>
 AddType video/webm .webm<br/>
 <br/>
-* Some web hosts, in trying to save bandwidth, gzip everything by default—including video files! In Firefox and Opera, seeking will not be possible or the video may not play at all if a video file is gzipped. If this is occurring to you please check your server / hosts and disable the gzipping of Ogg and other media files. You can switch off gzipping for video files in your .htaccess file by adding this line:<br/>
+* Some web hosts, in trying to save bandwidth, gzip everything by default including video files! In Firefox and Opera, seeking will not be possible or the video may not play at all if a video file is gzipped. If this is occurring to you please check your server / hosts and disable the gzipping of Ogg and other media files. You can switch off gzipping for video files in your .htaccess file by adding this line:<br/>
 <br/>
 SetEnvIfNoCase Request_URI \.(og[gv]|mp4|m4v|webm)$ no-gzip dont-vary<br/>';
 
