@@ -29,18 +29,9 @@ Supported formats
 * ogg,ogv
 * mp4,mp4
 
-<u>Note</u> : [videojs compatibility](http://videojs.com/#section4)
-
-
 Usage
 -----
-Basically, medias will be inserted in a same way as standard pictures : 
-
-* Uploads the videos in the `galleries` dir
-* The thumbnail is formed as usual `thumbnail/TN-base_name.jpg`
-* The HD can be inserted as usual as well in the `pwg_high`
-* Finally use the sync button
-
+Basically, medias will be inserted in a same way as standard pictures.
 
 Credit
 ------
