@@ -1,7 +1,7 @@
 <?php
 $lang['submit'] = 'Validar';
 
-$lang['Howto'] = 'Este plugin agrega reproductor de video HTML5 OpenSource <a href="http://videojs.com/">videojs</a>.';
+$lang['Howto'] = 'Este plugin agrega reproductor de video HTML5 OpenSource <a href="http://videojs.com/" target="_blank">videojs</a>.';
 $lang['Howto1'] = 'Howto:<br/>
 * Create a new album (MyVideoClip) via the admin panel or directly in your \'galleries\' directory.<br/>
 * Upload your video into the new album (eg: galleries/MyVideoClip).<br/>
@@ -32,8 +32,8 @@ Sample layout:<br/>
 ';
 
 $lang['Howto3'] = 'Independent note from the plugin or Piwigo:<br/>
-* Ensure your server is using the correct mime-types.<br/>
-Firefox will NOT play the Ogg video if the mime-type is wrong.<br/>
+* Ensure your webserver is returning the correct mime-types.<br/>
+Firefox will NOT play the video (Ogg and Webm) if the mime-type is wrong.<br/>
 Place these lines in your .htaccess file (in Piwigo root directory) to send the correct mime-types to browsers<br/>
 <br/>
 AddType video/ogg  .ogv<br/>
@@ -44,12 +44,17 @@ AddType video/webm .webm<br/>
 <br/>
 SetEnvIfNoCase Request_URI \.(og[gv]|mp4|m4v|webm)$ no-gzip dont-vary<br/>';
 
-$lang['Howto4'] = 'Please test your video and poster via the <a href="http://videojs.com/tag-builder/">HMTL5 Video Tag Builder</a>.<br/>Please check <a href="http://videojs.com/#section4">videojs compatibility</a> for supporterd video format and broswer.';
+$lang['Howto4'] = 'Please check <a href="https://github.com/videojs/video.js/blob/master/docs/index.md" target="_blank">Video.js Documentation</a> for additional customizing information.<br/><br/>
+Skin are from <a href="https://github.com/pluckee/video-js-skins-channel" target="_blank">video-js-skins-channel</a><br/><br/>
+CustomCSS Field allow you to create your own skin direclty from <a href="http://www.videojs.com/" target="_blank">the web</a><br/>
+Then Click on "Embed This Player" and copy the custom HTML style code section into the CustomCSS textarea.<br/>
+Please note that CustomCSS field can only apply to the default skin.';
 
 $lang['pref'] = 'HTML5 video tag preferencias';
 $lang['pref2'] = 'Plugin preferencias';
 
 $lang['skin'] = 'Skin';
+$lang['customcss'] = 'Custom CSS';
 $lang['preload'] = 'Preload';
 $lang['controls'] = 'Controls';
 $lang['autoplay'] = 'Autoplay';

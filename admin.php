@@ -27,6 +27,9 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
+// Check access and exit when user status is not ok
+check_status(ACCESS_ADMINISTRATOR);
+
 // Setup plugin Language
 load_language('plugin.lang', VIDEOJS_PATH);
 
@@ -35,6 +38,7 @@ global $template, $conf, $lang;
 
 // Load parameter
 $skin = $conf['vjs_skin'];
+$customcss = $conf['vjs_customcss'] ? $conf['vjs_customcss'] : '';
 $preload = $conf['vjs_preload'];
 $controls = $conf['vjs_controls'] ? 'true' : 'false';
 $autoplay = $conf['vjs_autoplay'] ? 'true' : 'false';
@@ -44,7 +48,8 @@ $max_width = $conf['vjs_max_width'];
 // Available skins
 $available_skins = array(
 	'vjs-default-skin' => 'default',
-	'tubecss' => 'tubecss',
+	'vjs-darkfunk-skin' => 'darkfunk',
+	'vjs-redsheen-skin' => 'redsheen',
 );
 
 // Available preload value
@@ -65,6 +70,8 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 {
 	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_skin'] ."' WHERE param='vjs_skin'";
 	pwg_query($query);
+	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_customcss'] ."' WHERE param='vjs_customcss'";
+	pwg_query($query);
 	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_preload'] ."' WHERE param='vjs_preload'";
 	pwg_query($query);
 	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_controls'] ."' WHERE param='vjs_controls'";
@@ -78,6 +85,7 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 
 	// keep the value in the admin form
 	$skin = $_POST['vjs_skin'];
+	$customcss = $_POST['vjs_customcss'];
 	$preload = $_POST['vjs_preload'];
 	$controls = $_POST['vjs_controls'];
 	$autoplay = $_POST['vjs_autoplay'];
@@ -90,13 +98,14 @@ $template->assign(
 	array(
 		'SELECTED_SKIN'		=> $skin,
 		'AVAILABLE_SKINS'	=> $available_skins,
+		'CUSTOM_CSS'		=> htmlspecialchars($customcss),
 		'SELECTED_PRELOAD'	=> $preload,
 		'AVAILABLE_PRELOAD'	=> $available_preload,
 		'SELECTED_WIDTH'	=> $max_width,
 		'AVAILABLE_WIDTH'	=> $available_width,
-		'CONTROLS'			=> $controls,
-		'AUTOPLAY'			=> $autoplay,
-		'LOOP'				=> $loop,
+		'CONTROLS'		=> $controls,
+		'AUTOPLAY'		=> $autoplay,
+		'LOOP'			=> $loop,
 	)
 );
 
@@ -104,7 +113,7 @@ $template->assign(
 $template->set_filenames(
 	array(
 		'plugin_admin_content' => dirname(__FILE__).'/admin.tpl'
-	) 
+	)
 );
 
 // Assign the template contents to ADMIN_CONTENT

@@ -1,7 +1,10 @@
 {html_head}
-{combine_script id='vjs' load='header' path="`$VIDEOJS_PATH`js/video.js"}
-{combine_css id="vjs_default" path="`$VIDEOJS_PATH`skin/video-js.css"}
-{combine_css id="vjs_default" path="`$VIDEOJS_PATH`skin/tube.css"}
+<link href="{$VIDEOJS_PATH}skin/{$VIDEOJS_SKINCSS}" rel="stylesheet">
+{$VIDEOJS_CUSTOMCSS}
+<script src="{$VIDEOJS_PATH}js/video.js"></script>
+<script>
+  videojs.options.flash.swf = "{$VIDEOJS_PATH}js/video-js.swf"
+</script>
 {/html_head}
 
 <div style="margin: 0 auto; width:{$WIDTH}px; min-width:480px">

@@ -48,6 +48,10 @@
 				</select>
 			</li>
 			<li>
+				<label>{'customcss'|@translate} : </label>
+				<textarea rows="5" cols="90" class="description" name="vjs_customcss" id="vjs_customcss">{$CUSTOM_CSS}</textarea>
+			</li>
+			<li>
 				<label>{'width'|@translate} : </label>
 				<select name="vjs_max_width">
 					{html_options options=$AVAILABLE_WIDTH selected=$SELECTED_WIDTH}
@@ -55,7 +59,7 @@
 			</li>
 		<ul>
 	</fieldset>
-	<div style="pad-left: 5">
+	<p>
 		<input class="submit" type="submit" value="{'Submit'|@translate}" name="submit"/>
-	</div>
+	</p>
 </form>

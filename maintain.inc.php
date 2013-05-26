@@ -33,8 +33,15 @@ function plugin_install()
 	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param = "videojs_skin";';
 	pwg_query( $q );
 
+	// Clean up any previous entry 0.4 to 0.5
+	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%" LIMIT 7;';
+	pwg_query( $q );
+
 	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
 		VALUES ("vjs_skin", "vjs-default-skin", "Skin used by the piwigo-videojs plugin");';
+	pwg_query( $q );
+	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
+		VALUES ("vjs_customcss", "", "Custom CSS used by the piwigo-videojs plugin");';
 	pwg_query( $q );
 	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
 		VALUES ("vjs_preload", "auto", "HTML5 video tag used by the piwigo-videojs plugin");';
@@ -43,7 +50,7 @@ function plugin_install()
 		VALUES ("vjs_controls", "true", "HTML5 video tag used by the piwigo-videojs plugin");';
 	pwg_query( $q );
 	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
-		VALUES ("vjs_autoplay", "true", "HTML5 video tag used by the piwigo-videojs plugin");';
+		VALUES ("vjs_autoplay", "false", "HTML5 video tag used by the piwigo-videojs plugin");';
 	pwg_query( $q );
 	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
 		VALUES ("vjs_loop", "false", "HTML5 video tag used by the piwigo-videojs plugin");';
@@ -59,7 +66,7 @@ function plugin_uninstall()
 	{
 		deltree(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs');
 	}
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "vjs_%" LIMIT 6;';
+	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%" LIMIT 7;';
 	pwg_query( $q );
 	// TODO : Do we need to purge the videos from the images table?
 }
@@ -70,7 +77,8 @@ function plugin_activate()
 
 	if ( (!isset($conf['vjs_skin'])) or (!isset($conf['vjs_preload']))
 	or (!isset($conf['vjs_controls'])) or (!isset($conf['vjs_autoplay']))
-	or (!isset($conf['vjs_loop'])) or (!isset($conf['vjs_max_width'])) )
+	or (!isset($conf['vjs_loop'])) or (!isset($conf['vjs_max_width']))
+	or (!isset($conf['vjs_customcss'])) )
 	{
 		plugin_install();
 	}

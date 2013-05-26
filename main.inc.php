@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: videojs
-Version: 0.4
+Version: 0.5
 Description: videojs integration for piwigo
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=610
 Author: xbmgsharp
@@ -147,9 +147,23 @@ function render_media($content, $picture)
 
 	// Load parameter, fallback to default if unset
 	$skin = isset($conf['vjs_skin']) ? $conf['vjs_skin'] : 'vjs-default-skin';
+	$customcss = isset($conf['vjs_customcss']) ? $conf['vjs_customcss'] : '';
 	$preload = isset($conf['vjs_preload']) ? $conf['vjs_preload'] : 'none';
 	$loop = isset($conf['vjs_loop']) ? strbool($conf['vjs_loop']) : 'false';
 	$controls = isset($conf['vjs_controls']) ? strbool($conf['vjs_controls']) : 'false';
+
+	// Assing the CSS file according to the skin
+	$skincss = "";
+	if ($skin == 'vjs-default-skin')
+	{
+		$skincss = "video-js.min.css";
+	} else if ($skin == 'vjs-darkfunk-skin')
+	{
+		$skincss = "darkfunk-skin.css";
+	} else if ($skin == 'vjs-redsheen-skin')
+	{
+		$skincss = "redsheen-skin.css";
+	}
 
 	// Select the template
 	$template->set_filenames(
@@ -204,7 +218,9 @@ function render_media($content, $picture)
 			'HEIGHT'		=> $height,
 			'TYPE'			=> $extension,
 			'OPTIONS'		=> $options,
-			'VIDEOJS_SKIN'	=> $skin,
+			'VIDEOJS_SKIN'		=> $skin,
+			'VIDEOJS_SKINCSS'	=> $skincss,
+			'VIDEOJS_CUSTOMCSS'	=> $customcss,
 		)
 	);
 
