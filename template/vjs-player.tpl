@@ -1,9 +1,9 @@
 {html_head}
-<link href="{$VIDEOJS_PATH}skin/{$VIDEOJS_SKINCSS}" rel="stylesheet">
+<link href="{$VIDEOJS_PATH}video-js/{$VIDEOJS_SKINCSS}" rel="stylesheet">
 {$VIDEOJS_CUSTOMCSS}
-<script src="{$VIDEOJS_PATH}js/video.js"></script>
+<script src="{$VIDEOJS_PATH}video-js/video.js"></script>
 <script>
-  videojs.options.flash.swf = "{$VIDEOJS_PATH}js/video-js.swf"
+  videojs.options.flash.swf = "{$VIDEOJS_PATH}video-js/video-js.swf"
 </script>
 {/html_head}
 
