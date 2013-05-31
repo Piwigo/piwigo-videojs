@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: videojs
+Plugin Name: VideoJS
 Version: 0.6
 Description: videojs integration for piwigo
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=610
@@ -47,7 +47,7 @@ function videojs_admin_menu($menu)
 {
 	array_push($menu,
 		array(
-			'NAME' => 'videojs',
+			'NAME' => 'VideoJS',
 			'URL'  => get_admin_plugin_menu_link(dirname(__FILE__).'/admin.php')
 		)
 	);
