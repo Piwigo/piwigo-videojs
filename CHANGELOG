@@ -1,3 +1,6 @@
+Changes from v0.5 to v0.6
+- Update: Videojs player to version 4.0.3
+
 Changes from v0.4 to v0.5
 - Update: Videojs player to version 4.0.2
 - Removed: Tube skin (Not complatible with new version)
