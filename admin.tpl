@@ -1,18 +1,10 @@
 <div class="titrePage">
   <h2>VideoJS plugin</h2>
 </div>
-<fieldset>
-<p>{'Howto'|@translate}</p>
-<div style="text-align:left">
-	<p>{'Howto1'|@translate}</p>
-	<hr />
-	<p>{'Howto2'|@translate}</p>
-	<hr />
-	<p>{'Howto3'|@translate}</p>
-	<hr />
-	<p>{'Howto4'|@translate}</p>
-</div>
-</fieldset>
+
+This plugin add the open source HTML5 video player <a href="http://www.videojs.com/" target="_blank">VideoJS</a>.
+<br/><br/>
+Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blanck">plugin documentation</a> for additional information.
 
 <form method="post" action="" class="properties">
 	<fieldset>
