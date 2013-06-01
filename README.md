@@ -31,7 +31,10 @@ Supported formats
 
 Usage
 -----
+
 Basically, medias will be inserted in a same way as standard pictures.
+
+Please refer to the [wiki](https://github.com/xbgmsharp/piwigo-videojs/wiki)
 
 Credit
 ------
