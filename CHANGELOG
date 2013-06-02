@@ -1,5 +1,9 @@
+Changes from v0.6 to v0.7
+- Improve options handling
+
 Changes from v0.5 to v0.6
 - Update: Videojs player to version 4.0.3
+- Export documentation to github wiki
 
 Changes from v0.4 to v0.5
 - Update: Videojs player to version 4.0.2
