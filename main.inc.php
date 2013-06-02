@@ -16,6 +16,9 @@ define('VIDEOJS_PATH', PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)).'/');
 
 global $conf;
 
+// Prepare configuration
+$conf['vjs_conf'] = unserialize($conf['vjs_conf']);
+
 // Register the allowed extentions to the global conf in order
 // to sync them with other contents
 $videojs_extensions = array(
@@ -73,7 +76,7 @@ function render_media($content, $picture)
 	}
 	else
 	{
-		$MAX_WIDTH = isset($conf['vjs_max_width']) ? $conf['vjs_max_width'] : '720';
+		$MAX_WIDTH = isset($conf['vjs_conf']['max_width']) ? $conf['vjs_conf']['max_width'] : '720';
 	}
 	//print "$MAX_WIDTH=" . $MAX_WIDTH;
 	//print_r($user);
@@ -138,7 +141,7 @@ function render_media($content, $picture)
 	// Slideshow : The video needs to be launch automatically in
 	// slideshow mode. The refresh of the page is set to the
 	// duration of the video.
-	$autoplay = isset($conf['vjs_autoplay']) ? strbool($conf['vjs_autoplay']) : 'false';
+	$autoplay = isset($conf['vjs_conf']['autoplay']) ? strbool($conf['vjs_conf']['autoplay']) : 'false';
 	if ( $page['slideshow'] )
 	{
 		$refresh = $fileinfo['playtime_seconds'];
@@ -146,11 +149,11 @@ function render_media($content, $picture)
 	}
 
 	// Load parameter, fallback to default if unset
-	$skin = isset($conf['vjs_skin']) ? $conf['vjs_skin'] : 'vjs-default-skin';
+	$skin = isset($conf['vjs_conf']['skin']) ? $conf['vjs_conf']['skin'] : 'vjs-default-skin';
 	$customcss = isset($conf['vjs_customcss']) ? $conf['vjs_customcss'] : '';
-	$preload = isset($conf['vjs_preload']) ? $conf['vjs_preload'] : 'none';
-	$loop = isset($conf['vjs_loop']) ? strbool($conf['vjs_loop']) : 'false';
-	$controls = isset($conf['vjs_controls']) ? strbool($conf['vjs_controls']) : 'false';
+	$preload = isset($conf['vjs_conf']['preload']) ? $conf['vjs_conf']['preload'] : 'none';
+	$loop = isset($conf['vjs_conf']['loop']) ? strbool($conf['vjs_conf']['loop']) : 'false';
+	$controls = isset($conf['vjs_conf']['controls']) ? strbool($conf['vjs_conf']['controls']) : 'false';
 
 	// Assing the CSS file according to the skin
 	$skincss = "";

@@ -8,50 +8,60 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
 
 <form method="post" action="" class="properties">
 	<fieldset>
-		<legend>{'pref'|@translate}</legend>
+		<legend>{'HTML5'|@translate}</legend>
 		<ul>
 			<li>
-				<label>{'preload'|@translate} : </label>
+				<label>{'PRELOAD'|@translate} : </label>
 				<select name="vjs_preload">
-					{html_options options=$AVAILABLE_PRELOAD selected=$SELECTED_PRELOAD}
+					{html_options options=$AVAILABLE_PRELOAD selected=$preload}
 				</select>
+				<br/><small>{'PRELOAD_DESC'|@translate}</small>
 			</li>
 			<li>
-				<label>{'controls'|@translate} : </label>
-				{html_radios name='vjs_controls' values='true,false'|@explode output='Yes,No'|@explode|translate selected=$CONTROLS}
+				<label>{'CONTROLS'|@translate} : </label>
+				<label><input type="radio" name="vjs_controls" value="true" {if $controls}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_controls" value="false" {if not $controls}checked="checked"{/if}/> {'No'|@translate}</label>
+				<br/><small>{'CONTROLS_DESC'|@translate}</small>
 			</li>
 			<li>
-				<label>{'autoplay'|@translate} : </label>
-				{html_radios name='vjs_autoplay' values='true,false'|@explode output='Yes,No'|@explode|translate selected=$AUTOPLAY}
+				<label>{'AUTOPLAY'|@translate} : </label>
+				<label><input type="radio" name="vjs_autoplay" value="true" {if $autoplay}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_autoplay" value="false" {if not $autoplay}checked="checked"{/if}/> {'No'|@translate}</label>
+				<br/><small>{'AUTOPLAY_DESC'|@translate}</small>
 			</li>
 			<li>
-				<label>{'loop'|@translate} : </label>
-				{html_radios name='vjs_loop' values='true,false'|@explode output='Yes,No'|@explode|translate selected=$LOOP}
+				<label>{'LOOP'|@translate} : </label>
+				<label><input type="radio" name="vjs_loop" value="true" {if $loop}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_loop" value="false" {if not $loop}checked="checked"{/if}/> {'No'|@translate}</label>
+				<br/><small>{'LOOP_DESC'|@translate}</small>
 			</li>
 		</ul>
 	</fieldset>
 	<fieldset>
-		<legend>{'pref2'|@translate}</legend>
+		<legend>{'PLUGIN'|@translate}</legend>
 		<ul>
 			<li>
-				<label>{'skin'|@translate} : </label>
+				<label>{'SKIN'|@translate} : </label>
 				<select name="vjs_skin">
-					{html_options options=$AVAILABLE_SKINS selected=$SELECTED_SKIN}
+					{html_options options=$AVAILABLE_SKINS selected=$skin}
 				</select>
+				<br/><small>{'SKIN_DESC'|@translate}</small>
 			</li>
 			<li>
-				<label>{'customcss'|@translate} : </label>
+				<label>{'CUSTOMCSS'|@translate} : </label>
 				<textarea rows="5" cols="90" class="description" name="vjs_customcss" id="vjs_customcss">{$CUSTOM_CSS}</textarea>
+				<br/><small>{'CUSTOMCSS_DESC'|@translate}</small>
 			</li>
 			<li>
-				<label>{'width'|@translate} : </label>
+				<label>{'WIDTH'|@translate} : </label>
 				<select name="vjs_max_width">
-					{html_options options=$AVAILABLE_WIDTH selected=$SELECTED_WIDTH}
+					{html_options options=$AVAILABLE_WIDTH selected=$max_width}
 				</select>
+				<br/><small>{'WIDTH_DESC'|@translate}</small>
 			</li>
 		<ul>
 	</fieldset>
 	<p>
-		<input class="submit" type="submit" value="{'Submit'|@translate}" name="submit"/>
+		<input class="submit" type="submit" value="{'Save Settings'|@translate}" name="submit"/>
 	</p>
 </form>

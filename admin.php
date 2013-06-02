@@ -37,13 +37,7 @@ load_language('plugin.lang', VIDEOJS_PATH);
 global $template, $conf, $lang;
 
 // Load parameter
-$skin = $conf['vjs_skin'];
 $customcss = $conf['vjs_customcss'] ? $conf['vjs_customcss'] : '';
-$preload = $conf['vjs_preload'];
-$controls = $conf['vjs_controls'] ? 'true' : 'false';
-$autoplay = $conf['vjs_autoplay'] ? 'true' : 'false';
-$loop = $conf['vjs_loop'] ? 'true' : 'false';
-$max_width = $conf['vjs_max_width'];
 
 // Available skins
 $available_skins = array(
@@ -68,44 +62,33 @@ $available_width = array(
 // Update conf if submitted in admin site
 if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 {
-	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_skin'] ."' WHERE param='vjs_skin'";
-	pwg_query($query);
+	// keep the value in the admin form
+	$conf['vjs_conf'] = array(
+		'skin'          => $_POST['vjs_skin'],
+		'max_width'     => $_POST['vjs_max_width'],
+		'preload'       => $_POST['vjs_preload'],
+		'controls'      => get_boolean($_POST['vjs_controls']),
+		'autoplay'      => get_boolean($_POST['vjs_autoplay']),
+		'loop'          => get_boolean($_POST['vjs_loop']),
+	);
+	$customcss = $_POST['vjs_customcss'];
+
+	// Update config to DB
+	conf_update_param('vjs_conf', serialize($conf['vjs_conf']));
 	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_customcss'] ."' WHERE param='vjs_customcss'";
 	pwg_query($query);
-	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_preload'] ."' WHERE param='vjs_preload'";
-	pwg_query($query);
-	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_controls'] ."' WHERE param='vjs_controls'";
-	pwg_query($query);
-	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_autoplay'] ."' WHERE param='vjs_autoplay'";
-	pwg_query($query);
-	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_loop'] ."' WHERE param='vjs_loop'";
-	pwg_query($query);
-	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_max_width'] ."' WHERE param='vjs_max_width'";
-	pwg_query($query);
 
-	// keep the value in the admin form
-	$skin = $_POST['vjs_skin'];
-	$customcss = $_POST['vjs_customcss'];
-	$preload = $_POST['vjs_preload'];
-	$controls = $_POST['vjs_controls'];
-	$autoplay = $_POST['vjs_autoplay'];
-	$loop = $_POST['vjs_loop'];
-	$max_width = $_POST['vjs_max_width'];
+	array_push($page['infos'], l10n('Your configuration settings are saved'));
 }
 
 // send value to template
+$template->assign($conf['vjs_conf']);
 $template->assign(
 	array(
-		'SELECTED_SKIN'		=> $skin,
 		'AVAILABLE_SKINS'	=> $available_skins,
-		'CUSTOM_CSS'		=> htmlspecialchars($customcss),
-		'SELECTED_PRELOAD'	=> $preload,
 		'AVAILABLE_PRELOAD'	=> $available_preload,
-		'SELECTED_WIDTH'	=> $max_width,
 		'AVAILABLE_WIDTH'	=> $available_width,
-		'CONTROLS'		=> $controls,
-		'AUTOPLAY'		=> $autoplay,
-		'LOOP'			=> $loop,
+		'CUSTOM_CSS'		=> htmlspecialchars($customcss),
 	)
 );
 

@@ -28,35 +28,48 @@ define('VIDEOJS_PATH' , PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)) . '/');
 
 function plugin_install()
 {
-	// TODO Remove when move from 0.3 to 0.4
-	// It is a left from v0.1 and v0.2
+
+	// Remove unused directory from 0.4 and 0.5 to 0.6
+	$toremove = array("skin", "js", "language/es_ES");
+	foreach ($toremove as $dir)
+	{
+		if (is_dir(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs/'.$dir))
+		{
+			deltree(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs/'.$dir);
+		}
+	}
+	$toremove = array("language/index.htm", "language/fr_FR/index.htm", "language/en_UK/index.htm");
+	foreach ($toremove as $file)
+	{
+		@unlink(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs/'.$file);
+	}
+
+	// It is a left over from v0.1 and v0.2 - TO REMOVE in 0.7
 	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param = "videojs_skin";';
 	pwg_query( $q );
 
-	// Clean up any previous entry 0.4 to 0.5
+	// Clean up any previous entry from 0.4 to 0.5 - TO REMOVE in 0.7
 	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%" LIMIT 7;';
 	pwg_query( $q );
 
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
-		VALUES ("vjs_skin", "vjs-default-skin", "Skin used by the piwigo-videojs plugin");';
+	$default_config = array(
+		'skin'		=> 'vjs-default-skin',
+		'max_width'	=> '720',
+		'preload'	=> 'auto',
+		'controls'	=> true,
+		'autoplay'	=> false,
+		'loop'		=> false,
+	);
+
+	/* Add configuration to the config table */
+	$conf['vjs_conf'] = serialize($default_config);
+	conf_update_param('vjs_conf', $conf['vjs_conf']);
+
+	$q = 'UPDATE '.CONFIG_TABLE.' SET `comment` = "Configuration settings for piwigo-videojs plugin" WHERE `param` = "vjs_conf";';
 	pwg_query( $q );
+	/* Keep customCSS separate as it can be big entry */
 	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
 		VALUES ("vjs_customcss", "", "Custom CSS used by the piwigo-videojs plugin");';
-	pwg_query( $q );
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
-		VALUES ("vjs_preload", "auto", "HTML5 video tag used by the piwigo-videojs plugin");';
-	pwg_query( $q );
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
-		VALUES ("vjs_controls", "true", "HTML5 video tag used by the piwigo-videojs plugin");';
-	pwg_query( $q );
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
-		VALUES ("vjs_autoplay", "false", "HTML5 video tag used by the piwigo-videojs plugin");';
-	pwg_query( $q );
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
-		VALUES ("vjs_loop", "false", "HTML5 video tag used by the piwigo-videojs plugin");';
-	pwg_query( $q );
-	$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
-		VALUES ("vjs_max_width", "720", "Max WITH used by the piwigo-videojs plugin");';
 	pwg_query( $q );
 }
 
@@ -66,7 +79,7 @@ function plugin_uninstall()
 	{
 		deltree(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs');
 	}
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%" LIMIT 7;';
+	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%" LIMIT 2;';
 	pwg_query( $q );
 	// TODO : Do we need to purge the videos from the images table?
 }
@@ -75,10 +88,7 @@ function plugin_activate()
 {
 	global $conf;
 
-	if ( (!isset($conf['vjs_skin'])) or (!isset($conf['vjs_preload']))
-	or (!isset($conf['vjs_controls'])) or (!isset($conf['vjs_autoplay']))
-	or (!isset($conf['vjs_loop'])) or (!isset($conf['vjs_max_width']))
-	or (!isset($conf['vjs_customcss'])) )
+	if ( (!isset($conf['vjs_conf'])) or (!isset($conf['vjs_customcss'])) )
 	{
 		plugin_install();
 	}
