@@ -36,6 +36,13 @@ Basically, medias will be inserted in a same way as standard pictures.
 
 Please refer to the [wiki](https://github.com/xbgmsharp/piwigo-videojs/wiki)
 
+Support
+-----
+
+To get support, please create new [issue](https://github.com/xbgmsharp/piwigo-videojs/issues)
+
+Help me improve the plugin, rate my [plugin](http://piwigo.org/ext/extension_view.php?eid=610), and if possible please send a greeting message to me ;)
+
 Credit
 ------
 
