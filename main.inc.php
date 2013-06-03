@@ -32,21 +32,22 @@ $videojs_extensions = array(
 $conf['file_ext'] = array_merge($conf['file_ext'], $videojs_extensions);
 
 // Hook on to an event to display videos as standard images
-add_event_handler('render_element_content', 'render_media', 40, 2);
+add_event_handler('render_element_content', 'vjs_render_media', 40, 2);
 
 // Hook to display a fallback thumbnail if not defined
-add_event_handler('get_mimetype_location', 'get_mimetype_icon', 60, 2);
+add_event_handler('get_mimetype_location', 'vjs_get_mimetype_icon', 60, 2);
 
 // Hook to a admin config page
-add_event_handler('get_admin_plugin_menu_links', 'videojs_admin_menu' );
+add_event_handler('get_admin_plugin_menu_links', 'vjs_admin_menu');
 
 // Hook to change the picture data to template
-//add_event_handler('picture_pictures_data', 'videojs_pictures_data' );
+//add_event_handler('picture_pictures_data', 'vjs_pictures_data');
 
-// Hook to
-//add_event_handler('format_exif_data', 'videojs_format_exif', EVENT_HANDLER_PRIORITY_NEUTRAL, 3);
+// Hook to sync geotag metadata on upload or sync
+//$conf['use_exif_mapping']['lat'] = 'lat';
+//add_event_handler('format_exif_data', 'vjs_format_exif_data', EVENT_HANDLER_PRIORITY_NEUTRAL, 3);
 
-function videojs_admin_menu($menu)
+function vjs_admin_menu($menu)
 {
 	array_push($menu,
 		array(
@@ -57,7 +58,24 @@ function videojs_admin_menu($menu)
 	return $menu;
 }
 
-function render_media($content, $picture)
+function vjs_format_exif_data($exif, $file, $map)
+{
+	print_r($map);
+	print_r($exif);
+	print_r($file);
+	// Get video infos with getID3 lib
+	require_once(dirname(__FILE__) . '/include/getid3/getid3.php');
+	$getID3 = new getID3;
+	//$fileinfo = $getID3->analyze("././galleries/video/IMG_0718.mp4");
+	$fileinfo = $getID3->analyze("././galleries/video/test_html5.mp4");
+	//print "getID3\n";
+	print_r($fileinfo);
+	// we want [playtime_string],  [video]
+	die();
+	return $exif;
+}
+
+function vjs_render_media($content, $picture)
 {
 	global $template, $picture, $page, $conf, $user, $refresh;
 	//print_r( $picture['current']);
@@ -232,7 +250,7 @@ function render_media($content, $picture)
 	return $vjs_content;
 }
 
-function get_mimetype_icon ($location, $element_info)
+function vjs_get_mimetype_icon ($location, $element_info)
 {
 	$location= 'plugins/'
 		. basename(dirname(__FILE__))
