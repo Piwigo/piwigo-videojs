@@ -24,7 +24,6 @@
 ************************************************/
 
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
-define('VIDEOJS_PATH' , PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)) . '/');
 
 function plugin_install()
 {
@@ -33,24 +32,16 @@ function plugin_install()
 	$toremove = array("skin", "js", "language/es_ES");
 	foreach ($toremove as $dir)
 	{
-		if (is_dir(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs/'.$dir))
+		if (is_dir(VIDEOJS_PATH.$dir))
 		{
-			deltree(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs/'.$dir);
+			deltree(VIDEOJS_PATH.$dir);
 		}
 	}
 	$toremove = array("language/index.htm", "language/fr_FR/index.htm", "language/en_UK/index.htm");
 	foreach ($toremove as $file)
 	{
-		@unlink(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs/'.$file);
+		@unlink(VIDEOJS_PATH.$file);
 	}
-
-	// It is a left over from v0.1 and v0.2 - TO REMOVE in 0.7
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param = "videojs_skin";';
-	pwg_query( $q );
-
-	// Clean up any previous entry from 0.4 to 0.5 - TO REMOVE in 0.7
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%" LIMIT 7;';
-	pwg_query( $q );
 
 	$default_config = array(
 		'skin'		=> 'vjs-default-skin',
@@ -75,9 +66,9 @@ function plugin_install()
 
 function plugin_uninstall()
 {
-	if (is_dir(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs'))
+	if (is_dir(VIDEOJS_PATH))
 	{
-		deltree(PHPWG_ROOT_PATH.PWG_LOCAL_DIR.'piwigo-videojs');
+		deltree(VIDEOJS_PATH);
 	}
 	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%" LIMIT 2;';
 	pwg_query( $q );
