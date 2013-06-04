@@ -36,69 +36,30 @@ load_language('plugin.lang', VIDEOJS_PATH);
 // Fetch the template.
 global $template, $conf, $lang;
 
-// Load parameter
-$customcss = $conf['vjs_customcss'] ? $conf['vjs_customcss'] : '';
+include_once(PHPWG_ROOT_PATH.'admin/include/tabsheet.class.php');
 
-// Available skins
-$available_skins = array(
-	'vjs-default-skin' => 'default',
-	'vjs-darkfunk-skin' => 'darkfunk',
-	'vjs-redsheen-skin' => 'redsheen',
-);
+// Add the template to the global template
+$template->set_filename('plugin_admin_content', dirname(__FILE__).'/admin.tpl');
 
-// Available preload value
-$available_preload = array(
-	'auto' => 'Auto',
-	'none' => 'None',
-);
+if (!isset($_GET['tab']))
+  $page['tab'] = 'config';
+else
+  $page['tab'] = $_GET['tab'];
 
-// Available width value
-$available_width = array(
-	'480' => 'EDTV: (720x480) ie: 480p',
-	'720' => 'HDReady: (1280x720) ie: 720p',
-	'1080' => 'FullHD: (1920x1080) ie: 1080p',
-);
+$my_base_url = get_admin_plugin_menu_link(__FILE__);
 
-// Update conf if submitted in admin site
-if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
-{
-	// keep the value in the admin form
-	$conf['vjs_conf'] = array(
-		'skin'          => $_POST['vjs_skin'],
-		'max_width'     => $_POST['vjs_max_width'],
-		'preload'       => $_POST['vjs_preload'],
-		'controls'      => get_boolean($_POST['vjs_controls']),
-		'autoplay'      => get_boolean($_POST['vjs_autoplay']),
-		'loop'          => get_boolean($_POST['vjs_loop']),
-	);
-	$customcss = $_POST['vjs_customcss'];
+$tabsheet = new tabsheet();
+$tabsheet->add( 'config', l10n('Configuration'), add_url_params( $my_base_url, array('tab'=>'config') ) );
+$tabsheet->add( 'sync', l10n('Synchronize'), add_url_params( $my_base_url, array('tab'=>'sync') ) );
+$tabsheet->select($page['tab']);
 
-	// Update config to DB
-	conf_update_param('vjs_conf', serialize($conf['vjs_conf']));
-	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_customcss'] ."' WHERE param='vjs_customcss'";
-	pwg_query($query);
+$tabsheet->assign();
 
-	array_push($page['infos'], l10n('Your configuration settings are saved'));
-}
-
-// send value to template
-$template->assign($conf['vjs_conf']);
-$template->assign(
-	array(
-		'AVAILABLE_SKINS'	=> $available_skins,
-		'AVAILABLE_PRELOAD'	=> $available_preload,
-		'AVAILABLE_WIDTH'	=> $available_width,
-		'CUSTOM_CSS'		=> htmlspecialchars($customcss),
-	)
-);
-
-// Add our template to the global template
-$template->set_filenames(
-	array(
-		'plugin_admin_content' => dirname(__FILE__).'/admin.tpl'
-	)
-);
-
+$my_base_url = $tabsheet->sheets[ $page['tab'] ]['url'];
+$template->set_filename( 'tab_data', dirname(__FILE__).'/admin_'.$page['tab'].'.tpl' );
+include_once( dirname(__FILE__).'/admin_'.$page['tab'].'.php');
+$template->assign_var_from_handle( 'TAB_DATA', 'tab_data');
 // Assign the template contents to ADMIN_CONTENT
 $template->assign_var_from_handle('ADMIN_CONTENT', 'plugin_admin_content');
+
 ?>
