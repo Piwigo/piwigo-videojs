@@ -44,7 +44,6 @@ add_event_handler('get_admin_plugin_menu_links', 'vjs_admin_menu');
 //add_event_handler('picture_pictures_data', 'vjs_pictures_data');
 
 // Hook to sync geotag metadata on upload or sync
-//$conf['use_exif_mapping']['lat'] = 'lat';
 //add_event_handler('format_exif_data', 'vjs_format_exif_data', EVENT_HANDLER_PRIORITY_NEUTRAL, 3);
 
 function vjs_admin_menu($menu)
@@ -52,7 +51,7 @@ function vjs_admin_menu($menu)
 	array_push($menu,
 		array(
 			'NAME' => 'VideoJS',
-			'URL'  => get_admin_plugin_menu_link(dirname(__FILE__).'/admin.php')
+			'URL'  => get_admin_plugin_menu_link(dirname(__FILE__).'/admin/admin.php')
 		)
 	);
 	return $menu;
@@ -60,19 +59,7 @@ function vjs_admin_menu($menu)
 
 function vjs_format_exif_data($exif, $file, $map)
 {
-	print_r($map);
-	print_r($exif);
-	print_r($file);
-	// Get video infos with getID3 lib
-	require_once(dirname(__FILE__) . '/include/getid3/getid3.php');
-	$getID3 = new getID3;
-	//$fileinfo = $getID3->analyze("././galleries/video/IMG_0718.mp4");
-	$fileinfo = $getID3->analyze("././galleries/video/test_html5.mp4");
-	//print "getID3\n";
-	print_r($fileinfo);
-	// we want [playtime_string],  [video]
-	die();
-	return $exif;
+
 }
 
 function vjs_render_media($content, $picture)
