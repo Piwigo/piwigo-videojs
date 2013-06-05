@@ -80,7 +80,10 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     $thumbs = 0;
     $errors = array();
     $infos = array();
-    
+
+    // Get video infos with getID3 lib
+    require_once(dirname(__FILE__) . '/../include/getid3/getid3.php');
+    $getID3 = new getID3;
     // Do the job
     $result = pwg_query($query);
     while ($row = pwg_db_fetch_assoc($result))
@@ -91,9 +94,6 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
         {
             $videos++;
             //echo $filename;
-            // Get video infos with getID3 lib
-            require_once(dirname(__FILE__) . '/include/getid3/getid3.php');
-            $getID3 = new getID3;
             $fileinfo = $getID3->analyze($filename);
             //print_r($fileinfo);
             $exif = array();
