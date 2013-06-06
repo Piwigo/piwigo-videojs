@@ -27,27 +27,37 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
+// Check the presence of the DB schema
+$gpsdata = true;
+$q = 'SELECT COUNT(*) as nb FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = "'.IMAGES_TABLE.'" AND COLUMN_NAME = "lat" OR COLUMN_NAME = "lon"';
+$result = pwg_db_fetch_array( pwg_query($q) );
+if($result['nb'] != 2)
+{
+    $gpsdata = false;
+}
+
 // Geneate default value
 $sync_options = array(
-    'metadata' => true,
-    'thumb' => true,
-    'thumbsec' => 1,
-    'simulate' => true,
-    'cat_id' => 0,
-    'subcats_included' => true,
-
+    'metadata'          => true,
+    'thumb'             => true,
+    'thumbsec'          => 1,
+    'simulate'          => true,
+    'cat_id'            => 0,
+    'subcats_included'  => true,
+    'sync_gps'          => $gpsdata,
 );
 
 if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
 {
     // Override default value from the form
     $sync_options = array(
-        'metadata' => isset($_POST['metadata']),
-        'thumb' => isset($_POST['thumb']),
-        'thumbsec' => isset($_POST['thumbsec']),
-        'simulate' => isset($_POST['simulate']),
-        'cat_id' => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
-        'subcats_included' => isset($_POST['subcats_included']),
+        'metadata'          => isset($_POST['metadata']),
+        'thumb'             => isset($_POST['thumb']),
+        'thumbsec'          => isset($_POST['thumbsec']),
+        'simulate'          => isset($_POST['simulate']),
+        'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
+        'subcats_included'  => isset($_POST['subcats_included']),
+        'sync_gps'          => $gpsdata,
     );
 
     if ( $sync_options['cat_id'] != 0 )
@@ -81,6 +91,11 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     $errors = array();
     $infos = array();
 
+    if (!$sync_options['sync_gps'])
+    {
+        $errors[] = "latitude and longitude disable because the require plugin is not present";
+    }
+
     // Get video infos with getID3 lib
     require_once(dirname(__FILE__) . '/../include/getid3/getid3.php');
     $getID3 = new getID3;
@@ -109,11 +124,11 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
             {
                     $exif['height'] = $fileinfo['video']['resolution_y'];
             }
-            if (isset($fileinfo['tags']['quicktime']['gps_latitude'][0]))
+            if (isset($fileinfo['tags']['quicktime']['gps_latitude'][0]) and $sync_options['sync_gps'])
             {
                     $exif['lat'] = $fileinfo['tags']['quicktime']['gps_latitude'][0];
             }
-            if (isset($fileinfo['tags']['quicktime']['gps_longitude'][0]))
+            if (isset($fileinfo['tags']['quicktime']['gps_longitude'][0]) and $sync_options['sync_gps'])
             {
                     $exif['lon'] = $fileinfo['tags']['quicktime']['gps_longitude'][0];
             }
@@ -165,9 +180,12 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
             }
         }
     }
+
+    // Send sync result to template
     $template->assign('sync_errors', $errors );
     $template->assign('sync_infos', $infos );
 
+    // Send result to templates
     $template->assign(
         'update_result',
         array(
@@ -178,38 +196,54 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     ));
 }
 
+// All videos with supported extensions
+$SQL_VIDEOS = "(`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')";
+
 // All videos with supported extensions by VideoJS
-$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv'";
+$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE ".$SQL_VIDEOS.";";
 list($nb_videos) = pwg_db_fetch_array( pwg_query($query) );
 
-// All videos with GPS data
-$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `lat` IS NOT NULL and `lon` IS NOT NULL AND (`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')";
-list($nb_videos_geotagged) = pwg_db_fetch_array( pwg_query($query) );
+// All videos with supported extensions by VideoJS and thumb
+$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NOT NULL AND ".$SQL_VIDEOS.";";
+list($nb_videos_thumb) = pwg_db_fetch_array( pwg_query($query) );
+
+// All videos with supported extensions by VideoJS and with GPS data
+if ($sync_options['sync_gps'])
+{
+    $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `lat` IS NOT NULL and `lon` IS NOT NULL AND ".$SQL_VIDEOS.";";
+    list($nb_videos_geotagged) = pwg_db_fetch_array( pwg_query($query) );
+}
+else
+{
+    $nb_videos_geotagged = 0;
+}
 
 $query = 'SELECT id, CONCAT(name, IF(dir IS NULL, " (V)", "") ) AS name, uppercats, global_rank  FROM '.CATEGORIES_TABLE;
 display_select_cat_wrapper($query,
                            array( $sync_options['cat_id'] ),
                            'categories',
                            false);
+
+// Send value to templates
 $template->assign(
         array(
             'SUBCATS_INCLUDED_CHECKED' => $sync_options['subcats_included'] ? 'checked="checked"' : '',
             'NB_VIDEOS' => $nb_videos,
             'NB_VIDEOS_GEOTAGGED' => $nb_videos_geotagged,
+            'NB_VIDEOS_THUMB'   => $nb_videos_thumb,
         )
-    );
+);
 
-    
 function vjs_dbSet($fields, $data = array())
 {
     if (!$data) $data = &$_POST;
     $set='';
     foreach ($fields as $field)
     {
-            if (isset($data[$field]))
-            {
-                    $set.="`$field`='".mysql_real_escape_string($data[$field])."', ";
-            }
+        if (isset($data[$field]))
+        {
+            $set.="`$field`='".mysql_real_escape_string($data[$field])."', ";
+        }
     }
     return substr($set, 0, -2);
 }

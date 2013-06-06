@@ -1,40 +1,61 @@
+{html_head}
+<style>
+  {literal}
+    .vjs_layout {
+      text-align: left;
+      border: 2px solid rgb(221, 221, 221);
+      padding: 1em;
+      margin: 1em;
+    }
+  {/literal}
+</style>
+{/html_head}
 
-Synchronization of metadata information in the database only for videos.<br/>
-<strong>It required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">'OpenStreetMap'</a> or 'RV Maps & Earth' plugin.</strong>
+Synchronization of metadata information and thumbnail creation for videos.
 <br/><br/>
 Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blanck">plugin documentation</a> for additional information.
-<br/><br/>
-You have {$NB_VIDEOS_GEOTAGGED} geotagged videos out of {$NB_VIDEOS} videos.<br/>
+
+<div class="vjs_layout">
+  <legend>Statistics</legend>
+  <ul>
+    <li class="update_summary_new">{$NB_VIDEOS} videos in your gallery</li>
+    <li class="update_summary_new">{$NB_VIDEOS_GEOTAGGED} geotagged videos</li>
+    <li class="update_summary_new">{$NB_VIDEOS_THUMB} videos with poster and thumbnail</li>
+  </ul>
+</div>
 
 {if isset($update_result)}
-<h3>{$L_RESULT_UPDATE}</h3>
-<ul>
-  <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'video(s) in database'|@translate}</li>
-  <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'video(s) with metadata synchronized to the database'|@translate}</li>
-  <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'thumbnail(s) created'|@translate}</li>
-  <li class="update_summary_err">{$update_result.NB_ERRORS} {'errors during synchronization'|@translate}</li>
-</ul>
-{/if}
+<div class="vjs_layout">
+  <legend>Synchronization results</legend>
+  <ul>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'video(s) in database'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'video(s) with metadata synchronized to the database'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'thumbnail(s) created'|@translate}</li>
+    <li class="update_summary_err">{$update_result.NB_ERRORS} {'errors during synchronization'|@translate}</li>
+  </ul>
 
 {if not empty($sync_errors)}
-<h3>{'Error list'|@translate}</h3>
-<div class="errors">
-<ul>
-  {foreach from=$sync_errors item=error}
-  <li>{$error}</li>
-  {/foreach}
-</ul>
-</div>
+  <h3>{'Error list'|@translate}</h3>
+  <div class="errors">
+    <ul>
+      {foreach from=$sync_errors item=error}
+      <li>{$error}</li>
+      {/foreach}
+    </ul>
+  </div>
 {/if}
 
 {if not empty($sync_infos)}
-<h3>{'Detailed informations'|@translate}</h3>
-<div class="infos">
-<ul>
-  {foreach from=$sync_infos item=info}
-  <li>{$info}</li>
-  {/foreach}
-</ul>
+  <h3>{'Detailed informations'|@translate}</h3>
+  <div class="infos">
+    <ul>
+      {foreach from=$sync_infos item=info}
+      <li>{$info}</li>
+      {/foreach}
+    </ul>
+  </div>
+{/if}
+
 </div>
 {/if}
 
@@ -46,6 +67,7 @@ You have {$NB_VIDEOS_GEOTAGGED} geotagged videos out of {$NB_VIDEOS} videos.<br/
       <li>
 	<label><input type="checkbox" name="metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video</small>
+	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">'OpenStreetMap'</a> or 'RV Maps & Earth' plugin.</strong></small>
       </li>
     </ul>
   </fieldset>
