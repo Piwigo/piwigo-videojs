@@ -28,8 +28,8 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
 <div class="vjs_layout">
   <legend>Synchronization results</legend>
   <ul>
-    <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'video(s) in database'|@translate}</li>
-    <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'video(s) with metadata synchronized to the database'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'video(s) in your gallery'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'video(s) with metadata'|@translate}</li>
     <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'thumbnail(s) created'|@translate}</li>
     <li class="update_summary_err">{$update_result.NB_ERRORS} {'errors during synchronization'|@translate}</li>
   </ul>

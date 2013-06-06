@@ -95,6 +95,10 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     {
         $errors[] = "latitude and longitude disable because the require plugin is not present";
     }
+    if (!$sync_options['metadata'] and !$sync_options['thumb'])
+    {
+        $errors[] = "You ask me to do nothing, are you sure?";
+    }
 
     // Get video infos with getID3 lib
     require_once(dirname(__FILE__) . '/../include/getid3/getid3.php');
@@ -149,7 +153,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
                     $exif['DateTimeOriginal'] = substr($fileinfo['tags']['quicktime']['creation_date'][0], 1);
             }
             //print_r($exif);
-            if (isset($exif))
+            if (isset($exif) and $sync_options['metadata'])
             {
                 $datas++;
                 $infos[] = $filename. ' metadata: '.implode(",", array_keys($exif));
@@ -165,7 +169,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
             $output_dir = dirname($row['path']) . '/pwg_representative/';
             $in = $filename;
             $out = $output_dir.$file_wo_ext['filename'].'.jpg';
-            if (is_dir($output_dir))
+            if (is_dir($output_dir) and $sync_options['thumb'])
             {
                 $thumbs++;
                 $infos[] = $filename. ' thumbnail : '.$out;
