@@ -16,11 +16,11 @@ Synchronization of metadata information and thumbnail creation for videos.
 Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blanck">plugin documentation</a> for additional information.
 
 <div class="vjs_layout">
-  <legend>Statistics</legend>
+  <legend>{'Statistics'|@translate}</legend>
   <ul>
-    <li class="update_summary_new">{$NB_VIDEOS} videos in your gallery</li>
-    <li class="update_summary_new">{$NB_VIDEOS_GEOTAGGED} geotagged videos</li>
-    <li class="update_summary_new">{$NB_VIDEOS_THUMB} videos with poster and thumbnail</li>
+    <li class="update_summary_new">{$NB_VIDEOS} {'videos in your gallery'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_GEOTAGGED} {'geotagged videos'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster and thumbnail'|@translate}</li>
   </ul>
 </div>
 
@@ -29,7 +29,7 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
   <legend>Synchronization results</legend>
   <ul>
     <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'video(s) in your gallery'|@translate}</li>
-    <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'video(s) with metadata'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'video(s) with metadata added'|@translate}</li>
     <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'thumbnail(s) created'|@translate}</li>
     <li class="update_summary_err">{$update_result.NB_ERRORS} {'errors during synchronization'|@translate}</li>
   </ul>
