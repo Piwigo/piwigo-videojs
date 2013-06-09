@@ -53,7 +53,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     $sync_options = array(
         'metadata'          => isset($_POST['metadata']),
         'thumb'             => isset($_POST['thumb']),
-        'thumbsec'          => isset($_POST['thumbsec']),
+        'thumbsec'          => $_POST['thumbsec'],
         'simulate'          => isset($_POST['simulate']),
         'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
         'subcats_included'  => isset($_POST['subcats_included']),
@@ -93,7 +93,12 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
 
     if (!$sync_options['sync_gps'])
     {
-        $errors[] = "latitude and longitude disable because the require plugin is not present";
+        $errors[] = "latitude and longitude disable because the require plugin is not present, eg: 'OpenStreetMap'.";
+    }
+    if (!is_file("/usr/bin/ffmpeg") and $sync_options['thumb'])
+    {
+	$errors[] = "Thumbnail creation disable because ffmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
+	$sync_options['thumb'] = false;
     }
     if (!$sync_options['metadata'] and !$sync_options['thumb'])
     {
@@ -169,18 +174,28 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
             $output_dir = dirname($row['path']) . '/pwg_representative/';
             $in = $filename;
             $out = $output_dir.$file_wo_ext['filename'].'.jpg';
-            if (is_dir($output_dir) and $sync_options['thumb'])
+            if ($sync_options['thumb'])
             {
                 $thumbs++;
-                $infos[] = $filename. ' thumbnail : '.$out;
+		$infos[] = $filename. ' thumbnail : '.$out;
+
+		if (!is_dir($output_dir) or !is_writable($output_dir))
+		{
+			$errors[] = "Directory ".$output_dir." doesn't exist or wrong permission";
+		}
                 if ($sync_options['thumb'] and !$sync_options['simulate'])
                 {
-                    $ffmepg = "/usr/bin/ffmpeg -itsoffset -".$sync_options['thumbsec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo ".$out;
-                    $log = system($ffmepg, $retval);
-                    //$infos[] = $filename. ' thumbnail : '. $retval. " ". print_r($log, True);
+                    $ffmpeg = "/usr/bin/ffmpeg -itsoffset -".$sync_options['thumbsec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$out;
+		    //echo $ffmpeg;
+                    $log = system($ffmpeg, $retval);
+                    /*$infos[] = $filename. ' thumbnail : '. $retval. " ". print_r($log, True);
+		    if($retval != 0)
+		    {
+			$errors[] = "Error running ffmpeg, try it manually";
+		    }*/
                     $query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='jpg' WHERE `id`=".$row['id'].";";
                     pwg_query($query);
-                }
+		}
             }
         }
     }
@@ -246,7 +261,8 @@ function vjs_dbSet($fields, $data = array())
     {
         if (isset($data[$field]))
         {
-            $set.="`$field`='".mysql_real_escape_string($data[$field])."', ";
+            //$set.="`$field`='".mysql_real_escape_string($data[$field])."', ";
+            $set.="`$field`='".$data[$field]."', ";
         }
     }
     return substr($set, 0, -2);
