@@ -1,3 +1,9 @@
+Changes from v0.7 to v0.8
+- Add video metadata synchronization
+- Add video thumbnail creation
+- Update getid3 library to version 1.9.5-20130220
+- Improve documentaion
+
 Changes from v0.6 to v0.7
 - Improve options handling
 - Improve translation
