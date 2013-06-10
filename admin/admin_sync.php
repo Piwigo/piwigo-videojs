@@ -27,15 +27,6 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-// Check the presence of the DB schema
-$gpsdata = true;
-$q = 'SELECT COUNT(*) as nb FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = "'.IMAGES_TABLE.'" AND COLUMN_NAME = "lat" OR COLUMN_NAME = "lon"';
-$result = pwg_db_fetch_array( pwg_query($q) );
-if($result['nb'] != 2)
-{
-    $gpsdata = false;
-}
-
 // Geneate default value
 $sync_options = array(
     'metadata'          => true,
@@ -44,7 +35,7 @@ $sync_options = array(
     'simulate'          => true,
     'cat_id'            => 0,
     'subcats_included'  => true,
-    'sync_gps'          => $gpsdata,
+    'sync_gps'          => true,
 );
 
 if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
@@ -57,7 +48,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
         'simulate'          => isset($_POST['simulate']),
         'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
         'subcats_included'  => isset($_POST['subcats_included']),
-        'sync_gps'          => $gpsdata,
+        'sync_gps'          => true,
     );
 
     if ( $sync_options['cat_id'] != 0 )
@@ -84,121 +75,8 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
             WHERE `file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv' GROUP BY id";
     }
 
-    // Init value for result table
-    $videos = hash_from_query( $query, 'id');
-    $datas = 0;
-    $thumbs = 0;
-    $errors = array();
-    $infos = array();
-
-    if (!$sync_options['sync_gps'])
-    {
-        $errors[] = "latitude and longitude disable because the require plugin is not present, eg: 'OpenStreetMap'.";
-    }
-    if (!is_file("/usr/bin/ffmpeg") and $sync_options['thumb'])
-    {
-	$errors[] = "Thumbnail creation disable because ffmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
-	$sync_options['thumb'] = false;
-    }
-    if (!$sync_options['metadata'] and !$sync_options['thumb'])
-    {
-        $errors[] = "You ask me to do nothing, are you sure?";
-    }
-
-    // Get video infos with getID3 lib
-    require_once(dirname(__FILE__) . '/../include/getid3/getid3.php');
-    $getID3 = new getID3;
-    // Do the job
-    $result = pwg_query($query);
-    while ($row = pwg_db_fetch_assoc($result))
-    {
-        //print_r($row);
-        $filename = $row['path'];
-        if (is_file($filename))
-        {
-            $videos++;
-            //echo $filename;
-            $fileinfo = $getID3->analyze($filename);
-            //print_r($fileinfo);
-            $exif = array();
-            if (isset($fileinfo['filesize']))
-            {
-                    $exif['filesize'] = $fileinfo['filesize'];
-            }
-            if (isset($fileinfo['video']['resolution_x']))
-            {
-                    $exif['width'] = $fileinfo['video']['resolution_x'];
-            }
-            if (isset($fileinfo['video']['resolution_y']))
-            {
-                    $exif['height'] = $fileinfo['video']['resolution_y'];
-            }
-            if (isset($fileinfo['tags']['quicktime']['gps_latitude'][0]) and $sync_options['sync_gps'])
-            {
-                    $exif['lat'] = $fileinfo['tags']['quicktime']['gps_latitude'][0];
-            }
-            if (isset($fileinfo['tags']['quicktime']['gps_longitude'][0]) and $sync_options['sync_gps'])
-            {
-                    $exif['lon'] = $fileinfo['tags']['quicktime']['gps_longitude'][0];
-            }
-            if (isset($fileinfo['tags']['quicktime']['model'][0]))
-            {
-                    $exif['Model'] = substr($fileinfo['tags']['quicktime']['model'][0], 2);
-            }
-            if (isset($fileinfo['tags']['quicktime']['software'][0]))
-            {
-                    $exif['Model'] .= " ". substr($fileinfo['tags']['quicktime']['software'][0], 2);
-            }
-            if (isset($fileinfo['tags']['quicktime']['make'][0]))
-            {
-                    $exif['Make'] = $fileinfo['tags']['quicktime']['make'][0];
-            }
-            if (isset($fileinfo['tags']['quicktime']['creation_date'][0]))
-            {
-                    $exif['DateTimeOriginal'] = substr($fileinfo['tags']['quicktime']['creation_date'][0], 1);
-            }
-            //print_r($exif);
-            if (isset($exif) and $sync_options['metadata'])
-            {
-                $datas++;
-                $infos[] = $filename. ' metadata: '.implode(",", array_keys($exif));
-                if ($sync_options['metadata'] and !$sync_options['simulate'])
-                {
-                    $dbfields = explode(",", "filesize,width,height,lat,lon");
-                    $query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
-                    pwg_query($query);
-                }
-            }
-
-            $file_wo_ext = pathinfo($row['file']);
-            $output_dir = dirname($row['path']) . '/pwg_representative/';
-            $in = $filename;
-            $out = $output_dir.$file_wo_ext['filename'].'.jpg';
-            if ($sync_options['thumb'])
-            {
-                $thumbs++;
-		$infos[] = $filename. ' thumbnail : '.$out;
-
-		if (!is_dir($output_dir) or !is_writable($output_dir))
-		{
-			$errors[] = "Directory ".$output_dir." doesn't exist or wrong permission";
-		}
-                if ($sync_options['thumb'] and !$sync_options['simulate'])
-                {
-                    $ffmpeg = "/usr/bin/ffmpeg -itsoffset -".$sync_options['thumbsec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$out;
-		    //echo $ffmpeg;
-                    $log = system($ffmpeg, $retval);
-                    /*$infos[] = $filename. ' thumbnail : '. $retval. " ". print_r($log, True);
-		    if($retval != 0)
-		    {
-			$errors[] = "Error running ffmpeg, try it manually";
-		    }*/
-                    $query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='jpg' WHERE `id`=".$row['id'].";";
-                    pwg_query($query);
-		}
-            }
-        }
-    }
+    // Do the work, share with batch manager
+    require_once(dirname(__FILE__).'/../include/function_sync.php');
 
     // Send sync result to template
     $template->assign('sync_errors', $errors );
@@ -209,8 +87,8 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
         'update_result',
         array(
             'NB_ELEMENTS_THUMB' => $thumbs,
-            'NB_ELEMENTS_EXIF' => $datas,
-            'NB_ELEMENTS_CANDIDATES' => count($videos),
+            'NB_ELEMENTS_EXIF' => $metadata,
+            'NB_ELEMENTS_CANDIDATES' => $videos,
             'NB_ERRORS' => count($errors),
     ));
 }
@@ -246,26 +124,11 @@ display_select_cat_wrapper($query,
 // Send value to templates
 $template->assign(
         array(
-            'SUBCATS_INCLUDED_CHECKED' => $sync_options['subcats_included'] ? 'checked="checked"' : '',
-            'NB_VIDEOS' => $nb_videos,
-            'NB_VIDEOS_GEOTAGGED' => $nb_videos_geotagged,
-            'NB_VIDEOS_THUMB'   => $nb_videos_thumb,
+            'SUBCATS_INCLUDED_CHECKED'  => $sync_options['subcats_included'] ? 'checked="checked"' : '',
+            'NB_VIDEOS'                 => $nb_videos,
+            'NB_VIDEOS_GEOTAGGED'       => $nb_videos_geotagged,
+            'NB_VIDEOS_THUMB'           => $nb_videos_thumb,
         )
 );
-
-function vjs_dbSet($fields, $data = array())
-{
-    if (!$data) $data = &$_POST;
-    $set='';
-    foreach ($fields as $field)
-    {
-        if (isset($data[$field]))
-        {
-            //$set.="`$field`='".mysql_real_escape_string($data[$field])."', ";
-            $set.="`$field`='".$data[$field]."', ";
-        }
-    }
-    return substr($set, 0, -2);
-}
 
 ?>

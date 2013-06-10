@@ -37,24 +37,15 @@ add_event_handler('render_element_content', 'vjs_render_media', 40, 2);
 // Hook to display a fallback thumbnail if not defined
 add_event_handler('get_mimetype_location', 'vjs_get_mimetype_icon', 60, 2);
 
-// Hook to a admin config page
-add_event_handler('get_admin_plugin_menu_links', 'vjs_admin_menu');
-
 // Hook to change the picture data to template
 //add_event_handler('picture_pictures_data', 'vjs_pictures_data');
 
 // Hook to sync geotag metadata on upload or sync
 //add_event_handler('format_exif_data', 'vjs_format_exif_data', EVENT_HANDLER_PRIORITY_NEUTRAL, 3);
 
-function vjs_admin_menu($menu)
-{
-	array_push($menu,
-		array(
-			'NAME' => 'VideoJS',
-			'URL'  => get_admin_plugin_menu_link(dirname(__FILE__).'/admin/admin.php')
-		)
-	);
-	return $menu;
+// If admin do the init
+if (defined('IN_ADMIN')) {
+	include_once(VIDEOJS_PATH.'/admin/admin_boot.php');
 }
 
 function vjs_format_exif_data($exif, $file, $map)

@@ -69,6 +69,9 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_customcss'] ."' WHERE param='vjs_customcss'";
 	pwg_query($query);
 
+	// the prefilter changes, we must delete compiled templatess
+	$template->delete_compiled_templates();
+
 	array_push($page['infos'], l10n('Your configuration settings are saved'));
 }
 

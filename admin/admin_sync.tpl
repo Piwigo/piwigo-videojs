@@ -66,7 +66,7 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
     <ul>
       <li>
 	<label><input type="checkbox" name="metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
-	<br/><small>Will overwrite the information in the database with the metadata from the video</small>
+	<br/><small>{'SYNCMETADATA_DESC'|@translate}</small>
 	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">'OpenStreetMap'</a> or 'RV Maps & Earth' plugin.</strong></small>
       </li>
     </ul>
@@ -77,10 +77,9 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
     <ul>
       <li>
 	<label><input type="checkbox" name="thumb" value="1" checked="checked" /> Create thumbnail at position in second:</label>
-	<!-- <input type="range" name="thumbsec" value="1" min="0" max="60" step="1"/> -->
+	<!-- <input type="range" name="thumbsec" value="4" min="0" max="60" step="1"/> -->
 	<input type="text" name="thumbsec" value="4" size="2" required/>
-	<br/><small>Create a thumbnail from the video at specify position</small>
-	<br/><small>Will overwrite any existing poster</small>
+	<br/><small>{'SYNCTHUMB_DESC'|@translate}</small>
       </li>
     </ul>
   </fieldset>
