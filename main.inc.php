@@ -250,4 +250,19 @@ function getposterfile($file_list)
 	return '';
 }
 
+function vjs_dbSet($fields, $data = array())
+{
+    if (!$data) $data = &$_POST;
+    $set='';
+    foreach ($fields as $field)
+    {
+        if (isset($data[$field]))
+        {
+            //$set.="`$field`='".mysql_real_escape_string($data[$field])."', ";
+            $set.="`$field`='".mysql_real_escape_string($data[$field])."', ";
+        }
+    }
+    return substr($set, 0, -2);
+}
+
 ?>

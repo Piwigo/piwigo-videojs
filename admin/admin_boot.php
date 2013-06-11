@@ -55,15 +55,15 @@ function vjs_perform_batch_manager_prefilters($filter_sets, $prefilter)
 	$SQL_VIDEOS = "(`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')";
 
 	if ($prefilter==="videojs0")
-		$query = "";
+		$filter = "";
 	else if ($prefilter==="videojs1")
-		$query = "AND `representative_ext` IS NOT NULL";
+		$filter = "AND `representative_ext` IS NOT NULL";
 	else if ($prefilter==="videojs2")
-		$query = "AND `representative_ext` IS NULL";
+		$filter = "AND `representative_ext` IS NULL";
 
-	if ( isset($query) )
+	if ( isset($filter) )
 	{
-		$query = "SELECT id FROM ".IMAGES_TABLE." WHERE ".$SQL_VIDEOS." ".$query;
+		$query = "SELECT id FROM ".IMAGES_TABLE." WHERE ".$SQL_VIDEOS." ".$filter;
 		$filter_sets[] = array_from_query($query, 'id');
 	}
 	return $filter_sets;
@@ -100,7 +100,7 @@ function vjs_element_set_global_action($action, $collection)
 		return;
 
 	global $page;
-	
+
 	$query = "SELECT `id`, `file`, `path`
 			FROM ".IMAGES_TABLE."
 			WHERE (`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')
@@ -108,11 +108,11 @@ function vjs_element_set_global_action($action, $collection)
 
 	// Override default value from the form
 	$sync_options = array(
-		'metadata'          => isset($_POST['metadata']),
-		'thumb'             => isset($_POST['thumb']),
-		'thumbsec'          => $_POST['thumbsec'],
-		'simulate'          => false,
-		'sync_gps'          => true,
+		'metadata' 	=> isset($_POST['metadata']),
+		'thumb' 	=> isset($_POST['thumb']),
+		'thumbsec' 	=> $_POST['thumbsec'],
+		'simulate' 	=> false,
+		'sync_gps' 	=> true,
 	);
 
 	// Do the work, share with batch manager
@@ -130,27 +130,30 @@ function vjs_loc_begin_element_set_unit()
 	
 	if (!isset($_POST['submit']))
 	      return;
-	
+
 	$collection = explode(',', $_POST['element_ids']);
-  	$query = "SELECT `id`, `file`, `path`
-			FROM ".IMAGES_TABLE."
-			WHERE (`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')
-			AND id IN (".implode(',',$collection).")";
+	foreach ($collection as $id)
+	{
+		// Override default value from the form
+		$sync_options = array(
+			'metadata'	=> isset($_POST['metadata-'.$id]),
+			'thumb'		=> isset($_POST['thumb-'.$id]),
+			'thumbsec'	=> $_POST['thumbsec-'.$id],
+			'simulate'	=> false,
+			'sync_gps'	=> true,
+		);
 
-	// Override default value from the form
-	$sync_options = array(
-		'metadata'          => isset($_POST['metadata']),
-		'thumb'             => isset($_POST['thumb']),
-		'thumbsec'          => $_POST['thumbsec'],
-		'simulate'          => false,
-		'sync_gps'          => true,
-	);
+		$query = "SELECT `id`, `file`, `path`
+				FROM ".IMAGES_TABLE."
+				WHERE (`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')
+				AND `id`='".$id."';";
 
-	// Do the work, share with batch manager
-	require_once(dirname(__FILE__).'/../include/function_sync.php');
+		// Do the work, share with batch manager
+		include(dirname(__FILE__).'/../include/function_sync.php');
 
-	$page['errors'] = $errors;
-	$page['infos'] = $infos;
+		$page['errors'] = array_merge($page['errors'], $errors);
+		$page['infos'] = array_merge($page['infos'], $infos);
+	}
 }
 
 // Hoook for batch manager in single mode
@@ -169,13 +172,13 @@ function vjs_prefilter_batch_manager_unit($content)
 	{
 		$add = '<tr><td><strong>{\'VideoJS\'|@translate}</strong></td>
 		  <td>
-		    <label><input type="checkbox" name="metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
+		    <label><input type="checkbox" name="metadata-{$element.id}" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
 		    <br/><small>Will overwrite the information in the database with the metadata from the video.</small>
 		    <br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
 		    <br/>
-		    <label><input type="checkbox" name="thumb" value="1" checked="checked" /> Create thumbnail at position in second:</label>
+		    <label><input type="checkbox" name="thumb-{$element.id}" value="1" checked="checked" /> Create thumbnail at position in second:</label>
 		    <!-- <input type="range" name="thumbsec" value="4" min="0" max="60" step="1"/> -->
-		    <input type="text" name="thumbsec" value="4" size="2" required/>
+		    <input type="text" name="thumbsec-{$element.id}" value="4" size="2" required/>
 		    <br/><small>Create a thumbnail from the video at specify position, it will overwrite any existing poster.</small>
 		  </td>
 		</tr>';
