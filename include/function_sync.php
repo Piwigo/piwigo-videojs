@@ -152,7 +152,7 @@ while ($row = pwg_db_fetch_assoc($result))
             }
             else if ($sync_options['thumb'] and !$sync_options['simulate'])
             {
-                $ffmpeg = "/usr/bin/ffmpeg -itsoffset -".$sync_options['thumbsec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$out;
+                $ffmpeg = "ffmpeg -itsoffset -".$sync_options['thumbsec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$out;
                 //echo $ffmpeg;
                 $log = system($ffmpeg, $retval);
                 //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);
