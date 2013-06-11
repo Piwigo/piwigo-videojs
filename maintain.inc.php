@@ -66,10 +66,13 @@ function plugin_install()
 
 function plugin_uninstall()
 {
+	/* Delete all files */
+/* Don't remove myself on restore settings
 	if (is_dir(VIDEOJS_PATH))
 	{
 		deltree(VIDEOJS_PATH);
 	}
+*/
 	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%" LIMIT 2;';
 	pwg_query( $q );
 	// TODO : Do we need to purge the videos from the images table?
