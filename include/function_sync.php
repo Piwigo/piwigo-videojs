@@ -55,11 +55,13 @@ if (!$sync_options['sync_gps'])
     $errors[] = "latitude and longitude disable because the require plugin is not present, eg: 'OpenStreetMap'.";
 }
 
+/*
 if (!is_file("/usr/bin/ffmpeg") and $sync_options['thumb'])
 {
     $errors[] = "Thumbnail creation disable because ffmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
     $sync_options['thumb'] = false;
 }
+*/
 
 if (!$sync_options['metadata'] and !$sync_options['thumb'])
 {
