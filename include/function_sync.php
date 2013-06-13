@@ -66,8 +66,11 @@ if (!$sync_options['metadata'] and !$sync_options['thumb'])
     $errors[] = "You ask me to do nothing, are you sure?";
 }
 
-// Get video infos with getID3 lib
-require_once(dirname(__FILE__) . '/../include/getid3/getid3.php');
+// Avoid Conflict with other plugin using getID3
+if( !class_exists('getID3')){
+    // Get video infos with getID3 lib
+    require_once(dirname(__FILE__) . '/../include/getid3/getid3.php');
+}
 $getID3 = new getID3;
 // Do the job
 $result = pwg_query($query);

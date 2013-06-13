@@ -77,8 +77,11 @@ function vjs_render_media($content, $picture)
 	//print "$MAX_WIDTH=" . $MAX_WIDTH;
 	//print_r($user);
 
-	// Get video infos with getID3 lib
-	require_once(dirname(__FILE__) . '/include/getid3/getid3.php');
+	// Avoid Conflict with other plugin using getID3
+	if( !class_exists('getID3')){
+		// Get video infos with getID3 lib
+		require_once(dirname(__FILE__) . '/include/getid3/getid3.php');
+	}
 	$getID3 = new getID3;
 	$fileinfo = $getID3->analyze($picture['current']['path']);
 	//print "getID3\n";
