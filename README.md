@@ -1,18 +1,20 @@
 piwigo-videojs
 ==============
 
-[Videojs](http://videojs.com/) port for piwigo. Play your videos in the HTML5 video tag on your web gallery!
+Extend Piwigo with video support. [Videojs](http://videojs.com/) port for piwigo. Play your videos in the HTML5 video tag on your web gallery!
 
-Piwigo-videojs is a plugin for the [Piwigo](http://piwigo.org/) web gallery that allows you to render various video files within your piwigo install.
+Piwigo-videojs is a [plugin](http://piwigo.org/ext/extension_view.php?eid=610) for the [Piwigo](http://piwigo.org/) web gallery that allows you to render various video files within your piwigo install.
 
 Installation
 ------------
 
 Upload this in ``your-gallery/plugins/`` dir.
 
-* download the archive from github (https://github.com/xbgmsharp/piwigo-videojs/downloads) 
+* download the archive from github
 
-        wget -O piwigo-videojs.tar.gz https://github.com/xbgmsharp/piwigo-videojs/tarball/master
+        wget -O piwigo-videojs.zip https://github.com/xbgmsharp/piwigo-videojs/archive/master.zip
+
+        unzip piwigo-videojs.zip
 
 * or clone the project 
 
@@ -27,14 +29,14 @@ Supported formats
 
 * webm,webmv
 * ogg,ogv
-* mp4,mp4
+* mp4,m4v
 
 Usage
 -----
 
 Basically, medias will be inserted in a same way as standard pictures.
 
-Please refer to the [wiki](https://github.com/xbgmsharp/piwigo-videojs/wiki)
+Please refer to the [wiki](https://github.com/xbgmsharp/piwigo-videojs/wiki) for additional information.
 
 Support
 -----
