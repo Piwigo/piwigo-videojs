@@ -82,7 +82,8 @@ function plugin_activate()
 {
 	global $conf;
 
-	if ( (!isset($conf['vjs_conf'])) or (!isset($conf['vjs_customcss'])) )
+	if ( (!isset($conf['vjs_conf'])) or (!isset($conf['vjs_customcss']))
+	    or (count($conf['vjs_conf']) != 6))
 	{
 		plugin_install();
 	}
