@@ -163,10 +163,25 @@ while ($row = pwg_db_fetch_assoc($result))
                 //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);
                 if($retval != 0)
                 {
-                    $errors[] = "Error running ffmpeg, try it manually\n". $ffmpeg;; 
+                    $errors[] = "Error running ffmpeg, try it manually:\n<br/>". $ffmpeg;
                 }
-                $query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='jpg' WHERE `id`=".$row['id'].";";
-                pwg_query($query);
+		else
+		{
+			$query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='jpg' WHERE `id`=".$row['id'].";";
+	                pwg_query($query);
+			/* Delete any previous square or thumbnail images */
+			$idata = "_data/i/".dirname($row['path']).'/pwg_representative/';
+			$ifile = $idata.$file_wo_ext['filename'].'-th.jpg';
+			if(is_file($ifile))
+			{
+				unlink($ifile);
+			}
+			$ifile = $idata.$file_wo_ext['filename'].'-sq.jpg';
+			if(is_file($ifile))
+			{
+				unlink($ifile);
+			}
+		}
             }
         }
     }
