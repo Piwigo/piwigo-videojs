@@ -1,3 +1,7 @@
+Changes from v0.8 to v0.9
+- Add support for batch manager
+- Improve Thumbnail creation
+
 Changes from v0.7 to v0.8
 - Add video metadata synchronization
 - Add video thumbnail creation

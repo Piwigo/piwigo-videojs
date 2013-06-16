@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: VideoJS
-Version: 0.8
+Version: 0.9
 Description: videojs integration for piwigo
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=610
 Author: xbmgsharp
