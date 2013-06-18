@@ -78,15 +78,21 @@ function vjs_loc_end_element_set_global()
 		array('ID' => 'videojs', 'NAME'=>l10n('Videos'), 'CONTENT' => '
     <ul>
       <li>
-	<label><input type="checkbox" name="metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
+	<label><input type="checkbox" name="vjs_metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
 	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
       </li>
       <li>
-	<label><input type="checkbox" name="thumb" value="1" checked="checked" /> Create thumbnail at position in second:</label>
-	<!-- <input type="range" name="thumbsec" value="4" min="0" max="60" step="1"/> -->
-	<input type="text" name="thumbsec" value="4" size="2" required/>
+	<label><input type="checkbox" name="vjs_thumb" value="1" checked="checked" /> Create thumbnail at position in second:</label>
+	<!-- <input type="range" name="vjs_thumbsec" value="4" min="0" max="60" step="1"/> -->
+	<input type="text" name="vjs_thumbsec" value="4" size="2" required/>
 	<br/><small>Create a thumbnail from the video at specify position, it will overwrite any existing poster.</small>
+      </li>
+      <li>
+	<label><span class="property">Output format : </span></label>
+	<label><input type="radio" name="vjs_thumbouput" value="jpg" checked="checked"/> JPG</label>
+	<label><input type="radio" name="vjs_thumbouput" value="png" /> PNG</label>
+	<br/><small>Select the output format for the thumbnail</small>
       </li>
     </ul>
 '));
@@ -108,9 +114,10 @@ function vjs_element_set_global_action($action, $collection)
 
 	// Override default value from the form
 	$sync_options = array(
-		'metadata' 	=> isset($_POST['metadata']),
-		'thumb' 	=> isset($_POST['thumb']),
-		'thumbsec' 	=> $_POST['thumbsec'],
+		'metadata' 	=> isset($_POST['vjs_metadata']),
+		'thumb' 	=> isset($_POST['vjs_thumb']),
+		'thumbsec' 	=> $_POST['vjs_thumbsec'],
+		'thumbouput'    => $_POST['vjs_thumbouput'],
 		'simulate' 	=> false,
 		'sync_gps' 	=> true,
 	);
@@ -134,11 +141,15 @@ function vjs_loc_begin_element_set_unit()
 	$collection = explode(',', $_POST['element_ids']);
 	foreach ($collection as $id)
 	{
+		if (!isset($_POST['thumbsec-'.$id]))
+			return
+
 		// Override default value from the form
 		$sync_options = array(
-			'metadata'	=> isset($_POST['metadata-'.$id]),
-			'thumb'		=> isset($_POST['thumb-'.$id]),
-			'thumbsec'	=> $_POST['thumbsec-'.$id],
+			'metadata'	=> isset($_POST['vjs_metadata-'.$id]),
+			'thumb'		=> isset($_POST['vjs_thumb-'.$id]),
+			'thumbsec'	=> $_POST['vjs_thumbsec-'.$id],
+			'thumbouput'    => $_POST['vjs_thumbouput-'.$id],
 			'simulate'	=> false,
 			'sync_gps'	=> true,
 		);
@@ -172,14 +183,20 @@ function vjs_prefilter_batch_manager_unit($content)
 	{
 		$add = '<tr><td><strong>{\'VideoJS\'|@translate}</strong></td>
 		  <td>
-		    <label><input type="checkbox" name="metadata-{$element.id}" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
+		    <label><input type="checkbox" name="vjs_metadata-{$element.id}" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
 		    <br/><small>Will overwrite the information in the database with the metadata from the video.</small>
 		    <br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
 		    <br/>
-		    <label><input type="checkbox" name="thumb-{$element.id}" value="1" checked="checked" /> Create thumbnail at position in second:</label>
-		    <!-- <input type="range" name="thumbsec" value="4" min="0" max="60" step="1"/> -->
-		    <input type="text" name="thumbsec-{$element.id}" value="4" size="2" required/>
+		    <label><input type="checkbox" name="vjs_thumb-{$element.id}" value="1" checked="checked" /> Create thumbnail at position in second:</label>
+		    <!-- <input type="range" name="vjs_thumbsec" value="4" min="0" max="60" step="1"/> -->
+		    <input type="text" name="vjs_thumbsec-{$element.id}" value="4" size="2" required/>
 		    <br/><small>Create a thumbnail from the video at specify position, it will overwrite any existing poster.</small>
+		    <br/>
+		    <label><span class="property">Output format : </span></label>
+		    <label><input type="radio" name="vjs_thumbouput" value="jpg" checked="checked"/> JPG</label>
+		    <label><input type="radio" name="vjs_thumbouput" value="png" /> PNG</label>
+		    <br/><small>Select the output format for the thumbnail</small>
+		    <br/>
 		  </td>
 		</tr>';
 		$content = substr_replace($content, $add, $pos, 0);

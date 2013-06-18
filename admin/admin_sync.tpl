@@ -81,6 +81,12 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
 	<input type="text" name="thumbsec" value="4" size="2" required/>
 	<br/><small>Create a thumbnail from the video at specify position, it will overwrite any existing poster.</small>
       </li>
+      <li>
+	<label><span class="property">Output format : </span></label>
+	<label><input type="radio" name="thumbouput" value="jpg" checked="checked"/> JPG</label>
+	<label><input type="radio" name="thumbouput" value="png" /> PNG</label>
+	<br/><small>Select the output format for the thumbnail</small>
+      </li>
     </ul>
   </fieldset>
 

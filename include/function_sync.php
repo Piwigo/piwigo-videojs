@@ -27,7 +27,6 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-
 /***************
  *
  * Start the sync work
@@ -56,10 +55,13 @@ if (!$sync_options['sync_gps'])
 }
 
 /*
-if (!is_file("/usr/bin/ffmpeg") and $sync_options['thumb'])
-{
-    $errors[] = "Thumbnail creation disable because ffmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
-    $sync_options['thumb'] = false;
+if ($sync_options['thumb'])
+    $log = system("ffmpeg -version", $retval);
+    if (($retval != 0) and $sync_options['thumb'])
+    {
+        $errors[] = "Thumbnail creation disable because ffmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
+        $sync_options['thumb'] = false;
+    }
 }
 */
 
@@ -142,22 +144,28 @@ while ($row = pwg_db_fetch_assoc($result))
             }
         }
 
-        $file_wo_ext = pathinfo($row['file']);
-        $output_dir = dirname($row['path']) . '/pwg_representative/';
-        $in = $filename;
-        $out = $output_dir.$file_wo_ext['filename'].'.jpg';
         if ($sync_options['thumb'])
         {
             $thumbs++;
+            /* Init value */
+            $file_wo_ext = pathinfo($row['file']);
+            $output_dir = dirname($row['path']) . '/pwg_representative/';
+            $in = $filename;
+            $out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['thumbouput'];
+            /* report it */
             $infos[] = $filename. ' thumbnail : '.$out;
 
             if (!is_dir($output_dir) or !is_writable($output_dir))
             {
                     $errors[] = "Directory ".$output_dir." doesn't exist or wrong permission";
             }
-            else if ($sync_options['thumb'] and !$sync_options['simulate'])
+            else if ($sync_options['thumbsec'] and !$sync_options['simulate'])
             {
                 $ffmpeg = "ffmpeg -itsoffset -".$sync_options['thumbsec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$out;
+                if ($sync_options['thumbouput'] == "png")
+                {
+                    $ffmpeg = "ffmpeg -itsoffset -".$sync_options['thumbsec']." -i ".$in." -vcodec png -vframes 1 -an -f rawvideo -y ".$out;
+                }
                 //echo $ffmpeg;
                 $log = system($ffmpeg, $retval);
                 //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);
@@ -167,20 +175,21 @@ while ($row = pwg_db_fetch_assoc($result))
                 }
 		else
 		{
-			$query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='jpg' WHERE `id`=".$row['id'].";";
-	                pwg_query($query);
-			/* Delete any previous square or thumbnail images */
-			$idata = "_data/i/".dirname($row['path']).'/pwg_representative/';
-			$ifile = $idata.$file_wo_ext['filename'].'-th.jpg';
-			if(is_file($ifile))
-			{
-				unlink($ifile);
-			}
-			$ifile = $idata.$file_wo_ext['filename'].'-sq.jpg';
-			if(is_file($ifile))
-			{
-				unlink($ifile);
-			}
+                    /* Update DB */
+                    $query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='".$sync_options['thumbouput']."' WHERE `id`=".$row['id'].";";
+                    pwg_query($query);
+
+                    /* Delete any previous square or thumbnail images */
+                    $idata = "_data/i/".dirname($row['path']).'/pwg_representative/';
+                    $extensions = array('-th.jpg', '-sq.jpg', '-th.png', '-sq.png');
+                    foreach ($extensions as $extension)
+                    {
+                        $ifile = $idata.$file_wo_ext['filename'].$extension;
+                        if(is_file($ifile))
+                        {
+                            unlink($ifile);
+                        }
+                    }
 		}
             }
         }
