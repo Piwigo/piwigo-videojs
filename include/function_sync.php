@@ -131,6 +131,7 @@ while ($row = pwg_db_fetch_assoc($result))
         }
         if (isset($fileinfo['tags']['quicktime']['creation_date'][0]))
         {
+                // ?2013-03-25T09:46:54+0900
                 $exif['DateTimeOriginal'] = substr($fileinfo['tags']['quicktime']['creation_date'][0], 1);
         }
         //print_r($exif);
@@ -159,7 +160,7 @@ while ($row = pwg_db_fetch_assoc($result))
 
             if (!is_dir($output_dir) or !is_writable($output_dir))
             {
-                    $errors[] = "Directory ".$output_dir." doesn't exist or wrong permission";
+                $errors[] = "Directory ".$output_dir." doesn't exist or wrong permission";
             }
             else if ($sync_options['thumbsec'] and !$sync_options['simulate'])
             {

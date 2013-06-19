@@ -137,13 +137,13 @@ display_select_cat_wrapper($query,
 
 // Send value to templates
 $template->assign(
-        array(
-            'SUBCATS_INCLUDED_CHECKED'  => $sync_options['subcats_included'] ? 'checked="checked"' : '',
-            'NB_VIDEOS'                 => $nb_videos,
-            'NB_VIDEOS_GEOTAGGED'       => $nb_videos_geotagged,
-            'NB_VIDEOS_THUMB'           => $nb_videos_thumb,
-            'VIDEOJS_PATH'              => VIDEOJS_PATH,
-        )
+    array(
+        'SUBCATS_INCLUDED_CHECKED'  => $sync_options['subcats_included'] ? 'checked="checked"' : '',
+        'NB_VIDEOS'                 => $nb_videos,
+        'NB_VIDEOS_GEOTAGGED'       => $nb_videos_geotagged,
+        'NB_VIDEOS_THUMB'           => $nb_videos_thumb,
+        'VIDEOJS_PATH'              => VIDEOJS_PATH,
+    )
 );
 
 ?>
