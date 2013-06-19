@@ -7,15 +7,15 @@
       padding: 1em;
       margin: 1em;
     }
-  .showInfo {
-    position:static;
-    display:inline-block;
-    padding:1px 7px;
-    width:4px;
-    height:16px;
-    line-height:16px;
-    font-size:0.8em;
-  }
+    .showInfo {
+      position:static;
+      display:inline-block;
+      padding:1px 7px;
+      width:4px;
+      height:16px;
+      line-height:16px;
+      font-size:0.8em;
+    }
   {/literal}
 </style>
 {/html_head}

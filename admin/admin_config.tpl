@@ -1,9 +1,15 @@
 {html_head}
 <style>
   {literal}
-FORM.properties SPAN.property {
-  width:100px;
-}
+    .vjs_layout {
+      text-align: left;
+      border: 2px solid rgb(221, 221, 221);
+      padding: 1em;
+      margin: 1em;
+    }
+    FORM.properties SPAN.property {
+      width:100px;
+    }
   {/literal}
 </style>
 {/html_head}
@@ -11,6 +17,14 @@ FORM.properties SPAN.property {
 This plugin add the open source HTML5 video player <a href="http://www.videojs.com/" target="_blank">VideoJS</a>.
 <br/><br/>
 Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blanck">plugin documentation</a> for additional information.
+
+<div class="vjs_layout">
+  <legend>{'Statistics'|@translate}</legend>
+  <ul>
+    <li class="update_summary_new">{$NB_VIDEOS} {'videos in your gallery'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster and thumbnail'|@translate}</li>
+  </ul>
+</div>
 
 <form method="post" action="" class="properties">
 	<fieldset>

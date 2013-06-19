@@ -97,6 +97,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     ));
 }
 
+/* Get statistics */
 // All videos with supported extensions
 $SQL_VIDEOS = "(`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')";
 

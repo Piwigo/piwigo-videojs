@@ -75,14 +75,28 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 	array_push($page['infos'], l10n('Your configuration settings are saved'));
 }
 
+/* Get statistics */
+// All videos with supported extensions
+$SQL_VIDEOS = "(`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')";
+
+// All videos with supported extensions by VideoJS
+$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE ".$SQL_VIDEOS.";";
+list($nb_videos) = pwg_db_fetch_array( pwg_query($query) );
+
+// All videos with supported extensions by VideoJS and thumb
+$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NOT NULL AND ".$SQL_VIDEOS.";";
+list($nb_videos_thumb) = pwg_db_fetch_array( pwg_query($query) );
+
 // send value to template
 $template->assign($conf['vjs_conf']);
 $template->assign(
 	array(
-		'AVAILABLE_SKINS'	=> $available_skins,
-		'AVAILABLE_PRELOAD'	=> $available_preload,
-		'AVAILABLE_WIDTH'	=> $available_width,
-		'CUSTOM_CSS'		=> htmlspecialchars($customcss),
+            'AVAILABLE_SKINS'       => $available_skins,
+            'AVAILABLE_PRELOAD'     => $available_preload,
+            'AVAILABLE_WIDTH'       => $available_width,
+            'CUSTOM_CSS'            => htmlspecialchars($customcss),
+            'NB_VIDEOS'             => $nb_videos,
+            'NB_VIDEOS_THUMB'       => $nb_videos_thumb,
 	)
 );
 
