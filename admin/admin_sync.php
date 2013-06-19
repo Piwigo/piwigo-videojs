@@ -97,6 +97,15 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     ));
 }
 
+// Check the presence of the DB schema
+$sync_options['sync_gps'] = true;
+$q = 'SELECT COUNT(*) as nb FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = "'.IMAGES_TABLE.'" AND COLUMN_NAME = "lat" OR COLUMN_NAME = "lon"';
+$result = pwg_db_fetch_array( pwg_query($q) );
+if($result['nb'] != 2)
+{
+    $sync_options['sync_gps'] = false;
+}
+
 /* Get statistics */
 // All videos with supported extensions
 $SQL_VIDEOS = "(`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')";

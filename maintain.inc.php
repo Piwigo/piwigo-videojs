@@ -27,7 +27,6 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 function plugin_install()
 {
-
 	// Remove unused directory from 0.4 and 0.5 to 0.6
 	$toremove = array("skin", "js", "language/es_ES");
 	foreach ($toremove as $dir)
@@ -37,7 +36,7 @@ function plugin_install()
 			deltree(VIDEOJS_PATH.$dir);
 		}
 	}
-	$toremove = array("language/index.htm", "language/fr_FR/index.htm", "language/en_UK/index.htm");
+	$toremove = array("language/index.htm", "language/fr_FR/index.htm", "language/en_UK/index.htm", "admin.tpl", "admin.php");
 	foreach ($toremove as $file)
 	{
 		@unlink(VIDEOJS_PATH.$file);
