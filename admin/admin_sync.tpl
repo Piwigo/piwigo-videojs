@@ -7,9 +7,28 @@
       padding: 1em;
       margin: 1em;
     }
+  .showInfo {
+    position:static;
+    display:inline-block;
+    padding:1px 7px;
+    width:4px;
+    height:16px;
+    line-height:16px;
+    font-size:0.8em;
+  }
   {/literal}
 </style>
 {/html_head}
+
+{footer_script}{literal}
+jQuery(".showInfo").tipTip({
+  delay: 0,
+  fadeIn: 200,
+  fadeOut: 200,
+  maxWidth: '300px',
+  defaultPosition: 'right'
+});
+{/literal}{/footer_script}
 
 Synchronization of metadata information and thumbnail creation for videos.
 <br/><br/>
@@ -85,7 +104,12 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
 	<label><span class="property">Output format : </span></label>
 	<label><input type="radio" name="thumbouput" value="jpg" checked="checked"/> JPG</label>
 	<label><input type="radio" name="thumbouput" value="png" /> PNG</label>
-	<br/><small>Select the output format for the thumbnail</small>
+	<br/><small>Select the output format for the thumbnail.</small>
+      </li>
+      <li>
+	<label><input type="checkbox" name="thumboverlay" value="1" > Add film effect</label>
+	<a class="showInfo" title="<img src='{$VIDEOJS_PATH}admin/example-frame.jpg'>">i</a>
+	<br/><small>Apply an overlay on the poster creation.</small>
       </li>
     </ul>
   </fieldset>

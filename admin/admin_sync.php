@@ -33,6 +33,7 @@ $sync_options = array(
     'thumb'             => true,
     'thumbsec'          => 1,
     'thumbouput'        => 'jpg',
+    'thumboverlay'      => false,
     'simulate'          => true,
     'cat_id'            => 0,
     'subcats_included'  => true,
@@ -47,6 +48,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
         'thumb'             => isset($_POST['thumb']),
         'thumbsec'          => $_POST['thumbsec'],
         'thumbouput'        => $_POST['thumbouput'],
+        'thumboverlay'      => isset($_POST['thumboverlay']),
         'simulate'          => isset($_POST['simulate']),
         'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
         'subcats_included'  => isset($_POST['subcats_included']),
@@ -130,6 +132,7 @@ $template->assign(
             'NB_VIDEOS'                 => $nb_videos,
             'NB_VIDEOS_GEOTAGGED'       => $nb_videos_geotagged,
             'NB_VIDEOS_THUMB'           => $nb_videos_thumb,
+            'VIDEOJS_PATH'              => VIDEOJS_PATH,
         )
 );
 

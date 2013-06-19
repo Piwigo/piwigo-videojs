@@ -27,6 +27,8 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
+include_once("function_frame.php");
+
 /***************
  *
  * Start the sync work
@@ -153,7 +155,7 @@ while ($row = pwg_db_fetch_assoc($result))
             $in = $filename;
             $out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['thumbouput'];
             /* report it */
-            $infos[] = $filename. ' thumbnail : '.$out;
+            $infos[] = $filename. ' thumbnail: '.$out;
 
             if (!is_dir($output_dir) or !is_writable($output_dir))
             {
@@ -179,9 +181,9 @@ while ($row = pwg_db_fetch_assoc($result))
                     $query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='".$sync_options['thumbouput']."' WHERE `id`=".$row['id'].";";
                     pwg_query($query);
 
-                    /* Delete any previous square or thumbnail images */
+                    /* Delete any previous square or thumbnail or small images */
                     $idata = "_data/i/".dirname($row['path']).'/pwg_representative/';
-                    $extensions = array('-th.jpg', '-sq.jpg', '-th.png', '-sq.png');
+                    $extensions = array('-th.jpg', '-sq.jpg', '-th.png', '-sq.png', '-sm.png', '-sm.png');
                     foreach ($extensions as $extension)
                     {
                         $ifile = $idata.$file_wo_ext['filename'].$extension;
@@ -189,6 +191,13 @@ while ($row = pwg_db_fetch_assoc($result))
                         {
                             unlink($ifile);
                         }
+                    }
+
+                    /* Generate the overlay */
+                    if($sync_options['thumboverlay'])
+                    {
+                        add_movie_frame($out);
+                        $infos[] = $filename. ' overlay: apply to'.$out;
                     }
 		}
             }
