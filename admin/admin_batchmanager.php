@@ -84,6 +84,10 @@ function vjs_loc_end_element_set_global()
 	<label><input type="radio" name="vjs_thumbouput" value="png" /> PNG</label>
 	<br/><small>Select the output format for the thumbnail</small>
       </li>
+      <li>
+	<label><input type="checkbox" name="vjs_thumboverlay" value="1" > Add film effect</label>
+	<br/><small>Apply an overlay on the poster creation.</small>
+      </li>
     </ul>
 '));
 }
@@ -108,6 +112,7 @@ function vjs_element_set_global_action($action, $collection)
 		'thumb' 	=> isset($_POST['vjs_thumb']),
 		'thumbsec' 	=> $_POST['vjs_thumbsec'],
 		'thumbouput'    => $_POST['vjs_thumbouput'],
+		'thumboverlay'  => isset($_POST['vjs_thumboverlay']),
 		'simulate' 	=> false,
 		'sync_gps' 	=> true,
 	);
@@ -140,6 +145,7 @@ function vjs_loc_begin_element_set_unit()
 			'thumb'		=> isset($_POST['vjs_thumb-'.$id]),
 			'thumbsec'	=> $_POST['vjs_thumbsec-'.$id],
 			'thumbouput'    => $_POST['vjs_thumbouput-'.$id],
+			'thumboverlay'  => isset($_POST['vjs_thumboverlay-'.$id]),
 			'simulate'	=> false,
 			'sync_gps'	=> true,
 		);
@@ -186,6 +192,9 @@ function vjs_prefilter_batch_manager_unit($content)
 		    <label><input type="radio" name="vjs_thumbouput" value="jpg" checked="checked"/> JPG</label>
 		    <label><input type="radio" name="vjs_thumbouput" value="png" /> PNG</label>
 		    <br/><small>Select the output format for the thumbnail</small>
+		    <br/>
+		    <label><input type="checkbox" name="vjs_thumboverlay" value="1" > Add film effect</label>
+		    <br/><small>Apply an overlay on the poster creation.</small>
 		    <br/>
 		  </td>
 		</tr>';
