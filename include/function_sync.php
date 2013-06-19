@@ -164,6 +164,11 @@ while ($row = pwg_db_fetch_assoc($result))
             }
             else if ($sync_options['thumbsec'] and !$sync_options['simulate'])
             {
+                if (isset($fileinfo['playtime_seconds']) and $sync_options['thumbsec'] > $fileinfo['playtime_seconds'])
+                {
+                    $errors[] = "Movie ". $filename." is shorter than ". $sync_options['thumbsec'] ." secondes, fallback to 1 secondes";
+                    $sync_options['thumbsec'] = 1;
+                }
                 $ffmpeg = "ffmpeg -itsoffset -".$sync_options['thumbsec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$out;
                 if ($sync_options['thumbouput'] == "png")
                 {
@@ -172,7 +177,7 @@ while ($row = pwg_db_fetch_assoc($result))
                 //echo $ffmpeg;
                 $log = system($ffmpeg, $retval);
                 //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);
-                if($retval != 0)
+                if($retval != 0 or !file_exists($out))
                 {
                     $errors[] = "Error running ffmpeg, try it manually:\n<br/>". $ffmpeg;
                 }
@@ -198,7 +203,7 @@ while ($row = pwg_db_fetch_assoc($result))
                     if($sync_options['thumboverlay'])
                     {
                         add_movie_frame($out);
-                        $infos[] = $filename. ' overlay: apply to'.$out;
+                        $infos[] = $filename. ' overlay: '.$out;
                     }
 		}
             }
