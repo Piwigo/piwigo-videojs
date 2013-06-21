@@ -40,6 +40,11 @@ $sync_options = array(
     'sync_gps'          => true,
 );
 
+// All videos with supported extensions
+$SQL_VIDEOS = "(LOWER(`file`) LIKE '%.ogg' OR LOWER(`file`) LIKE '%.ogv' OR
+                LOWER(`file`) LIKE '%.mp4' OR LOWER(`file`) LIKE '%.m4v' OR
+                LOWER(`file`) LIKE '%.webm' OR LOWER(`file`) LIKE '%.webmv')";
+
 if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
 {
     // Override default value from the form
@@ -68,7 +73,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
         $query="
             SELECT `id`, `file`, `path`
             FROM ".IMAGES_TABLE." INNER JOIN ".IMAGE_CATEGORY_TABLE." ON id=image_id
-            WHERE (`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')
+            WHERE ". $SQL_VIDEOS ."
             AND category_id IN (".implode(',', $cat_ids).")
             GROUP BY id";
     }
@@ -76,7 +81,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     {
         $query = "SELECT `id`, `file`, `path`
             FROM ".IMAGES_TABLE."
-            WHERE `file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv' GROUP BY id";
+            WHERE ". $SQL_VIDEOS .";";
     }
 
     // Do the work, share with batch manager
@@ -90,10 +95,10 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     $template->assign(
         'update_result',
         array(
-            'NB_ELEMENTS_THUMB' => $thumbs,
-            'NB_ELEMENTS_EXIF' => $metadata,
-            'NB_ELEMENTS_CANDIDATES' => $videos,
-            'NB_ERRORS' => count($errors),
+            'NB_ELEMENTS_THUMB'         => $thumbs,
+            'NB_ELEMENTS_EXIF'          => $metadata,
+            'NB_ELEMENTS_CANDIDATES'    => $videos,
+            'NB_ERRORS'                 => count($errors),
     ));
 }
 
@@ -107,9 +112,6 @@ if($result['nb'] != 2)
 }
 
 /* Get statistics */
-// All videos with supported extensions
-$SQL_VIDEOS = "(`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')";
-
 // All videos with supported extensions by VideoJS
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE ".$SQL_VIDEOS.";";
 list($nb_videos) = pwg_db_fetch_array( pwg_query($query) );
