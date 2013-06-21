@@ -21,7 +21,7 @@ $conf['vjs_conf'] = unserialize($conf['vjs_conf']);
 
 // Register the allowed extentions to the global conf in order
 // to sync them with other contents
-$videojs_extensions = array(
+$vjs_extensions = array(
     'ogg',
     'mp4',
     'm4v',
@@ -29,7 +29,7 @@ $videojs_extensions = array(
     'webm',
     'webmv',
 );
-$conf['file_ext'] = array_merge($conf['file_ext'], $videojs_extensions);
+$conf['file_ext'] = array_merge ($conf['file_ext'], $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 
 // Hook on to an event to display videos as standard images
 add_event_handler('render_element_content', 'vjs_render_media', 40, 2);
