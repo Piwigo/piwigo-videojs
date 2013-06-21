@@ -42,7 +42,9 @@ add_event_handler('perform_batch_manager_prefilters', 'vjs_perform_batch_manager
 function vjs_perform_batch_manager_prefilters($filter_sets, $prefilter)
 {
 	// All videos with supported extensions
-	$SQL_VIDEOS = "(`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')";
+	$SQL_VIDEOS = "(LOWER(`file`) LIKE '%.ogg' OR LOWER(`file`) LIKE '%.ogv' OR
+			LOWER(`file`) LIKE '%.mp4' OR LOWER(`file`) LIKE '%.m4v' OR
+			LOWER(`file`) LIKE '%.webm' OR LOWER(`file`) LIKE '%.webmv')";
 
 	if ($prefilter==="videojs0")
 		$filter = "";
@@ -103,7 +105,7 @@ function vjs_element_set_global_action($action, $collection)
 
 	$query = "SELECT `id`, `file`, `path`
 			FROM ".IMAGES_TABLE."
-			WHERE (`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')
+			WHERE ". $SQL_VIDEOS ."
 			AND id IN (".implode(',',$collection).")";
 
 	// Override default value from the form
@@ -152,7 +154,7 @@ function vjs_loc_begin_element_set_unit()
 
 		$query = "SELECT `id`, `file`, `path`
 				FROM ".IMAGES_TABLE."
-				WHERE (`file` LIKE '%.ogg' OR `file` LIKE '%.mp4' OR `file` LIKE '%.m4v' OR `file` LIKE '%.ogv' OR `file` LIKE '%.webm' OR `file` LIKE '%.webmv')
+				WHERE ". $SQL_VIDEOS ."
 				AND `id`='".$id."';";
 
 		// Do the work, share with batch manager

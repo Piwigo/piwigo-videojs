@@ -33,6 +33,11 @@ check_status(ACCESS_ADMINISTRATOR);
 // Setup plugin Language
 load_language('plugin.lang', VIDEOJS_PATH);
 
+// All videos with supported extensions
+$SQL_VIDEOS = "(LOWER(`file`) LIKE '%.ogg' OR LOWER(`file`) LIKE '%.ogv' OR
+                LOWER(`file`) LIKE '%.mp4' OR LOWER(`file`) LIKE '%.m4v' OR
+                LOWER(`file`) LIKE '%.webm' OR LOWER(`file`) LIKE '%.webmv')";
+
 // Fetch the template.
 global $template, $conf, $lang;
 

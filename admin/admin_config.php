@@ -76,11 +76,6 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 }
 
 /* Get statistics */
-// All videos with supported extensions
-$SQL_VIDEOS = "(LOWER(`file`) LIKE '%.ogg' OR LOWER(`file`) LIKE '%.ogv' OR
-                LOWER(`file`) LIKE '%.mp4' OR LOWER(`file`) LIKE '%.m4v' OR
-                LOWER(`file`) LIKE '%.webm' OR LOWER(`file`) LIKE '%.webmv')";
-
 // All videos with supported extensions by VideoJS
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE ".$SQL_VIDEOS.";";
 list($nb_videos) = pwg_db_fetch_array( pwg_query($query) );
