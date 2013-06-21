@@ -40,11 +40,6 @@ $sync_options = array(
     'sync_gps'          => true,
 );
 
-// All videos with supported extensions
-$SQL_VIDEOS = "(LOWER(`file`) LIKE '%.ogg' OR LOWER(`file`) LIKE '%.ogv' OR
-                LOWER(`file`) LIKE '%.mp4' OR LOWER(`file`) LIKE '%.m4v' OR
-                LOWER(`file`) LIKE '%.webm' OR LOWER(`file`) LIKE '%.webmv')";
-
 if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
 {
     // Override default value from the form
@@ -54,12 +49,21 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
         'thumbsec'          => $_POST['thumbsec'],
         'thumbouput'        => $_POST['thumbouput'],
         'thumboverlay'      => isset($_POST['thumboverlay']),
+        'thumboverwrite'    => isset($_POST['thumboverwrite']),
         'simulate'          => isset($_POST['simulate']),
         'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
         'subcats_included'  => isset($_POST['subcats_included']),
         'sync_gps'          => true,
     );
 
+    // Filter on existing thumbnail
+    $OVERWRITE = "";
+    if (!$sync_options['thumboverwrite'])
+    {
+        $OVERWRITE = " AND `representative_ext` IS NULL ";
+    }
+
+    // Filter on selected ablum
     if ( $sync_options['cat_id'] != 0 )
     {
         $query='
@@ -73,7 +77,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
         $query="
             SELECT `id`, `file`, `path`
             FROM ".IMAGES_TABLE." INNER JOIN ".IMAGE_CATEGORY_TABLE." ON id=image_id
-            WHERE ". $SQL_VIDEOS ."
+            WHERE ". $SQL_VIDEOS ." ". $OVERWRITE ."
             AND category_id IN (".implode(',', $cat_ids).")
             GROUP BY id";
     }
@@ -81,7 +85,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     {
         $query = "SELECT `id`, `file`, `path`
             FROM ".IMAGES_TABLE."
-            WHERE ". $SQL_VIDEOS .";";
+            WHERE ". $SQL_VIDEOS ." ". $OVERWRITE .";";
     }
 
     // Do the work, share with batch manager

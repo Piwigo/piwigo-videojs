@@ -95,10 +95,14 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
     <legend>{'Create thumbnail'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="thumb" value="1" checked="checked" /> Create thumbnail at position in second:</label>
+	<label><input type="checkbox" name="thumb" value="1" checked="checked" /> Create poster at position in second:</label>
 	<!-- <input type="range" name="thumbsec" value="4" min="0" max="60" step="1"/> -->
 	<input type="text" name="thumbsec" value="4" size="2" required/>
-	<br/><small>Create a thumbnail from the video at specify position, it will overwrite any existing poster.</small>
+	<br/><small>Create a thumbnail from the video at specify position.</small>
+      </li>
+      <li>
+	<label><input type="checkbox" name="thumboverwrite" value="1" checked="checked"> Overwrite existing posters</label>
+	<br/><small>Overwrite existing thumbnails with new ones.</small>
       </li>
       <li>
 	<label><span class="property">Output format : </span></label>
