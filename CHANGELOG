@@ -1,3 +1,8 @@
+Changes from v0.9 to v1.0.0
+- Add new options
+- Improve Thumbnail creation
+- Update Videojs player to version 4.0.4
+
 Changes from v0.8 to v0.9
 - Add support for batch manager
 - Improve Thumbnail creation
