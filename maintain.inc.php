@@ -27,6 +27,9 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 function plugin_install()
 {
+	if (!defined('VIDEOJS_PATH'))
+		define('VIDEOJS_PATH', PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)).'/');
+
 	// Remove unused directory or files from 0.4 and 0.5 to 0.6
 	$toremove = array("skin", "js", "language/es_ES");
 	foreach ($toremove as $dir)
@@ -39,7 +42,10 @@ function plugin_install()
 	$toremove = array("language/index.htm", "language/fr_FR/index.htm", "language/en_UK/index.htm", "admin.tpl", "admin.php");
 	foreach ($toremove as $file)
 	{
-		@unlink(VIDEOJS_PATH.$file);
+		if (is_file(VIDEOJS_PATH.$file))
+		{
+			@unlink(VIDEOJS_PATH.$file);
+		}
 	}
 
 	$default_config = array(
@@ -59,15 +65,12 @@ function plugin_install()
 	$q = 'UPDATE '.CONFIG_TABLE.' SET `comment` = "Configuration settings for piwigo-videojs plugin" WHERE `param` = "vjs_conf";';
 	pwg_query( $q );
 
-	/* Avoid Mysql error if colum exist */
-	global $conf;
-	if (!isset($conf['vjs_customcss']))
-	{
-		/* Keep customCSS separate as it can be big entry */
-		$q = 'INSERT INTO '.CONFIG_TABLE.' (param,value,comment)
-			VALUES ("vjs_customcss", "", "Custom CSS used by the piwigo-videojs plugin");';
-		pwg_query( $q );
-	}
+	/* Keep customCSS separate as it can be big entry */
+	conf_update_param('vjs_customcss', '');
+
+	/* Add a comment to the entry */
+	$q = 'UPDATE '.CONFIG_TABLE.' SET `comment` = "Custom CSS used by the piwigo-videojs plugin" WHERE `param` = "vjs_customcss";';
+	pwg_query( $q );
 }
 
 function plugin_uninstall()
