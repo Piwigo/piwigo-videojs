@@ -41,11 +41,6 @@ function vjs_get_batch_manager_prefilters($prefilters)
 add_event_handler('perform_batch_manager_prefilters', 'vjs_perform_batch_manager_prefilters', 50, 2);
 function vjs_perform_batch_manager_prefilters($filter_sets, $prefilter)
 {
-	// All videos with supported extensions
-	$SQL_VIDEOS = "(LOWER(`file`) LIKE '%.ogg' OR LOWER(`file`) LIKE '%.ogv' OR
-			LOWER(`file`) LIKE '%.mp4' OR LOWER(`file`) LIKE '%.m4v' OR
-			LOWER(`file`) LIKE '%.webm' OR LOWER(`file`) LIKE '%.webmv')";
-
 	if ($prefilter==="videojs0")
 		$filter = "";
 	else if ($prefilter==="videojs1")
@@ -55,7 +50,7 @@ function vjs_perform_batch_manager_prefilters($filter_sets, $prefilter)
 
 	if ( isset($filter) )
 	{
-		$query = "SELECT id FROM ".IMAGES_TABLE." WHERE ".$SQL_VIDEOS." ".$filter;
+		$query = "SELECT id FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." ".$filter;
 		$filter_sets[] = array_from_query($query, 'id');
 	}
 	return $filter_sets;
@@ -105,8 +100,7 @@ function vjs_element_set_global_action($action, $collection)
 
 	$query = "SELECT `id`, `file`, `path`
 			FROM ".IMAGES_TABLE."
-			WHERE ". $SQL_VIDEOS ."
-			AND id IN (".implode(',',$collection).")";
+			WHERE id IN (".implode(',',$collection).")";
 
 	// Override default value from the form
 	$sync_options = array(
@@ -138,8 +132,8 @@ function vjs_loc_begin_element_set_unit()
 	$collection = explode(',', $_POST['element_ids']);
 	foreach ($collection as $id)
 	{
-		if (!isset($_POST['thumbsec-'.$id]))
-			return
+		if (!isset($_POST['vjs_thumbsec-'.$id]))
+			return;
 
 		// Override default value from the form
 		$sync_options = array(
@@ -154,8 +148,7 @@ function vjs_loc_begin_element_set_unit()
 
 		$query = "SELECT `id`, `file`, `path`
 				FROM ".IMAGES_TABLE."
-				WHERE ". $SQL_VIDEOS ."
-				AND `id`='".$id."';";
+				WHERE `id`='".$id."';";
 
 		// Do the work, share with batch manager
 		include(dirname(__FILE__).'/../include/function_sync.php');
@@ -191,11 +184,11 @@ function vjs_prefilter_batch_manager_unit($content)
 		    <br/><small>Create a thumbnail from the video at specify position, it will overwrite any existing poster.</small>
 		    <br/>
 		    <label><span class="property">Output format : </span></label>
-		    <label><input type="radio" name="vjs_thumbouput" value="jpg" checked="checked"/> JPG</label>
-		    <label><input type="radio" name="vjs_thumbouput" value="png" /> PNG</label>
+		    <label><input type="radio" name="vjs_thumbouput-{$element.id}" value="jpg" checked="checked"/> JPG</label>
+		    <label><input type="radio" name="vjs_thumbouput-{$element.id}" value="png" /> PNG</label>
 		    <br/><small>Select the output format for the thumbnail</small>
 		    <br/>
-		    <label><input type="checkbox" name="vjs_thumboverlay" value="1" > Add film effect</label>
+		    <label><input type="checkbox" name="vjs_thumboverlay-{$element.id}" value="1" > Add film effect</label>
 		    <br/><small>Apply an overlay on the poster creation.</small>
 		    <br/>
 		  </td>

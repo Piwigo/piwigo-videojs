@@ -77,7 +77,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
         $query="
             SELECT `id`, `file`, `path`
             FROM ".IMAGES_TABLE." INNER JOIN ".IMAGE_CATEGORY_TABLE." ON id=image_id
-            WHERE ". $SQL_VIDEOS ." ". $OVERWRITE ."
+            WHERE ". SQL_VIDEOS ." ". $OVERWRITE ."
             AND category_id IN (".implode(',', $cat_ids).")
             GROUP BY id";
     }
@@ -85,7 +85,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
     {
         $query = "SELECT `id`, `file`, `path`
             FROM ".IMAGES_TABLE."
-            WHERE ". $SQL_VIDEOS ." ". $OVERWRITE .";";
+            WHERE ". SQL_VIDEOS ." ". $OVERWRITE .";";
     }
 
     // Do the work, share with batch manager
@@ -117,17 +117,17 @@ if($result['nb'] != 2)
 
 /* Get statistics */
 // All videos with supported extensions by VideoJS
-$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE ".$SQL_VIDEOS.";";
+$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS.";";
 list($nb_videos) = pwg_db_fetch_array( pwg_query($query) );
 
 // All videos with supported extensions by VideoJS and thumb
-$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NOT NULL AND ".$SQL_VIDEOS.";";
+$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NOT NULL AND ".SQL_VIDEOS.";";
 list($nb_videos_thumb) = pwg_db_fetch_array( pwg_query($query) );
 
 // All videos with supported extensions by VideoJS and with GPS data
 if ($sync_options['sync_gps'])
 {
-    $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `lat` IS NOT NULL and `lon` IS NOT NULL AND ".$SQL_VIDEOS.";";
+    $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `lat` IS NOT NULL and `lon` IS NOT NULL AND ".SQL_VIDEOS.";";
     list($nb_videos_geotagged) = pwg_db_fetch_array( pwg_query($query) );
 }
 else
