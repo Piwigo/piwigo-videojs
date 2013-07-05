@@ -86,20 +86,20 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 		<ul>
 			<li>
 				<label><span class="property">{'ZOOMROTATE'|@translate} : </span></label>
-				<label><input type="radio" name="vjs_zoomrotate" value="true" {if $vjs_plugin.zoomrotate}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_zoomrotate" value="false" {if not $vjs_plugin.zoomrotate}checked="checked"{/if}/> {'No'|@translate}</label>
+				<label><input type="radio" name="vjs_zoomrotate" value="true" {if $plugins.zoomrotate}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_zoomrotate" value="false" {if not $plugins.zoomrotate}checked="checked"{/if}/> {'No'|@translate}</label>
 				<br/><small>{'ZOOMROTATE_DESC'|@translate}</small>
 			</li>
 			<li>
 				<label><span class="property">{'THUMBNAILS'|@translate} : </span></label>
-				<label><input type="radio" name="vjs_thumbnails" value="true" {if $tvjs_plugin.thumbnails}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_thumbnails" value="false" {if not $vjs_plugin.thumbnails}checked="checked"{/if}/> {'No'|@translate}</label>
+				<label><input type="radio" name="vjs_thumbnails" value="true" {if $plugins.thumbnails}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_thumbnails" value="false" {if not $plugins.thumbnails}checked="checked"{/if}/> {'No'|@translate}</label>
 				<br/><small>{'THUMBNAILS_DESC'|@translate}</small>
 			</li>
 			<li>
 				<label><span class="property">{'WATERMARK'|@translate} : </span></label>
-				<label><input type="radio" name="vjs_watermark" value="true" {if $vjs_plugin.watermark}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_watermark" value="false" {if not $vjs_plugin.watermark}checked="checked"{/if}/> {'No'|@translate}</label>
+				<label><input type="radio" name="vjs_watermark" value="true" {if $plugins.watermark}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_watermark" value="false" {if not $plugins.watermark}checked="checked"{/if}/> {'No'|@translate}</label>
 				<br/><small>{'WATERMARK_DESC'|@translate}</small>
 			</li>
 		</ul>

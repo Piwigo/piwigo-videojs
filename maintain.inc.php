@@ -55,6 +55,11 @@ function plugin_install()
 		'controls'	=> true,
 		'autoplay'	=> false,
 		'loop'		=> false,
+		'plugins'	=> array(
+					'zoomrotate'    => false,
+					'thumbnails'    => false,
+					'watermark'     => false,
+				),
 	);
 
 	/* Add configuration to the config table */
@@ -96,7 +101,7 @@ function plugin_activate()
 
 	if ( (!isset($conf['vjs_conf'])) or (!isset($conf['vjs_customcss']))
 	    or (!empty($conf['vjs_conf']))
-	    or (count($conf['vjs_conf']) != 6))
+	    or (count($conf['vjs_conf'], COUNT_RECURSIVE) != 10))
 	{
 		plugin_install();
 	}

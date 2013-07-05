@@ -62,9 +62,9 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 		'autoplay'      => get_boolean($_POST['vjs_autoplay']),
 		'loop'          => get_boolean($_POST['vjs_loop']),
                 'plugins'        => array(
-                                    'zoomrotate'    => false,
-                                    'thumbnails'    => false,
-                                    'watermark'     => false,
+                                    'zoomrotate'    => get_boolean($_POST['vjs_zoomrotate']),
+                                    'thumbnails'    => get_boolean($_POST['vjs_thumbnails']),
+                                    'watermark'     => get_boolean($_POST['vjs_watermark']),
                                 ),
 	);
 	$customcss = $_POST['vjs_customcss'];
