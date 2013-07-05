@@ -193,8 +193,9 @@ function vjs_render_media($content, $picture)
 	//$picture['current']['src_image']['rel_path']
 
 	/* Thumbnail videojs plugin */
-	//if ($conf['vjs_conf']['plugins']['thumbnails'])
-	//{
+	$thumbnails = array();
+	if ($conf['vjs_conf']['plugins']['thumbnails'])
+	{
 		$filematch = $parts['dirname']."/pwg_representative/".$parts['filename']."-th_*";
                 if ($conf['piwigo_db_version'] == "2.4")
                 {
@@ -213,32 +214,42 @@ function vjs_render_media($content, $picture)
 			}
 		}
 		//$thumbnails = array( array('second' => 0, 'source' => $poster), array('second' => 5, 'source' => $poster));
-	//}
+	}
 
 	/* ZoomRotate videojs plugin */
-	//if ($conf['vjs_conf']['plugins']['zoomrotate'])
-	//{
-		include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
-		include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
-		// rotation is $picture['current']['rotation']
-		// zoom is witdh / height
-		$rotate = pwg_image::get_rotation_angle_from_code($picture['current']['rotation']);
-		$zoomrotate = array(
-					'rotate' => $rotate,
-					'zoom' => round($width / $height, 1, PHP_ROUND_HALF_DOWN)
-				);
-	//}
+	$zoomrotate = array();
+	if ($conf['vjs_conf']['plugins']['zoomrotate'])
+	{
+		if ($picture['current']['rotation'] != null)
+		{
+			include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
+			include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
+			// rotation is $picture['current']['rotation']
+			// zoom is witdh / height
+			$rotate = pwg_image::get_rotation_angle_from_code($picture['current']['rotation']);
+			$zoomrotate = array(
+						'rotate'	=> $rotate,
+						'zoom'		=> round($width / $height, 1, PHP_ROUND_HALF_DOWN)
+					);
+			// Change the video player size
+			$tmp_width = $width;
+			$tmp_height = $height;
+			$width = $tmp_height;
+			$height = $tmp_width;
+		}
+	}
 
 	/* Watermark videojs plugin */
-	//if ($conf['vjs_conf']['plugins']['watermark'])
-	//{
-		//if (unserialize($conf['derivatives'])['w']['file'] != null)
-		//{
+	$watermark = array();
+	if ($conf['vjs_conf']['plugins']['watermark'])
+	{
+		if (unserialize($conf['derivatives'])['w']['file'] != null)
+		{
 			// watermark is $conf['derivatives']['w']
 			$watermark = unserialize($conf['derivatives'])['w'];
 			//print_r($watermark);
-		//}
-	//}
+		}
+	}
 
 	// Genrate HTML5 tags
 	// Why the data-setup attribute does not work if only one video
@@ -275,7 +286,7 @@ function vjs_render_media($content, $picture)
 			'VIDEOJS_CUSTOMCSS'	=> $customcss,
 			'thumbnails'		=> $thumbnails,
 			'zoomrotate'		=> $zoomrotate,
-			//'watermark'		=> $watermark,
+			'watermark'		=> $watermark,
 		)
 	);
 
