@@ -27,38 +27,44 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-// Geneate default value
+// Generate default value
 $sync_options = array(
     'metadata'          => true,
-    'thumb'             => true,
+    'poster'            => true,
+    'postersec'         => 1,
+    'output'            => 'jpg',
+    'posteroverlay'     => false,
+    'posteroverwrite'   => true,
+    'thumb'             => false,
     'thumbsec'          => 1,
-    'thumbouput'        => 'jpg',
-    'thumboverlay'      => false,
     'simulate'          => true,
     'cat_id'            => 0,
     'subcats_included'  => true,
     'sync_gps'          => true,
 );
 
-if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
+if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 {
     // Override default value from the form
     $sync_options = array(
         'metadata'          => isset($_POST['metadata']),
+        'poster'            => isset($_POST['poster']),
+        'postersec'         => $_POST['postersec'],
+        'output'            => $_POST['output'],
+        'posteroverlay'     => isset($_POST['posteroverlay']),
+        'posteroverwrite'   => isset($_POST['posteroverwrite']),
         'thumb'             => isset($_POST['thumb']),
         'thumbsec'          => $_POST['thumbsec'],
-        'thumbouput'        => $_POST['thumbouput'],
-        'thumboverlay'      => isset($_POST['thumboverlay']),
-        'thumboverwrite'    => isset($_POST['thumboverwrite']),
+        'thumbsize'         => $_POST['thumbsize'],
         'simulate'          => isset($_POST['simulate']),
         'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
         'subcats_included'  => isset($_POST['subcats_included']),
         'sync_gps'          => true,
     );
 
-    // Filter on existing thumbnail
+    // Filter on existing poster
     $OVERWRITE = "";
-    if (!$sync_options['thumboverwrite'])
+    if (!$sync_options['posteroverwrite'])
     {
         $OVERWRITE = " AND `representative_ext` IS NULL ";
     }
@@ -93,6 +99,7 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
 
     // Send sync result to template
     $template->assign('sync_errors', $errors );
+    $template->assign('sync_warnings', $warnings );
     $template->assign('sync_infos', $infos );
 
     // Send result to templates
@@ -108,9 +115,9 @@ if ( isset($_POST['submit']) and isset($_POST['thumbsec']) )
 
 // Check the presence of the DB schema
 $sync_options['sync_gps'] = true;
-$q = 'SELECT COUNT(*) as nb FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = "'.IMAGES_TABLE.'" AND COLUMN_NAME = "lat" OR COLUMN_NAME = "lon"';
-$result = pwg_db_fetch_array( pwg_query($q) );
-if($result['nb'] != 2)
+$q = 'SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = "'.IMAGES_TABLE.'" AND COLUMN_NAME = "lat" OR COLUMN_NAME = "lon"';
+list($result) = pwg_db_fetch_row( pwg_query($q) );
+if($result != 4)
 {
     $sync_options['sync_gps'] = false;
 }
@@ -118,17 +125,17 @@ if($result['nb'] != 2)
 /* Get statistics */
 // All videos with supported extensions by VideoJS
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS.";";
-list($nb_videos) = pwg_db_fetch_array( pwg_query($query) );
+list($nb_videos) = pwg_db_fetch_row( pwg_query($query) );
 
 // All videos with supported extensions by VideoJS and thumb
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NOT NULL AND ".SQL_VIDEOS.";";
-list($nb_videos_thumb) = pwg_db_fetch_array( pwg_query($query) );
+list($nb_videos_thumb) = pwg_db_fetch_row( pwg_query($query) );
 
 // All videos with supported extensions by VideoJS and with GPS data
 if ($sync_options['sync_gps'])
 {
     $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `lat` IS NOT NULL and `lon` IS NOT NULL AND ".SQL_VIDEOS.";";
-    list($nb_videos_geotagged) = pwg_db_fetch_array( pwg_query($query) );
+    list($nb_videos_geotagged) = pwg_db_fetch_row( pwg_query($query) );
 }
 else
 {

@@ -189,6 +189,56 @@ function vjs_render_media($content, $picture)
 			get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
 	));
 	//print $poster;
+	// poster should be ./galleries/videos/pwg_representative/trailer_480p.jpg
+	//$picture['current']['src_image']['rel_path']
+
+	/* Thumbnail videojs plugin */
+	//if ($conf['vjs_conf']['plugins']['thumbnails'])
+	//{
+		$filematch = $parts['dirname']."/pwg_representative/".$parts['filename']."-th_*";
+                if ($conf['piwigo_db_version'] == "2.4")
+                {
+                    $filematch = $parts['dirname']."/thumbnail/".$parts['filename']."-th_*";
+                }
+		$matches = glob($filematch);
+
+		if ( is_array ( $matches ) ) {
+			$thumbnails = array();
+			foreach ( $matches as $filename) {
+			     $ext = explode("-th_", $filename);
+			     $second = explode(".", $ext[1]);
+			     // ./galleries/videos/pwg_representative/trailer_480p-th_0.jpg
+			     //echo "$filename second " . $second[0]. "\n";
+			     $thumbnails[] = array('second' => $second[0], 'source' => get_gallery_home_url() . $filename);
+			}
+		}
+		//$thumbnails = array( array('second' => 0, 'source' => $poster), array('second' => 5, 'source' => $poster));
+	//}
+
+	/* ZoomRotate videojs plugin */
+	//if ($conf['vjs_conf']['plugins']['zoomrotate'])
+	//{
+		include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
+		include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
+		// rotation is $picture['current']['rotation']
+		// zoom is witdh / height
+		$rotate = pwg_image::get_rotation_angle_from_code($picture['current']['rotation']);
+		$zoomrotate = array(
+					'rotate' => $rotate,
+					'zoom' => round($width / $height, 1, PHP_ROUND_HALF_DOWN)
+				);
+	//}
+
+	/* Watermark videojs plugin */
+	//if ($conf['vjs_conf']['plugins']['watermark'])
+	//{
+		//if (unserialize($conf['derivatives'])['w']['file'] != null)
+		//{
+			// watermark is $conf['derivatives']['w']
+			$watermark = unserialize($conf['derivatives'])['w'];
+			//print_r($watermark);
+		//}
+	//}
 
 	// Genrate HTML5 tags
 	// Why the data-setup attribute does not work if only one video
@@ -223,6 +273,9 @@ function vjs_render_media($content, $picture)
 			'VIDEOJS_SKIN'		=> $skin,
 			'VIDEOJS_SKINCSS'	=> $skincss,
 			'VIDEOJS_CUSTOMCSS'	=> $customcss,
+			'thumbnails'		=> $thumbnails,
+			'zoomrotate'		=> $zoomrotate,
+			//'watermark'		=> $watermark,
 		)
 	);
 

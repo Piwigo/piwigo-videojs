@@ -61,6 +61,11 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 		'controls'      => get_boolean($_POST['vjs_controls']),
 		'autoplay'      => get_boolean($_POST['vjs_autoplay']),
 		'loop'          => get_boolean($_POST['vjs_loop']),
+                'plugins'        => array(
+                                    'zoomrotate'    => false,
+                                    'thumbnails'    => false,
+                                    'watermark'     => false,
+                                ),
 	);
 	$customcss = $_POST['vjs_customcss'];
 
@@ -78,11 +83,11 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 /* Get statistics */
 // All videos with supported extensions by VideoJS
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS.";";
-list($nb_videos) = pwg_db_fetch_array( pwg_query($query) );
+list($nb_videos) = pwg_db_fetch_row( pwg_query($query) );
 
 // All videos with supported extensions by VideoJS and thumb
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NOT NULL AND ".SQL_VIDEOS.";";
-list($nb_videos_thumb) = pwg_db_fetch_array( pwg_query($query) );
+list($nb_videos_thumb) = pwg_db_fetch_row( pwg_query($query) );
 
 // send value to template
 $template->assign($conf['vjs_conf']);

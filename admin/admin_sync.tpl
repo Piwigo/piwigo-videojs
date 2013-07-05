@@ -30,16 +30,16 @@ jQuery(".showInfo").tipTip({
 });
 {/literal}{/footer_script}
 
-Synchronization of metadata information and thumbnail creation for videos.
+Synchronization of metadata information and poster creation for videos.
 <br/><br/>
-Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blanck">plugin documentation</a> for additional information.
+Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blanck">plugin documentation</a> for additional information. Create an <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blanck">issue</a> for support, or feedback, or feature request.
 
 <div class="vjs_layout">
   <legend>{'Statistics'|@translate}</legend>
   <ul>
     <li class="update_summary_new">{$NB_VIDEOS} {'videos in your gallery'|@translate}</li>
     <li class="update_summary_new">{$NB_VIDEOS_GEOTAGGED} {'geotagged videos'|@translate}</li>
-    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster and thumbnail'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster'|@translate}</li>
   </ul>
 </div>
 
@@ -49,7 +49,7 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
   <ul>
     <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'video(s) in your gallery'|@translate}</li>
     <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'video(s) with metadata added'|@translate}</li>
-    <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'thumbnail(s) created'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'poster(s) created'|@translate}</li>
     <li class="update_summary_err">{$update_result.NB_ERRORS} {'errors during synchronization'|@translate}</li>
   </ul>
 
@@ -59,6 +59,17 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
     <ul>
       {foreach from=$sync_errors item=error}
       <li>{$error}</li>
+      {/foreach}
+    </ul>
+  </div>
+{/if}
+
+{if not empty($sync_warnings)}
+  <h3>{'Warning list'|@translate}</h3>
+  <div class="errors">
+    <ul>
+      {foreach from=$sync_warnings item=warning}
+      <li>{$warning}</li>
       {/foreach}
     </ul>
   </div>
@@ -80,7 +91,7 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
 
 <form action="" method="post" id="update">
 
-  <fieldset id="syncMeta">
+  <fieldset id="syncmeta">
     <legend>{'Synchronize metadata'|@translate}</legend>
     <ul>
       <li>
@@ -91,29 +102,46 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
     </ul>
   </fieldset>
 
-  <fieldset id="syncthumb">
-    <legend>{'Create thumbnail'|@translate}</legend>
+  <fieldset id="syncposter">
+    <legend>{'Poster'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="thumb" value="1" checked="checked" /> Create poster at position in second:</label>
-	<!-- <input type="range" name="thumbsec" value="4" min="0" max="60" step="1"/> -->
-	<input type="text" name="thumbsec" value="4" size="2" required/>
-	<br/><small>Create a thumbnail from the video at specify position.</small>
+	<label><input type="checkbox" name="poster" value="1" checked="checked" /> Create a poster at position in second:</label>
+	<!-- <input type="range" name="postersec" value="4" min="0" max="60" step="1"/> -->
+	<input type="text" name="postersec" value="4" size="2" required/>
+	<br/><small>Create a poster from the video at specify position.</small>
       </li>
       <li>
-	<label><input type="checkbox" name="thumboverwrite" value="1" checked="checked"> Overwrite existing posters</label>
-	<br/><small>Overwrite existing thumbnails with new ones.</small>
+	<label><input type="checkbox" name="posteroverwrite" value="1" checked="checked"> Overwrite existing posters</label>
+	<br/><small>Overwrite existing thumbnails with new ones. If uncheck it should only run for newly added video.</small>
       </li>
       <li>
 	<label><span class="property">Output format : </span></label>
-	<label><input type="radio" name="thumbouput" value="jpg" checked="checked"/> JPG</label>
-	<label><input type="radio" name="thumbouput" value="png" /> PNG</label>
-	<br/><small>Select the output format for the thumbnail.</small>
+	<label><input type="radio" name="output" value="jpg" checked="checked"/> JPG</label>
+	<label><input type="radio" name="output" value="png" /> PNG</label>
+	<br/><small>Select the output format for the poster and thumbnail.</small>
       </li>
       <li>
-	<label><input type="checkbox" name="thumboverlay" value="1" > Add film effect</label>
+	<label><input type="checkbox" name="posteroverlay" value="1" /> Add film effect</label>
 	<a class="showInfo" title="<img src='{$VIDEOJS_PATH}admin/example-frame.jpg'>">i</a>
 	<br/><small>Apply an overlay on the poster creation.</small>
+      </li>
+    </ul>
+  </fieldset>
+
+  <fieldset id="syncthumb">
+    <legend>{'Thumbnail'|@translate}</legend>
+    <ul>
+      <li>
+	<label><input type="checkbox" name="thumb" value="1" /> Create a thumbnail at every seconds:</label>
+	<!-- <input type="range" name="thumbsec" value="5" min="0" max="60" step="1"/> -->
+	<input type="text" name="thumbsec" value="5" size="2" required/>
+	<br/><small>Create a thumbnail every x seconds. <strong>Use by the videoJS plugin thumbnail</strong>.</small>
+      </li>
+      <li>
+	<label>Size of the thumbnail:</label>
+	<input type="text" name="thumbsize" value="120x68" size="3" placeholder="120x68" required/>
+	<br/><small>Size in pixel, keep it small, default is fine, Youtube use 190x68.</small>
       </li>
     </ul>
   </fieldset>

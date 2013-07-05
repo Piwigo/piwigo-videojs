@@ -91,7 +91,11 @@ function plugin_activate()
 {
 	global $conf;
 
+	if (!is_array($conf['vjs_conf']))
+		$conf['vjs_conf'] = unserialize($conf['vjs_conf']);
+
 	if ( (!isset($conf['vjs_conf'])) or (!isset($conf['vjs_customcss']))
+	    or (!empty($conf['vjs_conf']))
 	    or (count($conf['vjs_conf']) != 6))
 	{
 		plugin_install();

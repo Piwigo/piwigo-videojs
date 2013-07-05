@@ -16,13 +16,13 @@
 
 This plugin add the open source HTML5 video player <a href="http://www.videojs.com/" target="_blank">VideoJS</a>.
 <br/><br/>
-Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blanck">plugin documentation</a> for additional information.
+Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blanck">plugin documentation</a> for additional information. Create an <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blanck">issue</a> for support, or feedback, or feature request.
 
 <div class="vjs_layout">
   <legend>{'Statistics'|@translate}</legend>
   <ul>
     <li class="update_summary_new">{$NB_VIDEOS} {'videos in your gallery'|@translate}</li>
-    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster and thumbnail'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster'|@translate}</li>
   </ul>
 </div>
 
@@ -80,6 +80,29 @@ Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" targe
 				<br/><small>{'WIDTH_DESC'|@translate}</small>
 			</li>
 		<ul>
+	</fieldset>
+	<fieldset>
+		<legend>{'VIDEOJSPLUGIN'|@translate}</legend>
+		<ul>
+			<li>
+				<label><span class="property">{'ZOOMROTATE'|@translate} : </span></label>
+				<label><input type="radio" name="vjs_zoomrotate" value="true" {if $vjs_plugin.zoomrotate}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_zoomrotate" value="false" {if not $vjs_plugin.zoomrotate}checked="checked"{/if}/> {'No'|@translate}</label>
+				<br/><small>{'ZOOMROTATE_DESC'|@translate}</small>
+			</li>
+			<li>
+				<label><span class="property">{'THUMBNAILS'|@translate} : </span></label>
+				<label><input type="radio" name="vjs_thumbnails" value="true" {if $tvjs_plugin.thumbnails}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_thumbnails" value="false" {if not $vjs_plugin.thumbnails}checked="checked"{/if}/> {'No'|@translate}</label>
+				<br/><small>{'THUMBNAILS_DESC'|@translate}</small>
+			</li>
+			<li>
+				<label><span class="property">{'WATERMARK'|@translate} : </span></label>
+				<label><input type="radio" name="vjs_watermark" value="true" {if $vjs_plugin.watermark}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_watermark" value="false" {if not $vjs_plugin.watermark}checked="checked"{/if}/> {'No'|@translate}</label>
+				<br/><small>{'WATERMARK_DESC'|@translate}</small>
+			</li>
+		</ul>
 	</fieldset>
 	<p>
 		<input class="submit" type="submit" value="{'Save Settings'|@translate}" name="submit"/>
