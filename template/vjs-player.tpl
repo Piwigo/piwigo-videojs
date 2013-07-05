@@ -4,6 +4,9 @@
 {if not empty($thumbnails)}
 <link href="{$VIDEOJS_PATH}video-js/videojs.thumbnails.css" rel="stylesheet">
 {/if}
+{if not empty($watermark)}
+<link href="{$VIDEOJS_PATH}video-js/videojs.watermark.css" rel="stylesheet">
+{/if}
 <script src="{$VIDEOJS_PATH}video-js/video.js"></script>
 {if not empty($thumbnails)}
 <script src="{$VIDEOJS_PATH}video-js/videojs.thumbnails.js"></script>
@@ -67,6 +70,11 @@ my_video_zoomrotate.zoomrotate({
 var my_video_id = videojs('my_video_1');
 // Set value to the watermark plugin
 my_video_id.watermark({
+  file: '{/literal}{$watermark.file}{literal}',
+  xpos: {/literal}{$watermark.xpos}{literal},
+  ypos: {/literal}{$watermark.ypos}{literal},
+  xrepeat: {/literal}{$watermark.xrepeat}{literal},
+  opacity: {/literal}{$watermark.opacity}{literal},
   });
 </script>
 {/literal}

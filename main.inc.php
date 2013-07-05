@@ -174,7 +174,7 @@ function vjs_render_media($content, $picture)
 
 	// Try to guess the poster extension
 	$parts = pathinfo($picture['current']['element_url']);
-	$poster = getposterfile (Array(
+	$poster = embellish_url( getposterfile( Array(
 		$fileinfo['filepath']."/".$parts['filename'].".png" =>
 			get_gallery_home_url() . $parts['dirname'] . "/".$parts['filename'].".png",
 		$fileinfo['filepath']."/".$parts['filename'].".jpg" =>
@@ -187,7 +187,7 @@ function vjs_render_media($content, $picture)
 			get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
 		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".png" =>
 			get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
-	));
+	)));
 	//print $poster;
 	// poster should be ./galleries/videos/pwg_representative/trailer_480p.jpg
 	//$picture['current']['src_image']['rel_path']
@@ -210,7 +210,7 @@ function vjs_render_media($content, $picture)
 			     $second = explode(".", $ext[1]);
 			     // ./galleries/videos/pwg_representative/trailer_480p-th_0.jpg
 			     //echo "$filename second " . $second[0]. "\n";
-			     $thumbnails[] = array('second' => $second[0], 'source' => get_gallery_home_url() . $filename);
+			     $thumbnails[] = array('second' => $second[0], 'source' => embellish_url(get_gallery_home_url() . $filename));
 			}
 		}
 		//$thumbnails = array( array('second' => 0, 'source' => $poster), array('second' => 5, 'source' => $poster));
@@ -243,11 +243,18 @@ function vjs_render_media($content, $picture)
 	$watermark = array();
 	if ($conf['vjs_conf']['plugins']['watermark'])
 	{
-		if (unserialize($conf['derivatives'])['w']['file'] != null)
+		if (unserialize($conf['derivatives'])['w']->file != null)
 		{
 			// watermark is $conf['derivatives']['w']
-			$watermark = unserialize($conf['derivatives'])['w'];
-			//print_r($watermark);
+			//$watermark = unserialize($conf['derivatives'])['w'];
+			// Cannot use object of type WatermarkParams as array
+			$watermark = array(
+						'file'		=> embellish_url(get_gallery_home_url() . unserialize($conf['derivatives'])['w']->file),
+						'xpos'		=> unserialize($conf['derivatives'])['w']->xpos,
+						'ypos'		=> unserialize($conf['derivatives'])['w']->ypos,
+						'xrepeat'	=> unserialize($conf['derivatives'])['w']->xrepeat,
+						'opacity'	=> unserialize($conf['derivatives'])['w']->opacity,
+					);
 		}
 	}
 
