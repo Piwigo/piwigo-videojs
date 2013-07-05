@@ -18,4 +18,12 @@ $lang['CUSTOMCSS_DESC'] = 'Custom CSS to copy paste from the VideoJS website.';
 $lang['WIDTH'] = 'Max Width';
 $lang['WIDTH_DESC'] = 'The max width attribute sets the display width of the video, if higher it is divide by 2.';
 
+$lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
+$lang['ZOOMROTATE'] = 'ZoomRotate';
+$lang['ZOOMROTATE_DESC'] = 'Rotate and zoom a video, if specify via <a href="http://piwigo.org/ext/extension_view.php?eid=578" target="_blank">rotateImage plugin</a>.';
+$lang['THUMBNAILS'] = 'Thumbnails';
+$lang['THUMBNAILS_DESC'] = 'Displays thumbnail images over the progress bar.';
+$lang['WATERMARK'] = 'Watermark';
+$lang['WATERMARK_DESC'] = 'Displays watermark over the video.';
+
 ?>
