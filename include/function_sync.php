@@ -49,6 +49,7 @@ $videos = 0;
 $metadata = 0;
 $thumbs = 0;
 $errors = array();
+$warnings = array();
 $infos = array();
 
 if (!$sync_options['sync_gps'])

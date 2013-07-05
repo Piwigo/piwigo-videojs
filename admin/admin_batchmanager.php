@@ -117,6 +117,7 @@ function vjs_element_set_global_action($action, $collection)
 	require_once(dirname(__FILE__).'/../include/function_sync.php');
 
 	$page['errors'] = $errors;
+	$page['warnings'] = $warnings;
 	$page['infos'] = $infos;
 }
 
@@ -155,6 +156,7 @@ function vjs_loc_begin_element_set_unit()
 
 		$page['errors'] = array_merge($page['errors'], $errors);
 		$page['infos'] = array_merge($page['infos'], $infos);
+		$page['warnings'] = array_merge($page['warnings'], $warnings);
 	}
 }
 
