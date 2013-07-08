@@ -66,7 +66,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 
 {if not empty($sync_warnings)}
   <h3>{'Warning list'|@translate}</h3>
-  <div class="errors">
+  <div class="warnings">
     <ul>
       {foreach from=$sync_warnings item=warning}
       <li>{$warning}</li>
