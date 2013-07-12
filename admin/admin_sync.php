@@ -95,7 +95,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     }
 
     // Do the work, share with batch manager
-    require_once(dirname(__FILE__).'/../include/function_sync.php');
+    require_once(dirname(__FILE__).'/../include/function_sync2.php');
 
     // Send sync result to template
     $template->assign('sync_errors', $errors );
