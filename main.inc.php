@@ -74,7 +74,7 @@ function vjs_render_media($content, $picture)
 	{
 		$MAX_WIDTH = isset($conf['vjs_conf']['max_width']) ? $conf['vjs_conf']['max_width'] : '720';
 	}
-	//print "$MAX_WIDTH=" . $MAX_WIDTH;
+	//print "MAX_WIDTH=" . $MAX_WIDTH;
 	//print_r($user);
 
 	// Avoid Conflict with other plugin using getID3

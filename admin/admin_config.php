@@ -45,9 +45,9 @@ $available_preload = array(
 
 // Available width value
 $available_width = array(
-	'480' => 'EDTV: (720x480) ie: 480p',
-	'720' => 'HDReady: (1280x720) ie: 720p',
-	'1080' => 'FullHD: (1920x1080) ie: 1080p',
+	'720' => 'EDTV: (720x480) ie: 480p',
+	'1280' => 'HDReady: (1280x720) ie: 720p',
+	'1920' => 'FullHD: (1920x1080) ie: 1080p',
 );
 
 // Update conf if submitted in admin site
