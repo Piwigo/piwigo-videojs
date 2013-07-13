@@ -58,7 +58,7 @@ if ($sync_options['metadata'])
     $output = trim(shell_exec('type -P mediainfo')); // Does it works on Windows
     if (empty($output))
     {
-        $warnings[] = "Metadata parsing disable because mediainfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
+        $warnings[] = "Metadata parsing disable because MediaInfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
         $sync_options['metadata'] = false;
     }
 }
@@ -104,15 +104,16 @@ while ($row = pwg_db_fetch_assoc($result))
         {
             $metadata++;
             $infos[] = $filename. ' metadata: '.implode(",", array_keys($exif));
+            //$infos[] = $filename. ' metadata: '.count($exif);
             if ($sync_options['metadata'] and !$sync_options['simulate'])
             {
                 $dbfields = explode(",", "filesize,width,height,lat,lon,date_creation,rotation");
                 $query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
                 pwg_query($query);
 
-                $dbfields = explode(",", "format,type,duration,overall_bit_rate,model,make,display_aspect_ratio,width,height,frame_rate,channel,sampling_rate");
-                $query = "UPDATE '".$prefixeTable."image_videojs' SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
-                pwg_query($query);
+                //$dbfields = explode(",", "format,type,duration,overall_bit_rate,model,make,display_aspect_ratio,width,height,frame_rate,channel,sampling_rate");
+                //$query = "UPDATE '".$prefixeTable."image_videojs' SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
+                //pwg_query($query);
             }
         }
 
@@ -143,10 +144,10 @@ while ($row = pwg_db_fetch_assoc($result))
             }
             else if ($sync_options['postersec'] and !$sync_options['simulate'])
             {
-                if (isset($fileinfo['playtime_seconds']) and $sync_options['postersec'] > $fileinfo['playtime_seconds'])
+                if (isset($exif['playtime_seconds']) and $sync_options['postersec'] > $exif['playtime_seconds'])
                 {
-                    $errors[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". (int)$fileinfo['playtime_seconds'] ." secondes";
-                    $sync_options['postersec'] = (int)$fileinfo['playtime_seconds'];
+                    $errors[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". $exif['playtime_seconds'] ." secondes";
+                    $sync_options['postersec'] = (int)$exif['playtime_seconds'];
                 }
                 $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$out;
                 if ($sync_options['output'] == "png")
@@ -191,7 +192,7 @@ while ($row = pwg_db_fetch_assoc($result))
         /* Create multiple thumbnails */
         if ($sync_options['thumb'])
         {
-            if (isset($fileinfo['playtime_seconds']) and isset($sync_options['thumbsec']) and isset($sync_options['thumbsize']))
+            if (isset($exif['playtime_seconds']) and isset($sync_options['thumbsec']) and isset($sync_options['thumbsize']))
             {
                 /* Init value */
                 $file_wo_ext = pathinfo($row['file']);
@@ -206,7 +207,7 @@ while ($row = pwg_db_fetch_assoc($result))
                 }
                 else if ($sync_options['thumbsec'] and !$sync_options['simulate'])
                 {
-                    for ($second=0; $second <= (int)$fileinfo['playtime_seconds']; $second+=$sync_options['thumbsec'])
+                    for ($second=0; $second <= $exif['playtime_seconds']; $second+=$sync_options['thumbsec'])
                     {
                         $out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];
                         $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out;
@@ -225,7 +226,7 @@ while ($row = pwg_db_fetch_assoc($result))
                     }
                 }
             }
-        }
+        } /* End thumbnail */
     }
 }
 

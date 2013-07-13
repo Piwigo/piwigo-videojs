@@ -27,7 +27,7 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-$output = shell_exec("mediainfo --Full --Output=XML ". $filename);
+$output = shell_exec("mediainfo --Full --Output=XML --Language=raw ". $filename);
 //$log = shell_exec("mediainfo --Output=XML ". $filename);
 $xml = new SimpleXMLElement($output);
 //$xml = simplexml_load_file("/tmp/mediainfo.xml");
@@ -70,7 +70,8 @@ if (isset($general->File_size[0]))
 }
 if (isset($general->Duration[0]))
 {
-    $exif['duration'] = (string)$general->Duration[0];
+    $exif['duration'] = (string)$general->Duration[4];
+    $exif['playtime_seconds'] = (int)($general->Duration[0]/1000);
 }
 if (isset($general->Overall_bit_rate[0]))
 {
