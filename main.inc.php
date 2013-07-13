@@ -175,14 +175,6 @@ function vjs_render_media($content, $picture)
 	// Try to guess the poster extension
 	$parts = pathinfo($picture['current']['element_url']);
 	$poster = embellish_url( getposterfile( Array(
-		$fileinfo['filepath']."/".$parts['filename'].".png" =>
-			get_gallery_home_url() . $parts['dirname'] . "/".$parts['filename'].".png",
-		$fileinfo['filepath']."/".$parts['filename'].".jpg" =>
-			get_gallery_home_url() . $parts['dirname'] . "/".$parts['filename'].".jpg",
-		$fileinfo['filepath']."/thumbnail/TN-".$parts['filename'].".jpg" =>
-			get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-".$parts['filename'].".jpg",
-		$fileinfo['filepath']."/thumbnail/TN-".$parts['filename'].".png" =>
-			get_gallery_home_url() . $parts['dirname'] . "/thumbnail/TN-".$parts['filename'].".png",
 		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".jpg" =>
 			get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
 		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".png" =>
@@ -197,10 +189,6 @@ function vjs_render_media($content, $picture)
 	if ($conf['vjs_conf']['plugins']['thumbnails'])
 	{
 		$filematch = $parts['dirname']."/pwg_representative/".$parts['filename']."-th_*";
-                if ($conf['piwigo_db_version'] == "2.4")
-                {
-                    $filematch = $parts['dirname']."/thumbnail/".$parts['filename']."-th_*";
-                }
 		$matches = glob($filematch);
 
 		if ( is_array ( $matches ) ) {

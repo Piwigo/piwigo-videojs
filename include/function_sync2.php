@@ -124,11 +124,6 @@ while ($row = pwg_db_fetch_assoc($result))
             /* Init value */
             $file_wo_ext = pathinfo($row['file']);
             $output_dir = dirname($row['path']) . '/pwg_representative/';
-            if ($conf['piwigo_db_version'] == "2.4")
-            {
-                $file_wo_ext['filename'] = "TN-" . $file_wo_ext['filename'];
-                $output_dir = dirname($row['path']) . '/thumbnail/';
-            }
             $in = $filename;
             $out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['output'];
             /* report it */
@@ -197,10 +192,6 @@ while ($row = pwg_db_fetch_assoc($result))
                 /* Init value */
                 $file_wo_ext = pathinfo($row['file']);
                 $output_dir = dirname($row['path']) . '/pwg_representative/';
-                if ($conf['piwigo_db_version'] == "2.4")
-                {
-                    $output_dir = dirname($row['path']) . '/thumbnail/';
-                }
 
                 if (!is_dir($output_dir) or !is_writable($output_dir))
                 {
