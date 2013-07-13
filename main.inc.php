@@ -184,6 +184,23 @@ function vjs_render_media($content, $picture)
 	// poster should be ./galleries/videos/pwg_representative/trailer_480p.jpg
 	//$picture['current']['src_image']['rel_path']
 
+	// Try to find multiple video source
+	$vjs_extensions = array('ogg', 'mp4', 'm4v', 'ogv', 'webm', 'webmv');
+	// Add the current file in array
+	$videos = array(embellish_url(get_gallery_home_url() . $picture['current']['element_url']));
+	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
+	foreach ($files_ext as $file_ext) {
+		$file = $fileinfo['filepath']."/pwg_representative/".$parts['filename'].".".$file_ext;
+		if (file_exists($file)){
+			array_push($videos,
+				   embellish_url(
+						 get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".".$file_ext
+						)
+				  );
+		}
+	}
+	//print_r($videos);
+
 	/* Thumbnail videojs plugin */
 	$thumbnails = array();
 	if ($conf['vjs_conf']['plugins']['thumbnails'])
