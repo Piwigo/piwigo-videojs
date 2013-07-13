@@ -15,6 +15,8 @@ Upload this in ``your-gallery/plugins/`` dir.
         wget -O piwigo-videojs.zip https://github.com/xbgmsharp/piwigo-videojs/archive/master.zip
 
         unzip piwigo-videojs.zip
+        
+        mv piwigo-videojs-master piwigo-videojs
 
 * or clone the project 
 
@@ -49,6 +51,8 @@ Credit
 ------
 
 * [videojs](http://videojs.com/)
+* [MediaInfo](http://mediaarea.net/en/MediaInfo)
+* [FFmpeg](http://www.ffmpeg.org/)
 * [getid3](http://getid3.sourceforge.net/)
 * [piwigo-jplayer](https://github.com/d-matt/piwigo-jplayer)
 
