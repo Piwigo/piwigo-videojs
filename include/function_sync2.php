@@ -196,6 +196,7 @@ while ($row = pwg_db_fetch_assoc($result))
             {
                 /* Init value */
                 $file_wo_ext = pathinfo($row['file']);
+                $output_dir = dirname($row['path']) . '/pwg_representative/';
                 if ($conf['piwigo_db_version'] == "2.4")
                 {
                     $output_dir = dirname($row['path']) . '/thumbnail/';
@@ -207,6 +208,7 @@ while ($row = pwg_db_fetch_assoc($result))
                 }
                 else if ($sync_options['thumbsec'] and !$sync_options['simulate'])
                 {
+                    $in = $filename;
                     for ($second=0; $second <= $exif['playtime_seconds']; $second+=$sync_options['thumbsec'])
                     {
                         $out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];

@@ -63,27 +63,49 @@ function vjs_loc_end_element_set_global()
 	global $template;
 	$template->append('element_set_global_plugins_actions',
 		array('ID' => 'videojs', 'NAME'=>l10n('Videos'), 'CONTENT' => '
+    <legend>Synchronize metadata</legend>
     <ul>
       <li>
 	<label><input type="checkbox" name="vjs_metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
 	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
       </li>
+    </ul>
+    <legend>Poster</legend>
+    <ul>
       <li>
-	<label><input type="checkbox" name="vjs_thumb" value="1" checked="checked" /> Create thumbnail at position in second:</label>
-	<!-- <input type="range" name="vjs_thumbsec" value="4" min="0" max="60" step="1"/> -->
-	<input type="text" name="vjs_thumbsec" value="4" size="2" required/>
-	<br/><small>Create a thumbnail from the video at specify position, it will overwrite any existing poster.</small>
+	<label><input type="checkbox" name="vjs_poster" value="1" checked="checked" /> Create a poster at position in second:</label>
+	<!-- <input type="range" name="vjs_postersec" value="4" min="0" max="60" step="1"/> -->
+	<input type="text" name="vjs_postersec" value="4" size="2" required/>
+	<br/><small>Create a poster from the video at specify position.</small>
+      </li>
+      <li>
+	<label><input type="checkbox" name="vjs_posteroverwrite" value="1" checked="checked"> Overwrite existing posters</label>
+	<br/><small>Overwrite existing thumbnails with new ones. If uncheck it should only run for newly added video.</small>
       </li>
       <li>
 	<label><span class="property">Output format : </span></label>
-	<label><input type="radio" name="vjs_thumbouput" value="jpg" checked="checked"/> JPG</label>
-	<label><input type="radio" name="vjs_thumbouput" value="png" /> PNG</label>
-	<br/><small>Select the output format for the thumbnail</small>
+	<label><input type="radio" name="vjs_output" value="jpg" checked="checked"/> JPG</label>
+	<label><input type="radio" name="vjs_output" value="png" /> PNG</label>
+	<br/><small>Select the output format for the poster and thumbnail.</small>
       </li>
       <li>
-	<label><input type="checkbox" name="vjs_thumboverlay" value="1" > Add film effect</label>
+	<label><input type="checkbox" name="vjs_posteroverlay" value="1" /> Add film effect</label>
 	<br/><small>Apply an overlay on the poster creation.</small>
+      </li>
+    </ul>
+    <legend>Thumbnail</legend>
+    <ul>
+      <li>
+	<label><input type="checkbox" name="vjs_thumb" value="1" /> Create a thumbnail at every seconds:</label>
+	<!-- <input type="range" name="vjs_thumbsec" value="5" min="0" max="60" step="1"/> -->
+	<input type="text" name="vjs_thumbsec" value="5" size="2" required/>
+	<br/><small>Create a thumbnail every x seconds. <strong>Use by the videoJS plugin thumbnail</strong>.</small>
+      </li>
+      <li>
+	<label>Size of the thumbnail:</label>
+	<input type="text" name="vjs_thumbsize" value="120x68" size="3" placeholder="120x68" required/>
+	<br/><small>Size in pixel, keep it small, default is fine, Youtube use 190x68.</small>
       </li>
     </ul>
 '));
@@ -104,17 +126,21 @@ function vjs_element_set_global_action($action, $collection)
 
 	// Override default value from the form
 	$sync_options = array(
-		'metadata' 	=> isset($_POST['vjs_metadata']),
-		'thumb' 	=> isset($_POST['vjs_thumb']),
-		'thumbsec' 	=> $_POST['vjs_thumbsec'],
-		'thumbouput'    => $_POST['vjs_thumbouput'],
-		'thumboverlay'  => isset($_POST['vjs_thumboverlay']),
-		'simulate' 	=> false,
-		'sync_gps' 	=> true,
+	    'metadata'          => isset($_POST['vjs_metadata']),
+	    'poster'            => isset($_POST['vjs_poster']),
+	    'postersec'         => $_POST['vjs_postersec'],
+	    'output'            => $_POST['vjs_output'],
+	    'posteroverlay'     => isset($_POST['vjs_posteroverlay']),
+	    'posteroverwrite'   => isset($_POST['vjs_posteroverwrite']),
+	    'thumb'             => isset($_POST['vjs_thumb']),
+	    'thumbsec'          => $_POST['vjs_thumbsec'],
+	    'thumbsize'         => $_POST['vjs_thumbsize'],
+	    'simulate'          => false,
+	    'sync_gps'          => true,
 	);
 
 	// Do the work, share with batch manager
-	require_once(dirname(__FILE__).'/../include/function_sync.php');
+	require_once(dirname(__FILE__).'/../include/function_sync2.php');
 
 	$page['errors'] = $errors;
 	$page['warnings'] = $warnings;
@@ -133,18 +159,22 @@ function vjs_loc_begin_element_set_unit()
 	$collection = explode(',', $_POST['element_ids']);
 	foreach ($collection as $id)
 	{
-		if (!isset($_POST['vjs_thumbsec-'.$id]))
+		if (!isset($_POST['vjs_metadata-'.$id]) and !isset($_POST['vjs_poster-'.$id]) and !isset($_POST['vjs_thumb-'.$id]))
 			return;
 
 		// Override default value from the form
 		$sync_options = array(
-			'metadata'	=> isset($_POST['vjs_metadata-'.$id]),
-			'thumb'		=> isset($_POST['vjs_thumb-'.$id]),
-			'thumbsec'	=> $_POST['vjs_thumbsec-'.$id],
-			'thumbouput'    => $_POST['vjs_thumbouput-'.$id],
-			'thumboverlay'  => isset($_POST['vjs_thumboverlay-'.$id]),
-			'simulate'	=> false,
-			'sync_gps'	=> true,
+		    'metadata'          => isset($_POST['vjs_metadata-'.$id]),
+		    'poster'            => isset($_POST['vjs_poster-'.$id]),
+		    'postersec'         => $_POST['vjs_postersec-'.$id],
+		    'output'            => $_POST['vjs_output-'.$id],
+		    'posteroverlay'     => isset($_POST['vjs_posteroverlay-'.$id]),
+		    'posteroverwrite'   => isset($_POST['vjs_posteroverwrite-'.$id]),
+		    'thumb'             => isset($_POST['vjs_thumb-'.$id]),
+		    'thumbsec'          => $_POST['vjs_thumbsec-'.$id],
+		    'thumbsize'         => $_POST['vjs_thumbsize-'.$id],
+		    'simulate'          => false,
+		    'sync_gps'          => true,
 		);
 
 		$query = "SELECT `id`, `file`, `path`
@@ -152,7 +182,7 @@ function vjs_loc_begin_element_set_unit()
 				WHERE `id`='".$id."';";
 
 		// Do the work, share with batch manager
-		include(dirname(__FILE__).'/../include/function_sync.php');
+		include(dirname(__FILE__).'/../include/function_sync2.php');
 
 		$page['errors'] = array_merge($page['errors'], $errors);
 		$page['infos'] = array_merge($page['infos'], $infos);
@@ -175,24 +205,53 @@ function vjs_prefilter_batch_manager_unit($content)
 	if ($pos!==false)
 	{
 		$add = '<tr><td><strong>{\'VideoJS\'|@translate}</strong></td>
-		  <td>
-		    <label><input type="checkbox" name="vjs_metadata-{$element.id}" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
-		    <br/><small>Will overwrite the information in the database with the metadata from the video.</small>
-		    <br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
-		    <br/>
-		    <label><input type="checkbox" name="vjs_thumb-{$element.id}" value="1" checked="checked" /> Create thumbnail at position in second:</label>
-		    <!-- <input type="range" name="vjs_thumbsec" value="4" min="0" max="60" step="1"/> -->
-		    <input type="text" name="vjs_thumbsec-{$element.id}" value="4" size="2" required/>
-		    <br/><small>Create a thumbnail from the video at specify position, it will overwrite any existing poster.</small>
-		    <br/>
-		    <label><span class="property">Output format : </span></label>
-		    <label><input type="radio" name="vjs_thumbouput-{$element.id}" value="jpg" checked="checked"/> JPG</label>
-		    <label><input type="radio" name="vjs_thumbouput-{$element.id}" value="png" /> PNG</label>
-		    <br/><small>Select the output format for the thumbnail</small>
-		    <br/>
-		    <label><input type="checkbox" name="vjs_thumboverlay-{$element.id}" value="1" > Add film effect</label>
-		    <br/><small>Apply an overlay on the poster creation.</small>
-		    <br/>
+
+		  <td style="border: 2px solid rgb(221, 221, 221);">
+    <legend>Synchronize metadata</legend>
+    <ul>
+      <li>
+	<label><input type="checkbox" name="vjs_metadata-{$element.id}" value="1"/> filesize, width, height, latitude, longitude</label>
+	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
+	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
+      </li>
+    </ul>
+    <legend>Poster</legend>
+    <ul>
+      <li>
+	<label><input type="checkbox" name="vjs_poster-{$element.id}" value="1"/> Create a poster at position in second:</label>
+	<!-- <input type="range" name="vjs_postersec-{$element.id}" value="4" min="0" max="60" step="1"/> -->
+	<input type="text" name="vjs_postersec-{$element.id}" value="4" size="2" required/>
+	<br/><small>Create a poster from the video at specify position.</small>
+      </li>
+      <li>
+	<label><input type="checkbox" name="vjs_posteroverwrite-{$element.id}" value="1" checked="checked"> Overwrite existing posters</label>
+	<br/><small>Overwrite existing thumbnails with new ones. If uncheck it should only run for newly added video.</small>
+      </li>
+      <li>
+	<label><span class="property">Output format : </span></label>
+	<label><input type="radio" name="vjs_output-{$element.id}" value="jpg" checked="checked"/> JPG</label>
+	<label><input type="radio" name="vjs_output-{$element.id}" value="png" /> PNG</label>
+	<br/><small>Select the output format for the poster and thumbnail.</small>
+      </li>
+      <li>
+	<label><input type="checkbox" name="vjs_posteroverlay-{$element.id}" value="1" /> Add film effect</label>
+	<br/><small>Apply an overlay on the poster creation.</small>
+      </li>
+    </ul>
+    <legend>Thumbnail</legend>
+    <ul>
+      <li>
+	<label><input type="checkbox" name="vjs_thumb-{$element.id}" value="1" /> Create a thumbnail at every seconds:</label>
+	<!-- <input type="range" name="vjs_thumbsec-{$element.id}" value="5" min="0" max="60" step="1"/> -->
+	<input type="text" name="vjs_thumbsec-{$element.id}" value="5" size="2" required/>
+	<br/><small>Create a thumbnail every x seconds. <strong>Use by the videoJS plugin thumbnail</strong>.</small>
+      </li>
+      <li>
+	<label>Size of the thumbnail:</label>
+	<input type="text" name="vjs_thumbsize-{$element.id}" value="120x68" size="3" placeholder="120x68" required/>
+	<br/><small>Size in pixel, keep it small, default is fine, Youtube use 190x68.</small>
+      </li>
+    </ul>
 		  </td>
 		</tr>';
 		$content = substr_replace($content, $add, $pos, 0);
