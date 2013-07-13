@@ -129,12 +129,13 @@ function vjs_render_media($content, $picture)
 	}
 
 	// Resize if video is too large
+	//print $width .">". $MAX_WIDTH;
 	if ( $width > $MAX_WIDTH )
 	{
-		//$height = intval($height * ($MAX_WIDTH / $width));
-		//$width  = $MAX_WIDTH;
-		$height = intval($height / 2);
-		$width = intval($width / 2);
+		$height = intval($height * ($MAX_WIDTH / $width));
+		$width  = $MAX_WIDTH;
+		//$height = intval($height / 2);
+		//$width = intval($width / 2);
 	}
 
 	// Slideshow : The video needs to be launch automatically in
