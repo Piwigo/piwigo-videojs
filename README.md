@@ -8,7 +8,7 @@ Piwigo-videojs is a [plugin](http://piwigo.org/ext/extension_view.php?eid=610) f
 Installation
 ------------
 
-Upload this in ``your-gallery/plugins/`` dir.
+Upload this in ``your-gallery/plugins/`` directory.
 
 * download the archive from github
 
@@ -23,6 +23,14 @@ Upload this in ``your-gallery/plugins/`` dir.
         git clone git://github.com/xbgmsharp/piwigo-videojs.git
 
 Then, go to the admin site, in the plugin section and activate it.
+
+Requirement
+-----------
+
+Piwigo-videojs require those 2 programs to be install on your system:
+
+* [MediaInfo](http://mediaarea.net/en/MediaInfo)
+* [FFmpeg](http://www.ffmpeg.org/)
 
 Supported formats
 -----------------
@@ -47,12 +55,10 @@ To get support, please create new [issue](https://github.com/xbgmsharp/piwigo-vi
 
 Help me improve the plugin, rate my [plugin](http://piwigo.org/ext/extension_view.php?eid=610), and if possible please send a greeting message to me ;)
 
-Credit
+Thanks
 ------
 
 * [videojs](http://videojs.com/)
-* [MediaInfo](http://mediaarea.net/en/MediaInfo)
-* [FFmpeg](http://www.ffmpeg.org/)
 * [getid3](http://getid3.sourceforge.net/)
 * [piwigo-jplayer](https://github.com/d-matt/piwigo-jplayer)
 
