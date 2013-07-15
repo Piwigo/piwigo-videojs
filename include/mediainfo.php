@@ -77,7 +77,7 @@ if (isset($general->Overall_bit_rate[0]))
 {
     $exif['overall_bit_rate'] = (string)$general->Overall_bit_rate[0];
 }
-if (isset($general->xyz[0]))
+if (isset($general->xyz[0]) and $sync_options['sync_gps'])
 {
     //$test = "+35.6445-139.7455-029.201/";
     //print_r(preg_split('/(\+|\-)/', $general->xyz[0], -1, PREG_SPLIT_DELIM_CAPTURE));
@@ -133,7 +133,7 @@ if (isset($video->Display_aspect_ratio[1]))
 {
     $exif['display_aspect_ratio'] = (string)$video->Display_aspect_ratio[1];
 }
-if (isset($video->Rotation[0]))
+if (isset($video->Rotation[0]) and (int)$video->Rotation[0] != 0)
 {
     include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
     //print (int)$video->Rotation[0];
