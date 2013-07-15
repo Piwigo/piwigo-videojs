@@ -6,7 +6,7 @@ Extend Piwigo with video support. [Videojs](http://videojs.com/) port for piwigo
 Piwigo-videojs is a [plugin](http://piwigo.org/ext/extension_view.php?eid=610) for the [Piwigo](http://piwigo.org/) web gallery that allows you to render various video files within your piwigo install.
 
 Installation
-------------
+-----
 
 Upload this in ``your-gallery/plugins/`` directory.
 
@@ -25,7 +25,7 @@ Upload this in ``your-gallery/plugins/`` directory.
 Then, go to the admin site, in the plugin section and activate it.
 
 Requirement
------------
+-----
 
 Piwigo-videojs require those 2 programs to be install on your system:
 
@@ -33,7 +33,7 @@ Piwigo-videojs require those 2 programs to be install on your system:
 * [FFmpeg](http://www.ffmpeg.org/)
 
 Supported formats
------------------
+-----
 
 ### Videos ###
 
@@ -56,7 +56,7 @@ To get support, please create new [issue](https://github.com/xbgmsharp/piwigo-vi
 Help me improve the plugin, rate my [plugin](http://piwigo.org/ext/extension_view.php?eid=610), and if possible please send a greeting message to me ;)
 
 Thanks
-------
+-----
 
 * [videojs](http://videojs.com/)
 * [getid3](http://getid3.sourceforge.net/)
