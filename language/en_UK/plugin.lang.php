@@ -15,12 +15,12 @@ $lang['SKIN'] = 'Skin';
 $lang['SKIN_DESC'] = 'Select the style you want to apply to the player.';
 $lang['CUSTOMCSS'] = 'Custom CSS';
 $lang['CUSTOMCSS_DESC'] = 'Custom CSS to copy paste from the VideoJS website.';
-$lang['WIDTH'] = 'Max Width';
-$lang['WIDTH_DESC'] = 'The max width attribute sets the display width of the video, if higher it is divide by 2.';
+$lang['WIDTH'] = 'Max width';
+$lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video, if higher the witdh became the max width.';
 
 $lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
 $lang['ZOOMROTATE'] = 'ZoomRotate';
-$lang['ZOOMROTATE_DESC'] = 'Rotate and zoom a video, if specify via <a href="http://piwigo.org/ext/extension_view.php?eid=578" target="_blank">rotateImage plugin</a>.';
+$lang['ZOOMROTATE_DESC'] = 'Rotate and zoom a video if applicable, use the rotation metadata.';
 $lang['THUMBNAILS'] = 'Thumbnails';
 $lang['THUMBNAILS_DESC'] = 'Displays thumbnail images over the progress bar.';
 $lang['WATERMARK'] = 'Watermark';

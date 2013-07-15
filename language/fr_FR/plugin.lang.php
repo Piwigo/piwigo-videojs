@@ -14,13 +14,13 @@ $lang['PLUGIN'] = 'Plugin préférences';
 $lang['SKIN'] = 'Style';
 $lang['SKIN_DESC'] = 'Selectionner un style a appliquer au lecteur.';
 $lang['CUSTOMCSS'] = 'Custom CSS';
-$lang['CUSTOMCSS_DESC'] = 'Custom CSS to copy paste from the VideoJS website.';
-$lang['WIDTH'] = 'Max Width';
-$lang['WIDTH_DESC'] = 'The max width attribute sets the display width of the video. if higher it is divide by 2.';
+$lang['CUSTOMCSS_DESC'] = 'Custom CSS a copier coller depuis le site web de VideoJS.';
+$lang['WIDTH'] = 'Max width';
+$lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video. if higher the witdh became the max width.';
 
 $lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
 $lang['ZOOMROTATE'] = 'ZoomRotate';
-$lang['ZOOMROTATE_DESC'] = 'Rotate and zoom a video, if specify via <a href="http://piwigo.org/ext/extension_view.php?eid=578" target="_blank">rotateImage plugin</a>.';
+$lang['ZOOMROTATE_DESC'] = 'Rotate and zoom a video if applicable, use the rotation metadata.';
 $lang['THUMBNAILS'] = 'Thumbnails';
 $lang['THUMBNAILS_DESC'] = 'Displays thumbnail images over the progress bar.';
 $lang['WATERMARK'] = 'Watermark';
