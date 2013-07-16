@@ -195,7 +195,12 @@ add_event_handler('loc_end_element_set_unit', 'vjs_loc_end_element_set_unit');
 function vjs_loc_end_element_set_unit()
 {
 	global $template, $conf, $page, $is_category, $category_info;
-	$template->set_prefilter('batch_manager_unit', 'vjs_prefilter_batch_manager_unit');
+
+	$var = $template->get_template_vars();
+	{
+		if(!empty($element['representative_ext']) and $element['representative_ext'] != NULL)
+			$template->set_prefilter('batch_manager_unit', 'vjs_prefilter_batch_manager_unit');
+	}
 }
 
 function vjs_prefilter_batch_manager_unit($content)
@@ -205,7 +210,6 @@ function vjs_prefilter_batch_manager_unit($content)
 	if ($pos!==false)
 	{
 		$add = '<tr><td><strong>{\'VideoJS\'|@translate}</strong></td>
-
 		  <td style="border: 2px solid rgb(221, 221, 221);">
     <legend>Synchronize metadata</legend>
     <ul>
