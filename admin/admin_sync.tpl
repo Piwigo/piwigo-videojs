@@ -95,9 +95,10 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <legend>{'Synchronize metadata'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
+	<label><input type="checkbox" name="metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
 	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">'OpenStreetMap'</a> or 'RV Maps & Earth' plugin.</strong></small>
+	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">'MediaInfo'</a> to be install.</strong></small>
       </li>
     </ul>
   </fieldset>
@@ -110,6 +111,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 	<!-- <input type="range" name="postersec" value="4" min="0" max="60" step="1"/> -->
 	<input type="text" name="postersec" value="4" size="2" required/>
 	<br/><small>Create a poster from the video at specify position.</small>
+	<small><strong>Require <a href="http://www.ffmpeg.org/" target="_blanck">'FFmpeg'</a> to be install.</strong></small>
       </li>
       <li>
 	<label><input type="checkbox" name="posteroverwrite" value="1" checked="checked"> Overwrite existing posters</label>
