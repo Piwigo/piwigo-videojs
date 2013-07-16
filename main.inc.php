@@ -188,16 +188,17 @@ function vjs_render_media($content, $picture)
 
 	// Try to find multiple video source
 	$vjs_extensions = array('ogg', 'mp4', 'm4v', 'ogv', 'webm', 'webmv');
+	$vjs_types = array( 'ogg'   => 'video/ogg', 'ogv'   => 'video/ogg', 'mp4'   => 'video/mp4', 'm4v'   => 'video/mp4', 'webm'  => 'video/webm', 'webmv' => 'video/webm');
 	// Add the current file in array
-	$videos = array(embellish_url(get_gallery_home_url() . $picture['current']['element_url']));
+	$videos = array();
+	$videos[$vjs_types[strtolower($parts['extension'])]] = embellish_url(get_gallery_home_url() . $picture['current']['element_url']);
 	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 	foreach ($files_ext as $file_ext) {
 		$file = $fileinfo['filepath']."/pwg_representative/".$parts['filename'].".".$file_ext;
 		if (file_exists($file)){
-			array_push($videos,
+			$videos[$vjs_types[strtolower($file_ext)]] = 
 				   embellish_url(
 						 get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".".$file_ext
-						)
 				  );
 		}
 	}
