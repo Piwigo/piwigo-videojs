@@ -115,9 +115,8 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 
 // Check the presence of the DB schema
 $sync_options['sync_gps'] = true;
-$q = 'SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = "'.IMAGES_TABLE.'" AND COLUMN_NAME = "lat" OR COLUMN_NAME = "lon"';
-list($result) = pwg_db_fetch_row( pwg_query($q) );
-if($result != 4)
+$result = pwg_query('SHOW COLUMNS FROM '.IMAGES_TABLE.' LIKE "lat";');
+if (!pwg_db_num_rows($result))
 {
     $sync_options['sync_gps'] = false;
 }
