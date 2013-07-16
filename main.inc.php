@@ -18,6 +18,7 @@ global $conf;
 
 // Prepare configuration
 $conf['vjs_conf'] = unserialize($conf['vjs_conf']);
+$conf['derivatives'] = unserialize($conf['derivatives']);
 
 // Register the allowed extentions to the global conf in order
 // to sync them with other contents
@@ -249,17 +250,17 @@ function vjs_render_media($content, $picture)
 	$watermark = array();
 	if ($conf['vjs_conf']['plugins']['watermark'])
 	{
-		if (unserialize($conf['derivatives'])['w']->file != null)
+		if ($conf['derivatives']['w']->file != null)
 		{
 			// watermark is $conf['derivatives']['w']
 			//$watermark = unserialize($conf['derivatives'])['w'];
 			// Cannot use object of type WatermarkParams as array
 			$watermark = array(
-						'file'		=> embellish_url(get_gallery_home_url() . unserialize($conf['derivatives'])['w']->file),
-						'xpos'		=> unserialize($conf['derivatives'])['w']->xpos,
-						'ypos'		=> unserialize($conf['derivatives'])['w']->ypos,
-						'xrepeat'	=> unserialize($conf['derivatives'])['w']->xrepeat,
-						'opacity'	=> unserialize($conf['derivatives'])['w']->opacity,
+						'file'		=> embellish_url(get_gallery_home_url() . $conf['derivatives']['w']->file),
+						'xpos'		=> $conf['derivatives']['w']->xpos,
+						'ypos'		=> $conf['derivatives']['w']->ypos,
+						'xrepeat'	=> $conf['derivatives']['w']->xrepeat,
+						'opacity'	=> $conf['derivatives']['w']->opacity,
 					);
 		}
 	}
