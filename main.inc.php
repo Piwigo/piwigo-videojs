@@ -88,19 +88,7 @@ function vjs_render_media($content, $picture)
 	//print "getID3\n";
 	//print_r($fileinfo);
 
-	$extension = strtolower(get_extension($picture['current']['path']));
-	if ($extension == "m4v")
-	{
-		$extension = "mp4";
-	}
-	else if ($extension == "webmv")
-	{
-		$extension = "webm4";
-	}
-	else if ($extension == "ogv")
-	{
-		$extension = "ogg";
-	}
+	$extension = get_mimetype_from_ext(get_extension($picture['current']['path']));
 	//print "extension\n";
 	//print_r($extension);
 
@@ -188,16 +176,22 @@ function vjs_render_media($content, $picture)
 
 	// Try to find multiple video source
 	$vjs_extensions = array('ogg', 'mp4', 'm4v', 'ogv', 'webm', 'webmv');
-	// Add the current file in array
-	$videos = array(embellish_url(get_gallery_home_url() . $picture['current']['element_url']));
 	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
+	// Add the current file in array
+	$videos[] = array(
+				'src' => embellish_url(get_gallery_home_url() . $picture['current']['element_url']),
+				'ext' => $extension,
+			);
 	foreach ($files_ext as $file_ext) {
 		$file = $fileinfo['filepath']."/pwg_representative/".$parts['filename'].".".$file_ext;
 		if (file_exists($file)){
 			array_push($videos,
-				   embellish_url(
-						 get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".".$file_ext
-						)
+				   array (
+					'src' => embellish_url(
+						      get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".".$file_ext
+						     ),
+					'ext' => get_mimetype_from_ext($file_ext)
+					)
 				  );
 		}
 	}
@@ -221,6 +215,7 @@ function vjs_render_media($content, $picture)
 			}
 		}
 		//$thumbnails = array( array('second' => 0, 'source' => $poster), array('second' => 5, 'source' => $poster));
+		//print_r($thumbnails);
 	}
 
 	/* ZoomRotate videojs plugin */
@@ -301,6 +296,7 @@ function vjs_render_media($content, $picture)
 			'thumbnails'		=> $thumbnails,
 			'zoomrotate'		=> $zoomrotate,
 			'watermark'		=> $watermark,
+			'videos'		=> $videos,
 		)
 	);
 
@@ -329,6 +325,24 @@ function getposterfile($file_list)
 		if (file_exists($file)) return $url;
 	}
 	return '';
+}
+
+function get_mimetype_from_ext($file_ext)
+{
+	$extension = strtolower($file_ext);
+	if ($extension == "m4v")
+	{
+		$extension = "mp4";
+	}
+	else if ($extension == "webmv")
+	{
+		$extension = "webm4";
+	}
+	else if ($extension == "ogv")
+	{
+		$extension = "ogg";
+	}
+	return $extension;
 }
 
 function vjs_dbSet($fields, $data = array())

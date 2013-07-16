@@ -26,8 +26,14 @@
 
 {literal}
 <video id="my_video_1" class="video-js {/literal}{$VIDEOJS_SKIN}{literal}" {/literal}{$OPTIONS}{literal} width={/literal}"{$WIDTH}"{literal} height={/literal}"{$HEIGHT}"{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} data-setup='{}'>
-  <source src={/literal}"{$VIDEOJS_MEDIA_URL}"{literal} type='video/{/literal}{$TYPE}{literal}'>
-  <p>Video Playback Not Supported<br/>Your browser does not support the video tag.</p>
+{/literal}
+{if not empty($videos)}
+{foreach from=$videos item=video}
+{literal}    <source src={/literal}"{$video.src}"{literal} type='video/{/literal}{$video.ext}{literal}'>{/literal}
+{/foreach}
+{/if}
+{literal}
+    <p>Video Playback Not Supported<br/>Your browser does not support the video tag.</p>
 </video>
 {/literal}
 
