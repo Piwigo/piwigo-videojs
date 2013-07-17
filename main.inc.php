@@ -147,7 +147,7 @@ function vjs_render_media($content, $picture)
 	// Assing the CSS file according to the skin
 	$available_skins = array(
 		'vjs-default-skin' => 'video-js.min.css',
-		'vjs-youtube-skin' => 'redtube-skin.css',
+		'vjs-redtube-skin' => 'redtube-skin.css',
 		'vjs-darkfunk-skin' => 'darkfunk-skin.css',
 		'vjs-redsheen-skin' => 'redsheen-skin.css',
 	);
@@ -191,6 +191,12 @@ function vjs_render_media($content, $picture)
 				  );
 		}
 	}
+	//print_r($videos);
+	foreach ($videos as $key => $row) {
+		$src[$key] = $row['src'];
+		$ext[$key] = $row['ext'];
+	}
+	array_multisort($src, SORT_ASC, $ext, SORT_ASC, $videos);
 	//print_r($videos);
 
 	/* Thumbnail videojs plugin */

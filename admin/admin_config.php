@@ -33,7 +33,7 @@ $customcss = $conf['vjs_customcss'] ? $conf['vjs_customcss'] : '';
 // Available skins
 $available_skins = array(
 	'vjs-default-skin' => 'default',
-	'vjs-youtube-skin' => 'youtube',
+	'vjs-redtube-skin' => 'redtube',
 	'vjs-darkfunk-skin' => 'darkfunk',
 	'vjs-redsheen-skin' => 'redsheen',
 );
