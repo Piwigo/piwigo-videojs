@@ -126,6 +126,13 @@ function vjs_render_media($content, $picture)
 		//$height = intval($height / 2);
 		//$width = intval($width / 2);
 	}
+	// Upscale if video is too small
+	$upscale = isset($conf['vjs_conf']['upscale']) ? strbool($conf['vjs_conf']['upscale']) : 'false';
+	if ( $upscale and $width < $MAX_WIDTH )
+	{
+		$height = intval($height * ($MAX_WIDTH / $width));
+		$width  = $MAX_WIDTH;
+	}
 
 	// Slideshow : The video needs to be launch automatically in
 	// slideshow mode. The refresh of the page is set to the
@@ -152,11 +159,6 @@ function vjs_render_media($content, $picture)
 		'vjs-redsheen-skin' => 'redsheen-skin.css',
 	);
 	$skincss = $available_skins[$skin];
-
-	// Select the template
-	$template->set_filenames(
-		array('vjs_content' => dirname(__FILE__)."/template/vjs-player.tpl")
-	);
 
 	// Try to guess the poster extension
 	$parts = pathinfo($picture['current']['element_url']);
@@ -278,6 +280,11 @@ function vjs_render_media($content, $picture)
 		$options .= " loop ";
 	}
 	$options .= ' preload="'. $preload .'"';
+
+	// Select the template
+	$template->set_filenames(
+		array('vjs_content' => dirname(__FILE__)."/template/vjs-player.tpl")
+	);
 
 	// Assign the template variables
 	// We use here the piwigo's get_gallery_home_url function to build

@@ -45,10 +45,14 @@ $available_preload = array(
 );
 
 // Available width value
+// http://en.wikipedia.org/wiki/Display_resolution
 $available_width = array(
 	'720' => 'EDTV: (720x480) ie: 480p',
+	//'720' => 'EDTV: (720×576) ie: 576p',
 	'1280' => 'HDReady: (1280x720) ie: 720p',
 	'1920' => 'FullHD: (1920x1080) ie: 1080p',
+	'3840' => '4k UHDTV: (3840×2160) ie: 2160p',
+	'7680' => '8k UHDTV: (7680×4320) ie: 4320p',
 );
 
 // Update conf if submitted in admin site
@@ -62,6 +66,7 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 		'controls'      => get_boolean($_POST['vjs_controls']),
 		'autoplay'      => get_boolean($_POST['vjs_autoplay']),
 		'loop'          => get_boolean($_POST['vjs_loop']),
+		'upscale'       => get_boolean($_POST['vjs_upscale']),
                 'plugins'        => array(
                                     'zoomrotate'    => get_boolean($_POST['vjs_zoomrotate']),
                                     'thumbnails'    => get_boolean($_POST['vjs_thumbnails']),

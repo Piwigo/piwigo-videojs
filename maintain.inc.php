@@ -25,6 +25,9 @@
 
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
+global $prefixeTable;
+define('videojs_table', $prefixeTable.'image_videojs');
+
 function plugin_install()
 {
 	if (!defined('VIDEOJS_PATH'))
@@ -55,6 +58,7 @@ function plugin_install()
 		'controls'	=> true,
 		'autoplay'	=> false,
 		'loop'		=> false,
+		'upscale'	=> false,
 		'plugins'	=> array(
 					'zoomrotate'    => false,
 					'thumbnails'    => false,
@@ -76,18 +80,38 @@ function plugin_install()
 	/* Add a comment to the entry */
 	$q = 'UPDATE '.CONFIG_TABLE.' SET `comment` = "Custom CSS used by the piwigo-videojs plugin" WHERE `param` = "vjs_customcss";';
 	pwg_query( $q );
+
+	/* Table to hold videos metadata details */
+	$q = 'CREATE TABLE IF NOT EXISTS `'.videojs_table.'` (
+			`id` mediumint(8) NOT NULL,
+			`format` varchar(64) DEFAULT NULL,
+			`type` varchar(64) DEFAULT NULL,
+			`duration` varchar(64) DEFAULT NULL,
+			`overall_bit_rate` varchar(64) DEFAULT NULL,
+			`model` varchar(128) DEFAULT NULL,
+			`make` varchar(128) DEFAULT NULL,
+			`display_aspect_ratio` varchar(8) DEFAULT NULL,
+			`width` smallint(9) DEFAULT NULL,
+			`height` smallint(9) DEFAULT NULL,
+			`frame_rate` varchar(64) DEFAULT NULL,
+			`channel` varchar(64) DEFAULT NULL,
+			`sampling_rate` varchar(64) DEFAULT NULL,
+			PRIMARY KEY (id)
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8
+		;';
+	//pwg_query($q);
 }
 
 function plugin_uninstall()
 {
-	/* Delete all files */
-/* Don't remove myself on restore settings
-	if (is_dir(VIDEOJS_PATH))
-	{
-		deltree(VIDEOJS_PATH);
-	}
-*/
+	global $prefixeTable;
+
+	/* Drop VideoJS configuration settings */
 	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%" LIMIT 2;';
+	pwg_query( $q );
+
+	/* Drop VideoJS metadata table */
+	$q = 'DROP TABLE '.$prefixeTable.'image_videojs'.';';
 	pwg_query( $q );
 	// TODO : Do we need to purge the videos from the images table?
 }
@@ -101,7 +125,7 @@ function plugin_activate()
 
 	if ( (!isset($conf['vjs_conf'])) or (!isset($conf['vjs_customcss']))
 	    or (!empty($conf['vjs_conf']))
-	    or (count($conf['vjs_conf'], COUNT_RECURSIVE) != 10))
+	    or (count($conf['vjs_conf'], COUNT_RECURSIVE) != 11))
 	{
 		plugin_install();
 	}

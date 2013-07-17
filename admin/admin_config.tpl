@@ -79,6 +79,12 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 				</select>
 				<br/><small>{'WIDTH_DESC'|@translate}</small>
 			</li>
+			<li>
+				<label><span class="property">{'UPSCALE'|@translate} : </span></label>
+				<label><input type="radio" name="vjs_upscale" value="true" {if $upscale}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_upscale" value="false" {if not $upscale}checked="checked"{/if}/> {'No'|@translate}</label>
+				<br/><small>{'UPSCALE_DESC'|@translate}</small>
+			</li>
 		<ul>
 	</fieldset>
 	<fieldset>
