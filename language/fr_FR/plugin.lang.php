@@ -12,7 +12,7 @@ $lang['LOOP_DESC'] = 'The loop attribute causes the video to start over as soon 
 
 $lang['PLUGIN'] = 'Plugin préférences';
 $lang['SKIN'] = 'Style';
-$lang['SKIN_DESC'] = 'Selectionner un style a appliquer au lecteur.';
+$lang['SKIN_DESC'] = 'Selectionner un style a appliquer au lecteur oru <a href="http://designer.videojs.com/" target="_blank">creer votre propre style</a>.';;
 $lang['CUSTOMCSS'] = 'Custom CSS';
 $lang['CUSTOMCSS_DESC'] = 'Custom CSS a copier coller depuis le site web de VideoJS.';
 $lang['WIDTH'] = 'Max width';
