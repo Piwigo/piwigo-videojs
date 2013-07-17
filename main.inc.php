@@ -145,17 +145,13 @@ function vjs_render_media($content, $picture)
 	$controls = isset($conf['vjs_conf']['controls']) ? strbool($conf['vjs_conf']['controls']) : 'false';
 
 	// Assing the CSS file according to the skin
-	$skincss = "";
-	if ($skin == 'vjs-default-skin')
-	{
-		$skincss = "video-js.min.css";
-	} else if ($skin == 'vjs-darkfunk-skin')
-	{
-		$skincss = "darkfunk-skin.css";
-	} else if ($skin == 'vjs-redsheen-skin')
-	{
-		$skincss = "redsheen-skin.css";
-	}
+	$available_skins = array(
+		'vjs-default-skin' => 'video-js.min.css',
+		'vjs-youtube-skin' => 'redtube-skin.css',
+		'vjs-darkfunk-skin' => 'darkfunk-skin.css',
+		'vjs-redsheen-skin' => 'redsheen-skin.css',
+	);
+	$skincss = $available_skins[$skin];
 
 	// Select the template
 	$template->set_filenames(
