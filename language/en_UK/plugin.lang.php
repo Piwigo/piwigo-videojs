@@ -14,9 +14,11 @@ $lang['PLUGIN'] = 'Plugin settings';
 $lang['SKIN'] = 'Skin';
 $lang['SKIN_DESC'] = 'Select the style you want to apply to the player or <a href="http://designer.videojs.com/" target="_blank">create your own skin</a>.';
 $lang['CUSTOMCSS'] = 'Custom CSS';
-$lang['CUSTOMCSS_DESC'] = 'Custom CSS to copy paste from the VideoJS website.';
+$lang['CUSTOMCSS_DESC'] = 'Custom CSS to copy paste from the <a href="http://www.videojs.com/" target="_blank">VideoJS website</a>.';
 $lang['WIDTH'] = 'Max width';
-$lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video, if higher the witdh became the max width.';
+$lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video, if the video size is higher the witdh became the max width.';
+$lang['UPSCALE'] = 'Upscale';
+$lang['UPSCALE_DESC'] = 'If the video size is smaller than max width, it will upscale the video size to max width.';
 
 $lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
 $lang['ZOOMROTATE'] = 'ZoomRotate';
