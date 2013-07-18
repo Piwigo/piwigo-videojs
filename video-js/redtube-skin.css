@@ -68,6 +68,7 @@ The control icons are from a custom font. Each icon corresponds to a character
   -ms-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
   transform: rotate(-45deg);
+  color: #fff;
 }
 /* Control Bar
 --------------------------------------------------------------------------------
@@ -115,6 +116,7 @@ The default control bar that is a container for most of the controls.
 /* Replacement for focus outline */
 .vjs-redtube-skin .vjs-control:focus:before,
 .vjs-redtube-skin .vjs-control:hover:before {
+  color: #fff;
   text-shadow: 0em 0em 1em #ffffff;
 }
 .vjs-redtube-skin .vjs-control:focus {
@@ -267,8 +269,7 @@ The default control bar that is a container for most of the controls.
   background: #b40c1e url() -50% 0 repeat;
 }
 .vjs-redtube-skin .vjs-load-progress {
-  background: #646464 /* IE8- Fallback */;
-  background: rgba(255, 255, 255, 0.4);
+  background: #757575;
 }
 .vjs-redtube-skin .vjs-seek-handle {
   width: 1.5em;
@@ -323,16 +324,17 @@ easily in the skin designer. http://designer.videojs.com/
 .vjs-redtube-skin .vjs-big-play-button {
   /* Center it horizontally */
   left: 50%;
-  margin-left: -2.1em;
+  margin-left: -1em;
   /* Center it vertically */
   top: 50%;
-  margin-top: -1.4000000000000001em;
-  font-size: 3em;
+  margin-top: -0.6em;
+  font-size: 5em;
+  color: #fff;
   display: block;
   z-index: 2;
   position: absolute;
-  width: 4em;
-  height: 2.6em;
+  width: 2em;
+  height: 1.2em;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
@@ -340,11 +342,11 @@ easily in the skin designer. http://designer.videojs.com/
   /* Need a slightly gray bg so it can be seen on black backgrounds */
   /* background-color-with-alpha */
   background-color: #b40c1e;
-  border: 0.1em solid #3b4249;
+  border: 0em solid #3b4249;
   /* border-radius */
-  -webkit-border-radius: 0.8em;
-  -moz-border-radius: 0.8em;
-  border-radius: 0.8em;
+  -webkit-border-radius: 0.3em;
+  -moz-border-radius: 0.3em;
+  border-radius: 0.3em;
   /* box-shadow */
   -webkit-box-shadow: 0px 0px 1em rgba(255, 255, 255, 0.25);
   -moz-box-shadow: 0px 0px 1em rgba(255, 255, 255, 0.25);
@@ -378,8 +380,8 @@ easily in the skin designer. http://designer.videojs.com/
   /* In order to center the play icon vertically we need to set the line height
      to the same as the button height */
 
-  line-height: 2.6em;
-  text-shadow: 0.05em 0.05em 0.1em #000;
+  line-height: 1.2em;
+  text-shadow: none;
   text-align: center /* Needed for IE8 */;
   position: absolute;
   left: 0;
