@@ -24,9 +24,9 @@ $conf['derivatives'] = unserialize($conf['derivatives']);
 // to sync them with other contents
 $vjs_extensions = array(
     'ogg',
+    'ogv',
     'mp4',
     'm4v',
-    'ogv',
     'webm',
     'webmv',
 );
@@ -57,6 +57,7 @@ function vjs_format_exif_data($exif, $file, $map)
 function vjs_render_media($content, $picture)
 {
 	global $template, $picture, $page, $conf, $user, $refresh;
+
 	//print_r( $picture['current']);
 	// do nothing if the current picture is actually an image !
 	if ( (array_key_exists('src_image', @$picture['current'])
@@ -65,7 +66,7 @@ function vjs_render_media($content, $picture)
 		return $content;
 	}
 
-	// In case, the we handle a large video, we define a MAX_WIDTH
+	// In case, we handle a large video, we define a MAX_WIDTH
 	// variable to limit the display size.
 	if (isset($user['maxwidth']) and $user['maxwidth']!='')
 	{
@@ -88,7 +89,7 @@ function vjs_render_media($content, $picture)
 	//print "getID3\n";
 	//print_r($fileinfo);
 
-	$extension = get_mimetype_from_ext(get_extension($picture['current']['path']));
+	$extension = vjs_get_mimetype_from_ext(get_extension($picture['current']['path']));
 	//print "extension\n";
 	//print_r($extension);
 
@@ -162,18 +163,17 @@ function vjs_render_media($content, $picture)
 
 	// Try to guess the poster extension
 	$parts = pathinfo($picture['current']['element_url']);
-	$poster = embellish_url( getposterfile( Array(
+	$poster = embellish_url( vjs_get_poster_file( Array(
 		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".jpg" =>
 			get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
 		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".png" =>
 			get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
 	)));
 	//print $poster;
-	// poster should be ./galleries/videos/pwg_representative/trailer_480p.jpg
-	//$picture['current']['src_image']['rel_path']
+	// poster should be $picture['current']['src_image']['rel_path']
 
 	// Try to find multiple video source
-	$vjs_extensions = array('ogg', 'mp4', 'm4v', 'ogv', 'webm', 'webmv');
+	$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
 	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 	// Add the current file in array
 	$videos[] = array(
@@ -188,12 +188,13 @@ function vjs_render_media($content, $picture)
 					'src' => embellish_url(
 						      get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".".$file_ext
 						     ),
-					'ext' => get_mimetype_from_ext($file_ext)
+					'ext' => vjs_get_mimetype_from_ext($file_ext)
 					)
 				  );
 		}
 	}
 	//print_r($videos);
+	// Sort array to have MP4 first in the source list for iOS support
 	foreach ($videos as $key => $row) {
 		$src[$key] = $row['src'];
 		$ext[$key] = $row['ext'];
@@ -202,8 +203,9 @@ function vjs_render_media($content, $picture)
 	//print_r($videos);
 
 	/* Thumbnail videojs plugin */
+	$thumbnails_plugin = isset($conf['vjs_conf']['plugins']['thumbnails']) ? strbool($conf['vjs_conf']['plugins']['thumbnails']) : 'false';
 	$thumbnails = array();
-	if ($conf['vjs_conf']['plugins']['thumbnails'])
+	if ($thumbnails_plugin)
 	{
 		$filematch = $parts['dirname']."/pwg_representative/".$parts['filename']."-th_*";
 		$matches = glob($filematch);
@@ -215,7 +217,10 @@ function vjs_render_media($content, $picture)
 			     $second = explode(".", $ext[1]);
 			     // ./galleries/videos/pwg_representative/trailer_480p-th_0.jpg
 			     //echo "$filename second " . $second[0]. "\n";
-			     $thumbnails[] = array('second' => $second[0], 'source' => embellish_url(get_gallery_home_url() . $filename));
+			     $thumbnails[] = array(
+						   'second' => $second[0],
+						   'source' => embellish_url(get_gallery_home_url() . $filename)
+						);
 			}
 		}
 		//$thumbnails = array( array('second' => 0, 'source' => $poster), array('second' => 5, 'source' => $poster));
@@ -223,8 +228,9 @@ function vjs_render_media($content, $picture)
 	}
 
 	/* ZoomRotate videojs plugin */
+	$zoomrotate_plugin = isset($conf['vjs_conf']['plugins']['zoomrotate']) ? strbool($conf['vjs_conf']['plugins']['zoomrotate']) : 'false';
 	$zoomrotate = array();
-	if ($conf['vjs_conf']['plugins']['zoomrotate'])
+	if ($zoomrotate_plugin)
 	{
 		if ($picture['current']['rotation'] != null)
 		{
@@ -246,14 +252,12 @@ function vjs_render_media($content, $picture)
 	}
 
 	/* Watermark videojs plugin */
+	$watermark_plugin = isset($conf['vjs_conf']['plugins']['watermark ']) ? strbool($conf['vjs_conf']['plugins']['watermark ']) : 'false';
 	$watermark = array();
-	if ($conf['vjs_conf']['plugins']['watermark'])
+	if ($watermark_plugin)
 	{
 		if ($conf['derivatives']['w']->file != null)
 		{
-			// watermark is $conf['derivatives']['w']
-			//$watermark = unserialize($conf['derivatives'])['w'];
-			// Cannot use object of type WatermarkParams as array
 			$watermark = array(
 						'file'		=> embellish_url(get_gallery_home_url() . $conf['derivatives']['w']->file),
 						'xpos'		=> $conf['derivatives']['w']->xpos,
@@ -314,7 +318,7 @@ function vjs_render_media($content, $picture)
 	return $vjs_content;
 }
 
-function vjs_get_mimetype_icon ($location, $element_info)
+function vjs_get_mimetype_icon($location, $element_info)
 {
 	$location= 'plugins/'
 		. basename(dirname(__FILE__))
@@ -327,7 +331,7 @@ function strbool($value)
 	return $value ? 'true' : 'false';
 }
 
-function getposterfile($file_list)
+function vjs_get_poster_file($file_list)
 {
 	foreach ($file_list as $file=>$url) {
 		//print $file."=>".$url."<br/>\n";
@@ -336,22 +340,17 @@ function getposterfile($file_list)
 	return '';
 }
 
-function get_mimetype_from_ext($file_ext)
+function vjs_get_mimetype_from_ext($file_ext)
 {
-	$extension = strtolower($file_ext);
-	if ($extension == "m4v")
-	{
-		$extension = "mp4";
-	}
-	else if ($extension == "webmv")
-	{
-		$extension = "webm4";
-	}
-	else if ($extension == "ogv")
-	{
-		$extension = "ogg";
-	}
-	return $extension;
+	$vjs_types = array(
+			   'ogg'   => 'video/ogg',
+			   'ogv'   => 'video/ogg',
+			   'mp4'   => 'video/mp4',
+			   'm4v'   => 'video/mp4',
+			   'webm'  => 'video/webm',
+			   'webmv' => 'video/webm'
+			);
+	return $vjs_types[strtolower($file_ext)];
 }
 
 function vjs_dbSet($fields, $data = array())
