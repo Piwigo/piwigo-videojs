@@ -8,7 +8,7 @@ Author: xbmgsharp
 Author URI: https://github.com/xbgmsharp/piwigo-videojs
 */
 
-// Chech whether we are indeed included by Piwigo.
+// Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 // Define the path to our plugin.
@@ -44,12 +44,20 @@ add_event_handler('get_mimetype_location', 'vjs_get_mimetype_icon', 60, 2);
 // Hook to sync geotag metadata on upload or sync
 //add_event_handler('format_exif_data', 'vjs_format_exif_data', EVENT_HANDLER_PRIORITY_NEUTRAL, 3);
 
+// Hook to display metadata on picture page
+//add_event_handler('get_element_metadata_available', 'vjs_metadata_available');
+
 // If admin do the init
 if (defined('IN_ADMIN')) {
 	include_once(VIDEOJS_PATH.'/admin/admin_boot.php');
 }
 
 function vjs_format_exif_data($exif, $file, $map)
+{
+
+}
+
+function vjs_metadata_available($content)
 {
 
 }
@@ -128,29 +136,30 @@ function vjs_render_media($content, $picture)
 		//$width = intval($width / 2);
 	}
 	// Upscale if video is too small
-	$upscale = isset($conf['vjs_conf']['upscale']) ? strbool($conf['vjs_conf']['upscale']) : 'false';
+	$upscale = isset($conf['vjs_conf']['upscale']) ? strbool($conf['vjs_conf']['upscale']) : false;
 	if ( $upscale and $width < $MAX_WIDTH )
 	{
 		$height = intval($height * ($MAX_WIDTH / $width));
 		$width  = $MAX_WIDTH;
 	}
 
-	// Slideshow : The video needs to be launch automatically in
-	// slideshow mode. The refresh of the page is set to the
-	// duration of the video.
-	$autoplay = isset($conf['vjs_conf']['autoplay']) ? strbool($conf['vjs_conf']['autoplay']) : 'false';
-	if ( $page['slideshow'] )
-	{
-		$refresh = $fileinfo['playtime_seconds'];
-		$autoplay = 'true';
-	}
-
 	// Load parameter, fallback to default if unset
 	$skin = isset($conf['vjs_conf']['skin']) ? $conf['vjs_conf']['skin'] : 'vjs-default-skin';
 	$customcss = isset($conf['vjs_customcss']) ? $conf['vjs_customcss'] : '';
 	$preload = isset($conf['vjs_conf']['preload']) ? $conf['vjs_conf']['preload'] : 'none';
-	$loop = isset($conf['vjs_conf']['loop']) ? strbool($conf['vjs_conf']['loop']) : 'false';
-	$controls = isset($conf['vjs_conf']['controls']) ? strbool($conf['vjs_conf']['controls']) : 'false';
+	$loop = isset($conf['vjs_conf']['loop']) ? strbool($conf['vjs_conf']['loop']) : false;
+	$controls = isset($conf['vjs_conf']['controls']) ? strbool($conf['vjs_conf']['controls']) : false;
+
+	// Slideshow : The video needs to be launch automatically in
+	// slideshow mode. The refresh of the page is set to the
+	// duration of the video.
+	$autoplay = isset($conf['vjs_conf']['autoplay']) ? strbool($conf['vjs_conf']['autoplay']) : false;
+	if ( $page['slideshow'] )
+	{
+		$refresh = $fileinfo['playtime_seconds'];
+		$autoplay = true;
+		$loop = false;
+	}
 
 	// Assing the CSS file according to the skin
 	$available_skins = array(
@@ -203,7 +212,7 @@ function vjs_render_media($content, $picture)
 	//print_r($videos);
 
 	/* Thumbnail videojs plugin */
-	$thumbnails_plugin = isset($conf['vjs_conf']['plugins']['thumbnails']) ? strbool($conf['vjs_conf']['plugins']['thumbnails']) : 'false';
+	$thumbnails_plugin = isset($conf['vjs_conf']['plugins']['thumbnails']) ? strbool($conf['vjs_conf']['plugins']['thumbnails']) : false;
 	$thumbnails = array();
 	if ($thumbnails_plugin)
 	{
@@ -228,10 +237,11 @@ function vjs_render_media($content, $picture)
 	}
 
 	/* ZoomRotate videojs plugin */
-	$zoomrotate_plugin = isset($conf['vjs_conf']['plugins']['zoomrotate']) ? strbool($conf['vjs_conf']['plugins']['zoomrotate']) : 'false';
+	$zoomrotate_plugin = isset($conf['vjs_conf']['plugins']['zoomrotate']) ? strbool($conf['vjs_conf']['plugins']['zoomrotate']) : false;
 	$zoomrotate = array();
 	if ($zoomrotate_plugin)
 	{
+		// TODO Disable if playing on iOS, as it read the metadata
 		if ($picture['current']['rotation'] != null)
 		{
 			include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
@@ -252,7 +262,7 @@ function vjs_render_media($content, $picture)
 	}
 
 	/* Watermark videojs plugin */
-	$watermark_plugin = isset($conf['vjs_conf']['plugins']['watermark ']) ? strbool($conf['vjs_conf']['plugins']['watermark ']) : 'false';
+	$watermark_plugin = isset($conf['vjs_conf']['plugins']['watermark']) ? strbool($conf['vjs_conf']['plugins']['watermark']) : false;
 	$watermark = array();
 	if ($watermark_plugin)
 	{
@@ -268,18 +278,18 @@ function vjs_render_media($content, $picture)
 		}
 	}
 
-	// Genrate HTML5 tags
+	// Generate HTML5 tags
 	// Why the data-setup attribute does not work if only one video
 	$options = "";
-	if ($controls == "true")
+	if ($controls)
 	{
 		$options .= "controls";
 	}
-	if ($autoplay == "true")
+	if ($autoplay)
 	{
 		$options .= " autoplay ";
 	}
-	if ($loop == "true")
+	if ($loop)
 	{
 		$options .= " loop ";
 	}
@@ -328,7 +338,7 @@ function vjs_get_mimetype_icon($location, $element_info)
 
 function strbool($value)
 {
-	return $value ? 'true' : 'false';
+	return $value ? true : false;
 }
 
 function vjs_get_poster_file($file_list)
