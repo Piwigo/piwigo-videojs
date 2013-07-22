@@ -51,35 +51,31 @@ $errors = array();
 $warnings = array();
 $infos = array();
 
-/*
 if ($sync_options['metadata'])
 {
-    $output = trim(shell_exec('type -P mediainfo')); // Does it works on Windows
-    if (empty($output))
+    $output = system("mediainfo", $retval);
+    if($retval = 127 || $retval = 9009) // Linux or windows exit code for command not found.
     {
         $warnings[] = "Metadata parsing disable because MediaInfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
         $sync_options['metadata'] = false;
     }
 }
-*/
 
 if (!$sync_options['sync_gps'])
 {
     $warnings[] = "latitude and longitude disable because the require plugin is not present, eg: 'OpenStreetMap'.";
 }
 
-/*
 if ($sync_options['poster'] or $sync_options['thumb'])
 {
-    $output = trim(shell_exec('type -P ffmpeg')); // Does it works on Windows
-    if (empty($output))
+    $output = system("ffmpeg", $retval);
+    if($retval = 127 || $retval = 9009) // Linux or windows exit code for command not found.
     {
         $warnings[] = "Poster creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
         $sync_options['poster'] = false;
         $sync_options['thumb'] = false;
     }
 }
-*/
 
 if (!$sync_options['metadata'] and !$sync_options['poster'] and !$sync_options['thumb'])
 {
@@ -97,7 +93,10 @@ while ($row = pwg_db_fetch_assoc($result))
         $videos++;
         //echo $filename;
         $exif = array();
-        include("mediainfo.php");
+        if ($sync_options['metadata'])
+        {
+            include("mediainfo.php");
+        }
         //print_r($exif);
         if (isset($exif) and $sync_options['metadata'])
         {
