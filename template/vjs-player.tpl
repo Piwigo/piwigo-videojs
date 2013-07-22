@@ -29,7 +29,7 @@
 {/literal}
 {if not empty($videos)}
 {foreach from=$videos item=video}
-{literal}    <source src={/literal}"{$video.src}"{literal} type='video/{/literal}{$video.ext}{literal}'>{/literal}
+{literal}    <source src={/literal}"{$video.src}"{literal} type='{/literal}{$video.ext}{literal}'>{/literal}
 {/foreach}
 {/if}
 {literal}
