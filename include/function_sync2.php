@@ -53,8 +53,12 @@ $infos = array();
 
 if ($sync_options['metadata'])
 {
-    $output = system("mediainfo", $retval);
-    if($retval = 127 || $retval = 9009) // Linux or windows exit code for command not found.
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        system("mediainfo >NUL 2>NUL", $retval); // redirect any output
+    } else {
+        system("mediainfo >&2 /dev/null", $retval); // redirect any output
+    }
+    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
     {
         $warnings[] = "Metadata parsing disable because MediaInfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
         $sync_options['metadata'] = false;
@@ -68,8 +72,13 @@ if (!$sync_options['sync_gps'])
 
 if ($sync_options['poster'] or $sync_options['thumb'])
 {
-    $output = system("ffmpeg", $retval);
-    if($retval = 127 || $retval = 9009) // Linux or windows exit code for command not found.
+    $retval = 0;
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        system("ffmpeg >NUL 2>NUL", $retval); // redirect any output
+    } else {
+        system("ffmpeg >&2 /dev/null", $retval); // redirect any output
+    }
+    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
     {
         $warnings[] = "Poster creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
         $sync_options['poster'] = false;
