@@ -15,7 +15,7 @@ $lang['SKIN'] = 'Style';
 $lang['SKIN_DESC'] = 'Selectionner un style a appliquer au lecteur ou <a href="http://designer.videojs.com/" target="_blank">creer votre propre style</a>.';
 $lang['CUSTOMCSS'] = 'Custom CSS';
 $lang['CUSTOMCSS_DESC'] = 'Custom CSS a copier coller depuis le site web de <a href="http://www.videojs.com/" target="_blank">VideoJS</a>.';
-$lang['WIDTH'] = 'Max width';
+$lang['WIDTH'] = 'Max Width';
 $lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video. if higher the witdh became the max width.';
 $lang['UPSCALE'] = 'Upscale';
 $lang['UPSCALE_DESC'] = 'Si la taille de la video est plus petite que le parametre max width, la video sera agrandi aux dimension de max width.';
