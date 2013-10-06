@@ -136,13 +136,25 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <ul>
       <li>
 	<label><input type="checkbox" name="thumb" value="1" /> Create a thumbnail at every seconds:</label>
-	<!-- <input type="range" name="thumbsec" value="5" min="0" max="60" step="1"/> -->
+	<!--
+	<input type="range" id="thumbsec" name="thumbsec" value="5" min="0" max="60" step="1" onchange="updateRangeValue();"/>
+	<input id="thumbsecValue" name="thumbsecValue" type="text" size="2"/>
+	{literal}
+	<script type="text/javascript">
+	function updateRangeValue() {
+		var x = document.getElementById('thumbsecValue');
+		var y = document.getElementById('thumbsec');
+		x.value = y.value;
+	}
+	</script>
+	{/literal}
+	-->
 	<input type="text" name="thumbsec" value="5" size="2" required/>
 	<br/><small>Create a thumbnail every x seconds. <strong>Use by the videoJS plugin thumbnail</strong>.</small>
       </li>
       <li>
 	<label>Size of the thumbnail:</label>
-	<input type="text" name="thumbsize" value="120x68" size="3" placeholder="120x68" required/>
+	<input type="text" name="thumbsize" value="120x68" size="5" placeholder="120x68" required/>
 	<br/><small>Size in pixel, keep it small, default is fine, Youtube use 190x68.</small>
       </li>
     </ul>

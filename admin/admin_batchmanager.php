@@ -69,6 +69,7 @@ function vjs_loc_end_element_set_global()
 	<label><input type="checkbox" name="vjs_metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
 	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
+	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">\'MediaInfo\'</a> to be install.</strong></small>
       </li>
     </ul>
     <legend>Poster</legend>
@@ -104,7 +105,7 @@ function vjs_loc_end_element_set_global()
       </li>
       <li>
 	<label>Size of the thumbnail:</label>
-	<input type="text" name="vjs_thumbsize" value="120x68" size="3" placeholder="120x68" required/>
+	<input type="text" name="vjs_thumbsize" value="120x68" size="5" placeholder="120x68" required/>
 	<br/><small>Size in pixel, keep it small, default is fine, Youtube use 190x68.</small>
       </li>
     </ul>
@@ -218,6 +219,7 @@ function vjs_prefilter_batch_manager_unit($content)
 	<label><input type="checkbox" name="vjs_metadata-{$element.id}" value="1"/> filesize, width, height, latitude, longitude</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
 	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
+	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">\'MediaInfo\'</a> to be install.</strong></small>
       </li>
     </ul>
     <legend>Poster</legend>
@@ -253,7 +255,7 @@ function vjs_prefilter_batch_manager_unit($content)
       </li>
       <li>
 	<label>Size of the thumbnail:</label>
-	<input type="text" name="vjs_thumbsize-{$element.id}" value="120x68" size="3" placeholder="120x68" required/>
+	<input type="text" name="vjs_thumbsize-{$element.id}" value="120x68" size="5" placeholder="120x68" required/>
 	<br/><small>Size in pixel, keep it small, default is fine, Youtube use 190x68.</small>
       </li>
     </ul>
