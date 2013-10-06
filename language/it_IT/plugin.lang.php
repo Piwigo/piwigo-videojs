@@ -36,4 +36,13 @@ $lang['HTML5'] = 'Impostazione video tags HTML5';
 $lang['CUSTOMCSS'] = 'CSS personalizzato';
 $lang['CONTROLS'] = 'Controlli';
 $lang['AUTOPLAY'] = 'Autoplay';
+$lang['UPSCALE_DESC'] = 'Se la dimensione del video è minore della larghezza max parametro, il video sarà ampliato alle dimensioni di larghezza massima.';
+$lang['ZOOMROTATE_DESC'] = 'Ruotare e zoomare un video, se è il caso, utilizzare i metadati di rotazione.';
+$lang['WATERMARK_DESC'] = 'Visualizza filigrana sopra il video.';
+$lang['ZOOMROTATE'] = 'Rotazione zoom';
+$lang['WATERMARK'] = 'Filigrana';
+$lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
+$lang['UPSCALE'] = 'Aumenta risoluzione';
+$lang['THUMBNAILS'] = 'Miniature';
+$lang['THUMBNAILS_DESC'] = 'Visualizza le miniature delle immagini sopra la barra di avanzamento.';
 ?>

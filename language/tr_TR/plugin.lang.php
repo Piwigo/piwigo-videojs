@@ -27,7 +27,7 @@ $lang['CUSTOMCSS_DESC'] = 'VideoJS web sitesinden kopyalaıp yapıştırılacak 
 $lang['PRELOAD_DESC'] = 'Önyükleme parametresi, video etiketi yüklendikten hemen sonra video verisinin yüklenmeye başlanıp başlanmayacağını tarayıcıya bildirir';
 $lang['WIDTH_DESC'] = 'Azami genişlik parametresi video görüntü ekranı genişliğini seçer, eğer büyük ise ikiye bölünür';
 $lang['AUTOPLAY'] = 'Otomatik çalma';
-$lang['SKIN_DESC'] = 'Yürütücüye uygulamak istediğiniz stili seçin or <a href="http://designer.videojs.com/" target="_blank">create your own skin</a>.';
+$lang['SKIN_DESC'] = 'Yürütücüye uygulamak istediğiniz stili seçin';
 $lang['WIDTH'] = 'Azami Genişlik';
 $lang['CONTROLS'] = 'Kontroller';
 $lang['CUSTOMCSS'] = 'Özelleştirilmiş CSS';
@@ -36,4 +36,13 @@ $lang['LOOP'] = 'Döngü';
 $lang['PLUGIN'] = 'Eklenti ayarları';
 $lang['PRELOAD'] = 'Önyükleme';
 $lang['SKIN'] = 'Kaplama';
+$lang['UPSCALE_DESC'] = 'Eğer video boyutu azami genişlikten küçükse azami genişliğe ölçekleyerek büyüt.';
+$lang['UPSCALE'] = 'Ölçekleyerek büyütme';
+$lang['ZOOMROTATE_DESC'] = 'Eğer döndürme metadatası varsa, videoyu döndür ve çevir.';
+$lang['ZOOMROTATE'] = 'BüyütDöndür';
+$lang['WATERMARK'] = 'Filigran';
+$lang['THUMBNAILS'] = 'Pul resimleri';
+$lang['THUMBNAILS_DESC'] = 'İlerletme çubuğunda pul resmi görüntüler.';
+$lang['WATERMARK_DESC'] = 'Video üzerinde filigran görüntüler.';
+$lang['VIDEOJSPLUGIN'] = 'VideoJS eklentileri';
 ?>

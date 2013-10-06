@@ -36,4 +36,13 @@ $lang['LOOP'] = 'Pętla';
 $lang['PLUGIN'] = 'Ustawienia wtyczki';
 $lang['SKIN'] = 'Skórka';
 $lang['WIDTH'] = 'Maksymalna szerokość';
+$lang['THUMBNAILS'] = 'Miniatury';
+$lang['THUMBNAILS_DESC'] = 'Wyświetla miniatury nad paskiem postępu';
+$lang['UPSCALE'] = 'Przeskalowanie';
+$lang['UPSCALE_DESC'] = 'Jesli film jest mniejszy niż maksymalna szerokość, przeskaluje go do maksymalnej szerokości';
+$lang['VIDEOJSPLUGIN'] = 'Wtyczki VideoJS';
+$lang['WATERMARK'] = 'Znak wodny';
+$lang['WATERMARK_DESC'] = 'Wyświelta znak wodny na filmie';
+$lang['ZOOMROTATE'] = 'ZoomRotate';
+$lang['ZOOMROTATE_DESC'] = 'Zastosowany obraca i zoomuje film uzywając metadane obrotu';
 ?>
