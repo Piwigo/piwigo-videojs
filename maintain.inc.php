@@ -34,7 +34,7 @@ function plugin_install()
 		define('VIDEOJS_PATH', PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)).'/');
 
 	// Remove unused directory or files from 0.4 and 0.5 to 0.6
-	$toremove = array("skin", "js", "language/es_ES");
+	$toremove = array("skin", "js");
 	foreach ($toremove as $dir)
 	{
 		if (is_dir(VIDEOJS_PATH.$dir))
