@@ -34,8 +34,6 @@ $customcss = $conf['vjs_customcss'] ? $conf['vjs_customcss'] : '';
 $available_skins = array(
 	'vjs-default-skin' => 'default',
 	'vjs-redtube-skin' => 'redtube',
-	'vjs-darkfunk-skin' => 'darkfunk',
-	'vjs-redsheen-skin' => 'redsheen',
 );
 
 // Available preload value
