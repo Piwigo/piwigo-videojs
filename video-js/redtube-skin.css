@@ -1,17 +1,17 @@
 /*!
 Video.js Default Styles (http://videojs.com)
-Version 4.1.0
+Version 4.2.0
 Create your own skin at http://designer.videojs.com
 */
 /* SKIN
 ================================================================================
-The main class name for all skin-specific styles. To make your own skin, 
-replace all occurances of 'vjs-redtube-skin' with a new name. Then add your new 
-skin name to your video tag instead of the default skin. 
+The main class name for all skin-specific styles. To make your own skin,
+replace all occurances of 'vjs-redtube-skin' with a new name. Then add your new
+skin name to your video tag instead of the default skin.
 e.g. <video class="video-js my-skin-name">
 */
 .vjs-redtube-skin {
-  color: #888888;
+  color: #cccccc;
 }
 /* Custom Icon Font
 --------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ The control icons are from a custom font. Each icon corresponds to a character
   font-style: normal;
 }
 /* Base UI Component Classes
--------------------------------------------------------------------------------- 
+--------------------------------------------------------------------------------
 */
 /* Slider - used for Volume bar and Seek bar */
 .vjs-redtube-skin .vjs-slider {
@@ -68,17 +68,16 @@ The control icons are from a custom font. Each icon corresponds to a character
   -ms-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
   transform: rotate(-45deg);
-  color: #fff;
 }
 /* Control Bar
 --------------------------------------------------------------------------------
-The default control bar that is a container for most of the controls. 
+The default control bar that is a container for most of the controls.
 */
 .vjs-redtube-skin .vjs-control-bar {
   /* Start hidden */
   display: none;
   position: absolute;
-  /* Place control bar at the bottom of the player box/video. 
+  /* Place control bar at the bottom of the player box/video.
      If you want more margin below the control bar, add more height. */
   bottom: 0;
   /* Use left/right to stretch to 100% width of player div */
@@ -87,10 +86,51 @@ The default control bar that is a container for most of the controls.
   /* Height includes any margin you want above or below control items */
   height: 3.0em;
   /* background-color-with-alpha */
-  background-color: #333333;
-  background-color: rgba(51, 51, 51, 0.7);
+  background-color: #07141e;
+  background-color: rgba(7, 20, 30, 0.7);
 }
-/* General styles for individual controls. */.vjs-redtube-skin .vjs-control {
+/* Show the control bar only once the video has started playing */
+.vjs-redtube-skin.vjs-has-started .vjs-control-bar {
+  display: block;
+  /* Visibility needed to make sure things hide in older browsers too. */
+
+  visibility: visible;
+  opacity: 1;
+  /* transition */
+  -webkit-transition: visibility 0.1s, opacity 0.1s;
+  -moz-transition: visibility 0.1s, opacity 0.1s;
+  -o-transition: visibility 0.1s, opacity 0.1s;
+  transition: visibility 0.1s, opacity 0.1s;
+}
+/* Hide the control bar when the video is playing and the user is inactive  */
+.vjs-redtube-skin.vjs-has-started.vjs-user-inactive.vjs-playing .vjs-control-bar {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+  /* transition */
+  -webkit-transition: visibility 1s, opacity 1s;
+  -moz-transition: visibility 1s, opacity 1s;
+  -o-transition: visibility 1s, opacity 1s;
+  transition: visibility 1s, opacity 1s;
+}
+.vjs-redtube-skin.vjs-controls-disabled .vjs-control-bar {
+  display: none;
+}
+.vjs-redtube-skin.vjs-using-native-controls .vjs-control-bar {
+  display: none;
+}
+/* IE8 is flakey with fonts, and you have to change the actual content to force
+fonts to show/hide properly.
+  - "\9" IE8 hack didn't work for this
+  - Found in XP IE8 from http://modern.ie. Does not show up in "IE8 mode" in IE9
+*/
+@media \0screen {
+  .vjs-redtube-skin.vjs-user-inactive.vjs-playing .vjs-control-bar :before {
+    content: "";
+  }
+}
+/* General styles for individual controls. */
+.vjs-redtube-skin .vjs-control {
   outline: none;
   position: relative;
   float: left;
@@ -116,7 +156,6 @@ The default control bar that is a container for most of the controls.
 /* Replacement for focus outline */
 .vjs-redtube-skin .vjs-control:focus:before,
 .vjs-redtube-skin .vjs-control:hover:before {
-  color: #fff;
   text-shadow: 0em 0em 1em #ffffff;
 }
 .vjs-redtube-skin .vjs-control:focus {
@@ -190,7 +229,7 @@ The default control bar that is a container for most of the controls.
   top: 0;
   left: 0;
   height: 0.5em;
-  background: #b40c1e url() -50% 0 repeat;
+  background: #b40c1e url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
 .vjs-redtube-skin .vjs-volume-bar .vjs-volume-handle {
   width: 0.5em;
@@ -266,10 +305,11 @@ The default control bar that is a container for most of the controls.
       The -50% left position makes that happen.
   */
 
-  background: #b40c1e url() -50% 0 repeat;
+  background: #b40c1e url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAAP0lEQVQIHWWMAQoAIAgDR/QJ/Ub//04+w7ZICBwcOg5FZi5iBB82AGzixEglJrd4TVK5XUJpskSTEvpdFzX9AB2pGziSQcvAAAAAAElFTkSuQmCC) -50% 0 repeat;
 }
 .vjs-redtube-skin .vjs-load-progress {
-  background: #757575;
+  background: #646464 /* IE8- Fallback */;
+  background: rgba(255, 255, 255, 0.4);
 }
 .vjs-redtube-skin .vjs-seek-handle {
   width: 1.5em;
@@ -318,23 +358,22 @@ The default control bar that is a container for most of the controls.
 }
 /* Big Play Button (play button at start)
 --------------------------------------------------------------------------------
-Positioning of the play button in the center or other corners can be done more 
+Positioning of the play button in the center or other corners can be done more
 easily in the skin designer. http://designer.videojs.com/
 */
 .vjs-redtube-skin .vjs-big-play-button {
   /* Center it horizontally */
   left: 50%;
-  margin-left: -1em;
+  margin-left: -2.1em;
   /* Center it vertically */
   top: 50%;
-  margin-top: -0.6em;
-  font-size: 5em;
-  color: #fff;
+  margin-top: -1.4000000000000001em;
+  font-size: 3em;
   display: block;
   z-index: 2;
   position: absolute;
-  width: 2em;
-  height: 1.2em;
+  width: 4em;
+  height: 2.6em;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
@@ -342,11 +381,11 @@ easily in the skin designer. http://designer.videojs.com/
   /* Need a slightly gray bg so it can be seen on black backgrounds */
   /* background-color-with-alpha */
   background-color: #b40c1e;
-  border: 0em solid #3b4249;
+  border: 0.1em solid #3b4249;
   /* border-radius */
-  -webkit-border-radius: 0.3em;
-  -moz-border-radius: 0.3em;
-  border-radius: 0.3em;
+  -webkit-border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  border-radius: 0.8em;
   /* box-shadow */
   -webkit-box-shadow: 0px 0px 1em rgba(255, 255, 255, 0.25);
   -moz-box-shadow: 0px 0px 1em rgba(255, 255, 255, 0.25);
@@ -356,6 +395,19 @@ easily in the skin designer. http://designer.videojs.com/
   -moz-transition: all 0.4s;
   -o-transition: all 0.4s;
   transition: all 0.4s;
+}
+/* Hide if controls are disabled */
+.vjs-redtube-skin.vjs-controls-disabled .vjs-big-play-button {
+  display: none;
+}
+/* Hide when video starts playing */
+.vjs-redtube-skin.vjs-has-started .vjs-big-play-button {
+  display: none;
+}
+/* Hide on mobile devices. Remove when we stop using native controls
+    by default on mobile  */
+.vjs-redtube-skin.vjs-using-native-controls .vjs-big-play-button {
+  display: none;
 }
 .vjs-redtube-skin:hover .vjs-big-play-button,
 .vjs-redtube-skin .vjs-big-play-button:focus {
@@ -380,8 +432,8 @@ easily in the skin designer. http://designer.videojs.com/
   /* In order to center the play icon vertically we need to set the line height
      to the same as the button height */
 
-  line-height: 1.2em;
-  text-shadow: none;
+  line-height: 2.6em;
+  text-shadow: 0.05em 0.05em 0.1em #000;
   text-align: center /* Needed for IE8 */;
   position: absolute;
   left: 0;
@@ -413,25 +465,12 @@ easily in the skin designer. http://designer.videojs.com/
   content: "\e00a";
   font-family: VideoJS;
   position: absolute;
+  top: 0;
+  left: 0;
   width: 1em;
   height: 1em;
   text-align: center;
   text-shadow: 0em 0em 0.1em #000;
-}
-/* Add a gradient to the spinner by overlaying another copy.
-   Text gradient plus a text shadow doesn't work
-   and `background-clip: text` only works in Webkit. */
-.vjs-redtube-skin .vjs-loading-spinner:after {
-  content: "\e00a";
-  /* Loading spinner icon */
-
-  font-family: VideoJS;
-  position: absolute;
-  width: 1em;
-  height: 1em;
-  text-align: center;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 @-moz-keyframes spin {
   0% {
@@ -507,8 +546,8 @@ easily in the skin designer. http://designer.videojs.com/
   /* Width of menu - width of button / 2 */
 
   /* background-color-with-alpha */
-  background-color: #333333;
-  background-color: rgba(51, 51, 51, 0.7);
+  background-color: #07141e;
+  background-color: rgba(7, 20, 30, 0.7);
   /* box-shadow */
   -webkit-box-shadow: -0.2em -0.2em 0.3em rgba(255, 255, 255, 0.2);
   -moz-box-shadow: -0.2em -0.2em 0.3em rgba(255, 255, 255, 0.2);
@@ -574,18 +613,18 @@ REQUIRED STYLES (be careful overriding)
 ================================================================================
 When loading the player, the video tag is replaced with a DIV,
 that will hold the video tag or object tag for other playback methods.
-The div contains the video playback element (Flash or HTML5) and controls, 
+The div contains the video playback element (Flash or HTML5) and controls,
 and sets the width and height of the video.
 
-** If you want to add some kind of border/padding (e.g. a frame), or special 
-positioning, use another containing element. Otherwise you risk messing up 
+** If you want to add some kind of border/padding (e.g. a frame), or special
+positioning, use another containing element. Otherwise you risk messing up
 control positioning and full window mode. **
 */
 .video-js {
   background-color: #000;
   position: relative;
   padding: 0;
-  /* Start with 10px for base font size so other dimensions can be em based and 
+  /* Start with 10px for base font size so other dimensions can be em based and
      easily calculable. */
 
   font-size: 10px;
@@ -621,7 +660,7 @@ control positioning and full window mode. **
   width: 100%;
   height: 100%;
 }
-/* Fix for Firefox 9 fullscreen (only if it is enabled). Not needed when 
+/* Fix for Firefox 9 fullscreen (only if it is enabled). Not needed when
    checking fullScreenEnabled. */
 .video-js:-moz-full-screen {
   position: absolute;
@@ -651,6 +690,9 @@ body.vjs-full-window {
   width: 100% !important;
   height: 100% !important;
 }
+.video-js.vjs-fullscreen.vjs-user-inactive {
+  cursor: none;
+}
 /* Poster Styles */
 .vjs-poster {
   background-repeat: no-repeat;
@@ -669,6 +711,10 @@ body.vjs-full-window {
   max-height: 100%;
   padding: 0;
   width: 100%;
+}
+/* Hide the poster when native controls are used otherwise it covers them */
+.video-js.vjs-using-native-controls .vjs-poster {
+  display: none;
 }
 /* Text Track Styles */
 /* Overall track holder for both captions and subtitles */
@@ -700,36 +746,6 @@ body.vjs-full-window {
 .vjs-tt-cue {
   display: block;
 }
-/* Fading sytles, used to fade control bar. */
-.vjs-fade-in {
-  display: block !important;
-  /* Visibility needed to make sure things hide in older browsers too. */
-
-  visibility: visible;
-  opacity: 1;
-  /* transition */
-  -webkit-transition: visibility 0.1s, opacity 0.1s;
-  -moz-transition: visibility 0.1s, opacity 0.1s;
-  -o-transition: visibility 0.1s, opacity 0.1s;
-  transition: visibility 0.1s, opacity 0.1s;
-}
-.vjs-fade-out {
-  display: block !important;
-  visibility: hidden;
-  opacity: 0;
-  /* transition */
-  -webkit-transition: visibility 1.5s, opacity 1.5s;
-  -moz-transition: visibility 1.5s, opacity 1.5s;
-  -o-transition: visibility 1.5s, opacity 1.5s;
-  transition: visibility 1.5s, opacity 1.5s;
-  /* Wait a moment before fading out the control bar */
-
-  /* transition-delay */
-  -webkit-transition-delay: 2s;
-  -moz-transition-delay: 2s;
-  -o-transition-delay: 2s;
-  transition-delay: 2s;
-}
 /* Hide disabled or unsupported controls */
 .vjs-redtube-skin .vjs-hidden {
   display: none;
@@ -739,6 +755,6 @@ body.vjs-full-window {
   opacity: 1;
   visibility: visible;
 }
-/* ----------------------------------------------------------------------------- 
-The original source of this file lives at 
+/* -----------------------------------------------------------------------------
+The original source of this file lives at
 https://github.com/videojs/video.js/blob/master/src/css/video-js.less */
