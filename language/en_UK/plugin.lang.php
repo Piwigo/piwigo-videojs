@@ -16,7 +16,7 @@ $lang['SKIN_DESC'] = 'Select the style you want to apply to the player or <a hre
 $lang['CUSTOMCSS'] = 'Custom CSS';
 $lang['CUSTOMCSS_DESC'] = 'Custom CSS to copy paste from the <a href="http://www.videojs.com/" target="_blank">VideoJS website</a>.';
 $lang['WIDTH'] = 'Max Width';
-$lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video, if the video size is higher the witdh became the max width.';
+$lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video, if the video size is higher the witdh becomes the max width.';
 $lang['UPSCALE'] = 'Upscale';
 $lang['UPSCALE_DESC'] = 'If the video size is smaller than max width, it will upscale the video size to max width.';
 

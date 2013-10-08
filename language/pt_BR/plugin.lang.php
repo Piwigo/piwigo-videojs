@@ -36,4 +36,13 @@ $lang['SKIN'] = 'Película';
 $lang['SKIN_DESC'] = 'Selecione o estilo que você deseja aplicar ao usuário.';
 $lang['WIDTH'] = 'Largura Máxima';
 $lang['WIDTH_DESC'] = 'O atributo de largura máxima define a largura do monitor de vídeo, se for superior é divida por dois.';
+$lang['THUMBNAILS'] = 'Miniaturas';
+$lang['THUMBNAILS_DESC'] = 'Mostrar as imagens miniatura sobre a barra de progresso.';
+$lang['UPSCALE'] = 'Escala';
+$lang['UPSCALE_DESC'] = 'Se o tamanho de vídeo é menor que a máxima, isto irá aumentar a resolução dos tamanho de vídeo para a largura máxima.';
+$lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
+$lang['WATERMARK'] = 'Marca dágua';
+$lang['WATERMARK_DESC'] = 'Mostrar a marca dágua sobre o vídeo.';
+$lang['ZOOMROTATE'] = 'Amplar Rotacionar';
+$lang['ZOOMROTATE_DESC'] = 'Girar e ampliar um vídeo se for o caso, use os metadados de rotação.';
 ?>

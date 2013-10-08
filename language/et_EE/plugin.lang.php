@@ -36,4 +36,13 @@ $lang['PLUGIN'] = 'Plugin-i seaded';
 $lang['PRELOAD'] = 'Eellaadimine';
 $lang['SKIN'] = 'Nahk';
 $lang['WIDTH'] = 'Maksimaalne laius';
+$lang['THUMBNAILS'] = 'Pisipildid';
+$lang['THUMBNAILS_DESC'] = 'Kuva pisipilte üleval olekuribal.';
+$lang['UPSCALE'] = 'Suurenda';
+$lang['UPSCALE_DESC'] = 'Kui video suurus on väiksem, kui max laius siis suurenda videot max laiuseni.';
+$lang['VIDEOJSPLUGIN'] = 'VideoJS plugin';
+$lang['WATERMARK'] = 'Vesimärk';
+$lang['WATERMARK_DESC'] = 'Kuva vesimärki videol';
+$lang['ZOOMROTATE'] = 'SuurendaKeera';
+$lang['ZOOMROTATE_DESC'] = 'Keera ja suurenda videot, kui võimalik, kasuta keeramiseks metainfot.';
 ?>

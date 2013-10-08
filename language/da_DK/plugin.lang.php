@@ -25,7 +25,7 @@ $lang['AUTOPLAY_DESC'] = 'Hvis autoafspil er sand, vil videoafspilningen begynde
 $lang['CONTROLS'] = 'Kontroller';
 $lang['CONTROLS_DESC'] = 'Kontrolvalgmulighederne bestemmer hvorvidt afspilleren har kontroller, som brugeren kan benytte';
 $lang['CUSTOMCSS'] = 'Skræddersyet CSS';
-$lang['CUSTOMCSS_DESC'] = 'Skræddersyet CSS til kopiering fra VideoJS-hjemmesiden';
+$lang['CUSTOMCSS_DESC'] = 'Skræddersyet CSS til kopiering fra <a href="http://www.videojs.com/" target="_blank">VideoJS-hjemmesiden</a>.';
 $lang['HTML5'] = 'HTML5-videotagindstillinger';
 $lang['LOOP'] = 'Løkke';
 $lang['LOOP_DESC'] = 'Indstillingen "Løkke" får videoen til at begynde forfra, så snart den slutter.';
@@ -33,7 +33,16 @@ $lang['PLUGIN'] = 'Pluginindstillinger';
 $lang['PRELOAD'] = 'Forindlæs';
 $lang['PRELOAD_DESC'] = 'Indstillingen "Forindlæs" giver browseren besked om hvorvidt hentning af videodata skal begynde så snart videotag\'et er indlæst.';
 $lang['SKIN'] = 'Skind';
-$lang['SKIN_DESC'] = 'Vælg det udseende, du ønsker at give afspilleren.';
+$lang['SKIN_DESC'] = 'Vælg det udseende, du ønsker at give afspilleren, eller <a href="http://designer.videojs.com/" target="_blank">opret dit eget udseende</a>.';
 $lang['WIDTH'] = 'Maksimal bredde';
-$lang['WIDTH_DESC'] = 'Indstillingen "Maksimal bredde" opsætter bredden på videoen, hvis større divideres den med 2.';
+$lang['WIDTH_DESC'] = 'Indstillingen maksimal bredde opsætter visningsbredden på videoen, hvis videostørrelsen er større. bliver bredden den maksimale.';
+$lang['THUMBNAILS_DESC'] = 'Vis miniaturebilleder over progressbjælken';
+$lang['THUMBNAILS'] = 'Miniturebilleder';
+$lang['UPSCALE'] = 'Opskalér';
+$lang['UPSCALE_DESC'] = 'Hvis videostørrelsen er mindre end den maksimale bredde, vil videostørrelsen blive opskaleret til den maksimale bredde.';
+$lang['VIDEOJSPLUGIN'] = 'VideoJS-plugins';
+$lang['WATERMARK'] = 'Vandmærke';
+$lang['WATERMARK_DESC'] = 'Vis vandmærker over vidoen';
+$lang['ZOOMROTATE'] = 'ZoomRotering';
+$lang['ZOOMROTATE_DESC'] = 'Rotér og zoom en video, anvend om muligt roteringsmetadata.';
 ?>

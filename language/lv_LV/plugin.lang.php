@@ -36,4 +36,13 @@ $lang['PLUGIN'] = 'Spraudņa iestatījumi';
 $lang['LOOP'] = 'Cilpa';
 $lang['CUSTOMCSS'] = 'Izvēles CSS';
 $lang['AUTOPLAY'] = 'Autopalaišana';
+$lang['WATERMARK'] = 'Ūdenszīme';
+$lang['THUMBNAILS_DESC'] = 'Rāda sīkbildes progresa joslā';
+$lang['UPSCALE_DESC'] = 'Ja video izmērs ir mazāks nekā max platums, tas palielina video izmēru līdz max platumam.';
+$lang['WATERMARK_DESC'] = 'Rāda ūdenszīmi iekš video  ';
+$lang['ZOOMROTATE_DESC'] = 'Ja iespējams, rotē un tālummaina video, lieto rotācijas metadatus.';
+$lang['ZOOMROTATE'] = 'TālummainītRotēt';
+$lang['VIDEOJSPLUGIN'] = 'VideoJS spraudņi';
+$lang['UPSCALE'] = 'Palielināt';
+$lang['THUMBNAILS'] = 'Sīkbildes';
 ?>
