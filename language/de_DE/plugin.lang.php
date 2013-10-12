@@ -36,4 +36,13 @@ $lang['SKIN'] = 'Design';
 $lang['SKIN_DESC'] = 'Wähle das Aussehen des Players';
 $lang['WIDTH'] = 'maximale BReite';
 $lang['WIDTH_DESC'] = 'Das Attribut "maximale Breite" setzt die Anzeigebreite des Videos. Wenn es größer ist, wird es durch zwei geteilt.';
+$lang['THUMBNAILS'] = 'Vorschaubilder';
+$lang['THUMBNAILS_DESC'] = 'Vorschaubilder über der Fortschrittsanzeige darstellen.';
+$lang['UPSCALE'] = 'Hochrechnen';
+$lang['UPSCALE_DESC'] = 'Die Videogröße wird auf die Maximalbreite hochgerechnet, wenn sie kleiner als diese ist.';
+$lang['VIDEOJSPLUGIN'] = 'VideoJS Plugins';
+$lang['WATERMARK'] = 'Wasserzeichen';
+$lang['WATERMARK_DESC'] = 'Wasserzeichen über dem Video anzeigen.';
+$lang['ZOOMROTATE'] = 'Zoomrate';
+$lang['ZOOMROTATE_DESC'] = 'Benutze die Videometadaten, um das Video zu drehen und zu zoomen.';
 ?>

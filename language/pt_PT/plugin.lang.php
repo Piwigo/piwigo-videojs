@@ -36,4 +36,13 @@ $lang['SKIN'] = 'Pele';
 $lang['SKIN_DESC'] = 'Selecione o modelo que deseja aplicar ao jogador';
 $lang['WIDTH'] = 'Largura máxima';
 $lang['WIDTH_DESC'] = 'O atributo largura máxima define a largura de exibição do video, se for superior ao monitor, é divida por dois.';
+$lang['THUMBNAILS'] = 'Miniaturas';
+$lang['THUMBNAILS_DESC'] = 'Mostrar as miniaturas sobre a barra de progresso';
+$lang['UPSCALE'] = 'Aumentar tamanho';
+$lang['UPSCALE_DESC'] = 'Se o tamanho de vídeo é menor que a largura máxima, isto aumentará o tamanho do video para a largura máxima.';
+$lang['VIDEOJSPLUGIN'] = 'Extensões Video JS';
+$lang['WATERMARK'] = 'Marca de água';
+$lang['WATERMARK_DESC'] = 'Mostrar a marca de água sobre o video';
+$lang['ZOOMROTATE'] = 'Rotação com ampliação';
+$lang['ZOOMROTATE_DESC'] = 'Girar e ampliar um vídeo se aplicável, utilize os metadados de rotação.';
 ?>
