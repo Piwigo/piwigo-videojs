@@ -36,4 +36,13 @@ $lang['SKIN'] = 'Vzhľad';
 $lang['PLUGIN'] = 'Nastavenie doplnkov';
 $lang['LOOP'] = 'Opakovať';
 $lang['AUTOPLAY'] = 'Automatické prehrávanie';
+$lang['ZOOMROTATE_DESC'] = 'Otočiť a zväčšiť video ak je to možné, používať otáčanie metadát.';
+$lang['ZOOMROTATE'] = 'Zväčšenie a otočenie';
+$lang['WATERMARK_DESC'] = 'Zobrazenie vodoznaku cez video.';
+$lang['WATERMARK'] = 'Vodoznak';
+$lang['VIDEOJSPLUGIN'] = 'VideoJS doplnky';
+$lang['UPSCALE_DESC'] = 'Ak je veľkosť videa je menšia ako maximálna šírka, bude video prispôsobené mierke na maximálnu šírku.';
+$lang['UPSCALE'] = 'Mierka';
+$lang['THUMBNAILS_DESC'] = 'Zobraziť náhľady obrázkov cez progress bar';
+$lang['THUMBNAILS'] = 'Náhľady';
 ?>
