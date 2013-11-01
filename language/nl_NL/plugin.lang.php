@@ -24,4 +24,10 @@ $lang['PLUGIN'] = 'Plugin-instellingen';
 $lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
 $lang['WIDTH'] = 'Max. breedte';
 $lang['WATERMARK'] = 'Watermerk';
+$lang['LOOP'] = 'Herhalen';
+$lang['WATERMARK_DESC'] = 'Plaatst een watermerk over de video';
+$lang['AUTOPLAY'] = 'Automatisch afspelen';
+$lang['AUTOPLAY_DESC'] = 'wanneer automatisch afspelen aan staat, start de video direct wanneer de pagina geladen is. (zonder tussenkomst van de gebruiker) Let op niet ondersteund door Apple IOS apparaten!';
+$lang['CONTROLS'] = 'Besturing';
+$lang['PRELOAD'] = 'voorladen';
 ?>
