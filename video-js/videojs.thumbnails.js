@@ -28,7 +28,7 @@
    */
   videojs.plugin('thumbnails', function(options) {
     var div, settings, img, player, progressControl, duration;
-    settings = extend(defaults, options);
+    settings = extend({}, defaults, options);
     player = this;
 
     // create the thumbnail
@@ -65,11 +65,15 @@
       // find the page offset of the mouse
       left = event.pageX || (event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft);
       // subtract the page offset of the progress control
-      left -= progressControl.el().getBoundingClientRect().left + window.scrollX;
+      left -= progressControl.el().getBoundingClientRect().left + window.pageXOffset;
       div.style.left = left + 'px';
 
       // apply updated styles to the thumbnail if necessary
-      mouseTime = Math.floor(event.offsetX / progressControl.width() * duration);
+      // The following fixes bug where hovering over progress slider resets offset to 0:
+      // https://github.com/brightcove/videojs-thumbnails/issues/3
+      // start fix
+      var relativeX = (event.pageX - $(this).parent().offset().left);
+      mouseTime = Math.floor(relativeX / progressControl.width() * duration);
       for (time in settings) {
         if (mouseTime > time) {
           active = Math.max(active, time);
@@ -82,6 +86,11 @@
       if (setting.style && img.style != setting.style) {
         extend(img.style, setting.style);
       }
+    }, false);
+    
+    // move the placeholder out of the way when not hovering
+    progressControl.el().addEventListener('mouseout', function(event) {
+      div.style.left = '-1000px';
     }, false);
   });
 })();
