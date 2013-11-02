@@ -36,7 +36,7 @@ $sync_options = array(
     'posteroverlay'     => false,
     'posteroverwrite'   => true,
     'thumb'             => false,
-    'thumbsec'          => 1,
+    'thumbsec'          => 5,
     'simulate'          => true,
     'cat_id'            => 0,
     'subcats_included'  => true,
@@ -110,6 +110,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
             'NB_ELEMENTS_EXIF'          => $metadata,
             'NB_ELEMENTS_CANDIDATES'    => $videos,
             'NB_ERRORS'                 => count($errors),
+            'NB_WARNINGS'               => count($warnings),
     ));
 }
 

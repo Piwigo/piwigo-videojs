@@ -50,11 +50,12 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'video(s) in your gallery'|@translate}</li>
     <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'video(s) with metadata added'|@translate}</li>
     <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'poster(s) created'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_WARNINGS} {'warnings during synchronization'|@translate}</li>
     <li class="update_summary_err">{$update_result.NB_ERRORS} {'errors during synchronization'|@translate}</li>
   </ul>
 
 {if not empty($sync_errors)}
-  <h3>{'Error list'|@translate}</h3>
+  <h3>{'SYNC_ERRORS'|@translate}</h3>
   <div class="errors">
     <ul>
       {foreach from=$sync_errors item=error}
@@ -65,7 +66,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 {/if}
 
 {if not empty($sync_warnings)}
-  <h3>{'Warning list'|@translate}</h3>
+  <h3>{'SYNC_WARNINGS'|@translate}</h3>
   <div class="warnings">
     <ul>
       {foreach from=$sync_warnings item=warning}
@@ -76,7 +77,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 {/if}
 
 {if not empty($sync_infos)}
-  <h3>{'Detailed informations'|@translate}</h3>
+  <h3>{'SYNC_INFOS'|@translate}</h3>
   <div class="infos">
     <ul>
       {foreach from=$sync_infos item=info}
@@ -89,14 +90,14 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 </div>
 {/if}
 
-<form action="" method="post" id="update">
+<form action="" method="post" id="update" oninput="thumbsecValue.value=thumbsec.value">
 
   <fieldset id="syncmeta">
     <legend>{'Synchronize metadata'|@translate}</legend>
     <ul>
       <li>
 	<label><input type="checkbox" name="metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
-	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
+	<br/><small>{'SYNC_METADATA_DESC'|@translate}</small>
 	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">'OpenStreetMap'</a> or 'RV Maps & Earth' plugin.</strong></small>
 	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">'MediaInfo'</a> to be install.</strong></small>
       </li>
@@ -107,26 +108,26 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <legend>{'Poster'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="poster" value="1" checked="checked" /> Create a poster at position in second:</label>
+	<label><input type="checkbox" name="poster" value="1" checked="checked" />{'SYNC_POSTER'|@translate}:</label>
 	<!-- <input type="range" name="postersec" value="4" min="0" max="60" step="1"/> -->
 	<input type="text" name="postersec" value="4" size="2" required/>
-	<br/><small>Create a poster from the video at specify position.</small>
+	<br/><small>{'SYNC_POSTER_DESC'|@translate}</small>
 	<small><strong>Require <a href="http://www.ffmpeg.org/" target="_blanck">'FFmpeg'</a> to be install.</strong></small>
       </li>
       <li>
-	<label><input type="checkbox" name="posteroverwrite" value="1" checked="checked"> Overwrite existing posters</label>
-	<br/><small>Overwrite existing thumbnails with new ones. If uncheck it should only run for newly added video.</small>
+	<label><input type="checkbox" name="posteroverwrite" value="1" checked="checked">{'SYNC_POSTEROVERWRITE'|@translate}</label>
+	<br/><small>{'SYNC_POSTEROVERWRITE_DESC'|@translate}</small>
       </li>
       <li>
-	<label><span class="property">Output format : </span></label>
+	<label><span class="property">{'SYNC_OUTPUT'|@translate}: </span></label>
 	<label><input type="radio" name="output" value="jpg" checked="checked"/> JPG</label>
 	<label><input type="radio" name="output" value="png" /> PNG</label>
-	<br/><small>Select the output format for the poster and thumbnail.</small>
+	<br/><small>{'SYNC_OUTPUT_DESC'|@translate}</small>
       </li>
       <li>
-	<label><input type="checkbox" name="posteroverlay" value="1" /> Add film effect</label>
+	<label><input type="checkbox" name="posteroverlay" value="1" />{'SYNC_POSTEROVERLAY'|@translate}</label>
 	<a class="showInfo" title="<img src='{$VIDEOJS_PATH}admin/example-frame.jpg'>">i</a>
-	<br/><small>Apply an overlay on the poster creation.</small>
+	<br/><small>{'SYNC_POSTEROVERLAY_DESC'|@translate}</small>
       </li>
     </ul>
   </fieldset>
@@ -135,27 +136,16 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <legend>{'Thumbnail'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="thumb" value="1" /> Create a thumbnail at every seconds:</label>
-	<!--
-	<input type="range" id="thumbsec" name="thumbsec" value="5" min="0" max="60" step="1" onchange="updateRangeValue();"/>
-	<input id="thumbsecValue" name="thumbsecValue" type="text" size="2"/>
-	{literal}
-	<script type="text/javascript">
-	function updateRangeValue() {
-		var x = document.getElementById('thumbsecValue');
-		var y = document.getElementById('thumbsec');
-		x.value = y.value;
-	}
-	</script>
-	{/literal}
-	-->
-	<input type="text" name="thumbsec" value="5" size="2" required/>
-	<br/><small>Create a thumbnail every x seconds. <strong>Use by the videoJS plugin thumbnail</strong>.</small>
+	<label><input type="checkbox" name="thumb" value="1" />{'SYNC_THUMBSEC'|@translate}:</label>
+	<input type="range" id="thumbsec" name="thumbsec" value="5" min="0" max="60" step="1"/>
+	<output name="thumbsecValue" for="thumbsec">5</output>
+	<!-- <input type="text" name="thumbsec" value="5" size="2" required/> -->
+	<br/><small>{'SYNC_THUMBSEC_DESC'|@translate} <strong>Use by the videoJS plugin thumbnail</strong>.</small>
       </li>
       <li>
-	<label>Size of the thumbnail:</label>
+	<label>{'SYNC_THUMBSIZE'|@translate}:</label>
 	<input type="text" name="thumbsize" value="120x68" size="5" placeholder="120x68" required/>
-	<br/><small>Size in pixel, keep it small, default is fine, Youtube use 190x68.</small>
+	<br/><small>{'SYNC_THUMBSIZE_DESC'|@translate}</small>
       </li>
     </ul>
   </fieldset>
