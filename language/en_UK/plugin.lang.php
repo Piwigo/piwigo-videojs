@@ -9,6 +9,8 @@ $lang['AUTOPLAY'] = 'Autoplay';
 $lang['AUTOPLAY_DESC'] = 'If autoplay is true, the video will start playing as soon as the page is loaded (without any interaction from the user). NOT SUPPORTED BY APPLE iOS DEVICES.';
 $lang['LOOP'] = 'Loop';
 $lang['LOOP_DESC'] = 'The loop attribute causes the video to start over as soon as it ends.';
+$lang['VOLUME'] = 'Volume';
+$lang['VOLUME_DESC'] = 'The volume option sets the volume level. 0 is off (muted), 1.0 is all the way up, 0.5 is half way.';
 
 $lang['PLUGIN'] = 'Plugin settings';
 $lang['SKIN'] = 'Skin';
