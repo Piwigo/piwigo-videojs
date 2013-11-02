@@ -30,4 +30,22 @@ $lang['THUMBNAILS_DESC'] = 'Displays thumbnail images over the progress bar.';
 $lang['WATERMARK'] = 'Watermark';
 $lang['WATERMARK_DESC'] = 'Displays watermark over the video.';
 
+$lang['SYNC_ERRORS'] = 'Errors';
+$lang['SYNC_WARNINGS'] = 'Warnings';
+$lang['SYNC_INFOS'] = 'Detailed information';
+
+$lang['SYNC_METADATA_DESC'] = 'Will overwrite the information in the database with the metadata from the video.';
+$lang['SYNC_POSTER'] = 'Create a poster at position in second';
+$lang['SYNC_POSTER_DESC'] = 'Create a poster from the video at specify position.';
+$lang['SYNC_POSTEROVERWRITE'] = 'Overwrite existing posters';
+$lang['SYNC_POSTEROVERWRITE_DESC'] = 'Overwrite existing thumbnails with new ones. If uncheck it should only run for newly added video.';
+$lang['SYNC_OUTPUT'] = 'Output format';
+$lang['SYNC_OUTPUT_DESC'] = 'Select the output format for the poster and thumbnail.';
+$lang['SYNC_POSTEROVERLAY'] = 'Add film effect';
+$lang['SYNC_POSTEROVERLAY_DESC'] = 'Apply an overlay on the poster creation.';
+$lang['SYNC_THUMBSEC'] = 'Create a thumbnail at every seconds';
+$lang['SYNC_THUMBSEC_DESC'] = 'Create a thumbnail every x seconds.';
+$lang['SYNC_THUMBSIZE'] = 'Size of the thumbnail';
+$lang['SYNC_THUMBSIZE_DESC'] = 'Size in pixel, keep it small, default is fine, Youtube use 190x68.';
+
 ?>
