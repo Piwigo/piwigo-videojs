@@ -64,12 +64,13 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 		'controls'      => get_boolean($_POST['vjs_controls']),
 		'autoplay'      => get_boolean($_POST['vjs_autoplay']),
 		'loop'          => get_boolean($_POST['vjs_loop']),
+		'volume'        => $_POST['vjs_volume'],
 		'upscale'       => get_boolean($_POST['vjs_upscale']),
-                'plugins'        => array(
-                                    'zoomrotate'    => get_boolean($_POST['vjs_zoomrotate']),
-                                    'thumbnails'    => get_boolean($_POST['vjs_thumbnails']),
-                                    'watermark'     => get_boolean($_POST['vjs_watermark']),
-                                ),
+		'plugins'       => array(
+							'zoomrotate'    => get_boolean($_POST['vjs_zoomrotate']),
+							'thumbnails'    => get_boolean($_POST['vjs_thumbnails']),
+							'watermark'     => get_boolean($_POST['vjs_watermark']),
+						),
 	);
 	$customcss = $_POST['vjs_customcss'];
 

@@ -39,6 +39,14 @@
 
 </div>
 
+{literal}
+<script>
+// initialize video.js
+var my_video_volume = videojs('my_video_1');
+my_video_volume.volume({/literal}{$volume}{literal});
+</script>
+{/literal}
+
 {if not empty($thumbnails)}
 {literal}
 <script>

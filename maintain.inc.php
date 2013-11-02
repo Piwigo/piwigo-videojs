@@ -58,6 +58,7 @@ function plugin_install()
 		'controls'	=> true,
 		'autoplay'	=> false,
 		'loop'		=> false,
+		'volume'	=> '1',
 		'upscale'	=> false,
 		'plugins'	=> array(
 					'zoomrotate'    => false,

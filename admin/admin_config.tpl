@@ -26,7 +26,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
   </ul>
 </div>
 
-<form method="post" action="" class="properties">
+<form method="post" action="" class="properties" oninput="volumelevelValue.value=vjs_volume.value">
 	<fieldset>
 		<legend>{'HTML5'|@translate}</legend>
 		<ul>
@@ -54,6 +54,13 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 				<label><input type="radio" name="vjs_loop" value="true" {if $loop}checked="checked"{/if}/> {'Yes'|@translate}</label>
 				<label><input type="radio" name="vjs_loop" value="false" {if not $loop}checked="checked"{/if}/> {'No'|@translate}</label>
 				<br/><small>{'LOOP_DESC'|@translate}</small>
+			</li>
+			<li>
+				<label><span class="property">{'VOLUME'|@translate} : </span></label>
+				<input type="range" id="vjs_volume" name="vjs_volume" value="{$volume}" min="0" max="1" step="0.1"/>
+				<output name="volumelevelValue" for="vjs_volume">{$volume}</output>
+				<!-- <label><input type="text" name="vjs_volume" value="1" placeholder="1"/></label> -->
+				<br/><small>{'VOLUME_DESC'|@translate}</small>
 			</li>
 		</ul>
 	</fieldset>

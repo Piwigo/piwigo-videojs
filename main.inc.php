@@ -149,6 +149,7 @@ function vjs_render_media($content, $picture)
 	$preload = isset($conf['vjs_conf']['preload']) ? $conf['vjs_conf']['preload'] : 'none';
 	$loop = isset($conf['vjs_conf']['loop']) ? strbool($conf['vjs_conf']['loop']) : false;
 	$controls = isset($conf['vjs_conf']['controls']) ? strbool($conf['vjs_conf']['controls']) : false;
+	$volume = isset($conf['vjs_conf']['volume']) ? $conf['vjs_conf']['volume'] : '1';
 
 	// Slideshow : The video needs to be launch automatically in
 	// slideshow mode. The refresh of the page is set to the
@@ -316,8 +317,9 @@ function vjs_render_media($content, $picture)
 			'VIDEOJS_SKIN'		=> $skin,
 			'VIDEOJS_SKINCSS'	=> $skincss,
 			'VIDEOJS_CUSTOMCSS'	=> $customcss,
-			'thumbnails'		=> $thumbnails,
-			'zoomrotate'		=> $zoomrotate,
+			'volume'		=> $volume,
+			'thumbnails'	=> $thumbnails,
+			'zoomrotate'	=> $zoomrotate,
 			'watermark'		=> $watermark,
 			'videos'		=> $videos,
 		)
