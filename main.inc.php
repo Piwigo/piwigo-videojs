@@ -166,8 +166,6 @@ function vjs_render_media($content, $picture)
 	$available_skins = array(
 		'vjs-default-skin' => 'video-js.min.css',
 		'vjs-redtube-skin' => 'redtube-skin.css',
-		'vjs-darkfunk-skin' => 'darkfunk-skin.css',
-		'vjs-redsheen-skin' => 'redsheen-skin.css',
 	);
 	$skincss = $available_skins[$skin];
 
@@ -221,7 +219,6 @@ function vjs_render_media($content, $picture)
 		$matches = glob($filematch);
 
 		if ( is_array ( $matches ) ) {
-			$thumbnails = array();
 			foreach ( $matches as $filename) {
 			     $ext = explode("-th_", $filename);
 			     $second = explode(".", $ext[1]);
@@ -306,13 +303,10 @@ function vjs_render_media($content, $picture)
 	// the full URL as suggested by videojs for flash fallback compatibility
 	$template->assign(
 		array(
-			'VIDEOJS_MEDIA_URL'	=> embellish_url(get_gallery_home_url() . $picture['current']['element_url']),
-			'VIDEOJS_POSTER_URL'	=> $poster,
-			'VIDEOJS_PATH'		=> VIDEOJS_PATH,
-			'VIDEOJS_FULLPATH'	=> realpath(dirname(__FILE__)),
+			'VIDEOJS_POSTER_URL'	=> embellish_url(get_gallery_home_url().$poster),
+			'VIDEOJS_PATH'		=> embellish_url(get_absolute_root_url().VIDEOJS_PATH),
 			'WIDTH'			=> $width,
 			'HEIGHT'		=> $height,
-			'TYPE'			=> $extension,
 			'OPTIONS'		=> $options,
 			'VIDEOJS_SKIN'		=> $skin,
 			'VIDEOJS_SKINCSS'	=> $skincss,
