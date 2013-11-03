@@ -46,6 +46,7 @@ if (!pwg_db_num_rows($result))
 // Init value for result table
 $videos = 0;
 $metadata = 0;
+$posters = 0;
 $thumbs = 0;
 $errors = array();
 $warnings = array();
@@ -109,31 +110,39 @@ while ($row = pwg_db_fetch_assoc($result))
         //print_r($exif);
         if (isset($exif) and $sync_options['metadata'])
         {
-            $metadata++;
-            $infos[] = $filename. ' metadata: '.implode(",", array_keys($exif));
-            //$infos[] = $filename. ' metadata: '.count($exif);
-            if ($sync_options['metadata'] and !$sync_options['simulate'])
-            {
-                $dbfields = explode(",", "filesize,width,height,lat,lon,date_creation,rotation");
-                $query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
-                pwg_query($query);
+			if (isset($exif['error']))
+			{
+				$errors[] = $exif['error'];
+			}
+			else
+			{
+				$metadata++;
+				$infos[] = $filename. ' metadata: '.implode(",", array_keys($exif));
+				//$infos[] = $filename. ' metadata: '.count($exif);
+				if ($sync_options['metadata'] and !$sync_options['simulate'])
+				{
+					$dbfields = explode(",", "filesize,width,height,lat,lon,date_creation,rotation");
+					$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
+					pwg_query($query);
 
-                //$dbfields = explode(",", "format,type,duration,overall_bit_rate,model,make,display_aspect_ratio,width,height,frame_rate,channel,sampling_rate");
-                //$query = "UPDATE '".$prefixeTable."image_videojs' SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
-                //pwg_query($query);
-            }
+					/* At some point we use our own table */
+					//$dbfields = explode(",", "format,type,duration,overall_bit_rate,model,make,display_aspect_ratio,width,height,frame_rate,channel,sampling_rate");
+					//$query = "UPDATE '".$prefixeTable."image_videojs' SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
+					//pwg_query($query);
+				}
+			}
         }
 
         /* Create poster */
         if ($sync_options['poster'])
         {
-            $thumbs++;
+            $posters++;
             /* Init value */
             $file_wo_ext = pathinfo($row['file']);
             $output_dir = dirname($row['path']) . '/pwg_representative/';
             $in = $filename;
             $out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['output'];
-            /* report it */
+            /* Report it */
             $infos[] = $filename. ' poster: '.$out;
 
             if (!is_dir($output_dir))
@@ -145,12 +154,25 @@ while ($row = pwg_db_fetch_assoc($result))
                 $errors[] = "Directory ".$output_dir." has wrong permission";
             }
             else if ($sync_options['postersec'] and !$sync_options['simulate'])
-            {
+            {/* We really want to create the poster */
+
+				/* Delete any previous poster, avoid duplication on different output format */
+				$extensions = array('.jpg', '.png');
+				foreach ($extensions as $extension)
+				{
+					$ifile = $output_dir.$file_wo_ext['filename'].$extension;
+					if(is_file($ifile))
+					{
+						unlink($ifile);
+					}
+				}
+				/* if video is shorter fallback to last second */
                 if (isset($exif['playtime_seconds']) and $sync_options['postersec'] > $exif['playtime_seconds'])
                 {
                     $errors[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". $exif['playtime_seconds'] ." secondes";
                     $sync_options['postersec'] = (int)$exif['playtime_seconds'];
                 }
+				/* default output to JPG */
                 $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$out;
                 if ($sync_options['output'] == "png")
                 {
@@ -163,33 +185,35 @@ while ($row = pwg_db_fetch_assoc($result))
                 {
                     $errors[] = "Error poster running ffmpeg, try it manually:\n<br/>". $ffmpeg;
                 }
-		else
-		{
-                    /* Update DB */
-                    $query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='".$sync_options['output']."' WHERE `id`=".$row['id'].";";
-                    pwg_query($query);
+				else
+				{/* We have a poster, lets update the DB */
 
-                    /* Delete any previous square or thumbnail or small images */
-                    $idata = "_data/i/".dirname($row['path']).'/pwg_representative/';
-                    $extensions = array('-th.jpg', '-sq.jpg', '-th.png', '-sq.png', '-sm.png', '-sm.png');
-                    foreach ($extensions as $extension)
-                    {
-                        $ifile = $idata.$file_wo_ext['filename'].$extension;
-                        if(is_file($ifile))
-                        {
-                            unlink($ifile);
-                        }
-                    }
+					/* Update DB */
+					$query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='".$sync_options['output']."' WHERE `id`=".$row['id'].";";
+					pwg_query($query);
 
-                    /* Generate the overlay */
-                    if($sync_options['posteroverlay'])
-                    {
-                        add_movie_frame($out);
-                        $infos[] = $filename. ' overlay: '.$out;
-                    }
-		}
+					/* Delete any previous square or thumbnail or small images, avoid duplication on different output format */
+					/* They are now out of date, thumbnail are autogenerate by Piwigo on request */
+					$idata = "_data/i/".dirname($row['path']).'/pwg_representative/';
+					$extensions = array('-th.jpg', '-sq.jpg', '-th.png', '-sq.png', '-sm.png', '-sm.png');
+					foreach ($extensions as $extension)
+					{
+						$ifile = $idata.$file_wo_ext['filename'].$extension;
+						if(is_file($ifile))
+						{
+							unlink($ifile);
+						}
+					}
+
+					/* Generate the overlay */
+					if($sync_options['posteroverlay'])
+					{
+						add_movie_frame($out);
+						$infos[] = $filename. ' overlay: '.$out;
+					}
+				}
             }
-        }
+        } /* End poster */
 
         /* Create multiple thumbnails */
         if ($sync_options['thumb'])
@@ -205,13 +229,29 @@ while ($row = pwg_db_fetch_assoc($result))
                     $errors[] = "Directory ".$output_dir." doesn't exist or wrong permission";
                 }
                 else if ($sync_options['thumbsec'] and !$sync_options['simulate'])
-                {
+                {/* We really want to create the thumbnails */
+
+					/* Delete any previous thumbnails, avoid duplication on different output format */
+					$filematch = $output_dir.$file_wo_ext['filename']."-th_*";
+					$matches = glob($filematch);
+					if ( is_array ( $matches ) ) {
+						foreach ( $matches as $eachfile) {
+							if(is_file($eachfile))
+							{
+								unlink($eachfile);
+							}
+						}
+					}
+
+					/* The loop */
                     $in = $filename;
                     for ($second=0; $second <= $exif['playtime_seconds']; $second+=$sync_options['thumbsec'])
                     {
-                        $out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];
+						$thumbs++;
+						$out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];
+						/* Report it */
                         $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out;
-                        /* Lets do it */
+                        /* Lets do it , default output to JPG */
                         $ffmpeg = "ffmpeg -itsoffset -".$second." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y ".$out;
                         if ($sync_options['output'] == "png")
                         {
@@ -226,7 +266,7 @@ while ($row = pwg_db_fetch_assoc($result))
                     }
                 }
             }
-        } /* End thumbnail */
+        } /* End thumbnails */
     }
 }
 

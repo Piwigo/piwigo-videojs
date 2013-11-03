@@ -106,6 +106,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     $template->assign(
         'update_result',
         array(
+            'NB_ELEMENTS_POSTER'        => $posters,
             'NB_ELEMENTS_THUMB'         => $thumbs,
             'NB_ELEMENTS_EXIF'          => $metadata,
             'NB_ELEMENTS_CANDIDATES'    => $videos,

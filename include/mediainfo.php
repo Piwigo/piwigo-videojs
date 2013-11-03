@@ -34,18 +34,30 @@ $xml = new SimpleXMLElement($output);
 //print_r($xml);
 
 /*
+[version] => 0.7.58
+[version] => 0.7.64
+*/
+if (isset($xml["version"]))
+{
+	if (version_compare($xml["version"], '0.7.64') < 0)
+	{
+		$exif['error'] = "Please upgrade MediaInfo to version: 0.7.64 vs" . $xml["version"];
+	}
+}
+
+/*
  *General
-    [Complete_name] => /var/www/piwigo/galleries/videos/IMG_1090.mp4
-    [Internet_media_type] => video/mp4
+    [CompleteName] => /var/www/piwigo/galleries/videos/IMG_1090.mp4
+    [InternetMediaType] => video/mp4
     [Format] => MPEG-4
-    [File_size] => 4.99 MiB
+    [FileSize] => 4.99 MiB
     [Duration] => 11s 322ms
-    [Overall_bit_rate] => 3 699 Kbps
-    [Recorded_date] => 2013-06-04T17:02:15+0900
-    [Encoded_date] => UTC 2013-06-04 08:02:16
-    [Tagged_date] => UTC 2013-06-04 08:02:28
-    [Writing_application] => 5.1.1
-    [Writing_library] => Apple QuickTime
+    [OverallBitRate_String] => 3 699 Kbps
+    [Recorded_Date] => 2013-06-04T17:02:15+0900
+    [Encoded_Date] => UTC 2013-06-04 08:02:16
+    [Tagged_Date] => UTC 2013-06-04 08:02:28
+    [Encoded_Application] => 5.1.1
+    [Encoded_Library] => Apple QuickTime
     [Make] => Apple
     [xyz] => +35.6445+139.7455+029.201/
     [Model] => iPhone 3GS
@@ -56,64 +68,64 @@ $xml = new SimpleXMLElement($output);
     [comapplequicktimecreationdate] => 2013-06-04T17:02:15+0900
 */
 $general = $xml->File->track[0];
-if (isset($general->Format[0]))
+if (isset($general->Format))
 {
-    $exif['format'] = (string)$general->Format[0];
+    $exif['format'] = (string)$general->Format;
 }
-if (isset($general->Internet_media_type))
+if (isset($general->InternetMediaType))
 {
-    $exif['type'] = (string)$general->Internet_media_type;
+    $exif['type'] = (string)$general->InternetMediaType;
 }
-if (isset($general->File_size[0]))
+if (isset($general->FileSize))
 {
-    $exif['filesize'] = round($general->File_size[0]/1024);
+    $exif['filesize'] = round($general->FileSize/1024);
 }
-if (isset($general->Duration[0]))
+if (isset($general->Duration))
 {
-    $exif['duration'] = (string)$general->Duration[4];
-    $exif['playtime_seconds'] = (int)($general->Duration[0]/1000);
+    $exif['duration'] = (string)$general->Duration;
+    $exif['playtime_seconds'] = (int)($general->Duration/1000);
 }
-if (isset($general->Overall_bit_rate[0]))
+if (isset($general->BitRate_String))
 {
-    $exif['overall_bit_rate'] = (string)$general->Overall_bit_rate[0];
+    $exif['overall_bit_rate'] = (string)$general->BitRate_String;
 }
-if (isset($general->xyz[0]) and $sync_options['sync_gps'])
+if (isset($general->xyz) and $sync_options['sync_gps'])
 {
     //$test = "+35.6445-139.7455-029.201/";
-    //print_r(preg_split('/(\+|\-)/', $general->xyz[0], -1, PREG_SPLIT_DELIM_CAPTURE));
-    $value = preg_split('/(\+|\-)/', $general->xyz[0], -1, PREG_SPLIT_DELIM_CAPTURE);
+    //print_r(preg_split('/(\+|\-)/', $general->xyz, -1, PREG_SPLIT_DELIM_CAPTURE));
+    $value = preg_split('/(\+|\-)/', $general->xyz, -1, PREG_SPLIT_DELIM_CAPTURE);
     $exif['lat'] = $value[1].$value[2];
     $exif['lon'] = $value[3].$value[4];
 }
-if (isset($general->Model[0]))
+if (isset($general->Model))
 {
-    $exif['model'] = (string)$general->Model[0];
+    $exif['model'] = (string)$general->Model;
 }
 if (isset($general->comapplequicktimesoftware))
 {
     $exif['model'] .= " ". (string)$general->comapplequicktimesoftware;
 }
-if (isset($general->Make[0]))
+if (isset($general->Make))
 {
-    $exif['make'] = (string)$general->Make[0];
+    $exif['make'] = (string)$general->Make;
 }
-if (isset($general->Recorded_date))
+if (isset($general->Recorded_Date))
 {
-    $exif['date_creation'] = (string)$general->Recorded_date;
+    $exif['date_creation'] = (string)$general->Recorded_Date;
 }
 /*
-print $general->Format[0]."<br/>\n";
-print $general->File_size[0]."<br/>\n";
-print $general->Duration[0]."<br/>\n";
-print $general->Recorded_date[0]."<br/>\n";
-print $general->Make[0]."<br/>\n";
-print $general->xyz[0]."<br/>\n";
-print $general->Model[0]."<br/>\n";
+print $general->Format."<br/>\n";
+print $general->FileSize."<br/>\n";
+print $general->Duration."<br/>\n";
+print $general->Recorded_Date."<br/>\n";
+print $general->Make."<br/>\n";
+print $general->xyz."<br/>\n";
+print $general->Model."<br/>\n";
 */
 
 /*
  *Video
-    [Bit_rate] => 3 623 Kbps
+    [BitRate] => 3592927
     [Width] => 640 pixels
     [Height] => 480 pixels
     [Display_aspect_ratio] => 4:3
@@ -121,28 +133,32 @@ print $general->Model[0]."<br/>\n";
     [Frame_rate] => 29.970 fps
 */
 $video = $xml->File->track[1];
-if (isset($video->Width[0]))
+if (isset($video->BitRate))
 {
-    $exif['width'] = (string)$video->Width[0];
+    $exif['bitrate'] = (string)$video->BitRate;
 }
-if (isset($video->Height[0]))
+if (isset($video->Width))
 {
-    $exif['height'] = (string)$video->Height[0];
+    $exif['width'] = (string)$video->Width;
 }
-if (isset($video->Display_aspect_ratio[1]))
+if (isset($video->Height))
 {
-    $exif['display_aspect_ratio'] = (string)$video->Display_aspect_ratio[1];
+    $exif['height'] = (string)$video->Height;
 }
-if (isset($video->Rotation[0]) and (int)$video->Rotation[0] != 0)
+if (isset($video->DisplayAspectRatio))
+{
+    $exif['display_aspect_ratio'] = (string)$video->DisplayAspectRatio;
+}
+if (isset($video->Rotation) and (int)$video->Rotation != 0)
 {
     include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
     //print (int)$video->Rotation[0];
-    $rotation_code = pwg_image::get_rotation_code_from_angle((int)$video->Rotation[0]);
+    $rotation_code = pwg_image::get_rotation_code_from_angle((int)$video->Rotation);
     $exif['rotation'] = $rotation_code;
 }
-if (isset($video->Frame_rate[0]))
+if (isset($video->FrameRate))
 {
-    $exif['frame_rate'] = (string)$video->Frame_rate[0];
+    $exif['frame_rate'] = (string)$video->FrameRate;
 }
 /*
 print $video->Bit_rate[0]."<br/>\n";
@@ -160,19 +176,19 @@ print $video->Frame_rate[0]."<br/>\n";
     [Sampling_rate] => 44.1 KHz
 */
 $audio = $xml->File->track[2];
-if (isset($audio->Channel_s_[0]))
+if (isset($audio->Channel_s_))
 {
-    $exif['channel'] = (string)$audio->Channel_s_[0];
+    $exif['channel'] = (string)$audio->Channel_s_;
 }
-if (isset($audio->Sampling_rate[0]))
+if (isset($audio->SamplingRate))
 {
-    $exif['sampling_rate'] = (string)$audio->Sampling_rate[0];
+    $exif['sampling_rate'] = (string)$audio->SamplingRate;
 }
 /*
-print $audio->Bit_rate[0]."<br/>\n";
-print $audio->Channel_s_[0]."<br/>\n";
-print $audio->Channel_positions[0]."<br/>\n";
-print $audio->Sampling_rate[0]."<br/>\n";
+print $audio->Bit_rate."<br/>\n";
+print $audio->Channel_s_."<br/>\n";
+print $audio->Channel_positions."<br/>\n";
+print $audio->Sampling_rate."<br/>\n";
 */
 
 ?>

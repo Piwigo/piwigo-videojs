@@ -38,8 +38,8 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
   <legend>{'Statistics'|@translate}</legend>
   <ul>
     <li class="update_summary_new">{$NB_VIDEOS} {'videos in your gallery'|@translate}</li>
-    <li class="update_summary_new">{$NB_VIDEOS_GEOTAGGED} {'geotagged videos'|@translate}</li>
-    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster in your gallery'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_GEOTAGGED} {'geotagged videos in your gallery'|@translate}</li>
   </ul>
 </div>
 
@@ -47,9 +47,10 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 <div class="vjs_layout">
   <legend>Synchronization results</legend>
   <ul>
-    <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'video(s) in your gallery'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'video(s) selected'|@translate}</li>
     <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'video(s) with metadata added'|@translate}</li>
-    <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'poster(s) created'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_POSTER} {'poster(s) created'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'thumbnail(s) created'|@translate}</li>
     <li class="update_summary_new">{$update_result.NB_WARNINGS} {'warnings during synchronization'|@translate}</li>
     <li class="update_summary_err">{$update_result.NB_ERRORS} {'errors during synchronization'|@translate}</li>
   </ul>
