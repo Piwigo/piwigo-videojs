@@ -126,7 +126,7 @@ function plugin_activate()
 
 	if ( (!isset($conf['vjs_conf'])) or (!isset($conf['vjs_customcss']))
 	    or (!empty($conf['vjs_conf']))
-	    or (count($conf['vjs_conf'], COUNT_RECURSIVE) != 11))
+	    or (count($conf['vjs_conf'], COUNT_RECURSIVE) != 12))
 	{
 		plugin_install();
 	}
