@@ -48,45 +48,24 @@ function vjs_admin_menu($menu)
 // Batch_manager support
 include_once(dirname(__FILE__).'/admin_batchmanager.php');
 
-// Photo edit support
-//include_once(dirname(__FILE__).'/admin_photo.php');
-
 // Hook to add an photo edit tab in photo edit
-//add_event_handler('tabsheet_before_select','vjs_add_tab', 55, 2);
+add_event_handler('tabsheet_before_select','vjs_add_tab', 55, 2);
 function vjs_add_tab($sheets, $id)
 {
-	/* TODO Display the properties if a video handle by VideoJS
-	if ($id != 'photo') return $sheets;
-
-	$query = '
-		SELECT *
-		FROM '.VIDEOJS_TABLE.'
-		WHERE picture_id = '.$_GET['image_id'].'
-	;';
-	$result = pwg_query($query);
-
-	if (!pwg_db_num_rows($result)) return $sheets;
-
-	global $gvideo;
-	$gvideo = pwg_db_fetch_assoc($result);
-
-	$sheets['gvideo'] = array(
-	  'caption' => l10n('Video properties'),
-	  'url' => GVIDEO_ADMIN.'-photo&amp;image_id='.$_GET['image_id'],
-	  );
-	unset($sheets['coi'], $sheets['update']);
-
-	return $sheets;
-	*/
-
 	if ($id == 'photo')
 	{
+		$query = "SELECT id FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['image_id'].";";
+		$result = pwg_query($query);
+		if (!pwg_db_num_rows($result)) return $sheets;
+
 		$sheets['videojs'] = array(
-			'caption' => l10n('VideoJS'),
-			'url' => get_root_url().'admin.php?page=plugin-videojs-photo&amp;image_id='.$_GET['image_id'],
+			'caption' => 'VideoJS',
+			'url' => get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;image_id='.$_GET['image_id'],
 			);
+
+		unset($sheets['coi'], $sheets['update']);
+		unset($sheets['rotate'], $sheets['update']);
 	}
-	unset($sheets['coi'], $sheets['update']);
 
 	return $sheets;
 }

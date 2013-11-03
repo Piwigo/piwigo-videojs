@@ -27,14 +27,28 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
+// Check access and exit when user status is not ok
+check_status(ACCESS_ADMINISTRATOR);
+
+if (!isset($_GET['image_id']) or !isset($_GET['section']))
+{
+	die('Invalid data!');
+}
+
 check_input_parameter('image_id', $_GET, false, PATTERN_ID);
 
 $admin_photo_base_url = get_root_url().'admin.php?page=photo-'.$_GET['image_id'];
-//$self_url = VIDEOJS_ADMIN.'-photo&amp;image_id='.$_GET['image_id'];
+$self_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;image_id='.$_GET['image_id'];
+
+load_language('plugin.lang', PHPWG_PLUGINS_PATH.basename(dirname(__FILE__)).'/');
+load_language('plugin.lang', VIDEOJS_PATH);
 
 global $template, $page, $conf;
 
-echo "admin_photo";
+if (isset($_POST['submit']))
+{
+	check_pwg_token();
+}
 
 include_once(PHPWG_ROOT_PATH.'admin/include/tabsheet.class.php');
 $tabsheet = new tabsheet();
@@ -42,59 +56,96 @@ $tabsheet->set_id('photo');
 $tabsheet->select('videojs');
 $tabsheet->assign();
 
-// +-----------------------------------------------------------------------+
-// | Picture infos                                                         |
-// +-----------------------------------------------------------------------+
-$query = '
-SELECT *
-  FROM '.IMAGES_TABLE.'
-  WHERE id = '.$_GET['image_id'].'
-;';
+$template->set_filenames(
+  array(
+    'plugin_admin_content' => dirname(__FILE__).'/admin_photo.tpl'
+    )
+  );
+
+$query = "SELECT * FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['image_id'].";";
 $picture = pwg_db_fetch_assoc(pwg_query($query));
 
-$template->assign(array(
-  'F_ACTION' => "/piwigo/admin.php?page=plugin-videojs-photo&image_id=23",
-//  'VJSVIDEO' => $vjsvideo,
-  'TN_SRC' => DerivativeImage::thumb_url($picture).'?'.time(),
-  'TITLE' => render_element_name($picture),
-));
-
-$template->set_filename('gvideo_content', dirname(__FILE__).'/template/photo.tpl');
-
-
-// Hook to show details in the tab of photo edit
-add_event_handler('loc_begin_element_set_global', 'vjs_set_template_data');
-function vjs_set_template_data() {
-	global $template,$lang;
-
-	load_language('plugin.lang', dirname(__FILE__).'/');
-
-	include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
-
-	$angles = array (
-		array('value' => 270, 'name' => l10n('90° right')),
-		array('value' =>  90, 'name' => l10n('90° left')),
-		array('value' => 180, 'name' => l10n('180°'))
-	);
-
-	$template->assign(array(
-	  'RI_PWG_TOKEN' => get_pwg_token(),
-	  'angles' => $angles,
-	  'angle_value' => 90,
-	  'library' => pwg_image::get_library()
-	));
-	$template->set_filename('videojs', realpath(dirname(__FILE__).'/admin_image.tpl'));
-	$template->append('element_set_global_plugins_actions', array(
-	  'ID' => 'videojs',
-	  'NAME' => l10n('Video'),
-	  'CONTENT' => $template->parse('videojs', true))
-	);
+$filename = $picture['path'];
+$sync_options['sync_gps'] = true;
+include_once(dirname(__FILE__).'/../include/mediainfo.php');
+if (isset($exif))
+{
+	// replace some value by human readable string
+	$exif['name'] = (string)$general->CompleteName;
+	$exif['filename'] = (string)$general->FileName;
+	$exif['filesize'] = (string)$general->FileSize_String;
+	$exif['duration'] = (string)$general->Duration_String;
+	$exif['bitrate'] = (string)$video->BitRate_String;
+	$exif['sampling_rate'] = (string)$audio->SamplingRate_String;
+	ksort($exif);
 }
 
-// Hook to do the action in the tab of photo edit
-add_event_handler('element_set_global_action', 'vjs_element_action', 55, 2);
-function vjs_element_action($action, $collection) {
-	if ($action == 'videojs') {
-	  add_event_handler('get_derivative_url', 'vjs_force_refresh', EVENT_HANDLER_PRIORITY_NEUTRAL, 4);
+// Try to guess the poster extension
+$parts = pathinfo($picture['path']);
+//print_r($parts);
+$poster = embellish_url( vjs_get_poster_file( Array(
+	(string)$general->FolderName."/pwg_representative/".$parts['filename'].".jpg" =>
+		get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
+	(string)$general->FolderName."/pwg_representative/".$parts['filename'].".png" =>
+		get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
+)));
+//print $poster;
+
+// Try to find multiple video source
+$extension = $parts['extension'];
+$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
+$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
+// Add the current file in array
+$videos[] = array(
+			'src' => embellish_url(get_gallery_home_url() . $picture['path']),
+			'ext' => $extension,
+		);
+foreach ($files_ext as $file_ext) {
+	$file = (string)$general->FolderName."/pwg_representative/".$parts['filename'].".".$file_ext;
+	if (file_exists($file)){
+		array_push($videos,
+			   array (
+				'src' => embellish_url(
+						  get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".".$file_ext
+						 ),
+				'ext' => vjs_get_mimetype_from_ext($file_ext)
+				)
+			  );
 	}
 }
+//print_r($videos);
+
+$filematch = $parts['dirname']."/pwg_representative/".$parts['filename']."-th_*";
+$matches = glob($filematch);
+$thumbnails = array();
+if ( is_array ( $matches ) ) {
+	foreach ( $matches as $filename) {
+		 $ext = explode("-th_", $filename);
+		 $second = explode(".", $ext[1]);
+		 // ./galleries/videos/pwg_representative/trailer_480p-th_0.jpg
+		 //echo "$filename second " . $second[0]. "\n";
+		 $thumbnails[] = array(
+				   'second' => $second[0],
+				   'source' => embellish_url(get_gallery_home_url() . $filename)
+				);
+	}
+}
+//print_r($thumbnails);
+
+$infos = array_merge(
+				array('poster' => $poster),
+				array('videos source' => count($videos)),
+				array('thumbnails' => count($thumbnails))
+				);
+//print_r($infos);
+
+$template->assign(array(
+	'PWG_TOKEN' => get_pwg_token(),
+	'F_ACTION' => $self_url,
+	'TN_SRC' => DerivativeImage::thumb_url($picture).'?'.time(),
+	'TITLE' => render_element_name($picture),
+	'EXIF' => $exif,
+	'INFOS' => $infos,
+));
+
+$template->assign_var_from_handle('ADMIN_CONTENT', 'plugin_admin_content');
