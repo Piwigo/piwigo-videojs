@@ -39,9 +39,9 @@ $xml = new SimpleXMLElement($output);
 */
 if (isset($xml["version"]))
 {
-	if (version_compare($xml["version"], '0.7.64') < 0)
+	if (version_compare($xml["version"], '0.7.64') != 0)
 	{
-		$exif['error'] = "Please upgrade MediaInfo to version: 0.7.64 vs" . $xml["version"];
+		$exif['error'] = "Please use MediaInfo version 0.7.64 vs " . $xml["version"];
 	}
 }
 
