@@ -6,7 +6,7 @@
 	<fieldset>
 		<legend>{'Information'|@translate}</legend>
 		<div style="float: left;">
-			<img src="{$TN_SRC}" alt="{'Thumbnail'|@translate}" class="Thumbnail">
+			<img src="{$TN_SRC}" alt="{'Thumbnail'|@translate}" style="border: 2px solid rgb(221, 221, 221);">
 		</div>
 		{if not empty($EXIF)}
 		<div style="float: left; margin: auto;">
@@ -23,7 +23,7 @@
           </ul>
 		</div>
 		{if not empty($INFOS)}
-		<div style="float: left;">
+		<div style="float: left; border-top: 2px solid rgb(221, 221, 221); width: 100%;">
 			<ul>
 				{foreach from=$INFOS key=name item=data}
 					{if $name == 'videos'}
