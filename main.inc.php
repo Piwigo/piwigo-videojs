@@ -18,7 +18,6 @@ global $conf;
 
 // Prepare configuration
 $conf['vjs_conf'] = unserialize($conf['vjs_conf']);
-$conf['derivatives'] = unserialize($conf['derivatives']);
 
 // Register the allowed extentions to the global conf in order
 // to sync them with other contents
@@ -264,14 +263,15 @@ function vjs_render_media($content, $picture)
 	$watermark = array();
 	if ($watermark_plugin)
 	{
-		if ($conf['derivatives']['w']->file != null)
+		$derivatives = unserialize($conf['derivatives']);
+		if (is_array($derivatives) and !empty($derivatives) and $derivatives['w']->file != null)
 		{
 			$watermark = array(
-						'file'		=> embellish_url(get_gallery_home_url() . $conf['derivatives']['w']->file),
-						'xpos'		=> $conf['derivatives']['w']->xpos,
-						'ypos'		=> $conf['derivatives']['w']->ypos,
-						'xrepeat'	=> $conf['derivatives']['w']->xrepeat,
-						'opacity'	=> $conf['derivatives']['w']->opacity,
+						'file'		=> embellish_url(get_gallery_home_url() . $derivatives['w']->file),
+						'xpos'		=> $derivatives['w']->xpos,
+						'ypos'		=> $derivatives['w']->ypos,
+						'xrepeat'	=> $derivatives['w']->xrepeat,
+						'opacity'	=> $derivatives['w']->opacity,
 					);
 		}
 	}
