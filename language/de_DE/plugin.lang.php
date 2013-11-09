@@ -45,4 +45,17 @@ $lang['WATERMARK'] = 'Wasserzeichen';
 $lang['WATERMARK_DESC'] = 'Wasserzeichen über dem Video anzeigen.';
 $lang['ZOOMROTATE'] = 'Zoomrate';
 $lang['ZOOMROTATE_DESC'] = 'Benutze die Videometadaten, um das Video zu drehen und zu zoomen.';
+$lang['SYNC_THUMBSIZE_DESC'] = 'Größe in Pixeln (Standard Einstellung wird empfohlen, YouTube benutzt 190x68) ';
+$lang['VOLUME_DESC'] = 'Die Lautstärkeregelung bestimmt die Lautstärke (0 ist lautlos, 0.5 ist halbe Lautstärke, 1 ist Maximallautstärke).';
+$lang['VOLUME'] = 'Lautstärke';
+$lang['SYNC_WARNINGS'] = 'Warnungen';
+$lang['SYNC_THUMBSIZE'] = 'Größe des Miniaturbilds';
+$lang['SYNC_POSTEROVERWRITE_DESC'] = 'Überschriebt vorhandene Miniaturbilder. Falls nicht aktiviert sollte die Funktion nur auf neu hinzugefügte Videos angewendet werden.';
+$lang['SYNC_POSTEROVERLAY'] = 'Fügt Filmeffekt hinzu';
+$lang['SYNC_THUMBSEC'] = 'Erstellt jede Sekunde ein Miniaturbild';
+$lang['SYNC_THUMBSEC_DESC'] = 'Erstellt alle x Sekunden ein Miniaturbild.';
+$lang['SYNC_OUTPUT'] = 'Ausgabeformat';
+$lang['SYNC_METADATA_DESC'] = 'Wird die Informationen in der Datenbank mit den Metadaten des Videos überschreiben.';
+$lang['SYNC_INFOS'] = 'Detailinformation';
+$lang['SYNC_ERRORS'] = 'Fehler';
 ?>

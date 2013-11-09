@@ -28,4 +28,22 @@ $lang['THUMBNAILS_DESC'] = 'Displays thumbnail images over the progress bar.';
 $lang['WATERMARK'] = 'Watermark';
 $lang['WATERMARK_DESC'] = 'Displays watermark over the video.';
 
+$lang['SYNC_THUMBSEC'] = 'Créer une miniature à chaque seconde';
+$lang['SYNC_THUMBSEC_DESC'] = 'Créer une miniature toutes les x secondes';
+$lang['SYNC_THUMBSIZE'] = 'Taille de la miniature';
+$lang['SYNC_THUMBSIZE_DESC'] = 'xTaille en pixels, gardez une petite taille, celle par défaut est correcte, Youtube utilise 190x68';
+$lang['SYNC_ERRORS'] = 'Erreurs';
+$lang['SYNC_INFOS'] = 'Informations détaillées';
+$lang['SYNC_OUTPUT'] = 'Format de sortie';
+$lang['SYNC_POSTEROVERLAY'] = 'Ajouter un effet au film';
+$lang['SYNC_WARNINGS'] = 'Alertes';
+$lang['VOLUME'] = 'Volume';
+$lang['VOLUME_DESC'] = 'L\'option de volume positionne le niveau du volume. 0 son coupé, 1 son au maximum, 0.5 son à la moitié.';
+$lang['SYNC_METADATA_DESC'] = 'Remplacera les informations en base de données par les métadonnées de la vidéo. ';
+$lang['SYNC_OUTPUT_DESC'] = 'Sélectionne le format de sortie pour l\'affiche et la miniature. ';
+$lang['SYNC_POSTER'] = 'Crée une affiche à la position en seconde';
+$lang['SYNC_POSTEROVERLAY_DESC'] = 'Applique un calque à la création de l\'affiche. ';
+$lang['SYNC_POSTEROVERWRITE'] = 'Remplace les affiches existantes';
+$lang['SYNC_POSTEROVERWRITE_DESC'] = 'Remplace les affiches existantes par les nouvelles. Si décoché cela sera actif uniquement pour les prochaines vidéos ajoutées. ';
+$lang['SYNC_POSTER_DESC'] = 'Crée une affiche pour la vidéo à la position spécifiée. ';
 ?>
