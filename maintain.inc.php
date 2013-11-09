@@ -39,7 +39,7 @@ function plugin_install()
 	{
 		if (is_dir(VIDEOJS_PATH.$dir))
 		{
-			deltree(VIDEOJS_PATH.$dir);
+			vjs_deltree(VIDEOJS_PATH.$dir);
 		}
 	}
 	$toremove = array("language/index.htm", "language/fr_FR/index.htm", "language/en_UK/index.htm", "admin.tpl", "admin.php");
@@ -132,7 +132,7 @@ function plugin_activate()
 	}
 }
 
-function deltree($path)
+function vjs_deltree($path)
 {
 	if (is_dir($path))
 	{
@@ -144,7 +144,7 @@ function deltree($path)
 				$pathfile = $path . '/' . $file;
 				if (is_dir($pathfile))
 				{
-					deltree($pathfile);
+					vjs_deltree($pathfile);
 				}
 				else
 				{
