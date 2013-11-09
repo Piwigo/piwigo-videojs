@@ -39,6 +39,7 @@ check_input_parameter('image_id', $_GET, false, PATTERN_ID);
 
 $admin_photo_base_url = get_root_url().'admin.php?page=photo-'.$_GET['image_id'];
 $self_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;image_id='.$_GET['image_id'];
+$sync_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;sync_metadata=1&amp;image_id='.$_GET['image_id'];
 
 load_language('plugin.lang', PHPWG_PLUGINS_PATH.basename(dirname(__FILE__)).'/');
 load_language('plugin.lang', VIDEOJS_PATH);
@@ -70,6 +71,13 @@ $sync_options['sync_gps'] = true;
 include_once(dirname(__FILE__).'/../include/mediainfo.php');
 if (isset($exif))
 {
+	if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1)
+	{
+		$dbfields = explode(",", "filesize,width,height,lat,lon,date_creation,rotation");
+		$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$_GET['image_id'].";";
+		pwg_query($query);
+		array_push( $page['infos'], ' metadata: '.implode(",", $dbfields));
+	}
 	// replace some value by human readable string
 	$exif['name'] = (string)$general->CompleteName;
 	$exif['filename'] = (string)$general->FileName;
@@ -133,15 +141,18 @@ if ( is_array ( $matches ) ) {
 //print_r($thumbnails);
 
 $infos = array_merge(
-				array('poster' => $poster),
-				array('videos source' => count($videos)),
-				array('thumbnails' => count($thumbnails))
+				array('Poster' => $poster),
+				array('Videos source' => count($videos)),
+				array('videos' => $videos),
+				array('Thumbnails' => count($thumbnails)),
+				array('thumbnails' => $thumbnails)
 				);
 //print_r($infos);
 
 $template->assign(array(
 	'PWG_TOKEN' => get_pwg_token(),
 	'F_ACTION' => $self_url,
+	'SYNC_URL' => $sync_url,
 	'TN_SRC' => DerivativeImage::thumb_url($picture).'?'.time(),
 	'TITLE' => render_element_name($picture),
 	'EXIF' => $exif,
