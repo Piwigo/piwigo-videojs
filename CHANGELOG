@@ -1,3 +1,10 @@
+Changes from v1.0.2 to v1.0.3
+- Add photo edit page support
+- Add new option volume
+- Improve sync method
+- Update VideoJS player to version 4.3.0
+- Update new translation, thanks to the contributors
+
 Changes from v1.0.1 to v1.0.2
 - Add new translation, thanks to the contributors
 - Add support for VideoJS plugins
