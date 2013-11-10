@@ -22,7 +22,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
   <legend>{'Statistics'|@translate}</legend>
   <ul>
     <li class="update_summary_new">{$NB_VIDEOS} {'videos in your gallery'|@translate}</li>
-    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster in your gallery'|@translate}</li>
   </ul>
 </div>
 
