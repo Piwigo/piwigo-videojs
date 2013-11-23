@@ -15,7 +15,23 @@
       height:16px;
       line-height:16px;
       font-size:0.8em;
+	  background-color: rgb(153, 153, 153);
+	  color: rgb(255, 255, 255);
+	  border-radius: 10px;
     }
+	.range-input {
+	  position: relative; height: 10px; border: none; padding: 0;
+	  background-color: rgb(204, 204, 204);
+	  cursor: pointer;
+	}
+	input[type=range]:active::-moz-range-thumb {
+		cursor: pointer;
+		background:orange;
+	}
+	input[type=range]:active::-webkit-slider-thumb {
+		background:orange;
+		cursor: pointer;
+	}
   {/literal}
 </style>
 {/html_head}
@@ -138,7 +154,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <ul>
       <li>
 	<label><input type="checkbox" name="thumb" value="1" />{'SYNC_THUMBSEC'|@translate}:</label>
-	<input type="range" id="thumbsec" name="thumbsec" value="5" min="0" max="60" step="1"/>
+	<input class="range-input" type="range" id="thumbsec" name="thumbsec" value="5" min="0" max="60" step="1"/>
 	<output name="thumbsecValue" for="thumbsec">5</output>
 	<!-- <input type="text" name="thumbsec" value="5" size="2" required/> -->
 	<br/><small>{'SYNC_THUMBSEC_DESC'|@translate} <strong>Use by the videoJS plugin thumbnail</strong>.</small>

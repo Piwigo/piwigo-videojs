@@ -198,6 +198,7 @@ function vjs_loc_end_element_set_unit()
 	global $template, $conf, $page, $is_category, $category_info;
 
 	$var = $template->get_template_vars();
+	if (!isset($var['elements'])) return;
 	foreach ($var['elements'] as $element)
 	{
 		if(!empty($element['representative_ext']) and $element['representative_ext'] != NULL)

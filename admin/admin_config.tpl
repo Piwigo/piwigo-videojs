@@ -10,6 +10,19 @@
     FORM.properties SPAN.property {
       width:100px;
     }
+	.range-input {
+      position: relative; height: 10px; border: none; padding: 0;
+      background-color: rgb(204, 204, 204);
+      cursor: pointer;
+	}
+	input[type=range]:active::-moz-range-thumb {
+      cursor: pointer;
+      background:orange;
+	}
+	input[type=range]:active::-webkit-slider-thumb {
+      background:orange;
+      cursor: pointer;
+	}
   {/literal}
 </style>
 {/html_head}
@@ -57,7 +70,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			</li>
 			<li>
 				<label><span class="property">{'VOLUME'|@translate} : </span></label>
-				<input type="range" id="vjs_volume" name="vjs_volume" value="{$volume}" min="0" max="1" step="0.1"/>
+				<input class="range-input" type="range" id="vjs_volume" name="vjs_volume" value="{$volume}" min="0" max="1" step="0.1"/>
 				<output name="volumelevelValue" for="vjs_volume">{$volume}</output>
 				<!-- <label><input type="text" name="vjs_volume" value="1" placeholder="1"/></label> -->
 				<br/><small>{'VOLUME_DESC'|@translate}</small>
