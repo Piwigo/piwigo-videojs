@@ -35,14 +35,6 @@ include_once("function_frame.php");
  *
  */
 
-// Check the presence of the DB schema
-$sync_options['sync_gps'] = true;
-$result = pwg_query('SHOW COLUMNS FROM '.IMAGES_TABLE.' LIKE "lat";');
-if (!pwg_db_num_rows($result))
-{
-    $sync_options['sync_gps'] = false;
-}
-
 // Init value for result table
 $videos = 0;
 $metadata = 0;
@@ -64,11 +56,6 @@ if ($sync_options['metadata'])
         $warnings[] = "Metadata parsing disable because MediaInfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
         $sync_options['metadata'] = false;
     }
-}
-
-if (!$sync_options['sync_gps'])
-{
-    $warnings[] = "latitude and longitude disable because the require plugin is not present, eg: 'OpenStreetMap'.";
 }
 
 if ($sync_options['poster'] or $sync_options['thumb'])
@@ -121,7 +108,7 @@ while ($row = pwg_db_fetch_assoc($result))
 				//$infos[] = $filename. ' metadata: '.count($exif);
 				if ($sync_options['metadata'] and !$sync_options['simulate'])
 				{
-					$dbfields = explode(",", "filesize,width,height,lat,lon,date_creation,rotation");
+					$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
 					$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
 					pwg_query($query);
 

@@ -89,13 +89,13 @@ if (isset($general->BitRate_String))
 {
     $exif['overall_bit_rate'] = (string)$general->BitRate_String;
 }
-if (isset($general->xyz) and $sync_options['sync_gps'])
+if (isset($general->xyz))
 {
     //$test = "+35.6445-139.7455-029.201/";
     //print_r(preg_split('/(\+|\-)/', $general->xyz, -1, PREG_SPLIT_DELIM_CAPTURE));
     $value = preg_split('/(\+|\-)/', $general->xyz, -1, PREG_SPLIT_DELIM_CAPTURE);
-    $exif['lat'] = $value[1].$value[2];
-    $exif['lon'] = $value[3].$value[4];
+    $exif['latitude'] = $value[1].$value[2];
+    $exif['longitude'] = $value[3].$value[4];
 }
 if (isset($general->Model))
 {

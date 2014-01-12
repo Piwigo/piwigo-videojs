@@ -112,11 +112,11 @@ while ($row = pwg_db_fetch_assoc($result))
         }
         if (isset($fileinfo['tags']['quicktime']['gps_latitude'][0]) and $sync_options['sync_gps'])
         {
-                $exif['lat'] = $fileinfo['tags']['quicktime']['gps_latitude'][0];
+                $exif['latitude'] = $fileinfo['tags']['quicktime']['gps_latitude'][0];
         }
         if (isset($fileinfo['tags']['quicktime']['gps_longitude'][0]) and $sync_options['sync_gps'])
         {
-                $exif['lon'] = $fileinfo['tags']['quicktime']['gps_longitude'][0];
+                $exif['longitude'] = $fileinfo['tags']['quicktime']['gps_longitude'][0];
         }
         if (isset($fileinfo['tags']['quicktime']['model'][0]))
         {

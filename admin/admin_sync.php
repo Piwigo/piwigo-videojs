@@ -40,7 +40,6 @@ $sync_options = array(
     'simulate'          => true,
     'cat_id'            => 0,
     'subcats_included'  => true,
-    'sync_gps'          => true,
 );
 
 if ( isset($_POST['submit']) and isset($_POST['postersec']) )
@@ -59,7 +58,6 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
         'simulate'          => isset($_POST['simulate']),
         'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
         'subcats_included'  => isset($_POST['subcats_included']),
-        'sync_gps'          => true,
     );
 
     // Filter on existing poster
@@ -115,14 +113,6 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     ));
 }
 
-// Check the presence of the DB schema
-$sync_options['sync_gps'] = true;
-$result = pwg_query('SHOW COLUMNS FROM '.IMAGES_TABLE.' LIKE "lat";');
-if (!pwg_db_num_rows($result))
-{
-    $sync_options['sync_gps'] = false;
-}
-
 /* Get statistics */
 // All videos with supported extensions by VideoJS
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS.";";
@@ -133,15 +123,8 @@ $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NO
 list($nb_videos_thumb) = pwg_db_fetch_row( pwg_query($query) );
 
 // All videos with supported extensions by VideoJS and with GPS data
-if ($sync_options['sync_gps'])
-{
-    $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `lat` IS NOT NULL and `lon` IS NOT NULL AND ".SQL_VIDEOS.";";
-    list($nb_videos_geotagged) = pwg_db_fetch_row( pwg_query($query) );
-}
-else
-{
-    $nb_videos_geotagged = 0;
-}
+$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `latitude` IS NOT NULL and `longitude` IS NOT NULL AND ".SQL_VIDEOS.";";
+list($nb_videos_geotagged) = pwg_db_fetch_row( pwg_query($query) );
 
 $query = 'SELECT id, CONCAT(name, IF(dir IS NULL, " (V)", "") ) AS name, uppercats, global_rank  FROM '.CATEGORIES_TABLE;
 display_select_cat_wrapper($query,

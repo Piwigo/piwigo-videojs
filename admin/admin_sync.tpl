@@ -115,7 +115,6 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
       <li>
 	<label><input type="checkbox" name="metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>{'SYNC_METADATA_DESC'|@translate}</small>
-	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">'OpenStreetMap'</a> or 'RV Maps & Earth' plugin.</strong></small>
 	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">'MediaInfo'</a> to be install.</strong></small>
       </li>
     </ul>
