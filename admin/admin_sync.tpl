@@ -25,12 +25,12 @@
 	  cursor: pointer;
 	}
 	input[type=range]:active::-moz-range-thumb {
-		cursor: pointer;
-		background:orange;
+	  cursor: pointer;
+	  background:orange;
 	}
 	input[type=range]:active::-webkit-slider-thumb {
-		background:orange;
-		cursor: pointer;
+	  background:orange;
+	  cursor: pointer;
 	}
   {/literal}
 </style>
