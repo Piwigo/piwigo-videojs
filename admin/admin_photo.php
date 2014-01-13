@@ -73,7 +73,7 @@ if (isset($exif))
 {
 	if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1)
 	{
-		$dbfields = explode(",", "filesize,width,height,lat,lon,date_creation,rotation");
+		$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
 		$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$_GET['image_id'].";";
 		pwg_query($query);
 		array_push( $page['infos'], ' metadata: '.implode(",", $dbfields));

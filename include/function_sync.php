@@ -142,7 +142,7 @@ while ($row = pwg_db_fetch_assoc($result))
             $infos[] = $filename. ' metadata: '.implode(",", array_keys($exif));
             if ($sync_options['metadata'] and !$sync_options['simulate'])
             {
-                $dbfields = explode(",", "filesize,width,height,lat,lon");
+                $dbfields = explode(",", "filesize,width,height,latitude,longitude");
                 $query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
                 pwg_query($query);
             }
