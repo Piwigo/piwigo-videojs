@@ -137,7 +137,6 @@ function vjs_element_set_global_action($action, $collection)
 	    'thumbsec'          => $_POST['vjs_thumbsec'],
 	    'thumbsize'         => $_POST['vjs_thumbsize'],
 	    'simulate'          => false,
-	    'sync_gps'          => true,
 	);
 
 	// Do the work, share with batch manager
@@ -175,7 +174,6 @@ function vjs_loc_begin_element_set_unit()
 		    'thumbsec'          => $_POST['vjs_thumbsec-'.$id],
 		    'thumbsize'         => $_POST['vjs_thumbsize-'.$id],
 		    'simulate'          => false,
-		    'sync_gps'          => true,
 		);
 
 		$query = "SELECT `id`, `file`, `path`
