@@ -9,21 +9,21 @@
 			<img src="{$TN_SRC}" alt="{'Thumbnail'|@translate}" style="border: 2px solid rgb(221, 221, 221);">
 		</div>
 		{if not empty($EXIF)}
-		<div style="float: left; margin: auto;">
-			<ul>
+		<div style="float: left; margin: auto; padding-left:20px; vertical-align:top;">
+			<ul style="margin:0;">
 				{foreach from=$EXIF key=name item=metadata}
 				<li>{$name}: {$metadata}</li>
 				{/foreach}
 			</ul>
 		</div>
 		{/if}
-		<div style="float: left; margin: auto;">
-          <ul>
-            <li><a href="{$SYNC_URL}">{'Synchronize metadata'|@translate}</a></li>
+		<div style="float: left; margin: auto; padding-left:20px; vertical-align:top;" class="photoLinks">
+          <ul style="margin:0;">
+            <li><a class="icon-arrows-cw" href="{$SYNC_URL}">{'Synchronize metadata'|@translate}</a></li>
           </ul>
 		</div>
 		{if not empty($INFOS)}
-		<div style="float: left; border-top: 2px solid rgb(221, 221, 221); width: 100%;">
+		<div style="float: left; margin-top: 5px; border-top: 2px solid rgb(221, 221, 221); width: 100%;">
 			<ul>
 				{foreach from=$INFOS key=name item=data}
 					{if $name == 'videos'}
