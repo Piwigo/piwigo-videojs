@@ -89,6 +89,8 @@ while ($row = pwg_db_fetch_assoc($result))
     {
         $videos++;
         //echo $filename;
+        $sync_arr = array();
+        $sync_arr['file'] = $filename;
         $exif = array();
         if ($sync_options['metadata'])
         {
@@ -104,8 +106,9 @@ while ($row = pwg_db_fetch_assoc($result))
 			else
 			{
 				$metadata++;
-				$infos[] = $filename. ' metadata: '.implode(",", array_keys($exif));
+				//$infos[] = $filename. ' metadata: '.implode(",", array_keys($exif));
 				//$infos[] = $filename. ' metadata: '.count($exif);
+				$sync_arr['metadata'] = count($exif)." ".implode(",", array_keys($exif));
 				if ($sync_options['metadata'] and !$sync_options['simulate'])
 				{
 					$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
@@ -130,7 +133,8 @@ while ($row = pwg_db_fetch_assoc($result))
             $in = $filename;
             $out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['output'];
             /* Report it */
-            $infos[] = $filename. ' poster: '.$out;
+            //$infos[] = $filename. ' poster: '.$out;
+            $sync_arr['poster'] = $out;
 
             if (!is_dir($output_dir))
             {
@@ -196,7 +200,8 @@ while ($row = pwg_db_fetch_assoc($result))
 					if($sync_options['posteroverlay'])
 					{
 						add_movie_frame($out);
-						$infos[] = $filename. ' overlay: '.$out;
+						//$infos[] = $filename. ' overlay: '.$out;
+						$sync_arr['overlay'] = "add movie frame on ".$out;
 					}
 				}
             }
@@ -237,7 +242,8 @@ while ($row = pwg_db_fetch_assoc($result))
 						$thumbs++;
 						$out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];
 						/* Report it */
-                        $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out;
+						//$infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out;
+						$sync_arr['thumbnail'][] = $second.' seconds '.$out;
                         /* Lets do it , default output to JPG */
                         $ffmpeg = "ffmpeg -itsoffset -".$second." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y ".$out;
                         if ($sync_options['output'] == "png")
@@ -254,6 +260,7 @@ while ($row = pwg_db_fetch_assoc($result))
                 }
             }
         } /* End thumbnails */
+        $infos[] = $sync_arr;
     }
 }
 

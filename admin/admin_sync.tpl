@@ -96,11 +96,22 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 {if not empty($sync_infos)}
   <h3>{'SYNC_INFOS'|@translate}</h3>
   <div class="infos">
-    <ul>
-      {foreach from=$sync_infos item=info}
-      <li>{$info}</li>
-      {/foreach}
-    </ul>
+		{foreach from=$sync_infos item=infos}
+		<ul>
+			{foreach from=$infos key=name item=detail}
+				{if $name == 'thumbnail'}
+					<li>{$name}:</li>
+					{foreach from=$detail item=thumb}
+					<ul>
+						<li>{$thumb}</li>
+					</ul>
+					{/foreach}
+				{else}
+					<li>{$name}: {$detail}</li>
+				{/if}
+			{/foreach}
+		</ul>
+		{/foreach}
   </div>
 {/if}
 
