@@ -18,7 +18,7 @@ $lang['SKIN_DESC'] = 'Select the style you want to apply to the player or <a hre
 $lang['CUSTOMCSS'] = 'Custom CSS';
 $lang['CUSTOMCSS_DESC'] = 'Custom CSS to copy paste from the <a href="http://www.videojs.com/" target="_blank">VideoJS website</a>.';
 $lang['WIDTH'] = 'Max Width';
-$lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video, if the video size is higher the witdh becomes the max width.';
+$lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video, if the video size is higher the width becomes the max width.';
 $lang['UPSCALE'] = 'Upscale';
 $lang['UPSCALE_DESC'] = 'If the video size is smaller than max width, it will upscale the video size to max width.';
 
@@ -38,13 +38,13 @@ $lang['SYNC_METADATA_DESC'] = 'Will overwrite the information in the database wi
 $lang['SYNC_POSTER'] = 'Create a poster at position in second';
 $lang['SYNC_POSTER_DESC'] = 'Create a poster from the video at specify position.';
 $lang['SYNC_POSTEROVERWRITE'] = 'Overwrite existing posters';
-$lang['SYNC_POSTEROVERWRITE_DESC'] = 'Overwrite existing posters with new ones. If uncheck it should only run for newly added video.';
+$lang['SYNC_POSTEROVERWRITE_DESC'] = 'Overwrite existing thumbnails with new ones. If uncheck it should only run for newly added video.';
 $lang['SYNC_OUTPUT'] = 'Output format';
 $lang['SYNC_OUTPUT_DESC'] = 'Select the output format for the poster and thumbnail.';
 $lang['SYNC_POSTEROVERLAY'] = 'Add film effect';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Apply an overlay on the poster creation.';
 $lang['SYNC_THUMBSEC'] = 'Create a thumbnail at every seconds';
-$lang['SYNC_THUMBSEC_DESC'] = 'Create a thumbnail every x seconds (can take a long time, depend on each video length).';
+$lang['SYNC_THUMBSEC_DESC'] = 'Create a thumbnail every x seconds.';
 $lang['SYNC_THUMBSIZE'] = 'Size of the thumbnail';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Size in pixel, keep it small, default is fine, Youtube use 190x68.';
 

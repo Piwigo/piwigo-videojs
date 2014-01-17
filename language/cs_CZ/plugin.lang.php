@@ -28,4 +28,13 @@ $lang['THUMBNAILS_DESC'] = 'Zobrazí obrázky náhledu na ovládací liště.';
 $lang['WATERMARK'] = 'Vodoznak';
 $lang['WATERMARK_DESC'] = 'Zobrazuje vodoznak přes obsah videa.';
 
+$lang['SYNC_ERRORS'] = 'Chyby';
+$lang['SYNC_INFOS'] = 'Detailní informace';
+$lang['SYNC_METADATA_DESC'] = 'Přepíše informace v databázi metadaty z videa.';
+$lang['SYNC_OUTPUT'] = 'Výstupní formát';
+$lang['SYNC_POSTEROVERLAY'] = 'Přidat filmový efekt';
+$lang['SYNC_THUMBSEC'] = 'Vytrvořit náhled každou sekundu';
+$lang['SYNC_THUMBSEC_DESC'] = 'Vytvořit náhled každých x sekund.';
+$lang['SYNC_THUMBSIZE'] = 'velikost náhledu';
+$lang['SYNC_WARNINGS'] = 'Varování';
 ?>

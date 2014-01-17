@@ -45,4 +45,12 @@ $lang['THUMBNAILS'] = 'Tumnaglar';
 $lang['THUMBNAILS_DESC'] = 'Visar tumnaglar över förloppsindikatorn.';
 $lang['UPSCALE'] = 'Skala upp';
 $lang['UPSCALE_DESC'] = 'Om videon är mindre än max bredd, skala upp videon till max bredd.';
+$lang['SYNC_ERRORS'] = 'Fel';
+$lang['SYNC_INFOS'] = 'Detaljerad information';
+$lang['SYNC_POSTEROVERLAY'] = 'Lägg till film effekt';
+$lang['SYNC_THUMBSEC'] = 'Skapa en miniatyrbild varje sekund';
+$lang['SYNC_THUMBSEC_DESC'] = 'Skapa en miniatyrbild varje x sekunder';
+$lang['SYNC_THUMBSIZE'] = 'Miniatyrbildens storlek';
+$lang['SYNC_WARNINGS'] = 'Varningar';
+$lang['VOLUME'] = 'Volym';
 ?>

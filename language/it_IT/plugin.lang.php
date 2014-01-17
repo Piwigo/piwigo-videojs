@@ -62,4 +62,5 @@ $lang['SYNC_POSTEROVERWRITE'] = 'Sovrascrivi manifesti esistenti';
 $lang['SYNC_POSTEROVERLAY'] = 'Aggiugi un effetto pellicola';
 $lang['SYNC_OUTPUT_DESC'] = 'Selezionare il formato di output per il manifesto e la miniatura.';
 $lang['SYNC_POSTER_DESC'] = 'Crea un poster dal video nella posizione specificata';
+$lang['SYNC_POSTER'] = 'Creare un poster in seconda posizione';
 ?>
