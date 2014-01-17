@@ -33,7 +33,7 @@ function plugin_install()
 	if (!defined('VIDEOJS_PATH'))
 		define('VIDEOJS_PATH', PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)).'/');
 
-	// Remove unused directory or files from 0.4 and 0.5 to 0.6
+	// Remove unused files from previous version
 	$toremove = array("skin", "js");
 	foreach ($toremove as $dir)
 	{
@@ -112,7 +112,7 @@ function plugin_uninstall()
 	pwg_query( $q );
 
 	/* Drop VideoJS metadata table */
-	$q = 'DROP TABLE '.$prefixeTable.'image_videojs'.';';
+	$q = 'DROP TABLE IF EXISTS '.$prefixeTable.'image_videojs'.';';
 	pwg_query( $q );
 	// TODO : Do we need to purge the videos from the images table?
 }
