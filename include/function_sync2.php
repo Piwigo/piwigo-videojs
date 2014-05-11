@@ -113,6 +113,7 @@ while ($row = pwg_db_fetch_assoc($result))
 				{
 					$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
 					$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
+					//print $query;
 					pwg_query($query);
 
 					/* At some point we use our own table */
@@ -133,7 +134,7 @@ while ($row = pwg_db_fetch_assoc($result))
             $in = $filename;
             $out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['output'];
             /* Report it */
-            //$infos[] = $filename. ' poster: '.$out;
+            $infos[] = $filename. ' poster: '.$out;
             $sync_arr['poster'] = $out;
 
             if (!is_dir($output_dir))
@@ -164,10 +165,10 @@ while ($row = pwg_db_fetch_assoc($result))
                     $sync_options['postersec'] = (int)$exif['playtime_seconds'];
                 }
 				/* default output to JPG */
-                $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$out;
+                $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i '".$in."' -vcodec mjpeg -vframes 1 -an -f rawvideo -y '".$out. "'";
                 if ($sync_options['output'] == "png")
                 {
-                    $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i ".$in." -vcodec png -vframes 1 -an -f rawvideo -y ".$out;
+                    $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i '".$in."' -vcodec png -vframes 1 -an -f rawvideo -y '".$out. "'";
                 }
                 //echo $ffmpeg;
                 $log = system($ffmpeg, $retval);
@@ -245,10 +246,10 @@ while ($row = pwg_db_fetch_assoc($result))
 						//$infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out;
 						$sync_arr['thumbnail'][] = $second.' seconds '.$out;
                         /* Lets do it , default output to JPG */
-                        $ffmpeg = "ffmpeg -itsoffset -".$second." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y ".$out;
+                        $ffmpeg = "ffmpeg -itsoffset -".$second." -i '".$in."' -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y '".$out. "'";
                         if ($sync_options['output'] == "png")
                         {
-                            $ffmpeg = "ffmpeg -itsoffset -".$second." -i ".$in." -vcodec png -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y ".$out;
+                            $ffmpeg = "ffmpeg -itsoffset -".$second." -i '".$in."' -vcodec png -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y '".$out. "'";
                         }
                         $log = system($ffmpeg, $retval);
                         //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);

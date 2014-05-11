@@ -27,19 +27,25 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-$output = shell_exec("mediainfo --Full --Output=XML --Language=raw ". $filename);
+putenv('LANG=en_US.UTF-8');
+$output = shell_exec("mediainfo --Full --Output=XML --Language=raw '". $filename."'");
 //$log = shell_exec("mediainfo --Output=XML ". $filename);
 $xml = new SimpleXMLElement($output);
 //$xml = simplexml_load_file("/tmp/mediainfo.xml");
 //print_r($xml);
 
+if (!isset($xml->File))
+{
+	$exif['error'] = "Mediainfo error reading file: <br/>'". $filename."'";
+}
 /*
 [version] => 0.7.58
 [version] => 0.7.64
 */
+$xml["version"] = "0.7.64";
 if (isset($xml["version"]))
 {
-	if (version_compare($xml["version"], '0.7.64') <= 0)
+	if (version_compare($xml["version"], '0.7.64') < 0)
 	{
 		$exif['error'] = "Please use at least MediaInfo version 0.7.64 or higher, not " . $xml["version"];
 	}
