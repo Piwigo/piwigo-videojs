@@ -51,14 +51,46 @@ if (defined('IN_ADMIN')) {
 	include_once(VIDEOJS_PATH.'/admin/admin_boot.php');
 }
 
-function vjs_format_exif_data($exif, $file, $map)
+function vjs_format_exif_data($exif, $filename, $map)
 {
+	//print $filename."\n";
+	//print_r($exif)."\n<br/>\n";
 
+	// If not a video, we skip
+	if (isset($exif['MimeType']) and stristr($exif['MimeType'], "image"))
+	{
+		return $exif;
+	}
+
+	// If video, let's check
+	include_once(dirname(__FILE__).'/include/mediainfo.php');
+	if (isset($exif))
+	{
+		$exif['Make'] = "VideoJS";
+		// replace some value by human readable string
+		if (isset($general->Duration_String))
+		{
+			$exif['duration'] = (string)$general->Duration_String;
+			array_push($map, 'duration');
+		}
+		if (isset($video->BitRate_String))
+		{
+			$exif['bitrate'] = (string)$video->BitRate_String;
+			array_push($map, 'bitrate');
+		}
+		if (isset($audio->SamplingRate_String))
+		{
+			$exif['sampling_rate'] = (string)$audio->SamplingRate_String;
+			array_push($map, 'sampling_rate');
+		}
+		ksort($exif);
+	}
+	return $exif;
 }
 
-function vjs_metadata_available($content)
+function vjs_metadata_available($show_metadata)
 {
-
+	return 1;
 }
 
 function vjs_render_media($content, $picture)
@@ -172,9 +204,9 @@ function vjs_render_media($content, $picture)
 	$parts = pathinfo($picture['current']['element_url']);
 	$poster = embellish_url( vjs_get_poster_file( Array(
 		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".jpg" =>
-			get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
+			$parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
 		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".png" =>
-			get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
+			$parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
 	)));
 	//print $poster;
 	// poster should be $picture['current']['src_image']['rel_path']
