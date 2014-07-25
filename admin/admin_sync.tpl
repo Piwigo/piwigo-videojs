@@ -120,6 +120,34 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 
 <form action="" method="post" id="update" oninput="thumbsecValue.value=thumbsec.value">
 
+  <fieldset id="require">
+    <legend>{'Program Dependencies'|@translate}</legend>
+    <ul>
+      <li>
+		<label>
+			{if $metadata}
+				<img src="{$VIDEOJS_PATH}/check.png" witdh="16" height="16">
+			{else}
+				<img src="{$VIDEOJS_PATH}/warning.png" witdh="16" height="16">
+			{/if}
+			<input type="text" name="mediainfo" value="{$SYNC_OPTIONS.mediainfo}" /> Mediainfo binary path
+		</label>
+		<br/><small><strong><a href="http://mediaarea.net/en/MediaInfo" target="_blanck">'MediaInfo'</a> must be insall to allow video metadata parsing.</strong></small>
+      </li>
+      <li>
+		<label>
+			{if $poster}
+				<img src="{$VIDEOJS_PATH}/check.png" witdh="16" height="16">
+			{else}
+				<img src="{$VIDEOJS_PATH}/warning.png" witdh="16" height="16">
+			{/if}
+			<input type="text" name="ffmepg" value="{$SYNC_OPTIONS.ffmepg}" /> FFmpeg binary path
+		</label>
+		<br/><small><strong><a href="http://www.ffmpeg.org/" target="_blanck">'FFmpeg'</a> must be insall to allow video thumbnail and poster generation.</strong></small>
+      </li>
+    </ul>
+  </fieldset>
+
   <fieldset id="syncmeta">
     <legend>{'Synchronize metadata'|@translate}</legend>
     <ul>
@@ -135,14 +163,14 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <legend>{'Poster'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="poster" value="1" checked="checked" />{'SYNC_POSTER'|@translate}:</label>
+	<label><input type="checkbox" name="poster" value="1" checked="checked" /> {'SYNC_POSTER'|@translate}:</label>
 	<!-- <input type="range" name="postersec" value="4" min="0" max="60" step="1"/> -->
 	<input type="text" name="postersec" value="4" size="2" required/>
 	<br/><small>{'SYNC_POSTER_DESC'|@translate}</small>
 	<small><strong>Require <a href="http://www.ffmpeg.org/" target="_blanck">'FFmpeg'</a> to be install.</strong></small>
       </li>
       <li>
-	<label><input type="checkbox" name="posteroverwrite" value="1" checked="checked">{'SYNC_POSTEROVERWRITE'|@translate}</label>
+	<label><input type="checkbox" name="posteroverwrite" value="1" checked="checked"> {'SYNC_POSTEROVERWRITE'|@translate}</label>
 	<br/><small>{'SYNC_POSTEROVERWRITE_DESC'|@translate}</small>
       </li>
       <li>
@@ -152,7 +180,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 	<br/><small>{'SYNC_OUTPUT_DESC'|@translate}</small>
       </li>
       <li>
-	<label><input type="checkbox" name="posteroverlay" value="1" />{'SYNC_POSTEROVERLAY'|@translate}</label>
+	<label><input type="checkbox" name="posteroverlay" value="1" /> {'SYNC_POSTEROVERLAY'|@translate}</label>
 	<a class="showInfo" title="<img src='{$VIDEOJS_PATH}admin/example-frame.jpg'>">i</a>
 	<br/><small>{'SYNC_POSTEROVERLAY_DESC'|@translate}</small>
       </li>
@@ -163,7 +191,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <legend>{'Thumbnail'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="thumb" value="1" />{'SYNC_THUMBSEC'|@translate}:</label>
+	<label><input type="checkbox" name="thumb" value="1" /> {'SYNC_THUMBSEC'|@translate}:</label>
 	<input class="range-input" type="range" id="thumbsec" name="thumbsec" value="5" min="0" max="60" step="1"/>
 	<output name="thumbsecValue" for="thumbsec">5</output>
 	<!-- <input type="text" name="thumbsec" value="5" size="2" required/> -->

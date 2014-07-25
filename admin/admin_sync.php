@@ -29,6 +29,8 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 // Generate default value
 $sync_options = array(
+    'mediainfo'         => '/usr/bin/mediainfo',
+    'ffmepg'            => '/usr/bin/ffmpeg',
     'metadata'          => true,
     'poster'            => true,
     'postersec'         => 1,
@@ -42,10 +44,11 @@ $sync_options = array(
     'subcats_included'  => true,
 );
 
-if ( isset($_POST['submit']) and isset($_POST['postersec']) )
-{
+if(isset($_POST['mediainfo']) && isset($_POST['ffmepg'])) {
     // Override default value from the form
     $sync_options = array(
+		'mediainfo'         => $_POST['mediainfo'],
+		'ffmepg'            => $_POST['ffmepg'],
         'metadata'          => isset($_POST['metadata']),
         'poster'            => isset($_POST['poster']),
         'postersec'         => $_POST['postersec'],
@@ -59,7 +62,45 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
         'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
         'subcats_included'  => isset($_POST['subcats_included']),
     );
+}
 
+// Check dependencies
+$warnings = array();
+if ($sync_options['metadata'])
+{
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        system("mediainfo >NUL 2>NUL", $retval); // redirect any output
+    } else {
+        system("mediainfo 1>&2 /dev/null", $retval); // redirect any output
+    }
+    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
+    {
+        $warnings[] = "Metadata parsing disable because MediaInfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
+        $sync_options['metadata'] = false;
+    }
+}
+
+if ($sync_options['poster'] or $sync_options['thumb'])
+{
+    $retval = 0;
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        system("ffmpeg >NUL 2>NUL", $retval); // redirect any output
+    } else {
+        system("ffmpeg 1>&2 /dev/null", $retval); // redirect any output
+    }
+    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
+    {
+        $warnings[] = "Poster creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
+        $sync_options['poster'] = false;
+        $sync_options['thumb'] = false;
+    }
+}
+
+$template->assign('sync_warnings', $warnings);
+$template->assign($sync_options); // send value to template
+
+if ( isset($_POST['submit']) and isset($_POST['postersec']) )
+{
     // Filter on existing poster
     $OVERWRITE = "";
     if (!$sync_options['posteroverwrite'])
@@ -139,6 +180,7 @@ $template->assign(
         'NB_VIDEOS'                 => $nb_videos,
         'NB_VIDEOS_GEOTAGGED'       => $nb_videos_geotagged,
         'NB_VIDEOS_THUMB'           => $nb_videos_thumb,
+		'SYNC_OPTIONS'				=> $sync_options,
         'VIDEOJS_PATH'              => VIDEOJS_PATH,
     )
 );
