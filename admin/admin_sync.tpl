@@ -126,9 +126,9 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
       <li>
 		<label>
 			{if $metadata}
-				<img src="{$VIDEOJS_PATH}/check.png" witdh="16" height="16">
+				<img src="{$VIDEOJS_PATH}admin/check.png" witdh="16" height="16">
 			{else}
-				<img src="{$VIDEOJS_PATH}/warning.png" witdh="16" height="16">
+				<img src="{$VIDEOJS_PATH}admin/warning.png" witdh="16" height="16">
 			{/if}
 			<input type="text" name="mediainfo" value="{$SYNC_OPTIONS.mediainfo}" /> Mediainfo binary path
 		</label>
@@ -137,9 +137,9 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
       <li>
 		<label>
 			{if $poster}
-				<img src="{$VIDEOJS_PATH}/check.png" witdh="16" height="16">
+				<img src="{$VIDEOJS_PATH}admin/check.png" witdh="16" height="16">
 			{else}
-				<img src="{$VIDEOJS_PATH}/warning.png" witdh="16" height="16">
+				<img src="{$VIDEOJS_PATH}admin/warning.png" witdh="16" height="16">
 			{/if}
 			<input type="text" name="ffmepg" value="{$SYNC_OPTIONS.ffmepg}" /> FFmpeg binary path
 		</label>
