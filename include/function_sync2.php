@@ -27,6 +27,7 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
+//setlocale(LC_ALL, "en_US.UTF-8");
 include_once("function_frame.php");
 
 /***************
@@ -49,7 +50,7 @@ if ($sync_options['metadata'])
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         system("mediainfo >NUL 2>NUL", $retval); // redirect any output
     } else {
-        system("mediainfo >&2 /dev/null", $retval); // redirect any output
+        system("mediainfo 1>&2 /dev/null", $retval); // redirect any output
     }
     if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
     {
@@ -64,7 +65,7 @@ if ($sync_options['poster'] or $sync_options['thumb'])
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         system("ffmpeg >NUL 2>NUL", $retval); // redirect any output
     } else {
-        system("ffmpeg >&2 /dev/null", $retval); // redirect any output
+        system("ffmpeg 1>&2 /dev/null", $retval); // redirect any output
     }
     if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
     {
@@ -106,7 +107,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			else
 			{
 				$metadata++;
-				//$infos[] = $filename. ' metadata: '.implode(",", array_keys($exif));
+				isset($sync_options['batch_manager']) ? $infos[] = $filename. ' metadata: '.implode(",", array_keys($exif)) : '';
 				//$infos[] = $filename. ' metadata: '.count($exif);
 				$sync_arr['metadata'] = count($exif)." ".implode(",", array_keys($exif));
 				if ($sync_options['metadata'] and !$sync_options['simulate'])
@@ -129,12 +130,18 @@ while ($row = pwg_db_fetch_assoc($result))
         {
             $posters++;
             /* Init value */
-            $file_wo_ext = pathinfo($row['file']);
+            $file_wo_ext = pathinfo($row['path']);
+			//$file_wo_ext['filename'] ? '' : $file_wo_ext['filename'] = substr($filename,0 ,-5);
+			if (!isset($file_wo_ext['filename']) or (isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0))
+            {
+				$errors[] = "Unable to read filename for generating poster ".$row['path'];
+				continue;
+            }
             $output_dir = dirname($row['path']) . '/pwg_representative/';
             $in = $filename;
             $out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['output'];
             /* Report it */
-            $infos[] = $filename. ' poster: '.$out;
+            isset($sync_options['batch_manager']) ? $infos[] = $filename. ' poster: '.$out : '';
             $sync_arr['poster'] = $out;
 
             if (!is_dir($output_dir))
@@ -201,7 +208,7 @@ while ($row = pwg_db_fetch_assoc($result))
 					if($sync_options['posteroverlay'])
 					{
 						add_movie_frame($out);
-						//$infos[] = $filename. ' overlay: '.$out;
+						isset($sync_options['batch_manager']) ? $infos[] = $filename. ' overlay: '.$out : '';
 						$sync_arr['overlay'] = "add movie frame on ".$out;
 					}
 				}
@@ -215,6 +222,11 @@ while ($row = pwg_db_fetch_assoc($result))
             {
                 /* Init value */
                 $file_wo_ext = pathinfo($row['file']);
+				if (!isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0)
+				{
+					$errors[] = "Unable to read filename for generating thumbnails ".$row['path'];
+					continue;
+				}
                 $output_dir = dirname($row['path']) . '/pwg_representative/';
 
                 if (!is_dir($output_dir) or !is_writable($output_dir))
@@ -243,7 +255,7 @@ while ($row = pwg_db_fetch_assoc($result))
 						$thumbs++;
 						$out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];
 						/* Report it */
-						//$infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out;
+						isset($sync_options['batch_manager']) ? $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out : '';
 						$sync_arr['thumbnail'][] = $second.' seconds '.$out;
                         /* Lets do it , default output to JPG */
                         $ffmpeg = "ffmpeg -itsoffset -".$second." -i '".$in."' -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y '".$out. "'";
@@ -261,7 +273,10 @@ while ($row = pwg_db_fetch_assoc($result))
                 }
             }
         } /* End thumbnails */
-        $infos[] = $sync_arr;
+        if (!isset($sync_options['batch_manager']))
+        {
+            $infos[] = $sync_arr;
+        }
     }
 }
 
