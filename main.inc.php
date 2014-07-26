@@ -105,73 +105,54 @@ function vjs_render_media($content, $picture)
 		return $content;
 	}
 
-	// In case, we handle a large video, we define a MAX_WIDTH
+	// In case, we handle a large video, we define a MAX_HEIGHT
 	// variable to limit the display size.
-	if (isset($user['maxwidth']) and $user['maxwidth']!='')
+	$MAX_HEIGHT = isset($conf['vjs_conf']['max_height']) ? $conf['vjs_conf']['max_height'] : '480';
+	if (isset($user['maxheight']) and $user['maxheight']!='')
 	{
-		$MAX_WIDTH = $user['maxwidth'];
+		$MAX_HEIGHT = $user['maxwidth'];
 	}
-	else
-	{
-		$MAX_WIDTH = isset($conf['vjs_conf']['max_width']) ? $conf['vjs_conf']['max_width'] : '720';
-	}
-	//print "MAX_WIDTH=" . $MAX_WIDTH;
+	//print "MAX_HEIGHT=" . $MAX_HEIGHT;
 	//print_r($user);
-
-	// Avoid Conflict with other plugin using getID3
-	if( !class_exists('getID3')){
-		// Get video infos with getID3 lib
-		require_once(dirname(__FILE__) . '/include/getid3/getid3.php');
-	}
-	$getID3 = new getID3;
-	$fileinfo = $getID3->analyze($picture['current']['path']);
-	//print "getID3\n";
-	//print_r($fileinfo);
 
 	$extension = vjs_get_mimetype_from_ext(get_extension($picture['current']['path']));
 	//print "extension\n";
 	//print_r($extension);
 
-	if(isset($fileinfo['video']))
+	// Video file -- Guess resolution base on height
+	if (isset($picture['current']['width']))
 	{
-		// -- video file --
-		// guess resolution
-		if (isset($fileinfo['video']['resolution_x']) )
-		{
-			$width = $fileinfo['video']['resolution_x'];
-		}
-		if (isset($fileinfo['video']['resolution_y']) )
-		{
-			$height = $fileinfo['video']['resolution_y'];
-		}
-		if ( !isset($width) || !isset($height))
-		{
-			// If guess was unsuccessful, fallback to default 16/9 resolution
-			// This is the case for ogv video for example.
-			$width = $MAX_WIDTH;
-			$height = intval( 9 * ($width / 16 ));
-		}
+		$width = $picture['current']['width'];
 	}
-	else // Not a supported video format or an image
+	if (isset($picture['current']['height']))
 	{
-		return $content;
+		$height = $picture['current']['height'];
+	}
+	if ( !isset($width) || !isset($height))
+	{
+		// If guess was unsuccessful, fallback to default 16/9 resolution 720x480
+		// This is the case for ogv video for example.
+		$height = 480;
+		$width  = round(16 * 480 / 9, 0);
+	}
+    //print "Video height=" . $height . " width=". $width;
+
+	// Resize if video is too height
+	//print $height .">". $MAX_HEIGHT;
+	if ( $height > $MAX_HEIGHT )
+	{
+		$height = $MAX_HEIGHT;
+		$width  = round(16 * $MAX_HEIGHT / 9, 0);
+		//print "MAX_HEIGHT height=" . $height . " width=". $width;
 	}
 
-	// Resize if video is too large
-	//print $width .">". $MAX_WIDTH;
-	if ( $width > $MAX_WIDTH )
-	{
-		$height = intval($height * ($MAX_WIDTH / $width));
-		$width  = $MAX_WIDTH;
-		//$height = intval($height / 2);
-		//$width = intval($width / 2);
-	}
 	// Upscale if video is too small
 	$upscale = isset($conf['vjs_conf']['upscale']) ? strbool($conf['vjs_conf']['upscale']) : false;
-	if ( $upscale and $width < $MAX_WIDTH )
+	if ( $upscale and $height < $MAX_HEIGHT )
 	{
-		$height = intval($height * ($MAX_WIDTH / $width));
-		$width  = $MAX_WIDTH;
+		$height = $MAX_HEIGHT;
+		$width  = round(16 * $MAX_HEIGHT / 9, 0);
+		//print "UPSCALE height=" . $height . " width=". $width;
 	}
 
 	// Load parameter, fallback to default if unset
@@ -188,7 +169,7 @@ function vjs_render_media($content, $picture)
 	$autoplay = isset($conf['vjs_conf']['autoplay']) ? strbool($conf['vjs_conf']['autoplay']) : false;
 	if ( $page['slideshow'] )
 	{
-		$refresh = $fileinfo['playtime_seconds'];
+		$refresh = 20; // TODO move to separate DB to actualy get this details information
 		$autoplay = true;
 		$loop = false;
 	}
@@ -200,16 +181,11 @@ function vjs_render_media($content, $picture)
 	);
 	$skincss = $available_skins[$skin];
 
-	// Try to guess the poster extension
-	$parts = pathinfo($picture['current']['element_url']);
-	$poster = embellish_url( vjs_get_poster_file( Array(
-		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".jpg" =>
-			$parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
-		$fileinfo['filepath']."/pwg_representative/".$parts['filename'].".png" =>
-			$parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
-	)));
+	// Guess the poster extension
+	$file_wo_ext = pathinfo($picture['current']['path']);
+	$file_dir = dirname($picture['current']['path']);
+	$poster = embellish_url($picture['current']['src_image']->get_path() );
 	//print $poster;
-	// poster should be $picture['current']['src_image']['rel_path']
 
 	// Try to find multiple video source
 	$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
@@ -220,12 +196,12 @@ function vjs_render_media($content, $picture)
 				'ext' => $extension,
 			);
 	foreach ($files_ext as $file_ext) {
-		$file = $fileinfo['filepath']."/pwg_representative/".$parts['filename'].".".$file_ext;
+		$file = $file_dir."/pwg_representative/".$file_wo_ext['filename'].".".$file_ext;
 		if (file_exists($file)){
 			array_push($videos,
 				   array (
 					'src' => embellish_url(
-						      get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".".$file_ext
+						      get_gallery_home_url() . $file_dir . "/pwg_representative/".$file_wo_ext['filename'].".".$file_ext
 						     ),
 					'ext' => vjs_get_mimetype_from_ext($file_ext)
 					)
@@ -270,7 +246,7 @@ function vjs_render_media($content, $picture)
 	$zoomrotate = array();
 	if ($zoomrotate_plugin)
 	{
-		// TODO Disable if playing on iOS, as it read the metadata
+		// TODO Disable if playing on iOS, as it read the metadata itself
 		if ($picture['current']['rotation'] != null)
 		{
 			include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
@@ -337,9 +313,9 @@ function vjs_render_media($content, $picture)
 		array(
 			'VIDEOJS_POSTER_URL'	=> embellish_url(get_gallery_home_url().$poster),
 			'VIDEOJS_PATH'		=> embellish_url(get_absolute_root_url().VIDEOJS_PATH),
-			'WIDTH'			=> $width,
-			'HEIGHT'		=> $height,
-			'OPTIONS'		=> $options,
+			'WIDTH'				=> $width,
+			'RATIO'				=> round($height/$width*100, 2),
+			'OPTIONS'			=> $options,
 			'VIDEOJS_SKIN'		=> $skin,
 			'VIDEOJS_SKINCSS'	=> $skincss,
 			'VIDEOJS_CUSTOMCSS'	=> $customcss,
