@@ -44,13 +44,13 @@ $available_preload = array(
 
 // Available width value
 // http://en.wikipedia.org/wiki/Display_resolution
-$available_width = array(
-	'720' => 'EDTV: (720x480) ie: 480p',
-	//'720' => 'EDTV: (720×576) ie: 576p',
-	'1280' => 'HDReady: (1280x720) ie: 720p',
-	'1920' => 'FullHD: (1920x1080) ie: 1080p',
-	'3840' => '4k UHDTV: (3840×2160) ie: 2160p',
-	'7680' => '8k UHDTV: (7680×4320) ie: 4320p',
+$available_height = array(
+	'480' => 'EDTV: (720x480) ie: 480p',
+	'576' => 'EDTV: (720×576) ie: 576p',
+	'720' => 'HDReady: (1280x720) ie: 720p',
+	'1080' => 'FullHD: (1920x1080) ie: 1080p',
+	'2160' => '4k UHDTV: (3840×2160) ie: 2160p',
+	'4320' => '8k UHDTV: (7680×4320) ie: 4320p',
 );
 
 // Update conf if submitted in admin site
@@ -59,7 +59,7 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 	// keep the value in the admin form
 	$conf['vjs_conf'] = array(
 		'skin'          => $_POST['vjs_skin'],
-		'max_width'     => $_POST['vjs_max_width'],
+		'max_height'    => $_POST['vjs_max_height'],
 		'preload'       => $_POST['vjs_preload'],
 		'controls'      => get_boolean($_POST['vjs_controls']),
 		'autoplay'      => get_boolean($_POST['vjs_autoplay']),
@@ -100,7 +100,7 @@ $template->assign(
 	array(
             'AVAILABLE_SKINS'       => $available_skins,
             'AVAILABLE_PRELOAD'     => $available_preload,
-            'AVAILABLE_WIDTH'       => $available_width,
+            'AVAILABLE_HEIGHT'      => $available_height,
             'CUSTOM_CSS'            => htmlspecialchars($customcss),
             'NB_VIDEOS'             => $nb_videos,
             'NB_VIDEOS_THUMB'       => $nb_videos_thumb,

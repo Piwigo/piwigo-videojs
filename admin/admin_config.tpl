@@ -93,11 +93,11 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 				<br/><small>{'CUSTOMCSS_DESC'|@translate}</small>
 			</li>
 			<li>
-				<label><span class="property">{'WIDTH'|@translate} : </span></label>
-				<select name="vjs_max_width">
-					{html_options options=$AVAILABLE_WIDTH selected=$max_width}
+				<label><span class="property">{'HEIGHT'|@translate} : </span></label>
+				<select name="vjs_max_height">
+					{html_options options=$AVAILABLE_HEIGHT selected=$max_height}
 				</select>
-				<br/><small>{'WIDTH_DESC'|@translate}</small>
+				<br/><small>{'HEIGHT_DESC'|@translate}</small>
 			</li>
 			<li>
 				<label><span class="property">{'UPSCALE'|@translate} : </span></label>
