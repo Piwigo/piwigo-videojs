@@ -9,23 +9,30 @@
 {/if}
 <script src="{$VIDEOJS_PATH}video-js/video.js"></script>
 {if not empty($thumbnails)}
-<script src="{$VIDEOJS_PATH}video-js/videojs.thumbnails.js"></script>
+<script type="text/javascript" src="{$VIDEOJS_PATH}video-js/videojs.thumbnails.js"></script>
 {/if}
 {if not empty($zoomrotate)}
-<script src="{$VIDEOJS_PATH}video-js/videojs.zoomrotate.js"></script>
+<script type="text/javascript" src="{$VIDEOJS_PATH}video-js/videojs.zoomrotate.js"></script>
 {/if}
 {if not empty($watermark)}
-<script src="{$VIDEOJS_PATH}video-js/videojs.watermark.js"></script>
+<script type="text/javascript" src="{$VIDEOJS_PATH}video-js/videojs.watermark.js"></script>
 {/if}
-<script>
+<script type="text/javascript">
   videojs.options.flash.swf = "{$VIDEOJS_PATH}video-js/video-js.swf"
 </script>
+<style>
+{literal}
+.video-js {padding-top: {/literal}{$RATIO}{literal}%}
+.vjs-fullscreen {padding-top: 0px}
+.videocontent{ width:80%; max-width:{/literal}{$WIDTH}{literal}px; margin: 0 auto;}
+{/literal}
+</style>
 {/html_head}
 
-<div style="margin: 0 auto; width:{$WIDTH}px; min-width:480px">
-
+<div class="wrapper">
+ <div class="videocontent">
 {literal}
-<video id="my_video_1" class="video-js {/literal}{$VIDEOJS_SKIN}{literal}" {/literal}{$OPTIONS}{literal} width={/literal}"{$WIDTH}"{literal} height={/literal}"{$HEIGHT}"{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} data-setup='{}'>
+<video id="my_video_1" class="video-js {/literal}{$VIDEOJS_SKIN}{literal}" {/literal}{$OPTIONS}{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} datasetup='{}' x-webkit-airplay="allow" width="auto" height="auto">
 {/literal}
 {if not empty($videos)}
 {foreach from=$videos item=video}
@@ -36,14 +43,16 @@
     <p>Video Playback Not Supported<br/>Your browser does not support the video tag.</p>
 </video>
 {/literal}
-
+ </div>
 </div>
 
 {literal}
-<script>
-// initialize video.js
-var my_video_volume = videojs('my_video_1');
-my_video_volume.volume({/literal}{$volume}{literal});
+<script type="text/javascript">
+// Once the video is ready
+videojs("my_video_1", {}, function(){
+	var my_video_volume = videojs('my_video_1');
+	my_video_volume.volume({/literal}{$volume}{literal});
+});
 </script>
 {/literal}
 
