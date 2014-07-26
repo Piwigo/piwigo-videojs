@@ -137,6 +137,7 @@ function vjs_element_set_global_action($action, $collection)
 	    'thumbsec'          => $_POST['vjs_thumbsec'],
 	    'thumbsize'         => $_POST['vjs_thumbsize'],
 	    'simulate'          => false,
+	    'batch_manager'     => true,
 	);
 
 	// Do the work, share with batch manager
