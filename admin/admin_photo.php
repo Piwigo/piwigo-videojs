@@ -67,7 +67,6 @@ $query = "SELECT * FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['
 $picture = pwg_db_fetch_assoc(pwg_query($query));
 
 $filename = $picture['path'];
-$sync_options['sync_gps'] = true;
 include_once(dirname(__FILE__).'/../include/mediainfo.php');
 if (isset($exif))
 {
