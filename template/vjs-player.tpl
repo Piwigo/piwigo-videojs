@@ -1,6 +1,7 @@
 {html_head}
 <link href="{$VIDEOJS_PATH}video-js/{$VIDEOJS_SKINCSS}" rel="stylesheet">
 {$VIDEOJS_CUSTOMCSS}
+<link href="{$VIDEOJS_PATH}video-js/video-js-resolutions.css" rel="stylesheet"/>
 {if not empty($thumbnails)}
 <link href="{$VIDEOJS_PATH}video-js/videojs.thumbnails.css" rel="stylesheet">
 {/if}
@@ -8,6 +9,7 @@
 <link href="{$VIDEOJS_PATH}video-js/videojs.watermark.css" rel="stylesheet">
 {/if}
 <script src="{$VIDEOJS_PATH}video-js/video.js"></script>
+<script type="text/javascript" src="{$VIDEOJS_PATH}video-js/video-js-resolutions.js"></script>
 {if not empty($thumbnails)}
 <script type="text/javascript" src="{$VIDEOJS_PATH}video-js/videojs.thumbnails.js"></script>
 {/if}
