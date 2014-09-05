@@ -190,24 +190,37 @@ function vjs_render_media($content, $picture)
 	$parts = pathinfo($picture['current']['element_url']);
 	// Try to find multiple video source
 	$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
-	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
+	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions));
 	// Add the current file in array
 	$videos[] = array(
 				'src' => embellish_url(get_gallery_home_url() . $picture['current']['element_url']),
 				'ext' => $extension,
+				'resolution' => 'SD'
 			);
 	foreach ($files_ext as $file_ext) {
 		$file = $file_dir."/pwg_representative/".$file_wo_ext['filename'].".".$file_ext;
+		$file_hd = $file_dir."/pwg_representative/".$file_wo_ext['filename']."_hd.".$file_ext;
 		if (file_exists($file)){
 			array_push($videos,
 				   array (
 					'src' => embellish_url(
-						      get_gallery_home_url() . $file_dir . "/pwg_representative/".$file_wo_ext['filename'].".".$file_ext
+						      get_gallery_home_url() . $file
 						     ),
-					'ext' => vjs_get_mimetype_from_ext($file_ext)
+					'ext' => vjs_get_mimetype_from_ext($file_ext),
+					'resolution' => 'SD'
 					)
 				  );
-		}
+		} else if (file_exists($file_hd)){
+                        array_push($videos,
+                                   array (
+                                        'src' => embellish_url(
+                                                      get_gallery_home_url() . $file_hd
+                                                     ),
+                                        'ext' => vjs_get_mimetype_from_ext($file_ext),
+                                        'resolution' => 'HD'
+                                        )
+                                  );
+                }
 	}
 	//print_r($videos);
 	// Sort array to have MP4 first in the source list for iOS support
