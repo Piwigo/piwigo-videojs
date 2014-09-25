@@ -105,6 +105,12 @@ function vjs_render_media($content, $picture)
 		return $content;
 	}
 
+	// In case it is not an image but not a supported video file by the plugin
+	if (vjs_valid_extension(get_extension($picture['current']['path'])) === false)
+	{
+		return $content;
+	}
+
 	// In case, we handle a large video, we define a MAX_HEIGHT
 	// variable to limit the display size.
 	$MAX_HEIGHT = isset($conf['vjs_conf']['max_height']) ? $conf['vjs_conf']['max_height'] : '480';
@@ -135,7 +141,7 @@ function vjs_render_media($content, $picture)
 		$height = 480;
 		$width  = round(16 * 480 / 9, 0);
 	}
-    //print "Video height=" . $height . " width=". $width;
+	//print "Video height=" . $height . " width=". $width;
 
 	// Resize if video is too height
 	//print $height .">". $MAX_HEIGHT;
@@ -365,6 +371,19 @@ function vjs_get_mimetype_from_ext($file_ext)
 			   'webmv' => 'video/webm'
 			);
 	return $vjs_types[strtolower($file_ext)];
+}
+
+function vjs_valid_extension($file_ext)
+{
+	$vjs_types = array(
+			   'ogg'   => 'video/ogg',
+			   'ogv'   => 'video/ogg',
+			   'mp4'   => 'video/mp4',
+			   'm4v'   => 'video/mp4',
+			   'webm'  => 'video/webm',
+			   'webmv' => 'video/webm'
+			);
+	return array_key_exists(strtolower($file_ext), $vjs_types) ? true : false;
 }
 
 function vjs_dbSet($fields, $data = array())
