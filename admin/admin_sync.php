@@ -30,25 +30,32 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 // Generate default value
 $sync_options = array(
     'mediainfo'         => '/usr/bin/mediainfo',
-    'ffmepg'            => '/usr/bin/ffmpeg',
+    'ffmpeg'            => '/usr/bin/ffmpeg',
     'metadata'          => true,
     'poster'            => true,
-    'postersec'         => 1,
+    'postersec'         => 4,
     'output'            => 'jpg',
     'posteroverlay'     => false,
     'posteroverwrite'   => true,
     'thumb'             => false,
     'thumbsec'          => 5,
+    'thumbsize'         => "120x68",
     'simulate'          => true,
     'cat_id'            => 0,
     'subcats_included'  => true,
 );
 
-if(isset($_POST['mediainfo']) && isset($_POST['ffmepg'])) {
+// Override default value from configuration
+if (isset($conf['vjs_sync']))
+{
+    $sync_options = unserialize($conf['vjs_sync']);
+}
+
+if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
     // Override default value from the form
     $sync_options = array(
 		'mediainfo'         => $_POST['mediainfo'],
-		'ffmepg'            => $_POST['ffmepg'],
+		'ffmpeg'            => $_POST['ffmpeg'],
         'metadata'          => isset($_POST['metadata']),
         'poster'            => isset($_POST['poster']),
         'postersec'         => $_POST['postersec'],
@@ -62,6 +69,9 @@ if(isset($_POST['mediainfo']) && isset($_POST['ffmepg'])) {
         'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
         'subcats_included'  => isset($_POST['subcats_included']),
     );
+
+    // Update config to DB
+    conf_update_param('vjs_sync', serialize($sync_options));
 }
 
 // Check dependencies
@@ -69,9 +79,17 @@ $warnings = array();
 if ($sync_options['metadata'])
 {
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        system("mediainfo >NUL 2>NUL", $retval); // redirect any output
+        if ($sync_options['mediainfo']) {
+            system($sync_options['mediainfo'] ." >NUL 2>NUL", $retval); // redirect any output
+        } else {
+            system("mediainfo >NUL 2>NUL", $retval); // redirect any output
+        }
     } else {
-        system("mediainfo 1>&2 /dev/null", $retval); // redirect any output
+        if ($sync_options['mediainfo']) {
+            system($sync_options['mediainfo'] ." 1>&2 /dev/null", $retval); // redirect any output
+        } else {
+            system("mediainfo 1>&2 /dev/null", $retval); // redirect any output
+        }
     }
     if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
     {
@@ -84,9 +102,17 @@ if ($sync_options['poster'] or $sync_options['thumb'])
 {
     $retval = 0;
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        system("ffmpeg >NUL 2>NUL", $retval); // redirect any output
+        if ($sync_options['ffmpeg']) {
+            system($sync_options['ffmpeg'] ." 1>&2 /dev/null", $retval); // redirect any output
+        } else {
+            system("ffmpeg 1>&2 /dev/null", $retval); // redirect any output
+        }
     } else {
-        system("ffmpeg 1>&2 /dev/null", $retval); // redirect any output
+        if ($sync_options['ffmpeg']) {
+            system($sync_options['ffmpeg'] ." 1>&2 /dev/null", $retval); // redirect any output
+        } else {
+            system("ffmpeg 1>&2 /dev/null", $retval); // redirect any output
+        }
     }
     if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
     {
@@ -97,7 +123,7 @@ if ($sync_options['poster'] or $sync_options['thumb'])
 }
 
 $template->assign('sync_warnings', $warnings);
-$template->assign($sync_options); // send value to template
+$template->assign($sync_options); // send config value to template
 
 if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 {
@@ -173,14 +199,13 @@ display_select_cat_wrapper($query,
                            'categories',
                            false);
 
-// Send value to templates
+// send value to template
 $template->assign(
     array(
         'SUBCATS_INCLUDED_CHECKED'  => $sync_options['subcats_included'] ? 'checked="checked"' : '',
         'NB_VIDEOS'                 => $nb_videos,
         'NB_VIDEOS_GEOTAGGED'       => $nb_videos_geotagged,
         'NB_VIDEOS_THUMB'           => $nb_videos_thumb,
-		'SYNC_OPTIONS'				=> $sync_options,
         'VIDEOJS_PATH'              => VIDEOJS_PATH,
     )
 );

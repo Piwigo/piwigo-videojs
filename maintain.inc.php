@@ -108,7 +108,7 @@ function plugin_uninstall()
 	global $prefixeTable;
 
 	/* Drop VideoJS configuration settings */
-	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%" LIMIT 2;';
+	$q = 'DELETE FROM '.CONFIG_TABLE.' WHERE param LIKE "%vjs_%";';
 	pwg_query( $q );
 
 	/* Drop VideoJS metadata table */

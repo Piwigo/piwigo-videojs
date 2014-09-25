@@ -130,7 +130,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			{else}
 				<img src="{$VIDEOJS_PATH}admin/warning.png" witdh="16" height="16">
 			{/if}
-			<input type="text" name="mediainfo" value="{$SYNC_OPTIONS.mediainfo}" /> Mediainfo binary path
+			<input type="text" name="mediainfo" value="{$mediainfo}" /> Mediainfo binary path
 		</label>
 		<br/><small><strong><a href="http://mediaarea.net/en/MediaInfo" target="_blanck">'MediaInfo'</a> must be insall to allow video metadata parsing.</strong></small>
       </li>
@@ -141,7 +141,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			{else}
 				<img src="{$VIDEOJS_PATH}admin/warning.png" witdh="16" height="16">
 			{/if}
-			<input type="text" name="ffmepg" value="{$SYNC_OPTIONS.ffmepg}" /> FFmpeg binary path
+			<input type="text" name="ffmpeg" value="{$ffmpeg}" /> FFmpeg binary path
 		</label>
 		<br/><small><strong><a href="http://www.ffmpeg.org/" target="_blanck">'FFmpeg'</a> must be insall to allow video thumbnail and poster generation.</strong></small>
       </li>
@@ -152,7 +152,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <legend>{'Synchronize metadata'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
+	<label><input type="checkbox" name="metadata" value="1" {if $metadata}checked="checked"{/if} /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>{'SYNC_METADATA_DESC'|@translate}</small>
 	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">'MediaInfo'</a> to be install.</strong></small>
       </li>
@@ -163,24 +163,24 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <legend>{'Poster'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="poster" value="1" checked="checked" /> {'SYNC_POSTER'|@translate}:</label>
+	<label><input type="checkbox" name="poster" value="1" {if $poster}checked="checked"{/if} /> {'SYNC_POSTER'|@translate}:</label>
 	<!-- <input type="range" name="postersec" value="4" min="0" max="60" step="1"/> -->
-	<input type="text" name="postersec" value="4" size="2" required/>
+	<input type="text" name="postersec" value="{$postersec}" size="2" required/>
 	<br/><small>{'SYNC_POSTER_DESC'|@translate}</small>
 	<small><strong>Require <a href="http://www.ffmpeg.org/" target="_blanck">'FFmpeg'</a> to be install.</strong></small>
       </li>
       <li>
-	<label><input type="checkbox" name="posteroverwrite" value="1" checked="checked"> {'SYNC_POSTEROVERWRITE'|@translate}</label>
+	<label><input type="checkbox" name="posteroverwrite" value="1" {if $posteroverwrite}checked="checked"{/if}> {'SYNC_POSTEROVERWRITE'|@translate}</label>
 	<br/><small>{'SYNC_POSTEROVERWRITE_DESC'|@translate}</small>
       </li>
       <li>
 	<label><span class="property">{'SYNC_OUTPUT'|@translate}: </span></label>
-	<label><input type="radio" name="output" value="jpg" checked="checked"/> JPG</label>
-	<label><input type="radio" name="output" value="png" /> PNG</label>
+	<label><input type="radio" name="output" value="jpg" {if $output=="jpg"}checked="checked"{/if}/> JPG</label>
+	<label><input type="radio" name="output" value="png" {if $output=="png"}checked="checked"{/if}/> PNG</label>
 	<br/><small>{'SYNC_OUTPUT_DESC'|@translate}</small>
       </li>
       <li>
-	<label><input type="checkbox" name="posteroverlay" value="1" /> {'SYNC_POSTEROVERLAY'|@translate}</label>
+	<label><input type="checkbox" name="posteroverlay" value="1" {if $posteroverlay}checked="checked"{/if}/> {'SYNC_POSTEROVERLAY'|@translate}</label>
 	<a class="showInfo" title="<img src='{$VIDEOJS_PATH}admin/example-frame.jpg'>">i</a>
 	<br/><small>{'SYNC_POSTEROVERLAY_DESC'|@translate}</small>
       </li>
@@ -191,15 +191,15 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
     <legend>{'Thumbnail'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="thumb" value="1" /> {'SYNC_THUMBSEC'|@translate}:</label>
-	<input class="range-input" type="range" id="thumbsec" name="thumbsec" value="5" min="0" max="60" step="1"/>
-	<output name="thumbsecValue" for="thumbsec">5</output>
+	<label><input type="checkbox" name="thumb" value="1" {if $thumb}checked="checked"{/if}/> {'SYNC_THUMBSEC'|@translate}:</label>
+	<input class="range-input" type="range" id="thumbsec" name="thumbsec" value="{$thumbsec}" min="0" max="60" step="1"/>
+	<output name="thumbsecValue" for="thumbsec">{$thumbsec}</output>
 	<!-- <input type="text" name="thumbsec" value="5" size="2" required/> -->
 	<br/><small>{'SYNC_THUMBSEC_DESC'|@translate} <strong>Use by the videoJS plugin thumbnail</strong>.</small>
       </li>
       <li>
 	<label>{'SYNC_THUMBSIZE'|@translate}:</label>
-	<input type="text" name="thumbsize" value="120x68" size="5" placeholder="120x68" required/>
+	<input type="text" name="thumbsize" value="{$thumbsize}" size="5" placeholder="120x68" required/>
 	<br/><small>{'SYNC_THUMBSIZE_DESC'|@translate}</small>
       </li>
     </ul>
@@ -208,7 +208,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
   <fieldset id="syncOptions">
     <legend>{'Simulation'|@translate}</legend>
     <ul>
-      <li><label><input type="checkbox" name="simulate" value="1" checked="checked" /> {'only perform a simulation (no change in database will be made)'|@translate}</label></li>
+      <li><label><input type="checkbox" name="simulate" value="1" {if $simulate}checked="checked"{/if} /> {'only perform a simulation (no change in database will be made)'|@translate}</label></li>
     </ul>
   </fieldset>
 
