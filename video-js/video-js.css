@@ -1,6 +1,6 @@
 /*!
 Video.js Default Styles (http://videojs.com)
-Version 4.6.4
+Version 4.8.4
 Create your own skin at http://designer.videojs.com
 */
 /* SKIN
@@ -21,7 +21,7 @@ The control icons are from a custom font. Each icon corresponds to a character
 @font-face {
   font-family: 'VideoJS';
   src: url('font/vjs.eot');
-  src: url('font/vjs.eot?#iefix') format('embedded-opentype'), url('font/vjs.woff') format('woff'), url('font/vjs.ttf') format('truetype');
+  src: url('font/vjs.eot?#iefix') format('embedded-opentype'), url('font/vjs.woff') format('woff'), url('font/vjs.ttf') format('truetype'), url('font/vjs.svg#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -316,7 +316,8 @@ fonts to show/hide properly.
 }
 /* Progress Bars */
 .vjs-default-skin .vjs-progress-holder .vjs-play-progress,
-.vjs-default-skin .vjs-progress-holder .vjs-load-progress {
+.vjs-default-skin .vjs-progress-holder .vjs-load-progress,
+.vjs-default-skin .vjs-progress-holder .vjs-load-progress div {
   position: absolute;
   display: block;
   height: 100%;
@@ -343,7 +344,13 @@ fonts to show/hide properly.
 }
 .vjs-default-skin .vjs-load-progress {
   background: #646464 /* IE8- Fallback */;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.2);
+}
+/* there are child elements of the load progress bar that represent the
+   specific time ranges that have been buffered */
+.vjs-default-skin .vjs-load-progress div {
+  background: #787878 /* IE8- Fallback */;
+  background: rgba(255, 255, 255, 0.1);
 }
 .vjs-default-skin .vjs-seek-handle {
   width: 1.5em;
@@ -529,17 +536,21 @@ easily in the skin designer. http://designer.videojs.com/
   text-align: center /* Needed for IE8 */;
   vertical-align: middle;
   position: absolute;
+  left: 0;
   top: 50%;
   margin-top: -0.5em;
   width: 100%;
 }
 .vjs-error-display div {
   position: absolute;
+  bottom: 1em;
+  right: 0;
+  left: 0;
   font-size: 1.4em;
   text-align: center;
-  bottom: 1em;
-  right: 1em;
-  left: 1em;
+  padding: 3px;
+  background: #000000;
+  background: rgba(0, 0, 0, 0.5);
 }
 .vjs-error-display a,
 .vjs-error-display a:visited {
@@ -549,6 +560,7 @@ easily in the skin designer. http://designer.videojs.com/
 --------------------------------------------------------------------------------
 */
 .vjs-loading-spinner {
+  /* Should be hidden by default */
   display: none;
   position: absolute;
   top: 50%;
@@ -560,22 +572,22 @@ easily in the skin designer. http://designer.videojs.com/
   margin-left: -0.5em;
   margin-top: -0.5em;
   opacity: 0.75;
+}
+/* Show the spinner when waiting for data and seeking to a new time */
+.vjs-waiting .vjs-loading-spinner,
+.vjs-seeking .vjs-loading-spinner {
+  display: block;
+  /* only animate when showing because it can be processor heavy */
   /* animation */
   -webkit-animation: spin 1.5s infinite linear;
   -moz-animation: spin 1.5s infinite linear;
   -o-animation: spin 1.5s infinite linear;
   animation: spin 1.5s infinite linear;
 }
-/* Errors are unrecoverable without user interaction,
-   so hide the spinner in the case of an error */
-.video-js.vjs-error .vjs-loading-spinner {
-  /* using !important flag because currently the loading spinner
-     uses hide()/show() instead of classes. The !important can be
-     removed when that's updated */
-
-  display: none !important;
+/* Errors are unrecoverable without user interaction so hide the spinner */
+.vjs-error .vjs-loading-spinner {
+  display: none;
   /* ensure animation doesn't continue while hidden */
-
   /* animation */
   -webkit-animation: none;
   -moz-animation: none;
@@ -721,6 +733,14 @@ easily in the skin designer. http://designer.videojs.com/
 .vjs-default-skin .vjs-captions-button:before {
   content: "\e008";
 }
+/* Chapters Button */
+.vjs-default-skin .vjs-chapters-button:before {
+  content: "\e00c";
+}
+.vjs-default-skin .vjs-chapters-button.vjs-menu-button .vjs-menu .vjs-menu-content {
+  width: 24em;
+  left: -12em;
+}
 /* Replacement for focus outline */
 .vjs-default-skin .vjs-captions-button:focus .vjs-control-content:before,
 .vjs-default-skin .vjs-captions-button:hover .vjs-control-content:before {
@@ -820,11 +840,13 @@ body.vjs-full-window {
   background-position: 50% 50%;
   background-size: contain;
   cursor: pointer;
-  height: 100%;
   margin: 0;
   padding: 0;
-  position: relative;
-  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 .vjs-poster img {
   display: block;
