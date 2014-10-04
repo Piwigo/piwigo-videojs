@@ -45,36 +45,9 @@ $errors = array();
 $warnings = array();
 $infos = array();
 
-if ($sync_options['metadata'])
-{
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        system("mediainfo >NUL 2>NUL", $retval); // redirect any output
-    } else {
-        system("mediainfo 1>&2 /dev/null", $retval); // redirect any output
-    }
-    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
-    {
-        $warnings[] = "Metadata parsing disable because MediaInfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
-        $sync_options['metadata'] = false;
-    }
-}
-
-if ($sync_options['poster'] or $sync_options['thumb'])
-{
-    $retval = 0;
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        system("ffmpeg >NUL 2>NUL", $retval); // redirect any output
-    } else {
-        system("ffmpeg 1>&2 /dev/null", $retval); // redirect any output
-    }
-    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
-    {
-        $warnings[] = "Poster creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
-        $sync_options['poster'] = false;
-        $sync_options['thumb'] = false;
-    }
-}
-
+// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
+include("function_dependencies.php");
+//print_r($sync_options);
 if (!$sync_options['metadata'] and !$sync_options['poster'] and !$sync_options['thumb'])
 {
     $errors[] = "You ask me to do nothing, are you sure?";
@@ -172,10 +145,10 @@ while ($row = pwg_db_fetch_assoc($result))
                     $sync_options['postersec'] = (int)$exif['playtime_seconds'];
                 }
 				/* default output to JPG */
-                $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i '".$in."' -vcodec mjpeg -vframes 1 -an -f rawvideo -y '".$out. "'";
+                $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$sync_options['postersec']." -i '".$in."' -vcodec mjpeg -vframes 1 -an -f rawvideo -y '".$out. "'";
                 if ($sync_options['output'] == "png")
                 {
-                    $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i '".$in."' -vcodec png -vframes 1 -an -f rawvideo -y '".$out. "'";
+                    $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$sync_options['postersec']." -i '".$in."' -vcodec png -vframes 1 -an -f rawvideo -y '".$out. "'";
                 }
                 //echo $ffmpeg;
                 $log = system($ffmpeg, $retval);
@@ -258,10 +231,10 @@ while ($row = pwg_db_fetch_assoc($result))
 						isset($sync_options['batch_manager']) ? $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out : '';
 						$sync_arr['thumbnail'][] = $second.' seconds '.$out;
                         /* Lets do it , default output to JPG */
-                        $ffmpeg = "ffmpeg -itsoffset -".$second." -i '".$in."' -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y '".$out. "'";
+                        $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$second." -i '".$in."' -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y '".$out. "'";
                         if ($sync_options['output'] == "png")
                         {
-                            $ffmpeg = "ffmpeg -itsoffset -".$second." -i '".$in."' -vcodec png -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y '".$out. "'";
+                            $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$second." -i '".$in."' -vcodec png -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y '".$out. "'";
                         }
                         $log = system($ffmpeg, $retval);
                         //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);
