@@ -68,8 +68,7 @@ function vjs_loc_end_element_set_global()
       <li>
 	<label><input type="checkbox" name="vjs_metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
-	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
-	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">\'MediaInfo\'</a> to be install.</strong></small>
+	<br/><small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">\'MediaInfo\'</a> to be install.</strong></small>
       </li>
     </ul>
     <legend>Poster</legend>
@@ -119,14 +118,14 @@ function vjs_element_set_global_action($action, $collection)
 	if ($action!=="videojs")
 		return;
 
-	global $page;
+	global $page, $conf;
 
 	$query = "SELECT `id`, `file`, `path`
 			FROM ".IMAGES_TABLE."
 			WHERE id IN (".implode(',',$collection).")";
 
 	// Override default value from the form
-	$sync_options = array(
+	$sync_options_form = array(
 	    'metadata'          => isset($_POST['vjs_metadata']),
 	    'poster'            => isset($_POST['vjs_poster']),
 	    'postersec'         => $_POST['vjs_postersec'],
@@ -139,6 +138,7 @@ function vjs_element_set_global_action($action, $collection)
 	    'simulate'          => false,
 	    'batch_manager'     => true,
 	);
+	$sync_options = $sync_options_form + unserialize($conf['vjs_sync']);
 
 	// Do the work, share with batch manager
 	require_once(dirname(__FILE__).'/../include/function_sync2.php');
@@ -164,7 +164,7 @@ function vjs_loc_begin_element_set_unit()
 			return;
 
 		// Override default value from the form
-		$sync_options = array(
+		$sync_options_form = array(
 		    'metadata'          => isset($_POST['vjs_metadata-'.$id]),
 		    'poster'            => isset($_POST['vjs_poster-'.$id]),
 		    'postersec'         => $_POST['vjs_postersec-'.$id],
@@ -176,6 +176,8 @@ function vjs_loc_begin_element_set_unit()
 		    'thumbsize'         => $_POST['vjs_thumbsize-'.$id],
 		    'simulate'          => false,
 		);
+
+		$sync_options = $sync_options_form + unserialize($conf['vjs_sync']);
 
 		$query = "SELECT `id`, `file`, `path`
 				FROM ".IMAGES_TABLE."

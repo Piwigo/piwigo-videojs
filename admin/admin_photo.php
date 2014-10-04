@@ -63,10 +63,26 @@ $template->set_filenames(
     )
   );
 
+// Override default value from configuration
+// Override default value from configuration
+if (isset($conf['vjs_sync']))
+{
+    $sync_options = unserialize($conf['vjs_sync']);
+}
+// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
+require_once(dirname(__FILE__).'/../include/function_dependencies.php');
+
 $query = "SELECT * FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['image_id'].";";
 $picture = pwg_db_fetch_assoc(pwg_query($query));
 
+//if (!$sync_options['metadata'] or !isset($picture['path'])) {
+if (!isset($picture['path'])) {
+	//print_r($sync_options);
+	die("Mediainfo error reading file id: '". $_GET['image_id']."'");
+}
+
 $filename = $picture['path'];
+// Get the metadata video information
 include_once(dirname(__FILE__).'/../include/mediainfo.php');
 if (isset($exif))
 {
@@ -89,13 +105,14 @@ if (isset($exif))
 
 // Try to guess the poster extension
 $parts = pathinfo($picture['path']);
-//print_r($parts);
-$poster = embellish_url( vjs_get_poster_file( Array(
+$poster = vjs_get_poster_file( Array(
 	(string)$general->FolderName."/pwg_representative/".$parts['filename'].".jpg" =>
 		get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
 	(string)$general->FolderName."/pwg_representative/".$parts['filename'].".png" =>
 		get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
-)));
+));
+// If none found, it create an strpos error
+if (strlen($poster) > 0) { $poster = embellish_url($poster); }
 //print $poster;
 
 // Try to find multiple video source

@@ -29,8 +29,8 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 // Generate default value
 $sync_options = array(
-    'mediainfo'         => '/usr/bin/mediainfo',
-    'ffmpeg'            => '/usr/bin/ffmpeg',
+    'mediainfo'         => 'mediainfo',
+    'ffmpeg'            => 'ffmpeg',
     'metadata'          => true,
     'poster'            => true,
     'postersec'         => 4,
@@ -76,50 +76,51 @@ if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
 
 // Check dependencies
 $warnings = array();
-if ($sync_options['metadata'])
-{
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        if ($sync_options['mediainfo']) {
-            system($sync_options['mediainfo'] ." >NUL 2>NUL", $retval); // redirect any output
-        } else {
-            system("mediainfo >NUL 2>NUL", $retval); // redirect any output
-        }
-    } else {
-        if ($sync_options['mediainfo']) {
-            system($sync_options['mediainfo'] ." 1>&2 /dev/null", $retval); // redirect any output
-        } else {
-            system("mediainfo 1>&2 /dev/null", $retval); // redirect any output
-        }
-    }
-    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
-    {
-        $warnings[] = "Metadata parsing disable because MediaInfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
-        $sync_options['metadata'] = false;
-    }
-}
 
-if ($sync_options['poster'] or $sync_options['thumb'])
+// Do the dependencies checks for MediaInfo & FFMPEG
+function check_mediainfo($sync_options)
 {
     $retval = 0;
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        if ($sync_options['ffmpeg']) {
-            system($sync_options['ffmpeg'] ." 1>&2 /dev/null", $retval); // redirect any output
-        } else {
-            system("ffmpeg 1>&2 /dev/null", $retval); // redirect any output
-        }
+        system($sync_options['mediainfo'] ." >NUL 2>NUL", $retval); // redirect any output
     } else {
-        if ($sync_options['ffmpeg']) {
-            system($sync_options['ffmpeg'] ." 1>&2 /dev/null", $retval); // redirect any output
-        } else {
-            system("ffmpeg 1>&2 /dev/null", $retval); // redirect any output
-        }
+        system($sync_options['mediainfo'] ." 1>&2 /dev/null", $retval); // redirect any output
     }
     if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
     {
-        $warnings[] = "Poster creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
-        $sync_options['poster'] = false;
-        $sync_options['thumb'] = false;
+        return false;
+    } else {
+        return true;
     }
+}
+
+function check_ffmpeg($sync_options)
+{
+    $retval = 0;
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        system($sync_options['ffmpeg'] ." >NUL 2>NUL", $retval); // redirect any output
+    } else {
+        system($sync_options['ffmpeg'] ." 1>&2 /dev/null", $retval); // redirect any output
+    }
+    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
+    {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+if (!check_mediainfo($sync_options))
+{
+    $warnings[] = "Metadata parsing disable because MediaInfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
+    $sync_options['metadata'] = false;
+}
+
+if (!check_ffmpeg($sync_options))
+{
+    $warnings[] = "Poster creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
+    $sync_options['poster'] = false;
+    $sync_options['thumb'] = false;
 }
 
 $template->assign('sync_warnings', $warnings);
