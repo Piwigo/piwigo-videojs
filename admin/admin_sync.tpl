@@ -132,7 +132,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			{/if}
 			<input type="text" name="mediainfo" value="{$mediainfo}" /> Mediainfo binary path
 		</label>
-		<br/><small><strong><a href="http://mediaarea.net/en/MediaInfo" target="_blanck">'MediaInfo'</a> must be insall to allow video metadata parsing.</strong></small>
+		<br/><small><strong><a href="http://mediaarea.net/en/MediaInfo" target="_blanck">'MediaInfo'</a> must be install to allow video metadata parsing.</strong></small>
       </li>
       <li>
 		<label>
@@ -143,7 +143,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			{/if}
 			<input type="text" name="ffmpeg" value="{$ffmpeg}" /> FFmpeg binary path
 		</label>
-		<br/><small><strong><a href="http://www.ffmpeg.org/" target="_blanck">'FFmpeg'</a> must be insall to allow video thumbnail and poster generation.</strong></small>
+		<br/><small><strong><a href="http://www.ffmpeg.org/" target="_blanck">'FFmpeg'</a> must be install to allow video thumbnail and poster generation.</strong></small>
       </li>
     </ul>
   </fieldset>
