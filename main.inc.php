@@ -190,7 +190,7 @@ function vjs_render_media($content, $picture)
 	// Guess the poster extension
 	$file_wo_ext = pathinfo($picture['current']['path']);
 	$file_dir = dirname($picture['current']['path']);
-	$poster = embellish_url($picture['current']['src_image']->get_path() );
+	$poster = embellish_url( $picture['current']['src_image']->get_path() );
 	//print $poster;
 
 	// Try to find multiple video source
@@ -228,7 +228,7 @@ function vjs_render_media($content, $picture)
 	$thumbnails = array();
 	if ($thumbnails_plugin)
 	{
-		$filematch = $parts['dirname']."/pwg_representative/".$parts['filename']."-th_*";
+		$filematch = $file_dir."/pwg_representative/".$file_wo_ext['filename']."-th_*";
 		$matches = glob($filematch);
 
 		if ( is_array ( $matches ) ) {
