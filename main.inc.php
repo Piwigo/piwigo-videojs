@@ -1,403 +1,63 @@
 <?php
 /*
-Plugin Name: VideoJS
-Version: 2.7.a
-Description: videojs integration for piwigo
-Plugin URI: http://piwigo.org/ext/extension_view.php?eid=610
-Author: xbmgsharp
-Author URI: https://github.com/xbgmsharp/piwigo-videojs
+Plugin Name: Admin Tools
+Version: 2.7.0
+Description: Do some admin task from the public pages
+Plugin URI: http://piwigo.org/ext/extension_view.php?eid=720
+Author: Piwigo team
+Author URI: http://piwigo.org
 */
 
-// Check whether we are indeed included by Piwigo.
-if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
+defined('PHPWG_ROOT_PATH') or die('Hacking attempt!');
 
-// Define the path to our plugin.
-define('VIDEOJS_PATH', PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)).'/');
+define('ADMINTOOLS_ID',       basename(dirname(__FILE__)));
+define('ADMINTOOLS_PATH' ,    PHPWG_PLUGINS_PATH . ADMINTOOLS_ID . '/');
+define('ADMINTOOLS_ADMIN',    get_root_url() . 'admin.php?page=plugin-' . ADMINTOOLS_ID);
 
-global $conf;
+include_once(ADMINTOOLS_PATH . 'include/events.inc.php');
+include_once(ADMINTOOLS_PATH . 'include/MultiView.class.php');
 
-// Prepare configuration
-$conf['vjs_conf'] = unserialize($conf['vjs_conf']);
 
-// Register the allowed extentions to the global conf in order
-// to sync them with other contents
-$vjs_extensions = array(
-    'ogg',
-    'ogv',
-    'mp4',
-    'm4v',
-    'webm',
-    'webmv',
-);
-$conf['file_ext'] = array_merge ($conf['file_ext'], $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
+global $MultiView;
+$MultiView = new MultiView();
 
-// Hook on to an event to display videos as standard images
-add_event_handler('render_element_content', 'vjs_render_media', 40, 2);
+add_event_handler('init', 'admintools_init');
 
-// Hook to display a fallback thumbnail if not defined
-add_event_handler('get_mimetype_location', 'vjs_get_mimetype_icon', 60, 2);
+add_event_handler('user_init', array(&$MultiView, 'user_init'));
+add_event_handler('init', array(&$MultiView, 'init'));
 
-// Hook to change the picture data to template
-//add_event_handler('picture_pictures_data', 'vjs_pictures_data');
+add_event_handler('ws_add_methods', array('MultiView', 'register_ws'));
+add_event_handler('delete_user', array('MultiView', 'invalidate_cache'));
+add_event_handler('register_user', array('MultiView', 'invalidate_cache'));
 
-// Hook to sync geotag metadata on upload or sync
-//add_event_handler('format_exif_data', 'vjs_format_exif_data', EVENT_HANDLER_PRIORITY_NEUTRAL, 3);
-
-// Hook to display metadata on picture page
-//add_event_handler('get_element_metadata_available', 'vjs_metadata_available');
-
-// If admin do the init
-if (defined('IN_ADMIN')) {
-	include_once(VIDEOJS_PATH.'/admin/admin_boot.php');
-}
-
-function vjs_format_exif_data($exif, $filename, $map)
+if (!defined('IN_ADMIN'))
 {
-	//print $filename."\n";
-	//print_r($exif)."\n<br/>\n";
-
-	// If not a video, we skip
-	if (isset($exif['MimeType']) and stristr($exif['MimeType'], "image"))
-	{
-		return $exif;
-	}
-
-	// If video, let's check
-	include_once(dirname(__FILE__).'/include/mediainfo.php');
-	if (isset($exif))
-	{
-		$exif['Make'] = "VideoJS";
-		// replace some value by human readable string
-		if (isset($general->Duration_String))
-		{
-			$exif['duration'] = (string)$general->Duration_String;
-			array_push($map, 'duration');
-		}
-		if (isset($video->BitRate_String))
-		{
-			$exif['bitrate'] = (string)$video->BitRate_String;
-			array_push($map, 'bitrate');
-		}
-		if (isset($audio->SamplingRate_String))
-		{
-			$exif['sampling_rate'] = (string)$audio->SamplingRate_String;
-			array_push($map, 'sampling_rate');
-		}
-		ksort($exif);
-	}
-	return $exif;
+  add_event_handler('loc_after_page_header', 'admintools_add_public_controller');
+  add_event_handler('loc_begin_picture', 'admintools_save_picture');
+  add_event_handler('loc_begin_index', 'admintools_save_category');
 }
-
-function vjs_metadata_available($show_metadata)
+else
 {
-	return 1;
+  add_event_handler('loc_begin_page_header', 'admintools_add_admin_controller_setprefilter');
+  add_event_handler('loc_after_page_header', 'admintools_add_admin_controller');
+  add_event_handler('get_admin_plugin_menu_links', 'admintools_admin_link');
 }
 
-function vjs_render_media($content, $picture)
+
+function admintools_init()
 {
-	global $template, $picture, $page, $conf, $user, $refresh;
+  global $conf;
+  $conf['AdminTools'] = safe_unserialize($conf['AdminTools']);
 
-	//print_r( $picture['current']);
-	// do nothing if the current picture is actually an image !
-	if ( (array_key_exists('src_image', @$picture['current'])
-		&& @$picture['current']['src_image']->is_original()) )
-	{
-		return $content;
-	}
-
-	// In case it is not an image but not a supported video file by the plugin
-	if (vjs_valid_extension(get_extension($picture['current']['path'])) === false)
-	{
-		return $content;
-	}
-
-	// In case, we handle a large video, we define a MAX_HEIGHT
-	// variable to limit the display size.
-	$MAX_HEIGHT = isset($conf['vjs_conf']['max_height']) ? $conf['vjs_conf']['max_height'] : '480';
-	if (isset($user['maxheight']) and $user['maxheight']!='')
-	{
-		$MAX_HEIGHT = $user['maxwidth'];
-	}
-	//print "MAX_HEIGHT=" . $MAX_HEIGHT;
-	//print_r($user);
-
-	$extension = vjs_get_mimetype_from_ext(get_extension($picture['current']['path']));
-	//print "extension\n";
-	//print_r($extension);
-
-	// Video file -- Guess resolution base on height
-	if (isset($picture['current']['width']))
-	{
-		$width = $picture['current']['width'];
-	}
-	if (isset($picture['current']['height']))
-	{
-		$height = $picture['current']['height'];
-	}
-	if ( !isset($width) || !isset($height))
-	{
-		// If guess was unsuccessful, fallback to default 16/9 resolution 720x480
-		// This is the case for ogv video for example.
-		$height = 480;
-		$width  = round(16 * 480 / 9, 0);
-	}
-	//print "Video height=" . $height . " width=". $width;
-
-	// Resize if video is too height
-	//print $height .">". $MAX_HEIGHT;
-	if ( $height > $MAX_HEIGHT )
-	{
-		$height = $MAX_HEIGHT;
-		$width  = round(16 * $MAX_HEIGHT / 9, 0);
-		//print "MAX_HEIGHT height=" . $height . " width=". $width;
-	}
-
-	// Upscale if video is too small
-	$upscale = isset($conf['vjs_conf']['upscale']) ? strbool($conf['vjs_conf']['upscale']) : false;
-	if ( $upscale and $height < $MAX_HEIGHT )
-	{
-		$height = $MAX_HEIGHT;
-		$width  = round(16 * $MAX_HEIGHT / 9, 0);
-		//print "UPSCALE height=" . $height . " width=". $width;
-	}
-
-	// Load parameter, fallback to default if unset
-	$skin = isset($conf['vjs_conf']['skin']) ? $conf['vjs_conf']['skin'] : 'vjs-default-skin';
-	$customcss = isset($conf['vjs_customcss']) ? $conf['vjs_customcss'] : '';
-	$preload = isset($conf['vjs_conf']['preload']) ? $conf['vjs_conf']['preload'] : 'none';
-	$loop = isset($conf['vjs_conf']['loop']) ? strbool($conf['vjs_conf']['loop']) : false;
-	$controls = isset($conf['vjs_conf']['controls']) ? strbool($conf['vjs_conf']['controls']) : false;
-	$volume = isset($conf['vjs_conf']['volume']) ? $conf['vjs_conf']['volume'] : '1';
-
-	// Slideshow : The video needs to be launch automatically in
-	// slideshow mode. The refresh of the page is set to the
-	// duration of the video.
-	$autoplay = isset($conf['vjs_conf']['autoplay']) ? strbool($conf['vjs_conf']['autoplay']) : false;
-	if ( $page['slideshow'] )
-	{
-		$refresh = 20; // TODO move to separate DB to actualy get this details information
-		$autoplay = true;
-		$loop = false;
-	}
-
-	// Assing the CSS file according to the skin
-	$available_skins = array(
-		'vjs-default-skin' => 'video-js.min.css',
-		'vjs-redtube-skin' => 'redtube-skin.css',
-	);
-	$skincss = $available_skins[$skin];
-
-	// Guess the poster extension
-	$file_wo_ext = pathinfo($picture['current']['path']);
-	$file_dir = dirname($picture['current']['path']);
-	$poster = embellish_url( $picture['current']['src_image']->get_path() );
-	//print $poster;
-
-	// Try to find multiple video source
-	$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
-	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
-	// Add the current file in array
-	$videos[] = array(
-				'src' => embellish_url(get_gallery_home_url() . $picture['current']['element_url']),
-				'ext' => $extension,
-			);
-	foreach ($files_ext as $file_ext) {
-		$file = $file_dir."/pwg_representative/".$file_wo_ext['filename'].".".$file_ext;
-		if (file_exists($file)){
-			array_push($videos,
-				   array (
-					'src' => embellish_url(
-						      get_gallery_home_url() . $file_dir . "/pwg_representative/".$file_wo_ext['filename'].".".$file_ext
-						     ),
-					'ext' => vjs_get_mimetype_from_ext($file_ext)
-					)
-				  );
-		}
-	}
-	//print_r($videos);
-	// Sort array to have MP4 first in the source list for iOS support
-	foreach ($videos as $key => $row) {
-		$src[$key] = $row['src'];
-		$ext[$key] = $row['ext'];
-	}
-	array_multisort($src, SORT_ASC, $ext, SORT_ASC, $videos);
-	//print_r($videos);
-
-	/* Thumbnail videojs plugin */
-	$thumbnails_plugin = isset($conf['vjs_conf']['plugins']['thumbnails']) ? strbool($conf['vjs_conf']['plugins']['thumbnails']) : false;
-	$thumbnails = array();
-	if ($thumbnails_plugin)
-	{
-		$filematch = $file_dir."/pwg_representative/".$file_wo_ext['filename']."-th_*";
-		$matches = glob($filematch);
-
-		if ( is_array ( $matches ) ) {
-			foreach ( $matches as $filename) {
-			     $ext = explode("-th_", $filename);
-			     $second = explode(".", $ext[1]);
-			     // ./galleries/videos/pwg_representative/trailer_480p-th_0.jpg
-			     //echo "$filename second " . $second[0]. "\n";
-			     $thumbnails[] = array(
-						   'second' => $second[0],
-						   'source' => embellish_url(get_gallery_home_url() . $filename)
-						);
-			}
-		}
-		//$thumbnails = array( array('second' => 0, 'source' => $poster), array('second' => 5, 'source' => $poster));
-		//print_r($thumbnails);
-	}
-
-	/* ZoomRotate videojs plugin */
-	$zoomrotate_plugin = isset($conf['vjs_conf']['plugins']['zoomrotate']) ? strbool($conf['vjs_conf']['plugins']['zoomrotate']) : false;
-	$zoomrotate = array();
-	if ($zoomrotate_plugin)
-	{
-		// TODO Disable if playing on iOS, as it read the metadata itself
-		if ($picture['current']['rotation'] != null)
-		{
-			include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
-			include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
-			// rotation is $picture['current']['rotation']
-			// zoom is witdh / height
-			$rotate = pwg_image::get_rotation_angle_from_code($picture['current']['rotation']);
-			$zoomrotate = array(
-						'rotate'	=> $rotate,
-						'zoom'		=> round($width / $height, 1, PHP_ROUND_HALF_DOWN)
-					);
-			// Change the video player size
-			$tmp_width = $width;
-			$tmp_height = $height;
-			$width = $tmp_height;
-			$height = $tmp_width;
-		}
-	}
-
-	/* Watermark videojs plugin */
-	$watermark_plugin = isset($conf['vjs_conf']['plugins']['watermark']) ? strbool($conf['vjs_conf']['plugins']['watermark']) : false;
-	$watermark = array();
-	if ($watermark_plugin)
-	{
-		$derivatives = unserialize($conf['derivatives']);
-		if (is_array($derivatives) and !empty($derivatives) and $derivatives['w']->file != null)
-		{
-			$watermark = array(
-						'file'		=> embellish_url(get_gallery_home_url() . $derivatives['w']->file),
-						'xpos'		=> $derivatives['w']->xpos,
-						'ypos'		=> $derivatives['w']->ypos,
-						'xrepeat'	=> $derivatives['w']->xrepeat,
-						'opacity'	=> $derivatives['w']->opacity,
-					);
-		}
-	}
-
-	// Generate HTML5 tags
-	// Why the data-setup attribute does not work if only one video
-	$options = "";
-	if ($controls)
-	{
-		$options .= "controls";
-	}
-	if ($autoplay)
-	{
-		$options .= " autoplay ";
-	}
-	if ($loop)
-	{
-		$options .= " loop ";
-	}
-	$options .= ' preload="'. $preload .'"';
-
-	// Select the template
-	$template->set_filenames(
-		array('vjs_content' => dirname(__FILE__)."/template/vjs-player.tpl")
-	);
-
-	// Assign the template variables
-	// We use here the piwigo's get_gallery_home_url function to build
-	// the full URL as suggested by videojs for flash fallback compatibility
-	$template->assign(
-		array(
-			'VIDEOJS_POSTER_URL'	=> embellish_url(get_gallery_home_url().$poster),
-			'VIDEOJS_PATH'		=> embellish_url(get_absolute_root_url().VIDEOJS_PATH),
-			'WIDTH'				=> $width,
-			'RATIO'				=> round($height/$width*100, 2),
-			'OPTIONS'			=> $options,
-			'VIDEOJS_SKIN'		=> $skin,
-			'VIDEOJS_SKINCSS'	=> $skincss,
-			'VIDEOJS_CUSTOMCSS'	=> $customcss,
-			'volume'		=> $volume,
-			'thumbnails'	=> $thumbnails,
-			'zoomrotate'	=> $zoomrotate,
-			'watermark'		=> $watermark,
-			'videos'		=> $videos,
-		)
-	);
-
-	// Return the rendered html
-	$vjs_content = $template->parse('vjs_content', true);
-	return $vjs_content;
+  load_language('plugin.lang', ADMINTOOLS_PATH);
 }
 
-function vjs_get_mimetype_icon($location, $element_info)
+function admintools_admin_link($menu) 
 {
-	$location= 'plugins/'
-		. basename(dirname(__FILE__))
-		. '/mimetypes/' . $element_info . '.png';
-	return $location;
-}
+  $menu[] = array(
+    'NAME' => 'Admin Tools',
+    'URL' => ADMINTOOLS_ADMIN,
+    );
 
-function strbool($value)
-{
-	return $value ? true : false;
+  return $menu;
 }
-
-function vjs_get_poster_file($file_list)
-{
-	foreach ($file_list as $file=>$url) {
-		//print $file."=>".$url."<br/>\n";
-		if (file_exists($file)) return $url;
-	}
-	return '';
-}
-
-function vjs_get_mimetype_from_ext($file_ext)
-{
-	$vjs_types = array(
-			   'ogg'   => 'video/ogg',
-			   'ogv'   => 'video/ogg',
-			   'mp4'   => 'video/mp4',
-			   'm4v'   => 'video/mp4',
-			   'webm'  => 'video/webm',
-			   'webmv' => 'video/webm'
-			);
-	return $vjs_types[strtolower($file_ext)];
-}
-
-function vjs_valid_extension($file_ext)
-{
-	$vjs_types = array(
-			   'ogg'   => 'video/ogg',
-			   'ogv'   => 'video/ogg',
-			   'mp4'   => 'video/mp4',
-			   'm4v'   => 'video/mp4',
-			   'webm'  => 'video/webm',
-			   'webmv' => 'video/webm'
-			);
-	return array_key_exists(strtolower($file_ext), $vjs_types) ? true : false;
-}
-
-function vjs_dbSet($fields, $data = array())
-{
-    if (!$data) $data = &$_POST;
-    $set='';
-    foreach ($fields as $field)
-    {
-        if (isset($data[$field]))
-        {
-            $set.="`$field`='".pwg_db_real_escape_string($data[$field])."', ";
-        }
-    }
-    return substr($set, 0, -2);
-}
-
-?>
