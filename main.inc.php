@@ -223,7 +223,8 @@ function vjs_render_media($content, $picture)
 	// Assing the CSS file according to the skin
 	$available_skins = array(
 		'vjs-default-skin' => 'video-js.min.css',
-		'vjs-redtube-skin' => 'redtube-skin.css',
+		'vjs-bluebox-skin' => 'bluebox-skin.css',
+		'vjs-redtube-skin' => 'redtube-skin.css',		
 	);
 	$skincss = $available_skins[$skin];
 
