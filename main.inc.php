@@ -41,10 +41,10 @@ add_event_handler('get_mimetype_location', 'vjs_get_mimetype_icon', 60, 2);
 //add_event_handler('picture_pictures_data', 'vjs_pictures_data');
 
 // Hook to sync geotag metadata on upload or sync
-//add_event_handler('format_exif_data', 'vjs_format_exif_data', EVENT_HANDLER_PRIORITY_NEUTRAL, 3);
+add_event_handler('format_exif_data', 'vjs_format_exif_data', EVENT_HANDLER_PRIORITY_NEUTRAL, 3);
 
 // Hook to display metadata on picture page
-//add_event_handler('get_element_metadata_available', 'vjs_metadata_available');
+add_event_handler('get_element_metadata_available', 'vjs_metadata_available');
 
 // If admin do the init
 if (defined('IN_ADMIN')) {
@@ -53,43 +53,83 @@ if (defined('IN_ADMIN')) {
 
 function vjs_format_exif_data($exif, $filename, $map)
 {
-	//print $filename."\n";
-	//print_r($exif)."\n<br/>\n";
+	global $conf, $picture;
 
-	// If not a video, we skip
-	if (isset($exif['MimeType']) and stristr($exif['MimeType'], "image"))
+	//print_r( $picture['current']);
+	// do nothing if the current picture is actually an image !
+	if ( (array_key_exists('src_image', @$picture['current'])
+		&& @$picture['current']['src_image']->is_original()) )
+	{
+		return $exif;
+	}
+
+	// In case it is not an image but not a supported video file by the plugin
+	if (vjs_valid_extension(get_extension($picture['current']['path'])) === false)
 	{
 		return $exif;
 	}
 
 	// If video, let's check
-	include_once(dirname(__FILE__).'/include/mediainfo.php');
+	//print $filename."\n";
+	//print_r($exif)."\n<br/>\n";
+	//print_r($map)."\n<br/>\n";
+	$filename=$picture['current']['path'];
+	// TODO read from DB, instead of reading live MediaInfo result
+	// Generate default value
+	$sync_options = array(
+	    'mediainfo'         => 'mediainfo',
+	    'ffmpeg'            => 'ffmpeg',
+	    'metadata'          => true,
+	    'poster'            => true,
+	    'postersec'         => 4,
+	    'output'            => 'jpg',
+	    'posteroverlay'     => false,
+	    'posteroverwrite'   => true,
+	    'thumb'             => false,
+	    'thumbsec'          => 5,
+	    'thumbsize'         => "120x68",
+	    'simulate'          => true,
+	    'cat_id'            => 0,
+	    'subcats_included'  => true,
+	);
+	// Override default value from configuration
+	if (isset($conf['vjs_sync']))
+	{
+	    $sync_options = unserialize($conf['vjs_sync']);
+	}
+	// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
+	require_once(dirname(__FILE__).'/include/function_dependencies.php');
+	require_once(dirname(__FILE__).'/include/mediainfo.php');
+	//print_r($general);
 	if (isset($exif))
 	{
-		$exif['Make'] = "VideoJS";
 		// replace some value by human readable string
+		if (isset($general->FileSize_String))
+		{
+			$exif['filesize'] = (string)$general->FileSize_String;
+		}
 		if (isset($general->Duration_String))
 		{
 			$exif['duration'] = (string)$general->Duration_String;
-			array_push($map, 'duration');
 		}
 		if (isset($video->BitRate_String))
 		{
 			$exif['bitrate'] = (string)$video->BitRate_String;
-			array_push($map, 'bitrate');
 		}
 		if (isset($audio->SamplingRate_String))
 		{
 			$exif['sampling_rate'] = (string)$audio->SamplingRate_String;
-			array_push($map, 'sampling_rate');
 		}
 		ksort($exif);
 	}
+	//print_r($exif)."\n<br/>\n";
 	return $exif;
 }
 
-function vjs_metadata_available($show_metadata)
+function vjs_metadata_available($show_metadata, $element_path)
 {
+	//print "VideoJS metadata_available\n";
+	//print_r($element_path);
 	return 1;
 }
 
