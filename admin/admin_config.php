@@ -43,6 +43,18 @@ $available_preload = array(
 	'none' => 'None',
 );
 
+// Available language value from the directory to be dynamic
+$available_languages = array('en');
+if ($handle = opendir(dirname(__FILE__).'/../video-js/lang/')) {
+	while (false !== ($entry = readdir($handle))) {
+		if ($entry == '.' || $entry == '..') {
+			continue;
+		}
+		array_push($available_languages, preg_replace('/.js/', '', $entry));
+	}
+	closedir($handle);
+}
+
 // Available width value
 // http://en.wikipedia.org/wiki/Display_resolution
 $available_height = array(
@@ -66,6 +78,7 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 		'autoplay'      => get_boolean($_POST['vjs_autoplay']),
 		'loop'          => get_boolean($_POST['vjs_loop']),
 		'volume'        => $_POST['vjs_volume'],
+		'language'      => $_POST['vjs_language'],
 		'upscale'       => get_boolean($_POST['vjs_upscale']),
 		'plugins'       => array(
 							'zoomrotate'    => get_boolean($_POST['vjs_zoomrotate']),
@@ -101,6 +114,7 @@ $template->assign(
 	array(
             'AVAILABLE_SKINS'       => $available_skins,
             'AVAILABLE_PRELOAD'     => $available_preload,
+            'AVAILABLE_LANGUAGES'   => $available_languages,
             'AVAILABLE_HEIGHT'      => $available_height,
             'CUSTOM_CSS'            => htmlspecialchars($customcss),
             'NB_VIDEOS'             => $nb_videos,

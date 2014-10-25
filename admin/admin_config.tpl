@@ -75,6 +75,13 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 				<!-- <label><input type="text" name="vjs_volume" value="1" placeholder="1"/></label> -->
 				<br/><small>{'VOLUME_DESC'|@translate}</small>
 			</li>
+			<!-- <li>
+				<label><span class="property">{'LANGUAGE'|@translate} : </span></label>
+				<select name="vjs_language">
+					{html_options options=$AVAILABLE_LANGUAGES selected=$language}
+				</select>
+				<br/><small>{'LANGUAGE_DESC'|@translate}</small>
+			</li> -->
 		</ul>
 	</fieldset>
 	<fieldset>
