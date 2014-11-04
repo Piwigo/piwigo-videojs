@@ -22,20 +22,20 @@ $conf['vjs_conf'] = unserialize($conf['vjs_conf']);
 // Register the allowed extentions to the global conf in order
 // to sync them with other contents
 $vjs_extensions = array(
-    'ogg',
-    'ogv',
-    'mp4',
-    'm4v',
-    'webm',
-    'webmv',
+	'ogg',
+	'ogv',
+	'mp4',
+	'm4v',
+	'webm',
+	'webmv',
 );
 $conf['file_ext'] = array_merge ($conf['file_ext'], $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 
 // Hook on to an event to display videos as standard images
-add_event_handler('render_element_content', 'vjs_render_media', 40, 2);
+add_event_handler('render_element_content', 'vjs_render_media', EVENT_HANDLER_PRIORITY_NEUTRAL, 2);
 
 // Hook to display a fallback thumbnail if not defined
-add_event_handler('get_mimetype_location', 'vjs_get_mimetype_icon', 60, 2);
+add_event_handler('get_mimetype_location', 'vjs_get_mimetype_icon', EVENT_HANDLER_PRIORITY_NEUTRAL, 2);
 
 // Hook to change the picture data to template
 //add_event_handler('picture_pictures_data', 'vjs_pictures_data');
@@ -77,20 +77,20 @@ function vjs_format_exif_data($exif, $filename, $map)
 	// TODO read from DB, instead of reading live MediaInfo result
 	// Generate default value
 	$sync_options = array(
-	    'mediainfo'         => 'mediainfo',
-	    'ffmpeg'            => 'ffmpeg',
-	    'metadata'          => true,
-	    'poster'            => true,
-	    'postersec'         => 4,
-	    'output'            => 'jpg',
-	    'posteroverlay'     => false,
-	    'posteroverwrite'   => true,
-	    'thumb'             => false,
-	    'thumbsec'          => 5,
-	    'thumbsize'         => "120x68",
-	    'simulate'          => true,
-	    'cat_id'            => 0,
-	    'subcats_included'  => true,
+		'mediainfo'        => 'mediainfo',
+		'ffmpeg'           => 'ffmpeg',
+		'metadata'         => true,
+		'poster'           => true,
+		'postersec'        => 4,
+		'output'           => 'jpg',
+		'posteroverlay'    => false,
+		'posteroverwrite'  => true,
+		'thumb'            => false,
+		'thumbsec'         => 5,
+		'thumbsize'        => "120x68",
+		'simulate'         => true,
+		'cat_id'           => 0,
+		'subcats_included' => true,
 	);
 	// Override default value from configuration
 	if (isset($conf['vjs_sync']))
@@ -208,6 +208,7 @@ function vjs_render_media($content, $picture)
 	$loop = isset($conf['vjs_conf']['loop']) ? strbool($conf['vjs_conf']['loop']) : false;
 	$controls = isset($conf['vjs_conf']['controls']) ? strbool($conf['vjs_conf']['controls']) : false;
 	$volume = isset($conf['vjs_conf']['volume']) ? $conf['vjs_conf']['volume'] : '1';
+	$language = isset($conf['vjs_conf']['language']) ? $conf['vjs_conf']['language'] : 'en';
 
 	// Slideshow : The video needs to be launch automatically in
 	// slideshow mode. The refresh of the page is set to the
@@ -224,7 +225,7 @@ function vjs_render_media($content, $picture)
 	$available_skins = array(
 		'vjs-default-skin' => 'video-js.min.css',
 		'vjs-bluebox-skin' => 'bluebox-skin.css',
-		'vjs-redtube-skin' => 'redtube-skin.css',		
+		'vjs-redtube-skin' => 'redtube-skin.css',
 	);
 	$skincss = $available_skins[$skin];
 
@@ -279,8 +280,9 @@ function vjs_render_media($content, $picture)
 			     // ./galleries/videos/pwg_representative/trailer_480p-th_0.jpg
 			     //echo "$filename second " . $second[0]. "\n";
 			     $thumbnails[] = array(
-						   'second' => $second[0],
-						   'source' => embellish_url(get_gallery_home_url() . $filename)
+							'second' => $second[0],
+							'source' => embellish_url(get_gallery_home_url() . $filename),
+							'rotate' => $rotate,
 						);
 			}
 		}
@@ -302,8 +304,8 @@ function vjs_render_media($content, $picture)
 			// zoom is witdh / height
 			$rotate = pwg_image::get_rotation_angle_from_code($picture['current']['rotation']);
 			$zoomrotate = array(
-						'rotate'	=> $rotate,
-						'zoom'		=> round($width / $height, 1, PHP_ROUND_HALF_DOWN)
+						'rotate' => $rotate,
+						'zoom'   => round($width / $height, 1, PHP_ROUND_HALF_DOWN)
 					);
 			// Change the video player size
 			$tmp_width = $width;
@@ -322,11 +324,11 @@ function vjs_render_media($content, $picture)
 		if (is_array($derivatives) and !empty($derivatives) and $derivatives['w']->file != null)
 		{
 			$watermark = array(
-						'file'		=> embellish_url(get_gallery_home_url() . $derivatives['w']->file),
-						'xpos'		=> $derivatives['w']->xpos,
-						'ypos'		=> $derivatives['w']->ypos,
-						'xrepeat'	=> $derivatives['w']->xrepeat,
-						'opacity'	=> $derivatives['w']->opacity,
+						'file'    => embellish_url(get_gallery_home_url() . $derivatives['w']->file),
+						'xpos'    => $derivatives['w']->xpos,
+						'ypos'    => $derivatives['w']->ypos,
+						'xrepeat' => $derivatives['w']->xrepeat,
+						'opacity' => $derivatives['w']->opacity,
 					);
 		}
 	}
@@ -358,19 +360,20 @@ function vjs_render_media($content, $picture)
 	// the full URL as suggested by videojs for flash fallback compatibility
 	$template->assign(
 		array(
-			'VIDEOJS_POSTER_URL'	=> embellish_url(get_gallery_home_url().$poster),
-			'VIDEOJS_PATH'		=> embellish_url(get_absolute_root_url().VIDEOJS_PATH),
-			'WIDTH'				=> $width,
-			'RATIO'				=> round($height/$width*100, 2),
-			'OPTIONS'			=> $options,
-			'VIDEOJS_SKIN'		=> $skin,
-			'VIDEOJS_SKINCSS'	=> $skincss,
-			'VIDEOJS_CUSTOMCSS'	=> $customcss,
-			'volume'		=> $volume,
-			'thumbnails'	=> $thumbnails,
-			'zoomrotate'	=> $zoomrotate,
-			'watermark'		=> $watermark,
-			'videos'		=> $videos,
+			'VIDEOJS_POSTER_URL' => embellish_url(get_gallery_home_url().$poster),
+			'VIDEOJS_PATH'       => embellish_url(get_absolute_root_url().VIDEOJS_PATH),
+			'WIDTH'              => $width,
+			'RATIO'              => round($height/$width*100, 2),
+			'OPTIONS'            => $options,
+			'VIDEOJS_SKIN'       => $skin,
+			'VIDEOJS_SKINCSS'    => $skincss,
+			'VIDEOJS_CUSTOMCSS'  => $customcss,
+			'volume'             => $volume,
+			'subtitles'          => $subtitles,
+			'thumbnails'         => $thumbnails,
+			'zoomrotate'         => $zoomrotate,
+			'watermark'          => $watermark,
+			'videos'             => $videos,
 		)
 	);
 
@@ -381,9 +384,12 @@ function vjs_render_media($content, $picture)
 
 function vjs_get_mimetype_icon($location, $element_info)
 {
-	$location= 'plugins/'
-		. basename(dirname(__FILE__))
-		. '/mimetypes/' . $element_info . '.png';
+	if (in_array($element_info, array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv')))
+	{
+		$location = 'plugins/'
+			. basename(dirname(__FILE__))
+			. '/mimetypes/' . $element_info . '.png';
+	}
 	return $location;
 }
 
@@ -404,12 +410,12 @@ function vjs_get_poster_file($file_list)
 function vjs_get_mimetype_from_ext($file_ext)
 {
 	$vjs_types = array(
-			   'ogg'   => 'video/ogg',
-			   'ogv'   => 'video/ogg',
-			   'mp4'   => 'video/mp4',
-			   'm4v'   => 'video/mp4',
-			   'webm'  => 'video/webm',
-			   'webmv' => 'video/webm'
+			'ogg'   => 'video/ogg',
+			'ogv'   => 'video/ogg',
+			'mp4'   => 'video/mp4',
+			'm4v'   => 'video/mp4',
+			'webm'  => 'video/webm',
+			'webmv' => 'video/webm'
 			);
 	return $vjs_types[strtolower($file_ext)];
 }
@@ -417,12 +423,12 @@ function vjs_get_mimetype_from_ext($file_ext)
 function vjs_valid_extension($file_ext)
 {
 	$vjs_types = array(
-			   'ogg'   => 'video/ogg',
-			   'ogv'   => 'video/ogg',
-			   'mp4'   => 'video/mp4',
-			   'm4v'   => 'video/mp4',
-			   'webm'  => 'video/webm',
-			   'webmv' => 'video/webm'
+			'ogg'   => 'video/ogg',
+			'ogv'   => 'video/ogg',
+			'mp4'   => 'video/mp4',
+			'm4v'   => 'video/mp4',
+			'webm'  => 'video/webm',
+			'webmv' => 'video/webm'
 			);
 	return array_key_exists(strtolower($file_ext), $vjs_types) ? true : false;
 }
