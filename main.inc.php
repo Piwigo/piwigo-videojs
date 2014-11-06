@@ -57,7 +57,10 @@ function vjs_format_exif_data($exif, $filename, $map)
 
 	//print_r( $picture['current']);
 	// do nothing if the current picture is actually an image !
-	if ( (array_key_exists('src_image', @$picture['current'])
+	if (!isset($picture['current']))
+		return $exif;
+
+	if ((array_key_exists('src_image', @$picture['current'])
 		&& @$picture['current']['src_image']->is_original()) )
 	{
 		return $exif;
