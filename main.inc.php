@@ -120,6 +120,10 @@ function vjs_format_exif_data($exif, $filename, $map)
 		{
 			$exif['sampling_rate'] = (string)$audio->SamplingRate_String;
 		}
+		if (isset($exif['width']) and isset($exif['height']))
+		{
+			$exif['resolution'] = $exif['width'] ."x". $exif['height'];
+		}
 		ksort($exif);
 	}
 	//print_r($exif)."\n<br/>\n";
@@ -264,6 +268,12 @@ function vjs_render_media($content, $picture)
 	}
 	array_multisort($src, SORT_ASC, $ext, SORT_ASC, $videos);
 	//print_r($videos);
+
+	/* Try to find WebVTT */
+	$file = $file_dir."/pwg_representative/".$file_wo_ext['filename'].".vtt";
+	$subtitles = null;
+	if (file_exists($file))
+		$subtitles ='<track kind="subtitles" src="'. embellish_url( get_gallery_home_url() . $file) .'" srclang="'. $language .'" label="English"></track>';
 
 	/* Thumbnail videojs plugin */
 	$thumbnails_plugin = isset($conf['vjs_conf']['plugins']['thumbnails']) ? strbool($conf['vjs_conf']['plugins']['thumbnails']) : false;
