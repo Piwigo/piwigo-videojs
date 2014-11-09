@@ -5,7 +5,7 @@ $lang['PRELOAD'] = 'Preload';
 $lang['PRELOAD_DESC'] = 'The preload attribute informs the browser whether or not the video data should begin downloading as soon as the video tag is loaded.';
 $lang['CONTROLS'] = 'Controls';
 $lang['CONTROLS_DESC'] = 'The controls option sets whether or not the player has controls that the user can interact with.';
-$lang['AUTOPLAY'] = 'Autoplay';
+$lang['AUTOPLAY'] = 'Autoplay 2';
 $lang['AUTOPLAY_DESC'] = 'If autoplay is true, the video will start playing as soon as page is loaded (without any interaction from the user). NOT SUPPORTED BY APPLE iOS DEVICES.';
 $lang['LOOP'] = 'Loop';
 $lang['LOOP_DESC'] = 'The loop attribute causes the video to start over as soon as it ends.';
@@ -46,4 +46,3 @@ $lang['SYNC_POSTEROVERLAY_DESC'] = 'Applique un calque à la création de l\'aff
 $lang['SYNC_POSTEROVERWRITE'] = 'Remplace les affiches existantes';
 $lang['SYNC_POSTEROVERWRITE_DESC'] = 'Remplace les affiches existantes par les nouvelles. Si décoché cela sera actif uniquement pour les prochaines vidéos ajoutées. ';
 $lang['SYNC_POSTER_DESC'] = 'Crée une affiche pour la vidéo à la position spécifiée. ';
-?>
