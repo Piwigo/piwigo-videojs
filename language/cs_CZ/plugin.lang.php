@@ -37,4 +37,11 @@ $lang['SYNC_THUMBSEC'] = 'Vytrvořit náhled každou sekundu';
 $lang['SYNC_THUMBSEC_DESC'] = 'Vytvořit náhled každých x sekund.';
 $lang['SYNC_THUMBSIZE'] = 'velikost náhledu';
 $lang['SYNC_WARNINGS'] = 'Varování';
-?>
+$lang['SYNC_OUTPUT_DESC'] = 'Vyberte výstupní formát pro náhledy ';
+$lang['SYNC_POSTER'] = 'Vytvořit náhled v určeném čase (sekundy)';
+$lang['SYNC_POSTEROVERWRITE'] = 'Přepsat existující náhledy';
+$lang['SYNC_POSTEROVERWRITE_DESC'] = 'Přepsat existující náhledy novými. Pokud je nezatrženo, náhledy by měly být vytvořeny pouze pro nově přidaná videa.';
+$lang['SYNC_POSTER_DESC'] = 'Vytvořit náhled videa v určeném čase.';
+$lang['SYNC_THUMBSIZE_DESC'] = 'Velikost v pixelech, doporučuje se vybrat malé rozměry, výchozí nastavení by mělo vyhovovat, Youtube používá 190x68';
+$lang['VOLUME'] = 'Hlasitost';
+$lang['VOLUME_DESC'] = 'Ovladač hlasitosti nastavuje hlasitost, 0 je vypnuto, 1 plně zapnuto, 0,5 je poloviční hlasitost.';
