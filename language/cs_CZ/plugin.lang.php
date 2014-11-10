@@ -45,3 +45,4 @@ $lang['SYNC_POSTER_DESC'] = 'Vytvořit náhled videa v určeném čase.';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Velikost v pixelech, doporučuje se vybrat malé rozměry, výchozí nastavení by mělo vyhovovat, Youtube používá 190x68';
 $lang['VOLUME'] = 'Hlasitost';
 $lang['VOLUME_DESC'] = 'Ovladač hlasitosti nastavuje hlasitost, 0 je vypnuto, 1 plně zapnuto, 0,5 je poloviční hlasitost.';
+$lang['SYNC_POSTEROVERLAY_DESC'] = 'Přidá filmový efekt do vytvářených náhledů';
