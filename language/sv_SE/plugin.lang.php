@@ -53,4 +53,13 @@ $lang['SYNC_THUMBSEC_DESC'] = 'Skapa en miniatyrbild varje x sekunder';
 $lang['SYNC_THUMBSIZE'] = 'Miniatyrbildens storlek';
 $lang['SYNC_WARNINGS'] = 'Varningar';
 $lang['VOLUME'] = 'Volym';
-?>
+$lang['SYNC_POSTEROVERLAY_DESC'] = 'Lägg till ett lager över affischen';
+$lang['SYNC_POSTER'] = 'Skapar en affisch från filmen vid andra positionen';
+$lang['SYNC_POSTEROVERWRITE'] = 'Skriv över befintliga affischer';
+$lang['SYNC_POSTEROVERWRITE_DESC'] = 'Skriv över befintliga miniatyrer med nya. Om inte markerad så skapas bara miniatyrer för nyligen tillagda filmer.';
+$lang['SYNC_POSTER_DESC'] = 'Skapar en affisch från filmen vid angiven position';
+$lang['VOLUME_DESC'] = 'Volymalternativet anger ljudnivån. 0 är avstängd, 1.0 är max.';
+$lang['SYNC_METADATA_DESC'] = 'Skriver över informationen i databasen med metadata från filmen';
+$lang['SYNC_OUTPUT_DESC'] = 'Välj utdataformat för affischen och miniatyrbilden';
+$lang['SYNC_OUTPUT'] = 'Utdataformat';
+$lang['SYNC_THUMBSIZE_DESC'] = 'Storlek i bildpunkter. Håll den liten, default är ok. Youtube använder 190x68';
