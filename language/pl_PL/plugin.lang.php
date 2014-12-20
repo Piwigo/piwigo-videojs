@@ -59,4 +59,7 @@ $lang['SYNC_THUMBSIZE_DESC'] = 'Rozmiar w pikselach, pozostaw małe, domyślne s
 $lang['SYNC_WARNINGS'] = 'Ostrzeżenia';
 $lang['VOLUME'] = 'Głośność';
 $lang['VOLUME_DESC'] = 'Opcja głośność ustawia poziom głośności. O to wyłączona (wyciszona) 1.0 to maksymalna głośność, 0.5 to połowa';
-?>
+$lang['SYNC_OUTPUT_DESC'] = 'Zaznacz wyjściowy format dla plakatu i miniatury';
+$lang['SYNC_POSTER'] = 'Stwórz plakat z podanej pozycji w sekundach';
+$lang['SYNC_POSTEROVERLAY_DESC'] = 'Dodaj nakładkę na plakacie';
+$lang['SYNC_POSTER_DESC'] = 'Stwórz plakat wideo w danej pozycji';
