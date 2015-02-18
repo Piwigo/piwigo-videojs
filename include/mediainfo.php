@@ -35,7 +35,7 @@ $xml = new SimpleXMLElement($output);
 //$xml = simplexml_load_file("/tmp/mediainfo.xml");
 //print_r($xml);
 } catch (Exception $e) {
-	die("Mediainfo error reading file<br/>Is MediaInfo install?<br/>Is MediaInfo in path?<br/>Is the video accessible & readable<br/>Try to run the command manually.<br/>". $sync_options['mediainfo'] ." --Full --Output=XML --Language=raw '". $filename."'");
+	die("Mediainfo error reading file. Is MediaInfo install? Is MediaInfo in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['mediainfo'] ." --Full --Output=XML --Language=raw '". $filename ."'");
 }
 
 if (!isset($xml->File))
@@ -43,8 +43,9 @@ if (!isset($xml->File))
 	$exif['error'] = "Mediainfo error reading file: <br/>'". $filename."'";
 }
 /*
-[version] => 0.7.58
-[version] => 0.7.64
+[version] => 0.7.58 Initial usage of MediaInfo
+[version] => 0.7.64 Change XML Output
+[version] => 0.7.72 [mediainfo:bugs] #886 XML Output broken / https://sourceforge.net/p/mediainfo/bugs/886/
 */
 $xml["version"] = "0.7.64";
 if (isset($xml["version"]))
@@ -52,6 +53,10 @@ if (isset($xml["version"]))
 	if (version_compare($xml["version"], '0.7.64') < 0)
 	{
 		$exif['error'] = "Please use at least MediaInfo version 0.7.64 or higher, not " . $xml["version"];
+	}
+	if (version_compare($xml["version"], '0.7.72') == 0)
+	{
+		$exif['error'] = 'Please do not use MediaInfo version 0.7.72 due to Important known bug: <a href="https://sourceforge.net/p/mediainfo/bugs/886/">XML output is broken</a><br/>Upgrade or downgrade';
 	}
 }
 
