@@ -11,16 +11,18 @@ $lang['LOOP'] = 'Loop';
 $lang['LOOP_DESC'] = 'The loop attribute causes the video to start over as soon as it ends.';
 $lang['VOLUME'] = 'Volume';
 $lang['VOLUME_DESC'] = 'The volume option sets the volume level. 0 is off (muted), 1.0 is all the way up, 0.5 is half way.';
+$lang['LANGUAGE'] = 'Language';
+$lang['LANGUAGE_DESC'] = 'Select the player language.';
 
 $lang['PLUGIN'] = 'Plugin settings';
 $lang['SKIN'] = 'Skin';
 $lang['SKIN_DESC'] = 'Select the style you want to apply to the player or <a href="http://designer.videojs.com/" target="_blank">create your own skin</a>.';
 $lang['CUSTOMCSS'] = 'Custom CSS';
 $lang['CUSTOMCSS_DESC'] = 'Custom CSS to copy paste from the <a href="http://www.videojs.com/" target="_blank">VideoJS website</a>.';
-$lang['WIDTH'] = 'Max Width';
-$lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video, if the video size is higher the width becomes the max width.';
+$lang['HEIGHT'] = 'Max Height';
+$lang['HEIGHT_DESC'] = 'The max height attribute sets the maximum display height of the video. If the video height is bigger than max height, it will downscale the video size to max height.';
 $lang['UPSCALE'] = 'Upscale';
-$lang['UPSCALE_DESC'] = 'If the video size is smaller than max width, it will upscale the video size to max width.';
+$lang['UPSCALE_DESC'] = 'If the video height is smaller than max height, it will upscale the video size to max height.';
 
 $lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
 $lang['ZOOMROTATE'] = 'ZoomRotate';
