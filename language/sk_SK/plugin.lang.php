@@ -24,8 +24,6 @@ $lang['PRELOAD_DESC'] = 'Atribút prednačítania informuje prehliadač, či sa 
 $lang['PRELOAD'] = 'Prednačítanie';
 $lang['LOOP_DESC'] = 'Zaisťuje automatické opakovanie videa v slučke';
 $lang['CONTROLS_DESC'] = 'Voľba kontrol nastavuje, či má alebo nemá prehrávač kontrolné prvky, ktoré môže užívateľ používať';
-$lang['WIDTH_DESC'] = 'Nastavenie max. šírky zobrazovaného videa. Ak je veľkosť videa väčšia, použije sa nastavená max. šírka.
-';
 $lang['SKIN_DESC'] = 'Označte štýl, ktorý chcete použiť pri prehrávači.
 Vyberte štýl, ktorý chcete použiť na prehrávač alebo <a href="http://designer.videojs.com/" target="_blank">vytvorte svoj vlastný skin</a>.';
 $lang['CUSTOMCSS_DESC'] = 'Vlastné CSS sem skopírujte z <a href="http://www.videojs.com/" target="_blank">VideoJS website</a>.';
@@ -33,7 +31,6 @@ $lang['CUSTOMCSS'] = 'Vlastné CSS';
 $lang['AUTOPLAY_DESC'] = 'Ak je nastavené automatické prehrávanie, video sa spustí, akonáhle je stránka načítaná (bez zásahu užívateľa). Nie sú podporované zariadenia Apple iOS.';
 $lang['CONTROLS'] = 'Ovládanie';
 $lang['HTML5'] = 'HTML5 nastavenie video tagu';
-$lang['WIDTH'] = 'Maximálna šírka';
 $lang['SKIN'] = 'Skin';
 $lang['PLUGIN'] = 'Nastavenie doplnku';
 $lang['LOOP'] = 'Slučka';
@@ -65,4 +62,7 @@ $lang['SYNC_ERRORS'] = 'Chyby';
 $lang['SYNC_METADATA_DESC'] = 'Prepíše informácie v databáze metadátami z videa';
 $lang['SYNC_INFOS'] = 'Detailné informácie';
 $lang['SYNC_OUTPUT'] = 'Výstupný formát';
-?>
+$lang['HEIGHT_DESC'] = 'Maximálna výška určuje maximálnu výšku zobrazenie videa. V prípade, že výška videa je väčšia ako maximálna výška, bude video zmenšené na maximálnu výšku.';
+$lang['LANGUAGE_DESC'] = 'Zvoľte jazyk prehrávača.';
+$lang['LANGUAGE'] = 'Jazyk';
+$lang['HEIGHT'] = 'Maximálna výška';
