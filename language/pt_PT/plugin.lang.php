@@ -34,8 +34,6 @@ $lang['PRELOAD'] = 'Pré-carregar';
 $lang['PRELOAD_DESC'] = 'O atributo de pré-carga informa o navegador se os dados de vídeo devem começar ou não a descarregar assim que a etiqueta do vídeo é carregada.';
 $lang['SKIN'] = 'Pele';
 $lang['SKIN_DESC'] = 'Selecione o modelo que deseja aplicar ao jogador';
-$lang['WIDTH'] = 'Largura máxima';
-$lang['WIDTH_DESC'] = 'O atributo largura máxima define a largura de exibição do video, se for superior ao monitor, é divida por dois.';
 $lang['THUMBNAILS'] = 'Miniaturas';
 $lang['THUMBNAILS_DESC'] = 'Mostrar as miniaturas sobre a barra de progresso';
 $lang['UPSCALE'] = 'Aumentar tamanho';
@@ -63,4 +61,7 @@ $lang['SYNC_THUMBSEC_DESC'] = 'Criar uma miniatura cada X segundos';
 $lang['SYNC_THUMBSIZE'] = 'Tamanho da miniatura';
 $lang['SYNC_WARNINGS'] = 'Avisos';
 $lang['VOLUME'] = 'Volume';
-?>
+$lang['LANGUAGE_DESC'] = 'Seleccione a língua do utilizador.';
+$lang['LANGUAGE'] = 'Língua';
+$lang['HEIGHT_DESC'] = 'O atributo da altura máxima marca a altura máxima do vídeo apresentado. Se a altura do vídeo for superior à altura máxima definida, ela será reduzido para a altura máxima definida.';
+$lang['HEIGHT'] = 'Altura Máxima';
