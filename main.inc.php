@@ -103,10 +103,9 @@ function vjs_format_exif_data($exif, $filename, $map)
 	// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
 	require_once(dirname(__FILE__).'/include/function_dependencies.php');
 	require_once(dirname(__FILE__).'/include/mediainfo.php');
-	//print_r($general);
-	if (isset($exif))
+	if (isset($exif) and ($exif != null) and isset($general))
 	{
-		// replace some value by human readable string
+		// Replace some value by human readable string
 		if (isset($general->FileSize_String))
 		{
 			$exif['filesize'] = (string)$general->FileSize_String;
@@ -290,6 +289,9 @@ function vjs_render_media($content, $picture)
 			foreach ( $matches as $filename) {
 			     $ext = explode("-th_", $filename);
 			     $second = explode(".", $ext[1]);
+			     include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
+			     include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
+			     $rotate = pwg_image::get_rotation_angle_from_code($picture['current']['rotation']);
 			     // ./galleries/videos/pwg_representative/trailer_480p-th_0.jpg
 			     //echo "$filename second " . $second[0]. "\n";
 			     $thumbnails[] = array(
