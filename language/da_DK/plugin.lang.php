@@ -34,8 +34,6 @@ $lang['PRELOAD'] = 'Forindlæs';
 $lang['PRELOAD_DESC'] = 'Indstillingen "Forindlæs" giver browseren besked om hvorvidt hentning af videodata skal begynde så snart videotag\'et er indlæst.';
 $lang['SKIN'] = 'Skind';
 $lang['SKIN_DESC'] = 'Vælg det udseende, du ønsker at give afspilleren, eller <a href="http://designer.videojs.com/" target="_blank">opret dit eget udseende</a>.';
-$lang['WIDTH'] = 'Maksimal bredde';
-$lang['WIDTH_DESC'] = 'Indstillingen maksimal bredde opsætter visningsbredden på videoen, hvis videostørrelsen er større. bliver bredden den maksimale.';
 $lang['THUMBNAILS_DESC'] = 'Vis miniaturebilleder over progressbjælken';
 $lang['THUMBNAILS'] = 'Miniturebilleder';
 $lang['UPSCALE'] = 'Opskalér';
@@ -63,4 +61,9 @@ $lang['SYNC_THUMBSIZE_DESC'] = 'Størrelse i pixels, hold det småt, standarden 
 $lang['SYNC_WARNINGS'] = 'Advarsler';
 $lang['VOLUME'] = 'Lydstyrke';
 $lang['VOLUME_DESC'] = 'Lydstyrkevalgmuligheden opsætter lydstyrkeniveauet. 0 betyder slået fra (tavs/mute). 1.0 er maksimal lydstyrke, mens 0.5 er halvvejen.';
-?>
+$lang['HEIGHT'] = 'Maksimal højde';
+$lang['HEIGHT_DESC'] = 'Maksimal højde-attributten sætter den maksimale visningshøjde på videoen. Hvis videohøjden er større end den maksimale højde, vil videohøjden blive nedskaleret til den maksimale højde.
+
+';
+$lang['LANGUAGE'] = 'Sprog';
+$lang['LANGUAGE_DESC'] = 'Vælg afspillerens sprog';
