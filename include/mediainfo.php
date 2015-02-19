@@ -87,6 +87,14 @@ if (isset($general->Format))
 {
     $exif['format'] = (string)$general->Format;
 }
+if (isset($general->Format_Profile))
+{
+    $exif['formatprofile'] = (string)$general->Format_Profile;
+}
+if (isset($general->CodecID))
+{
+    $exif['codecid'] = (string)$general->CodecID;
+}
 if (isset($general->InternetMediaType))
 {
     $exif['type'] = (string)$general->InternetMediaType;
