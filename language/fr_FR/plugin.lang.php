@@ -15,8 +15,6 @@ $lang['SKIN'] = 'Style';
 $lang['SKIN_DESC'] = 'Selectionner un style a appliquer au lecteur ou <a href="http://designer.videojs.com/" target="_blank">creer votre propre style</a>.';
 $lang['CUSTOMCSS'] = 'Custom CSS';
 $lang['CUSTOMCSS_DESC'] = 'Custom CSS a copier coller depuis le site web de <a href="http://www.videojs.com/" target="_blank">VideoJS</a>.';
-$lang['WIDTH'] = 'Max Width';
-$lang['WIDTH_DESC'] = 'The max width attribute sets the maximum display width of the video. if higher the witdh became the max width.';
 $lang['UPSCALE'] = 'Upscale';
 $lang['UPSCALE_DESC'] = 'Si la taille de la video est plus petite que le parametre max width, la video sera agrandi aux dimension de max width.';
 
@@ -46,3 +44,7 @@ $lang['SYNC_POSTEROVERLAY_DESC'] = 'Applique un calque à la création de l\'aff
 $lang['SYNC_POSTEROVERWRITE'] = 'Remplace les affiches existantes';
 $lang['SYNC_POSTEROVERWRITE_DESC'] = 'Remplace les affiches existantes par les nouvelles. Si décoché cela sera actif uniquement pour les prochaines vidéos ajoutées. ';
 $lang['SYNC_POSTER_DESC'] = 'Crée une affiche pour la vidéo à la position spécifiée. ';
+$lang['HEIGHT_DESC'] = 'L\'attribut hauteur max désigne la hauteur maximum affichée pour la vidéo. Si la hauteur de la vidéo dépasse cette taille, elle sera réduit à cette limite.';
+$lang['HEIGHT'] = 'Hauteur max';
+$lang['LANGUAGE'] = 'Langue';
+$lang['LANGUAGE_DESC'] = 'Sélectionner la langue du lecteur';
