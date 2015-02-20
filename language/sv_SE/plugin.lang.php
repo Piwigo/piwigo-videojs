@@ -24,8 +24,6 @@ $lang['CUSTOMCSS_DESC'] = 'Custom CSS att klippa och klistra från <a href="http
 $lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
 $lang['WATERMARK'] = 'Vattenmärkning';
 $lang['WATERMARK_DESC'] = 'Vattenmärk videon';
-$lang['WIDTH'] = 'Max-bredd';
-$lang['WIDTH_DESC'] = 'Hur bred videon kommer att visas. Om videon är större kommer den att skalas ner till max-bredd.';
 $lang['ZOOMROTATE'] = 'Zoom och rotation';
 $lang['ZOOMROTATE_DESC'] = 'Rotera och zoom videon om det står det i metadatan.';
 $lang['AUTOPLAY'] = 'Autostart';
@@ -63,3 +61,7 @@ $lang['SYNC_METADATA_DESC'] = 'Skriver över informationen i databasen med metad
 $lang['SYNC_OUTPUT_DESC'] = 'Välj utdataformat för affischen och miniatyrbilden';
 $lang['SYNC_OUTPUT'] = 'Utdataformat';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Storlek i bildpunkter. Håll den liten, default är ok. Youtube använder 190x68';
+$lang['HEIGHT'] = 'Maxhöjd';
+$lang['HEIGHT_DESC'] = 'Maxhöjden sätter filmens maximala höjd. Om filmen är större än maxhöjden kommer den skalas ned till maxhöjden.';
+$lang['LANGUAGE'] = 'Språk';
+$lang['LANGUAGE_DESC'] = 'Välj spelarens språk.';
