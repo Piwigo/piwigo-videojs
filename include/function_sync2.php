@@ -73,6 +73,7 @@ while ($row = pwg_db_fetch_assoc($result))
         //print_r($exif);
         if (isset($exif) and $sync_options['metadata'])
         {
+			$exif = array_filters($exif);
 			if (isset($exif['error']))
 			{
 				$errors[] = $exif['error'];
