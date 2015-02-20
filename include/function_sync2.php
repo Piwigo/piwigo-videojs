@@ -195,7 +195,7 @@ while ($row = pwg_db_fetch_assoc($result))
             if (isset($exif['playtime_seconds']) and isset($sync_options['thumbsec']) and isset($sync_options['thumbsize']))
             {
                 /* Init value */
-                $file_wo_ext = pathinfo($row['file']);
+                $file_wo_ext = pathinfo($filename);
 				if (!isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0)
 				{
 					$errors[] = "Unable to read filename for generating thumbnails ".$row['path'];
