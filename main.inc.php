@@ -246,9 +246,10 @@ function vjs_render_media($content, $picture)
 	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 	// Add the current file in array
 	$videos[] = array(
-				'src' => embellish_url(get_gallery_home_url() . $picture['current']['element_url']),
+				'src' => embellish_url($picture['current']['element_url']),
 				'ext' => $extension,
 			);
+	// Add any other video source format
 	foreach ($files_ext as $file_ext) {
 		$file = $file_dir."/pwg_representative/".$file_wo_ext['filename'].".".$file_ext;
 		if (file_exists($file)){
@@ -376,7 +377,7 @@ function vjs_render_media($content, $picture)
 	$template->assign(
 		array(
 			'VIDEOJS_POSTER_URL' => embellish_url(get_gallery_home_url().$poster),
-			'VIDEOJS_PATH'       => embellish_url(get_absolute_root_url().VIDEOJS_PATH),
+			'VIDEOJS_PATH'       => embellish_url(get_gallery_home_url().VIDEOJS_PATH),
 			'WIDTH'              => $width,
 			'RATIO'              => round($height/$width*100, 2),
 			'OPTIONS'            => $options,
