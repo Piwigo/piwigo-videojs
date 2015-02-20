@@ -145,10 +145,10 @@ while ($row = pwg_db_fetch_assoc($result))
                     $sync_options['postersec'] = (int)$exif['playtime_seconds'];
                 }
 				/* default output to JPG */
-                $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$sync_options['postersec']." -i '".$in."' -vcodec mjpeg -vframes 1 -an -f rawvideo -y '".$out. "'";
+                $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$sync_options['postersec']." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
                 if ($sync_options['output'] == "png")
                 {
-                    $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$sync_options['postersec']." -i '".$in."' -vcodec png -vframes 1 -an -f rawvideo -y '".$out. "'";
+                    $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$sync_options['postersec']." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -y \"".$out. "\"";
                 }
                 //echo $ffmpeg;
                 $log = system($ffmpeg, $retval);

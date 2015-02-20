@@ -29,7 +29,7 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 try {
 putenv('LANG=en_US.UTF-8');
-$output = shell_exec($sync_options['mediainfo'] ." --Full --Output=XML --Language=raw '". $filename."'");
+$output = shell_exec($sync_options['mediainfo'] ." --Full --Output=XML --Language=raw \"". $filename."\"");
 //$log = shell_exec("mediainfo --Output=XML ". $filename);
 $xml = new SimpleXMLElement($output);
 //$xml = simplexml_load_file("/tmp/mediainfo.xml");
