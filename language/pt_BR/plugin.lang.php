@@ -34,8 +34,6 @@ $lang['PRELOAD'] = 'Pré-carregado';
 $lang['PRELOAD_DESC'] = 'O atributo de pré-carga informa ao navegador se os dados de vídeo devem ou não começar a ser baixado assim que a etiqueta de vídeo for carregada.';
 $lang['SKIN'] = 'Película';
 $lang['SKIN_DESC'] = 'Selecione o estilo que você deseja aplicar ao usuário.';
-$lang['WIDTH'] = 'Largura Máxima';
-$lang['WIDTH_DESC'] = 'O atributo de largura máxima define a largura do monitor de vídeo, se for superior é divida por dois.';
 $lang['THUMBNAILS'] = 'Miniaturas';
 $lang['THUMBNAILS_DESC'] = 'Mostrar as imagens miniatura sobre a barra de progresso.';
 $lang['UPSCALE'] = 'Escala';
@@ -63,4 +61,7 @@ $lang['SYNC_THUMBSIZE_DESC'] = 'Tamanho em pixels, mantê-lo pequeno, o padrão 
 $lang['SYNC_WARNINGS'] = 'Advertências';
 $lang['VOLUME'] = 'Volume';
 $lang['VOLUME_DESC'] = 'A opção de volume ajusta o nível de volume. 0 é desligado (silenciado), 1 é o máximo, e 0,5 é metade.';
-?>
+$lang['HEIGHT'] = 'Altura Máxima';
+$lang['HEIGHT_DESC'] = 'O atributo altura máxima define a altura máxima de exibição de vídeo. Se a altura do vídeo é maior que a altura máxima, ele vai diminuir o tamanho do vídeo para a altura máxima.';
+$lang['LANGUAGE'] = 'Idioma';
+$lang['LANGUAGE_DESC'] = 'Selecione o idioma do reprodutor.';
