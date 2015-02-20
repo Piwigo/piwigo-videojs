@@ -20,7 +20,6 @@
 // | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, |
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
-$lang['WIDTH_DESC'] = 'Atrybut maksymalna szerokość określa szerokość wyświetlania wideo, jeśli jest większe to dzielimy przez 2.';
 $lang['CUSTOMCSS_DESC'] = 'Styl CSS skopiowany ze strony VideoJS.';
 $lang['SKIN_DESC'] = 'Wybierz styl dla odtwarzacza.';
 $lang['CONTROLS_DESC'] = 'Opcja kontrolek określa, czy odtwarzacz powinien posiadać przyciski kontrolne.';
@@ -35,7 +34,6 @@ $lang['HTML5'] = 'Ustawienia tagu video HTML5';
 $lang['LOOP'] = 'Pętla';
 $lang['PLUGIN'] = 'Ustawienia wtyczki';
 $lang['SKIN'] = 'Skórka';
-$lang['WIDTH'] = 'Maksymalna szerokość';
 $lang['THUMBNAILS'] = 'Miniatury';
 $lang['THUMBNAILS_DESC'] = 'Wyświetla miniatury nad paskiem postępu';
 $lang['UPSCALE'] = 'Przeskalowanie';
@@ -63,3 +61,7 @@ $lang['SYNC_OUTPUT_DESC'] = 'Zaznacz wyjściowy format dla plakatu i miniatury';
 $lang['SYNC_POSTER'] = 'Stwórz plakat z podanej pozycji w sekundach';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Dodaj nakładkę na plakacie';
 $lang['SYNC_POSTER_DESC'] = 'Stwórz plakat wideo w danej pozycji';
+$lang['LANGUAGE'] = 'Język';
+$lang['LANGUAGE_DESC'] = 'Wybierz język odtwarzacza.';
+$lang['HEIGHT'] = 'Maksymalna wysokość';
+$lang['HEIGHT_DESC'] = 'Maksymalna wysokość ustawia maksymalną wysokość wyświetlacza urządzenia. Jeśli wysokość wideo jest większa niz maksymalna wysokość wyświetlacza - zostanie ona proporcjonalnie zeskalowana zeby dopasowac sie do urządzenia.';
