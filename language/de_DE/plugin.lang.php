@@ -34,8 +34,6 @@ $lang['PRELOAD'] = 'vorab laden';
 $lang['PRELOAD_DESC'] = 'Das preload Attribut informiert den Browser, ob oder ob nicht das Video geladen wird, sobald der video Tag geladen wurde.';
 $lang['SKIN'] = 'Design';
 $lang['SKIN_DESC'] = 'Wähle das Aussehen des Players';
-$lang['WIDTH'] = 'Maximale Breite';
-$lang['WIDTH_DESC'] = 'Das Attribut "maximale Breite" setzt die Anzeigebreite des Videos. Wenn es größer ist, wird es durch zwei geteilt.';
 $lang['THUMBNAILS'] = 'Vorschaubilder';
 $lang['THUMBNAILS_DESC'] = 'Vorschaubilder über der Fortschrittsanzeige darstellen.';
 $lang['UPSCALE'] = 'Hochrechnen';
@@ -63,4 +61,5 @@ $lang['SYNC_POSTEROVERWRITE'] = 'Existierende Poster überschreiben';
 $lang['SYNC_POSTER_DESC'] = 'Erstelle ein Poster des Videos an der angegebenen Position.';
 $lang['SYNC_OUTPUT_DESC'] = 'Wähle das Ausgabeformat für das Poster und das Vorschaubild.';
 $lang['SYNC_POSTER'] = 'Poster erstellen bei Sekunde';
-?>
+$lang['HEIGHT'] = 'Maximale Höhe';
+$lang['LANGUAGE'] = 'Sprache';
