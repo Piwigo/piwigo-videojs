@@ -77,7 +77,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			{
 				$errors[] = $exif['error'];
 			}
-			else
+			else if (!empty($exif) or count($exif) > 0)
 			{
 				$metadata++;
 				isset($sync_options['batch_manager']) ? $infos[] = $filename. ' metadata: '.implode(",", array_keys($exif)) : '';
