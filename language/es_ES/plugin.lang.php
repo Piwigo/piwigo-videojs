@@ -34,8 +34,6 @@ $lang['PRELOAD'] = 'Precargar';
 $lang['PRELOAD_DESC'] = 'El atributo de precarga informa al navegador si la información del vídeo ha de empezar a cargar tan pronto como se cargue la etiqueta del vídeo.';
 $lang['SKIN'] = 'Tema';
 $lang['SKIN_DESC'] = 'Selecciona el tema que quieras aplicar al reproductor';
-$lang['WIDTH'] = 'Anchura máxima';
-$lang['WIDTH_DESC'] = 'El valor de anchura máxima determina la anchura máxima del video, si es muy alto se divide para 2.';
 $lang['THUMBNAILS'] = 'Miniaturas';
 $lang['THUMBNAILS_DESC'] = 'Muestra imágenes en miniatura sobre la barra de progreso.';
 $lang['UPSCALE'] = 'Mejora la resolución';
@@ -63,4 +61,7 @@ $lang['SYNC_THUMBSIZE_DESC'] = 'Tamaño en píxeles, que sea pequeña, por defec
 $lang['SYNC_WARNINGS'] = 'Advertencia';
 $lang['VOLUME'] = 'Volumen';
 $lang['VOLUME_DESC'] = 'La opción de volumen ajusta el nivel de volumen. 0 es silenciado, 1,0 es el máximo, 0,5 es la mitad.';
-?>
+$lang['LANGUAGE'] = 'Idioma';
+$lang['LANGUAGE_DESC'] = 'Seleccione el idioma del reproductor.';
+$lang['HEIGHT'] = 'Altura máxima ';
+$lang['HEIGHT_DESC'] = 'El atributo de altura máxima define la altura máxima de la pantalla de vídeo. Si la altura de vídeo es más grande que la altura máxima, será reducir tamaño del vídeo al atributo de altura máxima.';
