@@ -63,3 +63,5 @@ $lang['SYNC_OUTPUT_DESC'] = 'Wähle das Ausgabeformat für das Poster und das Vo
 $lang['SYNC_POSTER'] = 'Poster erstellen bei Sekunde';
 $lang['HEIGHT'] = 'Maximale Höhe';
 $lang['LANGUAGE'] = 'Sprache';
+$lang['HEIGHT_DESC'] = 'Das Attribut maximale Höhe legt die maximale Anzeigegrösse des Videos fest. Falls die Video-Breite höher ist, als die maximale Höhe, wird das Video entsprechend auf die maximale Höhe verkleinert.';
+$lang['LANGUAGE_DESC'] = 'Player-Sprache festlegen';
