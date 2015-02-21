@@ -23,13 +23,11 @@
 $lang['CONTROLS_DESC'] = 'L\'opzione dei controlli imposta se il player dispone di controlli con i quali l\'utente può interagire';
 $lang['PRELOAD_DESC'] = 'L\'attributo di precarico informa il browser se i dati video devono iniziare a caricare non appena si carica il tag video.';
 $lang['SKIN'] = 'Tema';
-$lang['WIDTH_DESC'] = 'Il valore massimo di ampiezza determina la larghezza massima del video, se è troppo alto è diviso per 2.';
 $lang['SKIN_DESC'] = 'Selezionare lo stile che si desidera applicare al player.';
 $lang['LOOP_DESC'] = 'L\'attributo loop fa sì che il video ricominci non appena finisce.';
 $lang['CUSTOMCSS_DESC'] = 'CSS personalizzato per copia incolla dal sito web VideoJS';
 $lang['AUTOPLAY_DESC'] = 'Se autoplay è attivo, il video verrà riprodotto non appena viene caricata la pagina (senza alcuna interazione da parte dell\'utente). NON SUPPORTATO DAI DISPOSITIVI APPLE iOS.';
 $lang['PRELOAD'] = 'Precaricamento';
-$lang['WIDTH'] = 'Larghezza massima';
 $lang['PLUGIN'] = 'Impostazioni plugin';
 $lang['LOOP'] = 'Loop';
 $lang['HTML5'] = 'Impostazione video tags HTML5';
@@ -63,4 +61,7 @@ $lang['SYNC_POSTEROVERLAY'] = 'Aggiugi un effetto pellicola';
 $lang['SYNC_OUTPUT_DESC'] = 'Selezionare il formato di output per il manifesto e la miniatura.';
 $lang['SYNC_POSTER_DESC'] = 'Crea un poster dal video nella posizione specificata';
 $lang['SYNC_POSTER'] = 'Creare un poster in seconda posizione';
-?>
+$lang['HEIGHT_DESC'] = 'L\'attributo altezza max imposta l\'altezza massima di visualizzazione del video. Se l\'altezza del video è più grande di altezza massima, essa sarà rimpicciolita alla massima altezza.';
+$lang['LANGUAGE_DESC'] = 'Seleziona la lingua giocatore.';
+$lang['LANGUAGE'] = 'Lingua';
+$lang['HEIGHT'] = 'Altezza Massima';
