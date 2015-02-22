@@ -21,14 +21,12 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 $lang['PRELOAD_DESC'] = 'Priekšielādes atribūts informē pārlūku vai video datus vajadzētu sākt lejupielādēt tiklīdz video tags ir lejupielādēts.';
-$lang['WIDTH_DESC'] = 'Max platuma atribūts iestāda displeja video platumu, ja tas ir lielāks to izdala ar 2.';
 $lang['CONTROLS_DESC'] = 'Kontroles opcija nosaka, ar ko spēlētājs var mijiedarboties ar lietotāju';
 $lang['AUTOPLAY_DESC'] = 'Ja Autoplay ir stāvoklī true, video sāks spēlēt tiklīdz lapa tiek ielādēta (bez jebkādas mijiedarbības ar lietotāju). Neatbalsta Apple iOS ierīces.';
 $lang['LOOP_DESC'] = 'Cilpas atribūts izraisa video atsākšanos, tiklīdz tas beidzas.';
 $lang['CUSTOMCSS_DESC'] = 'Izvēles CSS, ko iekopēt no VideoJS mājas lapas';
 $lang['SKIN_DESC'] = 'Izvēlaties sava plejera stilu';
 $lang['PRELOAD'] = 'Iepriekšielāde';
-$lang['WIDTH'] = 'MaxPlatums';
 $lang['SKIN'] = 'Izskats';
 $lang['CONTROLS'] = 'Vadība';
 $lang['HTML5'] = 'HTML5 video tag iestatījumi';
@@ -63,4 +61,7 @@ $lang['SYNC_POSTEROVERLAY'] = 'Pievienot filmas efektu';
 $lang['SYNC_OUTPUT'] = 'Izejošais formāts';
 $lang['SYNC_INFOS'] = 'Detalizēta informācija';
 $lang['SYNC_ERRORS'] = 'Kļūdas';
-?>
+$lang['HEIGHT_DESC'] = 'Max augstuma atribūts nosaka maksimālo displeja augstumu priekš video. Ja video augstums ir lielāks nekā maksimālais augstums, tas reducē video izmēru uz maksimālo displeja augstumu.';
+$lang['LANGUAGE_DESC'] = 'Spēlētāja valodas izvēle';
+$lang['LANGUAGE'] = 'Valoda';
+$lang['HEIGHT'] = 'Maksimālais Augstums';
