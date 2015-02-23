@@ -23,8 +23,6 @@
 $lang['LOOP_DESC'] = '循环选项设定视频结束后立即再次从头播放。';
 $lang['PRELOAD_DESC'] = '预加载选项将告诉浏览器视频数据是否在视频标签加载后立即开始下载。';
 $lang['WATERMARK_DESC'] = '在视频上显示水印。';
-$lang['WIDTH'] = '最大宽度';
-$lang['WIDTH_DESC'] = '最大宽度选项设定视频的显示最大宽度，如视频的尺寸更大，则其宽度将不超过设定宽度。';
 $lang['ZOOMROTATE'] = '缩放-旋转';
 $lang['ZOOMROTATE_DESC'] = '如可能，使用旋转元数据对视频进行旋转和缩放。';
 $lang['AUTOPLAY'] = '自动播放';
@@ -63,4 +61,7 @@ $lang['SYNC_INFOS'] = '详细信息';
 $lang['SYNC_METADATA_DESC'] = '将以来自视频的元数据覆盖数据库中的信息。';
 $lang['SYNC_OUTPUT'] = '输出格式';
 $lang['SYNC_OUTPUT_DESC'] = '选择海报及缩略图的输出格式';
-?>
+$lang['HEIGHT'] = '最大高度';
+$lang['HEIGHT_DESC'] = '最大高度属性是设置视频的最大高度，如果视频高度超出此值，将会被限制在此最大高度。';
+$lang['LANGUAGE'] = '语言';
+$lang['LANGUAGE_DESC'] = '选择播放语言';
