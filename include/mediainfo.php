@@ -136,6 +136,10 @@ if (isset($general->Recorded_Date))
 {
     $exif['date_creation'] = (string)$general->Recorded_Date;
 }
+if (!isset($exif['date_creation']) and isset($general->Encoded_Date))
+{// http://piwigo.org/forum/viewtopic.php?pid=158021#p158021
+    $exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general->Encoded_Date));
+}
 /*
 print $general->Format."<br/>\n";
 print $general->FileSize."<br/>\n";
