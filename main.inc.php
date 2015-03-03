@@ -455,7 +455,7 @@ function vjs_dbSet($fields, $data = array())
     $set='';
     foreach ($fields as $field)
     {
-        if (isset($data[$field]))
+        if (isset($data[$field]) and strlen($data[$field]) > 0)
         {
             $set.="`$field`='".pwg_db_real_escape_string($data[$field])."', ";
         }
