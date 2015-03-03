@@ -70,4 +70,87 @@ function vjs_add_tab($sheets, $id)
 	return $sheets;
 }
 
+// Hook to delete extra elements created by the plugin
+// Does apply to batch manager and photo-edit pages
+add_event_handler('begin_delete_elements', 'vjs_begin_delete_elements');
+// Function to delete extra elements created by the plugin
+function vjs_begin_delete_elements($ids)
+{
+  if (count($ids) == 0)
+  {
+    return 0;
+  }
+
+  $vjs_extensions = array(
+        'ogg',
+        'ogv',
+        'mp4',
+        'm4v',
+        'webm',
+        'webmv',
+  );
+  $files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
+
+  // Find details base on ID and if supported video files
+  $query = '
+SELECT
+    id,
+    path,
+    representative_ext
+  FROM '.IMAGES_TABLE.'
+  WHERE id IN ('.implode(',', $ids).') AND '.SQL_VIDEOS.'
+;';
+  $result = pwg_query($query);
+  while ($row = pwg_db_fetch_assoc($result))
+  {
+    if (url_is_remote($row['path']))
+    {
+      continue;
+    }
+
+    $files = array();
+    $files[] = get_element_path($row);
+
+    $ok = true;
+    if (!isset($conf['never_delete_originals']))
+    {
+      foreach ($files as $path)
+      {
+        // Don't delete the actual video or representative
+        // It is done by PWG core
+
+        // Delete any other video source format
+        $file_wo_ext = pathinfo($path);
+        $file_dir = dirname($path);
+        foreach ($files_ext as $file_ext)
+        {
+            $path_ext = $file_dir."/pwg_representative/".$file_wo_ext['filename'].".".$file_ext;
+            if (is_file($path_ext) and !unlink($path_ext))
+            {
+              $ok = false;
+              trigger_error('"'.$path_ext.'" cannot be removed', E_USER_WARNING);
+              break;
+            }
+        }
+
+        // Delete video thumbnails
+        $filematch = $file_dir."/pwg_representative/".$file_wo_ext['filename']."-th_*";
+        $matches = glob($filematch);
+        if (is_array($matches))
+        {
+            foreach($matches as $filename)
+            {
+                if (is_file($filename) and !unlink($filename))
+                {
+                   $ok = false;
+                   trigger_error('"'.$filename.'" cannot be removed', E_USER_WARNING);
+                   break;
+                }
+            }
+        } // End videos thumbnails
+      } // End for each files
+    } // End IF
+  } // End While
+} // End function
+
 ?>
