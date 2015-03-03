@@ -2,7 +2,7 @@
 /***********************************************
 * File      :   admin_tech.php
 * Project   :   piwigo-videojs
-* Descr     :   Generate the admin panel
+* Descr     :   Generate the admin tech panel
 *
 * Created   :   4.06.2013
 *

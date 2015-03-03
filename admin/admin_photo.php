@@ -2,7 +2,7 @@
 /***********************************************
 * File      :   admin_photo.php
 * Project   :   piwigo-videojs
-* Descr     :   Video edit in photo panel
+* Descr     :   Video edit in admin photo panel
 *
 * Created   :   10.07.2013
 *

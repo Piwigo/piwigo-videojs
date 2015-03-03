@@ -2,7 +2,7 @@
 /***********************************************
 * File      :   mediainfo.php
 * Project   :   piwigo-videojs
-* Descr     :   Generate the admin panel
+* Descr     :   Handle metadata video parsing
 *
 * Created   :   9.07.2013
 *

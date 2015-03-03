@@ -2,7 +2,7 @@
 /***********************************************
 * File      :   function_dependencies.php
 * Project   :   piwigo-videojs
-* Descr     :   Generate the admin panel
+* Descr     :   Check for external program dependencies
 *
 * Created   :   26.09.2014
 *

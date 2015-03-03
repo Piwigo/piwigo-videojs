@@ -2,7 +2,7 @@
 /***********************************************
 * File      :   admin_config.php
 * Project   :   piwigo-videojs
-* Descr     :   Generate the admin panel
+* Descr     :   Generate the admin config panel
 *
 * Created   :   24.06.2012
 *

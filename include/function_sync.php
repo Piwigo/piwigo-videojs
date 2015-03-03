@@ -2,7 +2,7 @@
 /***********************************************
 * File      :   function_sync.php
 * Project   :   piwigo-videojs
-* Descr     :   Generate the admin panel
+* Descr     :   Handle the syncronisation process
 *
 * Created   :   9.06.2013
 *
