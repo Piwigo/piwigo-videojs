@@ -56,7 +56,7 @@ if (isset($xml["version"]))
 	}
 	if (version_compare($xml["version"], '0.7.72') == 0)
 	{
-		$exif['error'] = 'Please do not use MediaInfo version 0.7.72 due to Important known bug: <a href="https://sourceforge.net/p/mediainfo/bugs/886/">XML output is broken</a><br/>Upgrade or downgrade';
+		$exif['error'] = 'Please DO NOT use MediaInfo version 0.7.72 due to Important known bug: <a href="https://sourceforge.net/p/mediainfo/bugs/886/" target="_blank">XML output is broken</a><br/>Upgrade or downgrade<br/><a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">Please refer to the documentation</a>';
 	}
 }
 
