@@ -10,7 +10,7 @@ FORM.properties SPAN.property {
 
 Play YouTube video inside the open source HTML5 video player <a href="http://www.videojs.com/" target="_blank">VideoJS</a>.
 <br/><br/>
-Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blanck">plugin documentation</a> for additional information.
+Please read the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin documentation</a> for additional information.
 
 <form method="post" action="" class="properties">
 

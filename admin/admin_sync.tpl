@@ -48,7 +48,7 @@ jQuery(".showInfo").tipTip({
 
 Synchronization of metadata information and poster creation for videos.
 <br/><br/>
-Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blanck">plugin documentation</a> for additional information. Create an <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blanck">issue</a> for support, or feedback, or feature request.
+Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin documentation</a> for additional information. Create an <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">issue</a> for support, or feedback, or feature request.
 
 <div class="vjs_layout">
   <legend>{'Statistics'|@translate}</legend>
@@ -132,7 +132,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			{/if}
 			<input type="text" name="mediainfo" value="{$mediainfo}" /> Mediainfo binary path
 		</label>
-		<br/><small><strong><a href="http://mediaarea.net/en/MediaInfo" target="_blanck">'MediaInfo'</a> must be install to allow video metadata parsing.</strong></small>
+		<br/><small><strong><a href="http://mediaarea.net/en/MediaInfo" target="_blank">'MediaInfo'</a> must be install to allow video metadata parsing.</strong></small>
       </li>
       <li>
 		<label>
@@ -143,7 +143,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			{/if}
 			<input type="text" name="ffmpeg" value="{$ffmpeg}" /> FFmpeg binary path
 		</label>
-		<br/><small><strong><a href="http://www.ffmpeg.org/" target="_blanck">'FFmpeg'</a> must be install to allow video thumbnail and poster generation.</strong></small>
+		<br/><small><strong><a href="http://www.ffmpeg.org/" target="_blank">'FFmpeg'</a> must be install to allow video thumbnail and poster generation.</strong></small>
       </li>
     </ul>
   </fieldset>
@@ -154,7 +154,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
       <li>
 	<label><input type="checkbox" name="metadata" value="1" {if $metadata}checked="checked"{/if} /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>{'SYNC_METADATA_DESC'|@translate}</small>
-	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">'MediaInfo'</a> to be install.</strong></small>
+	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blank">'MediaInfo'</a> to be install.</strong></small>
       </li>
     </ul>
   </fieldset>
@@ -167,7 +167,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 	<!-- <input type="range" name="postersec" value="4" min="0" max="60" step="1"/> -->
 	<input type="text" name="postersec" value="{$postersec}" size="2" required/>
 	<br/><small>{'SYNC_POSTER_DESC'|@translate}</small>
-	<small><strong>Require <a href="http://www.ffmpeg.org/" target="_blanck">'FFmpeg'</a> to be install.</strong></small>
+	<small><strong>Require <a href="http://www.ffmpeg.org/" target="_blank">'FFmpeg'</a> to be install.</strong></small>
       </li>
       <li>
 	<label><input type="checkbox" name="posteroverwrite" value="1" {if $posteroverwrite}checked="checked"{/if}> {'SYNC_POSTEROVERWRITE'|@translate}</label>

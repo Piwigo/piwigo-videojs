@@ -68,7 +68,7 @@ function vjs_loc_end_element_set_global()
       <li>
 	<label><input type="checkbox" name="vjs_metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
-	<br/><small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">\'MediaInfo\'</a> to be install.</strong></small>
+	<br/><small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
       </li>
     </ul>
     <legend>Poster</legend>
@@ -220,8 +220,8 @@ function vjs_prefilter_batch_manager_unit($content)
       <li>
 	<label><input type="checkbox" name="vjs_metadata-{$element.id}" value="1"/> filesize, width, height, latitude, longitude</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
-	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blanck">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
-	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blanck">\'MediaInfo\'</a> to be install.</strong></small>
+	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blank">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
+	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
       </li>
     </ul>
     <legend>Poster</legend>
