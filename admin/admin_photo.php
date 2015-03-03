@@ -63,7 +63,23 @@ $template->set_filenames(
     )
   );
 
-// Override default value from configuration
+// Generate default value
+$sync_options = array(
+    'mediainfo'         => 'mediainfo',
+    'ffmpeg'            => 'ffmpeg',
+    'metadata'          => true,
+    'poster'            => true,
+    'postersec'         => 4,
+    'output'            => 'jpg',
+    'posteroverlay'     => false,
+    'posteroverwrite'   => true,
+    'thumb'             => false,
+    'thumbsec'          => 5,
+    'thumbsize'         => "120x68",
+    'simulate'          => true,
+    'cat_id'            => 0,
+    'subcats_included'  => true,
+);
 // Override default value from configuration
 if (isset($conf['vjs_sync']))
 {
