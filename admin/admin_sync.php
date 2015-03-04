@@ -118,7 +118,7 @@ if (!check_mediainfo($sync_options))
 
 if (!check_ffmpeg($sync_options))
 {
-    $warnings[] = "Poster creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
+    $warnings[] = "Poster and Thumbnail creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
     $sync_options['poster'] = false;
     $sync_options['thumb'] = false;
 }

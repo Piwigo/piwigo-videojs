@@ -66,7 +66,7 @@ function vjs_loc_end_element_set_global()
     <legend>Synchronize metadata</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="vjs_metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude</label>
+	<label><input type="checkbox" name="vjs_metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
 	<br/><small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
       </li>
@@ -138,7 +138,7 @@ function vjs_element_set_global_action($action, $collection)
 	    'simulate'          => false,
 	    'batch_manager'     => true,
 	);
-	$sync_options = $sync_options_form + unserialize($conf['vjs_sync']);
+	$sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options_form);
 
 	// Do the work, share with batch manager
 	require_once(dirname(__FILE__).'/../include/function_sync2.php');
@@ -152,10 +152,10 @@ function vjs_element_set_global_action($action, $collection)
 add_event_handler('loc_begin_element_set_unit', 'vjs_loc_begin_element_set_unit');
 function vjs_loc_begin_element_set_unit()
 {
-	global $page;
-	
 	if (!isset($_POST['submit']))
 	      return;
+
+	global $page, $conf;
 
 	$collection = explode(',', $_POST['element_ids']);
 	foreach ($collection as $id)
@@ -175,9 +175,10 @@ function vjs_loc_begin_element_set_unit()
 		    'thumbsec'          => $_POST['vjs_thumbsec-'.$id],
 		    'thumbsize'         => $_POST['vjs_thumbsize-'.$id],
 		    'simulate'          => false,
+		    'batch_manager'     => true,
 		);
 
-		$sync_options = $sync_options_form + unserialize($conf['vjs_sync']);
+		$sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options_form);
 
 		$query = "SELECT `id`, `file`, `path`
 				FROM ".IMAGES_TABLE."
@@ -218,10 +219,9 @@ function vjs_prefilter_batch_manager_unit($content)
     <legend>Synchronize metadata</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="vjs_metadata-{$element.id}" value="1"/> filesize, width, height, latitude, longitude</label>
+	<label><input type="checkbox" name="vjs_metadata-{$element.id}" value="1" checked="checked" /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
-	<br/><small><strong>Support of latitude, longitude required <a href="http://piwigo.org/ext/extension_view.php?eid=701" target="_blank">\'OpenStreetMap\'</a> or \'RV Maps & Earth\' plugin.</strong></small>
-	<small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
+	<br/><small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
       </li>
     </ul>
     <legend>Poster</legend>
