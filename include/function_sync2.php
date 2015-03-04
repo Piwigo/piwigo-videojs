@@ -42,7 +42,7 @@ $metadata = 0;
 $posters = 0;
 $thumbs = 0;
 $errors = array();
-$warnings = array();
+isset($sync_options['batch_manager']) ? $warnings = array() : '';
 $infos = array();
 
 // Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
