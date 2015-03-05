@@ -40,16 +40,12 @@ check_input_parameter('image_id', $_GET, false, PATTERN_ID);
 $admin_photo_base_url = get_root_url().'admin.php?page=photo-'.$_GET['image_id'];
 $self_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;image_id='.$_GET['image_id'];
 $sync_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;sync_metadata=1&amp;image_id='.$_GET['image_id'];
+$delete_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;delete_extra=1&amp;image_id='.$_GET['image_id'].'&amp;pwg_token='.get_pwg_token();
 
 load_language('plugin.lang', PHPWG_PLUGINS_PATH.basename(dirname(__FILE__)).'/');
 load_language('plugin.lang', VIDEOJS_PATH);
 
 global $template, $page, $conf;
-
-if (isset($_POST['submit']))
-{
-	check_pwg_token();
-}
 
 include_once(PHPWG_ROOT_PATH.'admin/include/tabsheet.class.php');
 $tabsheet = new tabsheet();
@@ -97,12 +93,27 @@ if (!isset($picture['path'])) {
 	die("Mediainfo error reading file id: '". $_GET['image_id']."'");
 }
 
+// Delete the extra data
+if (isset($_GET['delete_extra']) and $_GET['delete_extra'] == 1)
+{
+	check_pwg_token();
+	vjs_begin_delete_elements(array($picture['id']));
+	array_push( $page['infos'], 'Thumbnails and Subtitle and extra videos source deleted');
+}
+
 $filename = $picture['path'];
 // Get the metadata video information
 include_once(dirname(__FILE__).'/../include/mediainfo.php');
 if (isset($exif))
 {
-	if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1)
+	$exif = array_filter($exif);
+	if (isset($exif['error']))
+	{
+		array_push( $page['errors'], $exif['error']);
+		unset($exif['error']);
+	}
+	// Import metadata into the DB
+	if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1 and !empty($exif) and count($exif) > 0)
 	{
 		$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
 		$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$_GET['image_id'].";";
@@ -155,6 +166,11 @@ foreach ($files_ext as $file_ext) {
 }
 //print_r($videos);
 
+/* Try to find WebVTT */
+$file = $parts['dirname']."/pwg_representative/".$parts['filename'].".vtt";
+file_exists($file) ? $subtitle = embellish_url(get_gallery_home_url() .$file) : $subtitle = null;
+
+/* Thumbnail videojs plugin */
 $filematch = $parts['dirname']."/pwg_representative/".$parts['filename']."-th_*";
 $matches = glob($filematch);
 $thumbnails = array();
@@ -177,14 +193,16 @@ $infos = array_merge(
 				array('Videos source' => count($videos)),
 				array('videos' => $videos),
 				array('Thumbnails' => count($thumbnails)),
-				array('thumbnails' => $thumbnails)
-				);
+				array('thumbnails' => $thumbnails),
+				array('Subtitle' => $subtitle)
+			);
 //print_r($infos);
 
 $template->assign(array(
 	'PWG_TOKEN' => get_pwg_token(),
 	'F_ACTION' => $self_url,
 	'SYNC_URL' => $sync_url,
+	'DELETE_URL' => $delete_url,
 	'TN_SRC' => DerivativeImage::thumb_url($picture).'?'.time(),
 	'TITLE' => render_element_name($picture),
 	'EXIF' => $exif,
