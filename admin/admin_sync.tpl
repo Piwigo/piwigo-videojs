@@ -130,7 +130,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			{else}
 				<img src="{$VIDEOJS_PATH}admin/warning.png" witdh="16" height="16">
 			{/if}
-			<input type="text" name="mediainfo" value="{$mediainfo}" /> Mediainfo binary path
+			<input type="text" name="mediainfo" value="{$mediainfo}" class="large" /> Mediainfo binary path
 		</label>
 		<br/><small><strong><a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'MediaInfo'</a> must be install to allow video metadata parsing.</strong></small>
       </li>
@@ -141,7 +141,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			{else}
 				<img src="{$VIDEOJS_PATH}admin/warning.png" witdh="16" height="16">
 			{/if}
-			<input type="text" name="ffmpeg" value="{$ffmpeg}" /> FFmpeg binary path
+			<input type="text" name="ffmpeg" value="{$ffmpeg}" class="large" /> FFmpeg binary path
 		</label>
 		<br/><small><strong><a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'FFmpeg'</a> must be install to allow video thumbnail and poster generation.</strong></small>
       </li>
@@ -154,7 +154,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
       <li>
 	<label><input type="checkbox" name="metadata" value="1" {if $metadata}checked="checked"{/if} /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>{'SYNC_METADATA_DESC'|@translate}</small>
-	<small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'MediaInfo'</a> to be install.</strang></small>
+	<small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'MediaInfo'</a> to be install.</strong></small>
       </li>
     </ul>
   </fieldset>
