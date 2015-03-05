@@ -32,6 +32,8 @@ Piwigo-videojs require those 2 programs to be install on your system:
 * [MediaInfo](http://mediaarea.net/en/MediaInfo)
 * [FFmpeg](http://www.ffmpeg.org/)
 
+Please refer to the [wiki](https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#step-2-install) for additional information.
+
 Supported formats
 -----
 
