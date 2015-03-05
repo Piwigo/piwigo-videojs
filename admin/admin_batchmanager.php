@@ -68,7 +68,7 @@ function vjs_loc_end_element_set_global()
       <li>
 	<label><input type="checkbox" name="vjs_metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
-	<br/><small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
+	<br/><small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
       </li>
     </ul>
     <legend>Poster</legend>
@@ -78,6 +78,7 @@ function vjs_loc_end_element_set_global()
 	<!-- <input type="range" name="vjs_postersec" value="4" min="0" max="60" step="1"/> -->
 	<input type="text" name="vjs_postersec" value="4" size="2" required/>
 	<br/><small>Create a poster from the video at specify position.</small>
+	<br/><small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">\'FFmpeg\'</a> to be install.</strong></small>
       </li>
       <li>
 	<label><input type="checkbox" name="vjs_posteroverwrite" value="1" checked="checked"> Overwrite existing posters</label>
@@ -219,9 +220,9 @@ function vjs_prefilter_batch_manager_unit($content)
     <legend>Synchronize metadata</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="vjs_metadata-{$element.id}" value="1" checked="checked" /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
+	<label><input type="checkbox" name="vjs_metadata-{$element.id}" value="1"/> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
-	<br/><small><strong>Require <a href="http://mediaarea.net/en/MediaInfo" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
+	<br/><small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
       </li>
     </ul>
     <legend>Poster</legend>
@@ -231,6 +232,7 @@ function vjs_prefilter_batch_manager_unit($content)
 	<!-- <input type="range" name="vjs_postersec-{$element.id}" value="4" min="0" max="60" step="1"/> -->
 	<input type="text" name="vjs_postersec-{$element.id}" value="4" size="2" required/>
 	<br/><small>Create a poster from the video at specify position.</small>
+	<br/><small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">\'FFmpeg\'</a> to be install.</strong></small>
       </li>
       <li>
 	<label><input type="checkbox" name="vjs_posteroverwrite-{$element.id}" value="1" checked="checked"> Overwrite existing posters</label>
