@@ -153,4 +153,43 @@ SELECT
   } // End While
 } // End function
 
+/* Plugin admin functions */
+
+/* Parse array fields to SQL query */
+function vjs_dbSet($fields, $data = array())
+{
+    if (!$data) $data = &$_POST;
+    $set='';
+    foreach ($fields as $field)
+    {
+        if (isset($data[$field]) and strlen($data[$field]) > 0)
+        {
+            $set.="`$field`='".pwg_db_real_escape_string($data[$field])."', ";
+        }
+    }
+    return substr($set, 0, -2);
+}
+
+/* Pretty Print recursive */
+function vjs_pprint_r(array $array, $glue = ', <br/>', $size = 10)
+{
+        // Split $EXIF keys array in chuck of $size for nicer display
+        $chunk_arr = array_chunk( array_keys($array), $size, true);
+
+        // Generate ouput
+        $output = "\r\n<br/>";
+        foreach ( $chunk_arr as $row ) {
+                foreach ( $row as $key ) {
+                        //printf('[%2s] ', $key);
+                        $output .= $key.", ";
+                }
+                $output .= "<br/>";
+        }
+
+        // Removes last $glue from string
+        strlen($glue) > 0 and $output = substr($output, 0, -strlen($glue));
+
+        return (string) $output;
+}
+
 ?>
