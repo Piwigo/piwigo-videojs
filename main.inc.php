@@ -40,7 +40,7 @@ add_event_handler('get_mimetype_location', 'vjs_get_mimetype_icon', EVENT_HANDLE
 // Hook to change the picture data to template
 //add_event_handler('picture_pictures_data', 'vjs_pictures_data');
 
-// Hook to sync geotag metadata on upload or sync
+// Hook to sync metadata on upload or sync
 add_event_handler('format_exif_data', 'vjs_format_exif_data', EVENT_HANDLER_PRIORITY_NEUTRAL, 3);
 
 // Hook to display metadata on picture page
@@ -247,7 +247,7 @@ function vjs_render_media($content, $picture)
 	// Add the current file in array
 	$videos[] = array(
 				'src' => embellish_url($picture['current']['element_url']),
-				'ext' => $extension,
+				'ext' => $extension
 			);
 	// Add any other video source format
 	foreach ($files_ext as $file_ext) {
@@ -463,4 +463,24 @@ function vjs_dbSet($fields, $data = array())
     return substr($set, 0, -2);
 }
 
+function vjs_pprint_r(array $array, $glue = ', <br/>', $size = 10)
+{
+	// Split $EXIF keys array in chuck of $size for nicer display
+	$chunk_arr = array_chunk( array_keys($array), $size, true);
+
+	// Generate ouput
+	$output = "\r\n<br/>";
+	foreach ( $chunk_arr as $row ) {
+		foreach ( $row as $key ) {
+			//printf('[%2s] ', $key);
+			$output .= $key.", ";
+		}
+		$output .= "<br/>";
+	}
+
+	// Removes last $glue from string
+	strlen($glue) > 0 and $output = substr($output, 0, -strlen($glue));
+
+	return (string) $output;
+}
 ?>

@@ -115,7 +115,7 @@ if (isset($exif))
 	// Import metadata into the DB
 	if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1 and !empty($exif) and count($exif) > 0)
 	{
-		array_push( $page['infos'], ' metadata: '.count($exif)." ".implode(",", array_keys($exif)));
+		array_push( $page['infos'], ' metadata: '.count($exif)." ".vjs_pprint_r($exif));
 		$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
 		$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$_GET['image_id'].";";
 		pwg_query($query);

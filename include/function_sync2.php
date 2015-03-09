@@ -81,9 +81,9 @@ while ($row = pwg_db_fetch_assoc($result))
 			else if (!empty($exif) and count($exif) > 0)
 			{
 				$metadata++;
-				isset($sync_options['batch_manager']) ? $infos[] = $filename. ' metadata: '.implode(",", array_keys($exif)) : '';
+				isset($sync_options['batch_manager']) and $infos[] = $filename. ' metadata: '.vjs_pprint_r($exif);
 				//$infos[] = $filename. ' metadata: '.count($exif);
-				$sync_arr['metadata'] = count($exif)." ".implode(",", array_keys($exif));
+				$sync_arr['metadata'] = count($exif)." ".vjs_pprint_r($exif);
 				if ($sync_options['metadata'] and !$sync_options['simulate'])
 				{
 					$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
