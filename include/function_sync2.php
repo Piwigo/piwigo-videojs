@@ -41,9 +41,9 @@ $videos = 0;
 $metadata = 0;
 $posters = 0;
 $thumbs = 0;
-$errors = array();
-isset($sync_options['batch_manager']) ? $warnings = array() : '';
-$infos = array();
+!isset($errors) and $errors = array();
+!isset($warnings) and $warnings = array();
+!isset($infos) and $infos = array();
 
 // Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
 include("function_dependencies.php");
@@ -146,10 +146,10 @@ while ($row = pwg_db_fetch_assoc($result))
                     $sync_options['postersec'] = (int)$exif['playtime_seconds'];
                 }
 				/* default output to JPG */
-                $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$sync_options['postersec']." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
+                $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
                 if ($sync_options['output'] == "png")
                 {
-                    $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$sync_options['postersec']." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -y \"".$out. "\"";
+                    $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -y \"".$out. "\"";
                 }
                 //echo $ffmpeg;
                 $log = system($ffmpeg, $retval);
@@ -232,10 +232,10 @@ while ($row = pwg_db_fetch_assoc($result))
 						isset($sync_options['batch_manager']) ? $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out : '';
 						$sync_arr['thumbnail'][] = $second.' seconds '.$out;
                         /* Lets do it , default output to JPG */
-                        $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$second." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y \"".$out. "\"";
+                        $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y \"".$out. "\"";
                         if ($sync_options['output'] == "png")
                         {
-                            $ffmpeg = $sync_options['ffmpeg'] ." -itsoffset -".$second." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y \"".$out. "\"";
+                            $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y \"".$out. "\"";
                         }
                         $log = system($ffmpeg, $retval);
                         //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);
