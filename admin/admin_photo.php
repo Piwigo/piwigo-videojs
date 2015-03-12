@@ -175,7 +175,7 @@ $filematch = $parts['dirname']."/pwg_representative/".$parts['filename']."-th_*"
 $matches = glob($filematch);
 $thumbnails = array();
 $sort = array(); // A list of sort columns and their data to pass to array_multisort
-if ( is_array ( $matches ) ) {
+if ( is_array ( $matches ) and !empty($matches) ) {
 	foreach ( $matches as $filename) {
 		 $ext = explode("-th_", $filename);
 		 $second = explode(".", $ext[1]);

@@ -286,7 +286,7 @@ function vjs_render_media($content, $picture)
 		$filematch = $file_dir."/pwg_representative/".$file_wo_ext['filename']."-th_*";
 		$matches = glob($filematch);
 
-		if ( is_array ( $matches ) ) {
+		if ( is_array ( $matches ) and !empty($matches)) {
 			$sort = array(); // A list of sort columns and their data to pass to array_multisort
 			foreach ( $matches as $filename) {
 			     $ext = explode("-th_", $filename);
