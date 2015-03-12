@@ -286,8 +286,8 @@ function vjs_render_media($content, $picture)
 		$filematch = $file_dir."/pwg_representative/".$file_wo_ext['filename']."-th_*";
 		$matches = glob($filematch);
 
-		$sort = array(); // A list of sort columns and their data to pass to array_multisort
 		if ( is_array ( $matches ) ) {
+			$sort = array(); // A list of sort columns and their data to pass to array_multisort
 			foreach ( $matches as $filename) {
 			     $ext = explode("-th_", $filename);
 			     $second = explode(".", $ext[1]);
@@ -303,11 +303,11 @@ function vjs_render_media($content, $picture)
 						);
 			     $sort['second'][$second[0]] = $second[0];
 			}
+			// Sort thumbnails by second ASC
+			!empty($sort['second']) and array_multisort($sort['second'], SORT_ASC, $thumbnails);
 		}
 		//$thumbnails = array( array('second' => 0, 'source' => $poster), array('second' => 5, 'source' => $poster));
 		//print_r($thumbnails);
-		// Sort thumbnails by second ASC
-		array_multisort($sort['second'], SORT_ASC, $thumbnails);
 	}
 
 	/* ZoomRotate videojs plugin */

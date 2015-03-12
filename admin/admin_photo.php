@@ -190,7 +190,7 @@ if ( is_array ( $matches ) ) {
 }
 //print_r($thumbnails);
 // Sort thumbnails by second
-array_multisort($sort['second'], SORT_ASC, $thumbnails);
+!empty($sort['second']) and array_multisort($sort['second'], SORT_ASC, $thumbnails);
 
 $infos = array_merge(
 				array('Poster' => $poster),
