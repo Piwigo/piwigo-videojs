@@ -174,6 +174,7 @@ file_exists($file) ? $subtitle = embellish_url(get_gallery_home_url() .$file) : 
 $filematch = $parts['dirname']."/pwg_representative/".$parts['filename']."-th_*";
 $matches = glob($filematch);
 $thumbnails = array();
+$sort = array(); // A list of sort columns and their data to pass to array_multisort
 if ( is_array ( $matches ) ) {
 	foreach ( $matches as $filename) {
 		 $ext = explode("-th_", $filename);
@@ -184,9 +185,12 @@ if ( is_array ( $matches ) ) {
 				   'second' => $second[0],
 				   'source' => embellish_url(get_gallery_home_url() . $filename)
 				);
+		 $sort['second'][$second[0]] = $second[0];
 	}
 }
 //print_r($thumbnails);
+// Sort thumbnails by second
+array_multisort($sort['second'], SORT_ASC, $thumbnails);
 
 $infos = array_merge(
 				array('Poster' => $poster),
