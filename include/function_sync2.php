@@ -225,7 +225,12 @@ while ($row = pwg_db_fetch_assoc($result))
 		/* Override the thumbsize (default 120x68) in order to respect the video aspect ratio base on the user specify width */
 		/* https://github.com/xbgmsharp/piwigo-videojs/issues/52 */
 		$thumb_witdh = preg_split("/x/", $sync_options['thumbsize']);
-		// Takes output width (ow), divides it by aspect ratio (a), truncates digits after decimal point
+		if (!isset($thumb_witdh[0]))
+		{ /* If invalid width x height format fallback to default thumbsize (default 120x68) */
+			$warnings[] = "Invalid thumbnail size [". $sync_options['thumbsize'] ."], fallback to default width 120";
+			$thumb_witdh[0] = "120";
+		}
+		/* Takes output width (ow), divides it by aspect ratio (a), truncates digits after decimal point */
 		$scale = "scale='".$thumb_witdh[0].":trunc(ow/a)'";
 
 					/* The loop */
