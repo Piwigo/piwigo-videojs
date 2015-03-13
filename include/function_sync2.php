@@ -198,7 +198,7 @@ while ($row = pwg_db_fetch_assoc($result))
                 $file_wo_ext = pathinfo($filename);
 				if (!isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0)
 				{
-					$errors[] = "Unable to read filename for generating thumbnails ".$row['path'];
+					$errors[] = "Unable to read filename for generating thumbnails ".$filename;
 					continue;
 				}
                 $output_dir = dirname($row['path']) . '/pwg_representative/';
@@ -222,6 +222,12 @@ while ($row = pwg_db_fetch_assoc($result))
 						}
 					}
 
+		/* Override the thumbsize (default 120x68) in order to respect the video aspect ratio base on the user specify width */
+		/* https://github.com/xbgmsharp/piwigo-videojs/issues/52 */
+		$thumb_witdh = preg_split("/x/", $sync_options['thumbsize']);
+		// Takes output width (ow), divides it by aspect ratio (a), truncates digits after decimal point
+		$scale = "scale='".$thumb_witdh[0].":trunc(ow/a)'";
+
 					/* The loop */
                     $in = $filename;
                     for ($second=0; $second <= $exif['playtime_seconds']; $second+=$sync_options['thumbsec'])
@@ -232,10 +238,10 @@ while ($row = pwg_db_fetch_assoc($result))
 						isset($sync_options['batch_manager']) ? $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out : '';
 						$sync_arr['thumbnail'][] = $second.' seconds '.$out;
                         /* Lets do it , default output to JPG */
-                        $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y \"".$out. "\"";
+                        $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -vf ".$scale." -y \"".$out. "\"";
                         if ($sync_options['output'] == "png")
                         {
-                            $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y \"".$out. "\"";
+                            $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -vf ".$scale." -y \"".$out. "\"";
                         }
                         $log = system($ffmpeg, $retval);
                         //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);
