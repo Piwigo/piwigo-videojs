@@ -127,6 +127,7 @@ if (isset($exif))
 	$exif['duration'] = (string)$general->Duration_String;
 	$exif['bitrate'] = (string)$video->BitRate_String;
 	$exif['sampling_rate'] = (string)$audio->SamplingRate_String;
+	isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
 	ksort($exif);
 }
 

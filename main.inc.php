@@ -126,6 +126,7 @@ function vjs_format_exif_data($exif, $filename, $map)
 		{
 			$exif['resolution'] = $exif['width'] ."x". $exif['height'];
 		}
+		isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
 		ksort($exif);
 	}
 	//print_r($exif)."\n<br/>\n";
