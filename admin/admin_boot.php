@@ -65,6 +65,12 @@ function vjs_add_tab($sheets, $id)
 
 		unset($sheets['coi'], $sheets['update']);
 		unset($sheets['rotate'], $sheets['update']);
+
+		/* Replace the RotateImage by a our own */
+		$sheets['rotate'] = array(
+			'caption' => 'Rotate',
+			'url' => get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_rotate.php&amp;image_id='.$_GET['image_id'],
+			);
 	}
 
 	return $sheets;
