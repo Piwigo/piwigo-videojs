@@ -19,7 +19,7 @@
       <label><input type="radio" name="angle" value="{$angle.value}"{if $angle.value == $angle_selected} checked="checked"{/if}> {$angle.name}</label><br>
 {/foreach}
   </p>
-  <p style="text-align:left"><input class="submit" type="submit" value="{'Rotate'|@translate}" name="rotate"></p>
+  <p style="text-align:left"><input class="submit" type="submit" value="{'Rotate'|@translate}" name="videojs_rotate"></p>
 </form>
 
       </td>
