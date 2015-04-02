@@ -181,9 +181,10 @@ function vjs_render_media($content, $picture)
 	{
 		$height = $picture['current']['height'];
 	}
-	if ( !isset($width) || !isset($height))
+	if ( !isset($width) || !isset($height) || $width == 0 || $height == 0)
 	{
 		// If guess was unsuccessful, fallback to default 16/9 resolution 720x480
+		// Mostly happend when video metadata was incorrectly sync into PWG
 		// This is the case for ogv video for example.
 		$height = 480;
 		$width  = round(16 * 480 / 9, 0);
@@ -376,6 +377,12 @@ function vjs_render_media($content, $picture)
 		array('vjs_content' => dirname(__FILE__)."/template/vjs-player.tpl")
 	);
 
+	// Ensure the ratio is always below 100%, there is for sure a better way!
+	$ratio = round($height/$width*100, 2);
+	if ($ratio >= 100)
+	{
+		$ratio = round($width/$height*100, 2);
+	}
 	// Assign the template variables
 	// We use here the piwigo's get_gallery_home_url function to build
 	// the full URL as suggested by videojs for flash fallback compatibility
@@ -384,7 +391,7 @@ function vjs_render_media($content, $picture)
 			'VIDEOJS_POSTER_URL' => embellish_url(get_gallery_home_url().$poster),
 			'VIDEOJS_PATH'       => embellish_url(get_gallery_home_url().VIDEOJS_PATH),
 			'WIDTH'              => $width,
-			'RATIO'              => round($height/$width*100, 2),
+			'RATIO'              => $ratio,
 			'OPTIONS'            => $options,
 			'VIDEOJS_SKIN'       => $skin,
 			'VIDEOJS_SKINCSS'    => $skincss,
