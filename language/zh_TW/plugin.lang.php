@@ -20,9 +20,7 @@
 // | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, |
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
-$lang['WIDTH_DESC'] = '最大寬度選項，設定視頻的顯示最大寬度，如視頻的尺寸更大，則其寬度將不超過設定寬度。';
 $lang['WATERMARK_DESC'] = '在視頻上顯示水印。';
-$lang['WIDTH'] = '最大寬度';
 $lang['ZOOMROTATE'] = '縮放 - 旋轉';
 $lang['ZOOMROTATE_DESC'] = '如可能，使用旋轉元數據對視頻進行旋轉和縮放。';
 $lang['AUTOPLAY'] = '自動播放';
@@ -63,4 +61,7 @@ $lang['SYNC_THUMBSIZE_DESC'] = '像素的大小，保持小的，在默認情況
 $lang['SYNC_WARNINGS'] = '警告';
 $lang['VOLUME'] = '量';
 $lang['VOLUME_DESC'] = '音量選項設置音量級別。0是關閉（靜音），1.0是全開，0.5是一半。';
-?>
+$lang['HEIGHT'] = '最大高度';
+$lang['HEIGHT_DESC'] = '最大高度屬性是設置影片的最大高度，如果影片高度超出此值，將會被限制在此最大高度。';
+$lang['LANGUAGE'] = '語言';
+$lang['LANGUAGE_DESC'] = '選擇播放語言';
