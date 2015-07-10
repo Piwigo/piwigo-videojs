@@ -30,6 +30,7 @@ Requirement
 Piwigo-videojs require those 2 programs to be install on your system:
 
 * [MediaInfo](http://mediaarea.net/en/MediaInfo)
+* [Libav](https://libav.org/)
 * [FFmpeg](http://www.ffmpeg.org/)
 
 Please refer to the [wiki](https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#step-2-install) for additional information.
@@ -62,6 +63,9 @@ Thanks
 
 * [videojs](http://videojs.com/)
 * [getid3](http://getid3.sourceforge.net/)
+* [FFmpeg](http://www.ffmpeg.org/)
+* [MediaInfo](http://mediaarea.net/en/MediaInfo)
+* [Libav](https://libav.org/)
 * [piwigo-jplayer](https://github.com/d-matt/piwigo-jplayer)
 
 Licence
