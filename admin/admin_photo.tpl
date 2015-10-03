@@ -1,6 +1,6 @@
 <h2>{$TITLE} &#8250; {'Edit photo'|@translate} {$TABSHEET_TITLE}</h2>
 
-<form action="{$F_ACTION}" method="post" id="openstreetmap">
+<form action="{$F_ACTION}" method="post" id="videojs">
 
 	<input type="hidden" name="pwg_token" value="{$PWG_TOKEN}">
 	<fieldset>
