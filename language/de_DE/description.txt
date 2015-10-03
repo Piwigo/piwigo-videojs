@@ -1,1 +1,0 @@
-Einstellungen für den HTML5 Video Player videojs

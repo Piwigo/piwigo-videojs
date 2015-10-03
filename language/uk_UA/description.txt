@@ -1,1 +1,0 @@
-Інтеграція VideoJS для Piwigo.

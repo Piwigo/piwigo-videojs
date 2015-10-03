@@ -1,1 +1,0 @@
-Pozwala zintegrować VideoJS z Piwigo.

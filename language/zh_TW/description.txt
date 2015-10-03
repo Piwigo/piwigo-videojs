@@ -1,1 +1,0 @@
-基於Piwigo的VideoJS集成

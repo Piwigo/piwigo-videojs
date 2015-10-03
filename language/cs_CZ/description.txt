@@ -1,1 +1,0 @@
-Přehrávač HTML5 VideoJS integrace videa do Piwigo fotogalerie
