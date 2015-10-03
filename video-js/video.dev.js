@@ -80,7 +80,7 @@ vjs.ACCESS_PROTOCOL = ('https:' == document.location.protocol ? 'https://' : 'ht
 * Full player version
 * @type {string}
 */
-vjs['VERSION'] = '4.12.0';
+vjs['VERSION'] = '4.12.15';
 
 /**
  * Global Player instance options, surfaced from vjs.Player.prototype.options_
@@ -1302,6 +1302,18 @@ vjs.round = function(num, dec) {
  * @private
  */
 vjs.createTimeRange = function(start, end){
+  if (start === undefined && end === undefined) {
+    return {
+      length: 0,
+      start: function() {
+        throw new Error('This TimeRanges object is empty');
+      },
+      end: function() {
+        throw new Error('This TimeRanges object is empty');
+      }
+    };
+  }
+
   return {
     length: 1,
     start: function() { return start; },
@@ -2556,14 +2568,14 @@ vjs.Component.prototype.triggerReady = function(){
 
   var readyQueue = this.readyQueue_;
 
+  // Reset Ready Queue
+  this.readyQueue_ = [];
+
   if (readyQueue && readyQueue.length > 0) {
 
     for (var i = 0, j = readyQueue.length; i < j; i++) {
       readyQueue[i].call(this);
     }
-
-    // Reset Ready Queue
-    this.readyQueue_ = [];
 
     // Allow for using event listeners also, in case you want to do something everytime a source is ready.
     this.trigger('ready');
@@ -5160,6 +5172,13 @@ vjs.Player.prototype.ended = function(){ return this.techGet('ended'); };
  */
 vjs.Player.prototype.seeking = function(){ return this.techGet('seeking'); };
 
+/**
+ * Returns the TimeRanges of the media that are currently available
+ * for seeking to.
+ * @return {TimeRanges} the seekable intervals of the media timeline
+ */
+vjs.Player.prototype.seekable = function(){ return this.techGet('seekable'); };
+
 // When the player is first initialized, trigger activity so components
 // like the control bar show themselves if needed
 vjs.Player.prototype.userActivity_ = true;
@@ -5601,6 +5620,7 @@ vjs.DurationDisplay = vjs.Component.extend({
     // Once the order of durationchange and this.player_.duration() being set is figured out,
     // this can be updated.
     this.on(player, 'timeupdate', this.updateContent);
+    this.on(player, 'loadedmetadata', this.updateContent);
   }
 });
 
@@ -6878,13 +6898,13 @@ vjs.MediaTechController.prototype.emulateTextTracks = function() {
 vjs.MediaTechController.prototype.textTracks_;
 
 vjs.MediaTechController.prototype.textTracks = function() {
-  this.textTracks_ = this.textTracks_ || new vjs.TextTrackList();
-  return this.textTracks_;
+  this.player_.textTracks_ = this.player_.textTracks_ || new vjs.TextTrackList();
+  return this.player_.textTracks_;
 };
 
 vjs.MediaTechController.prototype.remoteTextTracks = function() {
-  this.remoteTextTracks_ = this.remoteTextTracks_ || new vjs.TextTrackList();
-  return this.remoteTextTracks_;
+  this.player_.remoteTextTracks_ = this.player_.remoteTextTracks_ || new vjs.TextTrackList();
+  return this.player_.remoteTextTracks_;
 };
 
 createTrackHelper = function(self, kind, label, language, options) {
@@ -6967,7 +6987,7 @@ vjs.MediaTechController.withSourceHandlers = function(Tech){
    * @param  {Function} handler  The source handler
    * @param  {Boolean}  first    Register it before any existing handlers
    */
-  Tech.registerSourceHandler = function(handler, index){
+  Tech['registerSourceHandler'] = function(handler, index){
     var handlers = Tech.sourceHandlers;
 
     if (!handlers) {
@@ -6994,7 +7014,7 @@ vjs.MediaTechController.withSourceHandlers = function(Tech){
         can;
 
     for (var i = 0; i < handlers.length; i++) {
-      can = handlers[i].canHandleSource(source);
+      can = handlers[i]['canHandleSource'](source);
 
       if (can) {
         return handlers[i];
@@ -7013,7 +7033,7 @@ vjs.MediaTechController.withSourceHandlers = function(Tech){
     var sh = Tech.selectSourceHandler(srcObj);
 
     if (sh) {
-      return sh.canHandleSource(srcObj);
+      return sh['canHandleSource'](srcObj);
     }
 
     return '';
@@ -7029,12 +7049,22 @@ vjs.MediaTechController.withSourceHandlers = function(Tech){
   Tech.prototype.setSource = function(source){
     var sh = Tech.selectSourceHandler(source);
 
+    if (!sh) {
+      // Fall back to a native source hander when unsupported sources are
+      // deliberately set
+      if (Tech['nativeSourceHandler']) {
+        sh = Tech['nativeSourceHandler'];
+      } else {
+        vjs.log.error('No source hander found for the current source.');
+      }
+    }
+
     // Dispose any existing source handler
     this.disposeSourceHandler();
     this.off('dispose', this.disposeSourceHandler);
 
     this.currentSource_ = source;
-    this.sourceHandler_ = sh.handleSource(source, this);
+    this.sourceHandler_ = sh['handleSource'](source, this);
     this.on('dispose', this.disposeSourceHandler);
 
     return this;
@@ -7044,8 +7074,8 @@ vjs.MediaTechController.withSourceHandlers = function(Tech){
    * Clean up any existing source handler
    */
   Tech.prototype.disposeSourceHandler = function(){
-    if (this.sourceHandler_ && this.sourceHandler_.dispose) {
-      this.sourceHandler_.dispose();
+    if (this.sourceHandler_ && this.sourceHandler_['dispose']) {
+      this.sourceHandler_['dispose']();
     }
   };
 
@@ -7115,10 +7145,6 @@ vjs.Html5 = vjs.MediaTechController.extend({
       }
     }
 
-    if (this['featuresNativeTextTracks']) {
-      this.on('loadstart', vjs.bind(this, this.hideCaptions));
-    }
-
     // Determine if native controls should be used
     // Our goal should be to get the custom controls on mobile solid everywhere
     // so we can remove this all together. Right now this will block custom
@@ -7132,7 +7158,7 @@ vjs.Html5 = vjs.MediaTechController.extend({
     // In Chrome (15), if you have autoplay + a poster + no controls, the video gets hidden (but audio plays)
     // This fixes both issues. Need to wait for API, so it updates displays correctly
     player.ready(function(){
-      if (this.tag && this.options_['autoplay'] && this.paused()) {
+      if (this.src() && this.tag && this.options_['autoplay'] && this.paused()) {
         delete this.tag['poster']; // Chrome Fix. Fixed in Chrome v16.
         this.play();
       }
@@ -7219,24 +7245,6 @@ vjs.Html5.prototype.createEl = function(){
 
   return el;
   // jenniisawesome = true;
-};
-
-
-vjs.Html5.prototype.hideCaptions = function() {
-  var tracks = this.el_.textTracks,
-      track,
-      i = tracks.length,
-      kinds = {
-        'captions': 1,
-        'subtitles': 1
-      };
-
-  while (i--) {
-    track = tracks[i];
-    if (track && track['kind'] in kinds) {
-      track.mode = 'disabled';
-    }
-  }
 };
 
 // Make video events trigger player events
@@ -7369,10 +7377,27 @@ vjs.Html5.prototype.exitFullScreen = function(){
   this.el_.webkitExitFullScreen();
 };
 
+// Checks to see if the element's reported URI (either from `el_.src`
+// or `el_.currentSrc`) is a blob-uri and, if so, returns the uri that
+// was passed into the source-handler when it was first invoked instead
+// of the blob-uri
+vjs.Html5.prototype.returnOriginalIfBlobURI_ = function (elementURI, originalURI) {
+  var blobURIRegExp = /^blob\:/i;
+
+  // If originalURI is undefined then we are probably in a non-source-handler-enabled
+  // tech that inherits from the Html5 tech so we should just return the elementURI
+  // regardless of it's blobby-ness
+  if (originalURI && elementURI && blobURIRegExp.test(elementURI)) {
+    return originalURI;
+  }
+  return elementURI;
+};
 
 vjs.Html5.prototype.src = function(src) {
+  var elementSrc = this.el_.src;
+
   if (src === undefined) {
-    return this.el_.src;
+    return this.returnOriginalIfBlobURI_(elementSrc, this.source_);
   } else {
     // Setting src through `src` instead of `setSrc` will be deprecated
     this.setSrc(src);
@@ -7384,7 +7409,15 @@ vjs.Html5.prototype.setSrc = function(src) {
 };
 
 vjs.Html5.prototype.load = function(){ this.el_.load(); };
-vjs.Html5.prototype.currentSrc = function(){ return this.el_.currentSrc; };
+vjs.Html5.prototype.currentSrc = function(){
+  var elementSrc = this.el_.currentSrc;
+
+  if (!this.currentSource_) {
+    return elementSrc;
+  }
+
+  return this.returnOriginalIfBlobURI_(elementSrc, this.currentSource_.src);
+};
 
 vjs.Html5.prototype.poster = function(){ return this.el_.poster; };
 vjs.Html5.prototype.setPoster = function(val){ this.el_.poster = val; };
@@ -7403,6 +7436,7 @@ vjs.Html5.prototype.setLoop = function(val){ this.el_.loop = val; };
 
 vjs.Html5.prototype.error = function(){ return this.el_.error; };
 vjs.Html5.prototype.seeking = function(){ return this.el_.seeking; };
+vjs.Html5.prototype.seekable = function(){ return this.el_.seekable; };
 vjs.Html5.prototype.ended = function(){ return this.el_.ended; };
 vjs.Html5.prototype.defaultMuted = function(){ return this.el_.defaultMuted; };
 
@@ -7455,25 +7489,6 @@ vjs.Html5.prototype.addRemoteTextTrack = function(options) {
   }
 
   this.el().appendChild(track);
-
-  if (track.track['kind'] === 'metadata') {
-    track['track']['mode'] = 'hidden';
-  } else {
-    track['track']['mode'] = 'disabled';
-  }
-
-  track['onload'] = function() {
-    var tt = track['track'];
-    if (track.readyState >= 2) {
-      if (tt['kind'] === 'metadata' && tt['mode'] !== 'hidden') {
-        tt['mode'] = 'hidden';
-      } else if (tt['kind'] !== 'metadata' && tt['mode'] !== 'disabled') {
-        tt['mode'] = 'disabled';
-      }
-      track['onload'] = null;
-    }
-  };
-
   this.remoteTextTracks().addTrack_(track.track);
 
   return track;
@@ -7518,20 +7533,42 @@ vjs.Html5.isSupported = function(){
 // Add Source Handler pattern functions to this tech
 vjs.MediaTechController.withSourceHandlers(vjs.Html5);
 
+/*
+ * Override the withSourceHandler mixin's methods with our own because
+ * the HTML5 Media Element returns blob urls when utilizing MSE and we
+ * want to still return proper source urls even when in that case
+ */
+(function(){
+  var
+    origSetSource = vjs.Html5.prototype.setSource,
+    origDisposeSourceHandler = vjs.Html5.prototype.disposeSourceHandler;
+
+  vjs.Html5.prototype.setSource = function (source) {
+    var retVal = origSetSource.call(this, source);
+    this.source_ = source.src;
+    return retVal;
+  };
+
+  vjs.Html5.prototype.disposeSourceHandler = function () {
+    this.source_ = undefined;
+    return origDisposeSourceHandler.call(this);
+  };
+})();
+
 /**
  * The default native source handler.
  * This simply passes the source to the video element. Nothing fancy.
  * @param  {Object} source   The source object
  * @param  {vjs.Html5} tech  The instance of the HTML5 tech
  */
-vjs.Html5.nativeSourceHandler = {};
+vjs.Html5['nativeSourceHandler'] = {};
 
 /**
  * Check if the video element can handle the source natively
  * @param  {Object} source  The source object
  * @return {String}         'probably', 'maybe', or '' (empty string)
  */
-vjs.Html5.nativeSourceHandler.canHandleSource = function(source){
+vjs.Html5['nativeSourceHandler']['canHandleSource'] = function(source){
   var match, ext;
 
   function canPlayType(type){
@@ -7565,7 +7602,7 @@ vjs.Html5.nativeSourceHandler.canHandleSource = function(source){
  * @param  {Object} source    The source object
  * @param  {vjs.Html5} tech   The instance of the Html5 tech
  */
-vjs.Html5.nativeSourceHandler.handleSource = function(source, tech){
+vjs.Html5['nativeSourceHandler']['handleSource'] = function(source, tech){
   tech.setSrc(source.src);
 };
 
@@ -7573,10 +7610,10 @@ vjs.Html5.nativeSourceHandler.handleSource = function(source, tech){
  * Clean up the source handler when disposing the player or switching sources..
  * (no cleanup is needed when supporting the format natively)
  */
-vjs.Html5.nativeSourceHandler.dispose = function(){};
+vjs.Html5['nativeSourceHandler']['dispose'] = function(){};
 
 // Register the native source handler
-vjs.Html5.registerSourceHandler(vjs.Html5.nativeSourceHandler);
+vjs.Html5['registerSourceHandler'](vjs.Html5['nativeSourceHandler']);
 
 /**
  * Check if the volume can be changed in this browser/device.
@@ -7763,12 +7800,6 @@ vjs.Flash = vjs.MediaTechController.extend({
 
     var source = options['source'],
 
-        // Which element to embed in
-        parentEl = options['parentEl'],
-
-        // Create a temporary element to be replaced by swf object
-        placeHolder = this.el_ = vjs.createEl('div', { id: player.id() + '_temp_flash' }),
-
         // Generate ID for swf object
         objId = player.id()+'_flash_api',
 
@@ -7815,7 +7846,7 @@ vjs.Flash = vjs.MediaTechController.extend({
     }
 
     // Add placeholder to player div
-    vjs.insertFirst(placeHolder, parentEl);
+    vjs.insertFirst(this.el_, options['parentEl']);
 
     // Having issues with Flash reloading on certain page actions (hide/resize/fullscreen) in certain browsers
     // This allows resetting the playhead when we catch the reload
@@ -7842,7 +7873,7 @@ vjs.Flash = vjs.MediaTechController.extend({
     // use stageclick events triggered from inside the SWF instead
     player.on('stageclick', player.reportUserActivity);
 
-    this.el_ = vjs.Flash.embed(options['swf'], placeHolder, flashVars, params, attributes);
+    this.el_ = vjs.Flash.embed(options['swf'], this.el_, flashVars, params, attributes);
   }
 });
 
@@ -7851,6 +7882,10 @@ vjs.Flash.prototype.dispose = function(){
 };
 
 vjs.Flash.prototype.play = function(){
+  if (this.ended()) {
+    this['setCurrentTime'](0);
+  }
+
   this.el_.vjs_play();
 };
 
@@ -7914,8 +7949,27 @@ vjs.Flash.prototype['setPoster'] = function(){
   // poster images are not handled by the Flash tech so make this a no-op
 };
 
+vjs.Flash.prototype.seekable = function() {
+  var duration = this.duration();
+  if (duration === 0) {
+    // The SWF reports a duration of zero when the actual duration is unknown
+    return vjs.createTimeRange();
+  }
+  return vjs.createTimeRange(0, this.duration());
+};
+
 vjs.Flash.prototype.buffered = function(){
+  if (!this.el_.vjs_getProperty) {
+    return vjs.createTimeRange();
+  }
   return vjs.createTimeRange(0, this.el_.vjs_getProperty('buffered'));
+};
+
+vjs.Flash.prototype.duration = function(){
+  if (!this.el_.vjs_getProperty) {
+    return 0;
+  }
+  return this.el_.vjs_getProperty('duration');
 };
 
 vjs.Flash.prototype.supportsFullScreen = function(){
@@ -7930,7 +7984,7 @@ vjs.Flash.prototype.enterFullScreen = function(){
   // Create setters and getters for attributes
   var api = vjs.Flash.prototype,
     readWrite = 'rtmpConnection,rtmpStream,preload,defaultPlaybackRate,playbackRate,autoplay,loop,mediaGroup,controller,controls,volume,muted,defaultMuted'.split(','),
-    readOnly = 'error,networkState,readyState,seeking,initialTime,duration,startOffsetTime,paused,played,seekable,ended,videoTracks,audioTracks,videoWidth,videoHeight'.split(','),
+    readOnly = 'error,networkState,readyState,seeking,initialTime,startOffsetTime,paused,played,ended,videoTracks,audioTracks,videoWidth,videoHeight'.split(','),
     // Overridden: buffered, currentTime, currentSrc
     i;
 
@@ -7970,14 +8024,14 @@ vjs.MediaTechController.withSourceHandlers(vjs.Flash);
  * @param  {Object} source   The source object
  * @param  {vjs.Flash} tech  The instance of the Flash tech
  */
-vjs.Flash.nativeSourceHandler = {};
+vjs.Flash['nativeSourceHandler'] = {};
 
 /**
  * Check Flash can handle the source natively
  * @param  {Object} source  The source object
  * @return {String}         'probably', 'maybe', or '' (empty string)
  */
-vjs.Flash.nativeSourceHandler.canHandleSource = function(source){
+vjs.Flash['nativeSourceHandler']['canHandleSource'] = function(source){
   var type;
 
   if (!source.type) {
@@ -8001,7 +8055,7 @@ vjs.Flash.nativeSourceHandler.canHandleSource = function(source){
  * @param  {Object} source    The source object
  * @param  {vjs.Flash} tech   The instance of the Flash tech
  */
-vjs.Flash.nativeSourceHandler.handleSource = function(source, tech){
+vjs.Flash['nativeSourceHandler']['handleSource'] = function(source, tech){
   tech.setSrc(source.src);
 };
 
@@ -8009,10 +8063,10 @@ vjs.Flash.nativeSourceHandler.handleSource = function(source, tech){
  * Clean up the source handler when disposing the player or switching sources..
  * (no cleanup is needed when supporting the format natively)
  */
-vjs.Flash.nativeSourceHandler.dispose = function(){};
+vjs.Flash['nativeSourceHandler']['dispose'] = function(){};
 
 // Register the native source handler
-vjs.Flash.registerSourceHandler(vjs.Flash.nativeSourceHandler);
+vjs.Flash['registerSourceHandler'](vjs.Flash['nativeSourceHandler']);
 
 vjs.Flash.formats = {
   'video/flv': 'FLV',
@@ -8109,6 +8163,7 @@ vjs.Flash.embed = function(swf, placeHolder, flashVars, params, attributes){
   ;
 
   placeHolder.parentNode.replaceChild(obj, placeHolder);
+  obj[vjs.expando] = placeHolder[vjs.expando];
 
   // IE6 seems to have an issue where it won't initialize the swf object after injecting it.
   // This is a dumb fix
@@ -8229,7 +8284,7 @@ vjs.Flash.rtmpSourceHandler = {};
  * @param  {Object} source  The source object
  * @return {String}         'probably', 'maybe', or '' (empty string)
  */
-vjs.Flash.rtmpSourceHandler.canHandleSource = function(source){
+vjs.Flash.rtmpSourceHandler['canHandleSource'] = function(source){
   if (vjs.Flash.isStreamingType(source.type) || vjs.Flash.isStreamingSrc(source.src)) {
     return 'maybe';
   }
@@ -8244,7 +8299,7 @@ vjs.Flash.rtmpSourceHandler.canHandleSource = function(source){
  * @param  {Object} source    The source object
  * @param  {vjs.Flash} tech   The instance of the Flash tech
  */
-vjs.Flash.rtmpSourceHandler.handleSource = function(source, tech){
+vjs.Flash.rtmpSourceHandler['handleSource'] = function(source, tech){
   var srcParts = vjs.Flash.streamToParts(source.src);
 
   tech['setRtmpConnection'](srcParts.connection);
@@ -8252,7 +8307,7 @@ vjs.Flash.rtmpSourceHandler.handleSource = function(source, tech){
 };
 
 // Register the native source handler
-vjs.Flash.registerSourceHandler(vjs.Flash.rtmpSourceHandler);
+vjs.Flash['registerSourceHandler'](vjs.Flash.rtmpSourceHandler);
 /**
  * The Media Loader is the component that decides which playback technology to load
  * when the player is initialized.
@@ -9560,10 +9615,6 @@ vjs.ChaptersTrackMenuItem.prototype.update = function(){
       }
     }
 
-    if (target.selectedOptions) {
-      target.selectedOptions[0] = option;
-    }
-
     target.selectedIndex = i;
   }
 
@@ -9849,7 +9900,7 @@ vjs.plugin = function(name, init){
   vjs.Player.prototype[name] = init;
 };
 
-/* vtt.js - v0.11.11 (https://github.com/mozilla/vtt.js) built on 22-01-2015 */
+/* vtt.js - v0.12.1 (https://github.com/mozilla/vtt.js) built on 08-07-2015 */
 
 (function(root) {
   var vttjs = root.vttjs = {};
@@ -10199,7 +10250,7 @@ vjs.plugin = function(name, init){
 
   var scrollSetting = {
     "": true,
-    "up": true,
+    "up": true
   };
 
   function findScrollSetting(value) {
@@ -11115,7 +11166,7 @@ vjs.plugin = function(name, init){
     if (cue.vertical === "") {
       this.applyStyles({
         left:  this.formatStyle(textPos, "%"),
-        width: this.formatStyle(cue.size, "%"),
+        width: this.formatStyle(cue.size, "%")
       });
     // Vertical box orientation; textPos is the distance from the top edge of the
     // area to the top edge of the box and cue.size is the height extending
@@ -11134,7 +11185,7 @@ vjs.plugin = function(name, init){
         left: this.formatStyle(box.left, "px"),
         right: this.formatStyle(box.right, "px"),
         height: this.formatStyle(box.height, "px"),
-        width: this.formatStyle(box.width, "px"),
+        width: this.formatStyle(box.width, "px")
       });
     };
   }
