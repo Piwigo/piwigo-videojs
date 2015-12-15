@@ -111,25 +111,26 @@ if (isset($general->BitRate_String))
 {
     $exif['overall_bit_rate'] = (string)$general->BitRate_String;
 }
-if (isset($general->xyz))
+if (isset($general->xyz) or isset($general->comapplequicktimelocationISO6709))
 {
+    isset($general->xyz) ? $gps = (string)$general->xyz : $gps = (string)$general->comapplequicktimelocationISO6709;
     //$test = "+35.6445-139.7455-029.201/";
     //print_r(preg_split('/(\+|\-)/', $general->xyz, -1, PREG_SPLIT_DELIM_CAPTURE));
-    $value = preg_split('/(\+|\-)/', $general->xyz, -1, PREG_SPLIT_DELIM_CAPTURE);
+    $value = preg_split('/(\+|\-)/', $gps, -1, PREG_SPLIT_DELIM_CAPTURE);
     $exif['latitude'] = $value[1].$value[2];
     $exif['longitude'] = $value[3].$value[4];
 }
-if (isset($general->Model))
+if (isset($general->Model) or isset($general->comapplequicktimemodel))
 {
-    $exif['model'] = (string)$general->Model;
+    isset($general->Model) ? $exif['model'] = (string)$general->Model : $exif['model'] = (string)$general->comapplequicktimemodel;
 }
-if (isset($general->comapplequicktimesoftware))
+if (isset($general->comapplequicktimesoftware) and isset($exif['model']))
 {
     $exif['model'] .= " ". (string)$general->comapplequicktimesoftware;
 }
-if (isset($general->Make))
+if (isset($general->Make) or isset($general->comapplequicktimemake))
 {
-    $exif['make'] = (string)$general->Make;
+    isset($general->Make) ? $exif['make'] = (string)$general->Make : $exif['make'] = (string)$general->comapplequicktimemake;
 }
 if (isset($general->Recorded_Date))
 {
