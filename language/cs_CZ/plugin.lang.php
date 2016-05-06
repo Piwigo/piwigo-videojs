@@ -15,8 +15,6 @@ $lang['SKIN'] = 'Vzhled';
 $lang['SKIN_DESC'] = 'Vyberte si šablonu jakou chcete použít na přehrávač nebo si <a href="http://designer.videojs.com/" target="_blank">vytvořte vzhled vlastní</a>.';
 $lang['CUSTOMCSS'] = 'Vlastní nastylování CSS';
 $lang['CUSTOMCSS_DESC'] = 'Vlastní styl CSS sem zkopíruj z této stránky <a href="http://www.videojs.com/" target="_blank">web VideoJS</a>.';
-$lang['WIDTH'] = 'Šířka max';
-$lang['WIDTH_DESC'] = 'Nastavení max. šířky zobrazovaného videa, a to ve chvíli kdy video toto nastavení přesáhne.';
 $lang['UPSCALE'] = 'Zvětšení';
 $lang['UPSCALE_DESC'] = 'POkud je video měnší než nastavená hodnota pro max. šířku tak bude obsah zvětšen právě na tuto hodnotu.';
 
@@ -46,3 +44,7 @@ $lang['SYNC_THUMBSIZE_DESC'] = 'Velikost v pixelech, doporučuje se vybrat malé
 $lang['VOLUME'] = 'Hlasitost';
 $lang['VOLUME_DESC'] = 'Ovladač hlasitosti nastavuje hlasitost, 0 je vypnuto, 1 plně zapnuto, 0,5 je poloviční hlasitost.';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Přidá filmový efekt do vytvářených náhledů';
+$lang['HEIGHT'] = 'Max výška';
+$lang['HEIGHT_DESC'] = 'Atribut maximální výška nastavuje maximální výšku videa. Pokud je výška videa větší než hodnota maximální výška, bude video zmenšeno na velikost hodnoty max výška.';
+$lang['LANGUAGE'] = 'Jazyk';
+$lang['LANGUAGE_DESC'] = 'Vyberte jazyk přehrávače.';
