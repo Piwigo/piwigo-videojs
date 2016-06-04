@@ -85,6 +85,20 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 		</ul>
 	</fieldset>
 	<fieldset>
+		<legend>{'PLAYER'|@translate}</legend>
+		<ul>
+			<li>
+				<label><span class="property">{'PLAYER'|@translate} : </span></label>
+				<select name="vjs_player" id="vjs_player" onchange="player_toggle(this);">
+					{html_options options=$AVAILABLE_PLAYERS selected=$player}
+				</select>
+				<br/><small>{'PLAYER_DESC'|@translate}</small>
+			</li>
+		</ul>
+	</fieldset>
+
+	<div id="player">
+	<fieldset>
 		<legend>{'PLUGIN'|@translate}</legend>
 		<ul>
 			<li>
@@ -137,7 +151,27 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			</li>
 		</ul>
 	</fieldset>
+	</div>
 	<p>
 		<input class="submit" type="submit" value="{'Save Settings'|@translate}" name="submit"/>
 	</p>
 </form>
+
+{literal}
+<script>
+function player_toggle()
+{
+        var select = document.getElementById("vjs_player");
+        var div = document.getElementById("player");
+	if (select.selectedIndex == 1) /* Only for VideoJS v4 */
+        {
+                div.removeAttribute("style");
+        } else {
+                div.setAttribute("style","visibility:hidden; width:0px; height:0px; display:none;");
+        }
+}
+
+window.onload = player_toggle();
+
+</script>
+{/literal}

@@ -37,6 +37,13 @@ $available_skins = array(
 	'vjs-redtube-skin' => 'redtube',
 );
 
+// Available player
+$available_players = array(
+	'vjs-player.tpl.v5' => 'VideoJS v5',
+	'vjs-player.tpl.v4' => 'VideoJS v4',
+	'html5-player.tpl' => 'Browser',
+);
+
 // Available preload value
 $available_preload = array(
 	'auto' => 'Auto',
@@ -85,6 +92,7 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 							'thumbnails'    => get_boolean($_POST['vjs_thumbnails']),
 							'watermark'     => get_boolean($_POST['vjs_watermark']),
 						),
+		'player'	=> $_POST['vjs_player'],
 	);
 	$customcss = $_POST['vjs_customcss'];
 
@@ -112,6 +120,7 @@ list($nb_videos_thumb) = pwg_db_fetch_row( pwg_query($query) );
 $template->assign($conf['vjs_conf']);
 $template->assign(
 	array(
+            'AVAILABLE_PLAYERS'     => $available_players,
             'AVAILABLE_SKINS'       => $available_skins,
             'AVAILABLE_PRELOAD'     => $available_preload,
             'AVAILABLE_LANGUAGES'   => $available_languages,
