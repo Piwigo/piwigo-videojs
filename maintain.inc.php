@@ -65,6 +65,7 @@ function plugin_install()
 					'thumbnails'    => false,
 					'watermark'     => false,
 				),
+		'player'	=> 'vjs-player.tpl.v5',
 	);
 
 	/* Add configuration to the config table */
@@ -84,19 +85,8 @@ function plugin_install()
 
 	/* Table to hold videos metadata details */
 	$q = 'CREATE TABLE IF NOT EXISTS `'.videojs_table.'` (
-			`id` mediumint(8) NOT NULL,
-			`format` varchar(64) DEFAULT NULL,
-			`type` varchar(64) DEFAULT NULL,
-			`duration` varchar(64) DEFAULT NULL,
-			`overall_bit_rate` varchar(64) DEFAULT NULL,
-			`model` varchar(128) DEFAULT NULL,
-			`make` varchar(128) DEFAULT NULL,
-			`display_aspect_ratio` varchar(8) DEFAULT NULL,
-			`width` smallint(9) DEFAULT NULL,
-			`height` smallint(9) DEFAULT NULL,
-			`frame_rate` varchar(64) DEFAULT NULL,
-			`channel` varchar(64) DEFAULT NULL,
-			`sampling_rate` varchar(64) DEFAULT NULL,
+			`id` mediumint(8) unsigned NOT NULL,
+			`metadata` varchar(255) DEFAULT NULL,
 			PRIMARY KEY (id)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8
 		;';
