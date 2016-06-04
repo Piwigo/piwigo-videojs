@@ -6,7 +6,7 @@
 *
 * Created   :   9.07.2013
 *
-* Copyright 2012-2015 <xbgmsharp@gmail.com>
+* Copyright 2012-2016 <xbgmsharp@gmail.com>
 *
 *
 * This program is free software: you can redistribute it and/or modify
@@ -92,8 +92,10 @@ while ($row = pwg_db_fetch_assoc($result))
 					pwg_query($query);
 
 					/* At some point we use our own table */
-					//$dbfields = explode(",", "format,type,duration,overall_bit_rate,model,make,display_aspect_ratio,width,height,frame_rate,channel,sampling_rate");
-					//$query = "UPDATE '".$prefixeTable."image_videojs' SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
+					//$json = json_encode($xml); /* convert XML to JSON */
+					//$all_array = json_decode($json,TRUE); /*  Merge all general/video/audio in one array to remove duplicate entry */
+					//$merge_arr = array_merge($all_array['File']['track'][2], $all_array['File']['track'][1], $all_array['File']['track'][0]);
+					//$query = "UPDATE '".$prefixeTable."image_videojs' SET metadata=".serialize($merge_arr).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
 					//pwg_query($query);
 				}
 			}
