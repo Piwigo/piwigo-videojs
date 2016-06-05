@@ -101,8 +101,9 @@ $query = "SELECT * FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['
 $row = pwg_db_fetch_assoc(pwg_query($query));
 
 $angles = array(
-  array('value' => 270, 'name' => l10n('90° right')),
-  array('value' =>  90, 'name' => l10n('90° left')),
+  array('value' =>   0, 'name' => l10n('0°')),
+  array('value' =>  90, 'name' => l10n('90° right')),
+  array('value' => 270, 'name' => l10n('90° left')),
   array('value' => 180, 'name' => l10n('180°'))
 );
 
