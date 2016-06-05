@@ -128,6 +128,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			</li>
 		<ul>
 	</fieldset>
+	</div>
 	<fieldset>
 		<legend>{'VIDEOJSPLUGIN'|@translate}</legend>
 		<ul>
@@ -151,7 +152,6 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			</li>
 		</ul>
 	</fieldset>
-	</div>
 	<p>
 		<input class="submit" type="submit" value="{'Save Settings'|@translate}" name="submit"/>
 	</p>
