@@ -1,3 +1,17 @@
+Changes from v2.7.a to v2.8.a
+- Add support for video metadata display
+- Add new video player skin, thanks Monadh
+- Add new language option for VideoJS player
+- Add support for Subtitles (WebVTT file)
+- Add cleanup support for extra elements created
+- Add support for VideoJS player version 5.10.4
+- Add support for native HTML5 video player, default browser player
+- Improve Sync and Batch Manager and Photo Edit page
+- Update VideoJS player to version 4.12.15
+- Update translation, thanks to the contributors
+- Many improvements, thanks for feedback
+- Many fix, thanks for reporting
+
 Changes from v2.6a to v2.7.a
 - Add Responsive design
 - Add new configuration options
