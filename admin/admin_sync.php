@@ -194,9 +194,18 @@ list($nb_videos_thumb) = pwg_db_fetch_row( pwg_query($query) );
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `latitude` IS NOT NULL and `longitude` IS NOT NULL AND ".SQL_VIDEOS.";";
 list($nb_videos_geotagged) = pwg_db_fetch_row( pwg_query($query) );
 
+
+if (isset($_POST['cat_id']) and is_numeric($_POST['cat_id']))
+{
+	$cat_selected = array($sync_options['cat_id']);
+}
+else
+{
+	$cat_selected = array();
+}
 $query = 'SELECT id, CONCAT(name, IF(dir IS NULL, " (V)", "") ) AS name, uppercats, global_rank  FROM '.CATEGORIES_TABLE;
 display_select_cat_wrapper($query,
-                           array( $sync_options['cat_id'] ),
+                           $cat_selected,
                            'categories',
                            false);
 
