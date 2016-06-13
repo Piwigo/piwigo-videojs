@@ -84,6 +84,19 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			</li>
 		</ul>
 	</fieldset>
+
+	<fieldset>
+		<legend>{'METADATA'|@translate}</legend>
+		<ul>
+			<li>
+				<label><span class="property">{'Show file metadata'|@translate} : </span></label>
+				<label><input type="radio" name="vjs_metadata" value="true" {if $metadata}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_metadata" value="false" {if not $metadata}checked="checked"{/if}/> {'No'|@translate}</label>
+				<br/><small>{'METADATA_DESC'|@translate}</small>
+			</li>
+		</ul>
+	</fieldset>
+
 	<fieldset>
 		<legend>{'PLAYER'|@translate}</legend>
 		<ul>

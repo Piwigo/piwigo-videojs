@@ -66,6 +66,13 @@ function vjs_format_exif_data($exif, $filename, $map)
 		return $exif;
 	}
 
+	// Fetch metdata configuration
+	$metadata = isset($conf['vjs_conf']['metadata']) ? $conf['vjs_conf']['metadata'] : true;
+	if ($metadata == false)
+	{
+		return $exif;
+	}
+
 	// In case it is not an image but not a supported video file by the plugin
 	if (vjs_valid_extension(get_extension($picture['current']['path'])) === false)
 	{

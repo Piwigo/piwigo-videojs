@@ -66,6 +66,7 @@ function plugin_install()
 					'watermark'     => false,
 				),
 		'player'	=> 'vjs-player.tpl.v5',
+		'metadata'	=> true,
 	);
 
 	/* Add configuration to the config table */

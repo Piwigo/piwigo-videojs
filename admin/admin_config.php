@@ -93,6 +93,7 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 							'watermark'     => get_boolean($_POST['vjs_watermark']),
 						),
 		'player'	=> $_POST['vjs_player'],
+		'metadata'	=> get_boolean($_POST['vjs_metadata']),
 	);
 	$customcss = $_POST['vjs_customcss'];
 
