@@ -46,9 +46,14 @@ if (!isset($xml->File))
 [version] => 0.7.58 Initial usage of MediaInfo
 [version] => 0.7.64 Change XML Output
 [version] => 0.7.72 [mediainfo:bugs] #886 XML Output broken / https://sourceforge.net/p/mediainfo/bugs/886/
+[version] => from v0.7.83 to v0.7.86 [mediainfo:bugs] #1002  XML output / https://sourceforge.net/p/mediainfo/bugs/1002/
 */
 if (isset($xml["version"]))
 {
+	if (version_compare($xml["version"], '0.1') == 0)
+	{
+		$exif['warning'] = "Please use at least MediaInfo version 0.7.87 or higher, or lower than MediaInfo version 0.7.80 due to known bug: <a href="https://sourceforge.net/p/mediainfo/bugs/1002/" target="_blank">XML output is broken</a>.<br/>Upgrade or downgrade.<br/><a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">Please refer to the documentation</a>';";
+	}
 	if (version_compare($xml["version"], '0.7.64') < 0)
 	{
 		$exif['error'] = "Please use at least MediaInfo version 0.7.64 or higher, not " . $xml["version"];
