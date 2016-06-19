@@ -65,6 +65,13 @@ while ($row = pwg_db_fetch_assoc($result))
         //echo $filename;
         $sync_arr = array();
         $sync_arr['file'] = $filename;
+	if (!is_readable($filename)) { /* Ensure file is readabale for MediaInfo and FFMEPG */
+		$errors[] = "Unable to read file for syncronisation process".$filename;
+		$errors[] = "File ".$filename." has wrong permission";
+		continue;
+	}
+
+	/* Metadata via MediaInfo */
         $exif = array();
         if ($sync_options['metadata'])
         {
@@ -107,11 +114,11 @@ while ($row = pwg_db_fetch_assoc($result))
             $posters++;
             /* Init value */
             $file_wo_ext = pathinfo($row['path']);
-			//$file_wo_ext['filename'] ? '' : $file_wo_ext['filename'] = substr($filename,0 ,-5);
-			if (!isset($file_wo_ext['filename']) or (isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0))
+            //$file_wo_ext['filename'] ? '' : $file_wo_ext['filename'] = substr($filename,0 ,-5);
+            if (!isset($file_wo_ext['filename']) or (isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0))
             {
-				$errors[] = "Unable to read filename for generating poster ".$row['path'];
-				continue;
+            	$errors[] = "Unable to read filename for generating poster ".$row['path'];
+            	continue;
             }
             $output_dir = dirname($row['path']) . '/pwg_representative/';
             $in = $filename;
@@ -131,23 +138,23 @@ while ($row = pwg_db_fetch_assoc($result))
             else if ($sync_options['postersec'] and !$sync_options['simulate'])
             {/* We really want to create the poster */
 
-				/* Delete any previous poster, avoid duplication on different output format */
-				$extensions = array('.jpg', '.png');
-				foreach ($extensions as $extension)
-				{
-					$ifile = $output_dir.$file_wo_ext['filename'].$extension;
-					if(is_file($ifile))
-					{
-						unlink($ifile);
-					}
-				}
-				/* if video is shorter fallback to last second */
+		/* Delete any previous poster, avoid duplication on different output format */
+		$extensions = array('.jpg', '.png');
+		foreach ($extensions as $extension)
+		{
+			$ifile = $output_dir.$file_wo_ext['filename'].$extension;
+			if(is_file($ifile))
+			{
+				unlink($ifile);
+			}
+		}
+		/* if video is shorter fallback to last second */
                 if (isset($exif['playtime_seconds']) and $sync_options['postersec'] > $exif['playtime_seconds'])
                 {
                     $warnings[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". $exif['playtime_seconds'] ." secondes";
                     $sync_options['postersec'] = (int)$exif['playtime_seconds'];
                 }
-				/* default output to JPG */
+		/* default output to JPG */
                 $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
                 if ($sync_options['output'] == "png")
                 {
@@ -158,7 +165,7 @@ while ($row = pwg_db_fetch_assoc($result))
                 //$infos[] = $filename. ' poster : retval:'. $retval. ", log:". print_r($log, True);
                 if($retval != 0 or !file_exists($out))
                 {
-                    $errors[] = "Error poster running ffmpeg, try it manually:\n<br/>". $ffmpeg;
+                    $errors[] = "Error poster running ffmpeg/avconv, try it manually, check your webserver error log:\n<br/>". $ffmpeg;
                 }
 				else
 				{/* We have a poster, lets update the DB */
@@ -198,11 +205,11 @@ while ($row = pwg_db_fetch_assoc($result))
             {
                 /* Init value */
                 $file_wo_ext = pathinfo($filename);
-				if (!isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0)
-				{
-					$errors[] = "Unable to read filename for generating thumbnails ".$filename;
-					continue;
-				}
+		if (!isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0)
+		{
+			$errors[] = "Unable to read filename for generating thumbnails ".$filename;
+			continue;
+		}
                 $output_dir = dirname($row['path']) . '/pwg_representative/';
 
                 if (!is_dir($output_dir) or !is_writable($output_dir))
@@ -212,17 +219,17 @@ while ($row = pwg_db_fetch_assoc($result))
                 else if ($sync_options['thumbsec'] and !$sync_options['simulate'])
                 {/* We really want to create the thumbnails */
 
-					/* Delete any previous thumbnails, avoid duplication on different output format */
-					$filematch = $output_dir.$file_wo_ext['filename']."-th_*";
-					$matches = glob($filematch);
-					if ( is_array ( $matches ) ) {
-						foreach ( $matches as $eachfile) {
-							if(is_file($eachfile))
-							{
-								unlink($eachfile);
-							}
-						}
-					}
+			/* Delete any previous thumbnails, avoid duplication on different output format */
+			$filematch = $output_dir.$file_wo_ext['filename']."-th_*";
+			$matches = glob($filematch);
+			if ( is_array ( $matches ) ) {
+			foreach ( $matches as $eachfile) {
+				if(is_file($eachfile))
+				{
+					unlink($eachfile);
+				}
+			}
+		}
 
 		/* Override the thumbsize (default 120x68) in order to respect the video aspect ratio base on the user specify width */
 		/* https://github.com/xbgmsharp/piwigo-videojs/issues/52 */
@@ -235,15 +242,15 @@ while ($row = pwg_db_fetch_assoc($result))
 		/* Takes output width (ow), divides it by aspect ratio (a), truncates digits after decimal point */
 		$scale = "scale='".$thumb_witdh[0].":trunc(ow/a)'";
 
-					/* The loop */
-                    $in = $filename;
-                    for ($second=0; $second <= $exif['playtime_seconds']; $second+=$sync_options['thumbsec'])
-                    {
-						$thumbs++;
-						$out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];
-						/* Report it */
-						isset($sync_options['batch_manager']) ? $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out : '';
-						$sync_arr['thumbnail'][] = $second.' seconds '.$out;
+		/* The loop */
+                $in = $filename;
+                for ($second=0; $second <= $exif['playtime_seconds']; $second+=$sync_options['thumbsec'])
+                {
+			$thumbs++;
+			$out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];
+			/* Report it */
+			isset($sync_options['batch_manager']) ? $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out : '';
+			$sync_arr['thumbnail'][] = $second.' seconds '.$out;
                         /* Lets do it , default output to JPG */
                         $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -vf ".$scale." -y \"".$out. "\"";
                         if ($sync_options['output'] == "png")
@@ -254,7 +261,7 @@ while ($row = pwg_db_fetch_assoc($result))
                         //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);
                         if($retval != 0 or !file_exists($out))
                         {
-                            $errors[] = "Error thumbnail running ffmpeg, try it manually:\n<br/>". $ffmpeg;
+                            $errors[] = "Error thumbnail running ffmpeg/avconv, try it manually, check your webserver error log:\n<br/>". $ffmpeg;
                         }
                     }
                 }
