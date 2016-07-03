@@ -1,3 +1,11 @@
+Changes from v2.8.a to v2.8.b
+- Enable custom plugins VideoJS player v5
+- Add warning for recent MediaInfo version
+- Add option to enable/diable display metadata
+- Improve video rotate page
+- Update VideoJS player to version 5.10.7
+- Fix album restriction on sync page
+
 Changes from v2.7.a to v2.8.a
 - Add support for video metadata display
 - Add new video player skin, thanks Monadh
