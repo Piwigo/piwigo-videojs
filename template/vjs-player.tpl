@@ -1,13 +1,15 @@
 {html_head}
 <link href="{$VIDEOJS_PATH}video-js/{$VIDEOJS_SKINCSS}" rel="stylesheet">
 {$VIDEOJS_CUSTOMCSS}
+<link href="{$VIDEOJS_PATH}video-js/video-js-resolutions.css" rel="stylesheet"/>
 {if not empty($thumbnails)}
 <link href="{$VIDEOJS_PATH}video-js/videojs.thumbnails.css" rel="stylesheet">
 {/if}
 {if not empty($watermark)}
 <link href="{$VIDEOJS_PATH}video-js/videojs.watermark.css" rel="stylesheet">
 {/if}
-<script src="{$VIDEOJS_PATH}video-js/video.js"></script>
+<script src="{$VIDEOJS_PATH}video-js/video.dev.js"></script>
+<script type="text/javascript" src="{$VIDEOJS_PATH}video-js/video-js-resolutions.js"></script>
 {if not empty($thumbnails)}
 <script type="text/javascript" src="{$VIDEOJS_PATH}video-js/videojs.thumbnails.js"></script>
 {/if}
@@ -36,7 +38,7 @@
 {/literal}
 {if not empty($videos)}
 {foreach from=$videos item=video}
-{literal}    <source src={/literal}"{$video.src}"{literal} type='{/literal}{$video.ext}{literal}'>{/literal}
+{literal}    <source src={/literal}"{$video.src}"{literal} data-res='{/literal}{$video.resolution}{literal}' type='{/literal}{$video.ext}{literal}'>{/literal}
 {/foreach}
 {/if}
 {literal}
@@ -52,6 +54,8 @@
 videojs("my_video_1", {}, function(){
 	var my_video_volume = videojs('my_video_1');
 	my_video_volume.volume({/literal}{$volume}{literal});
+  // enable resolutions plugin
+  my_video_volume.resolutions();
 });
 </script>
 {/literal}

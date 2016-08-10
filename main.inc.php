@@ -257,7 +257,8 @@ function vjs_render_media($content, $picture)
 	// Add the current file in array
 	$videos[] = array(
 				'src' => embellish_url($picture['current']['element_url']),
-				'ext' => $extension
+				'ext' => $extension,
+        'resolution' => 'SD',
 			);
 	// Add any other video source format
 	foreach ($files_ext as $file_ext) {
@@ -273,6 +274,34 @@ function vjs_render_media($content, $picture)
 				  );
 		}
 	}
+
+  // is there an HD version?
+  if (defined('IMAGE_FORMAT_TABLE'))
+  {
+    // for video.mp4, we are looking for video.hd.mp4
+    // for video.webm, we are looking for video.hd.webm
+    // ...
+    $sd_video_ext = get_extension($picture['current']['path']);
+    $hd_video_ext = 'hd.'.$sd_video_ext;
+    
+    $query = '
+SELECT *
+  FROM '.IMAGE_FORMAT_TABLE.'
+  WHERE image_id = '.$picture['current']['id'].'
+    AND ext = \''.$hd_video_ext.'\'
+;';
+    $formats = query2array($query);
+    
+    if (count($formats) == 1)
+    {
+      $videos[] = array (
+        'src' => embellish_url(original_to_format(get_element_path($picture['current']), $hd_video_ext)),
+        'ext' => $extension,
+        'resolution' => 'HD',
+        );
+    }
+  }
+  
 	//print_r($videos);
 	// Sort array to have MP4 first in the source list for iOS support
 	foreach ($videos as $key => $row) {
