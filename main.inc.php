@@ -251,6 +251,7 @@ function vjs_render_media($content, $picture)
 	$poster = embellish_url( $picture['current']['src_image']->get_path() );
 	//print $poster;
 
+	$parts = pathinfo($picture['current']['element_url']);
 	// Try to find multiple video source
 	$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
 	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
