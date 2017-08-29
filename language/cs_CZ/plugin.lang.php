@@ -3,7 +3,7 @@
 $lang['HTML5'] = 'Nastavení HTML5 video tag';
 $lang['PRELOAD'] = 'Přednačtení obsahu';
 $lang['PRELOAD_DESC'] = 'Tento parametr informuje prohlížeč zda má nebo nemá ukládat data o videu ihned jakmile je přehrávač načten.';
-$lang['CONTROLS'] = 'Ovládaní';
+$lang['CONTROLS'] = 'Ovládání';
 $lang['CONTROLS_DESC'] = 'Nastavuje jestli má mít přehrávač ovladací prvky a uživatel tak může ovládat zobrazovaný obsah';
 $lang['AUTOPLAY'] = 'Autoplay';
 $lang['AUTOPLAY_DESC'] = 'Pokud je autoplay povolen video bude načteno a spuštěno ihned jakmile se načte zobrazí stránka v prohlížeči (uživatel toto neovlivní). Toto nepodporují zařízení od APPLE s operačním systémem iOS.';
