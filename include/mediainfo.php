@@ -105,7 +105,7 @@ if (isset($general->CodecID))
 {
     $exif['codecid'] = (string)$general->CodecID;
 }
-if (isset($general->InternetMediaType)) //Not presentin XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+if (isset($general->InternetMediaType)) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     $exif['type'] = (string)$general->InternetMediaType;
 }
@@ -118,11 +118,11 @@ if (isset($general->Duration))
     $exif['duration'] = (string)$general->Duration;
     $exif['playtime_seconds'] = (int)($general->Duration/1000);
 }
-if (isset($general->BitRate_String))  //Not presentin XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+if (isset($general->BitRate_String))  //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     $exif['overall_bit_rate'] = (string)$general->BitRate_String;
 }
-if (isset($general->xyz) or isset($general->comapplequicktimelocationISO6709))	//Not presentin XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+if (isset($general->xyz) or isset($general->comapplequicktimelocationISO6709))	//Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     isset($general->xyz) ? $gps = (string)$general->xyz : $gps = (string)$general->comapplequicktimelocationISO6709;
     //$test = "+35.6445-139.7455-029.201/";
@@ -131,15 +131,15 @@ if (isset($general->xyz) or isset($general->comapplequicktimelocationISO6709))	/
     $exif['latitude'] = $value[1].$value[2];
     $exif['longitude'] = $value[3].$value[4];
 }
-if (isset($general->Model) or isset($general->comapplequicktimemodel)) 	//Not presentin XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+if (isset($general->Model) or isset($general->comapplequicktimemodel)) 	//Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     isset($general->Model) ? $exif['model'] = (string)$general->Model : $exif['model'] = (string)$general->comapplequicktimemodel;
 }
-if (isset($general->comapplequicktimesoftware) and isset($exif['model']))  //Not presentin XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+if (isset($general->comapplequicktimesoftware) and isset($exif['model']))  //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     $exif['model'] .= " ". (string)$general->comapplequicktimesoftware;
 }
-if (isset($general->Make) or isset($general->comapplequicktimemake)) //Not presentin XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+if (isset($general->Make) or isset($general->comapplequicktimemake)) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     isset($general->Make) ? $exif['make'] = (string)$general->Make : $exif['make'] = (string)$general->comapplequicktimemake;
 }
