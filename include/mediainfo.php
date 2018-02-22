@@ -38,7 +38,7 @@ $xml = new SimpleXMLElement($output);
 	die("Mediainfo error reading file. Is MediaInfo install? Is MediaInfo in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['mediainfo'] ." --Full --Output=XML --Language=raw '". $filename ."'");
 }
 
-if (!isset($xml->media))
+if (!isset($xml->media)&&!isset($xml->File))
 {
 	$exif['error'] = "Mediainfo error reading file: <br/>'". $filename."'";
 }
@@ -86,7 +86,13 @@ if (isset($xml["version"]))
     [comapplequicktimelocationISO6709] => +35.6445+139.7455+029.201/
     [comapplequicktimecreationdate] => 2013-06-04T17:02:15+0900
 */
-$general = $xml->media->track[0];
+if (isset($xml->media))
+{
+        $general = $xml->media->track[0];
+}else{
+        $general = $xml->File->track[0];
+}
+
 if (isset($general->Format))
 {
     $exif['format'] = (string)$general->Format;
@@ -99,7 +105,7 @@ if (isset($general->CodecID))
 {
     $exif['codecid'] = (string)$general->CodecID;
 }
-if (isset($general->InternetMediaType)) //Looks like missing in https://mediaarea.net/mediainfo/mediainfo_2_0.xsd. Tested with mediainfo v17.12 
+if (isset($general->InternetMediaType)) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     $exif['type'] = (string)$general->InternetMediaType;
 }
@@ -112,11 +118,11 @@ if (isset($general->Duration))
     $exif['duration'] = (string)$general->Duration;
     $exif['playtime_seconds'] = (int)($general->Duration/1000);
 }
-if (isset($general->BitRate_String))  //Looks like missing in https://mediaarea.net/mediainfo/mediainfo_2_0.xsd. Tested with mediainfo v17.12
+if (isset($general->BitRate_String))  //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     $exif['overall_bit_rate'] = (string)$general->BitRate_String;
 }
-if (isset($general->xyz) or isset($general->comapplequicktimelocationISO6709))	//Looks like missing in https://mediaarea.net/mediainfo/mediainfo_2_0.xsd Tested with mediainfo v17.12
+if (isset($general->xyz) or isset($general->comapplequicktimelocationISO6709))	//Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     isset($general->xyz) ? $gps = (string)$general->xyz : $gps = (string)$general->comapplequicktimelocationISO6709;
     //$test = "+35.6445-139.7455-029.201/";
@@ -125,15 +131,15 @@ if (isset($general->xyz) or isset($general->comapplequicktimelocationISO6709))	/
     $exif['latitude'] = $value[1].$value[2];
     $exif['longitude'] = $value[3].$value[4];
 }
-if (isset($general->Model) or isset($general->comapplequicktimemodel)) 	//Looks like missing in https://mediaarea.net/mediainfo/mediainfo_2_0.xsd Tested with mediainfo v17.12
+if (isset($general->Model) or isset($general->comapplequicktimemodel)) 	//Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     isset($general->Model) ? $exif['model'] = (string)$general->Model : $exif['model'] = (string)$general->comapplequicktimemodel;
 }
-if (isset($general->comapplequicktimesoftware) and isset($exif['model']))   	//Looks like missing in https://mediaarea.net/mediainfo/mediainfo_2_0.xsd Tested with mediainfo v17.12
+if (isset($general->comapplequicktimesoftware) and isset($exif['model']))  //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     $exif['model'] .= " ". (string)$general->comapplequicktimesoftware;
 }
-if (isset($general->Make) or isset($general->comapplequicktimemake))  	//Looks like missing in https://mediaarea.net/mediainfo/mediainfo_2_0.xsd Tested with mediainfo v17.12
+if (isset($general->Make) or isset($general->comapplequicktimemake)) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     isset($general->Make) ? $exif['make'] = (string)$general->Make : $exif['make'] = (string)$general->comapplequicktimemake;
 }
@@ -164,7 +170,13 @@ print $general->Model."<br/>\n";
     [Rotation] => 90°
     [Frame_rate] => 29.970 fps
 */
-$video = $xml->media->track[1];
+if (isset($xml->media))
+{
+        $video = $xml->media->track[1];
+}else{
+        $video = $xml->File->track[1];
+}
+
 if (isset($video->BitRate))
 {
     $exif['bitrate'] = (string)$video->BitRate;
@@ -207,7 +219,13 @@ print $video->Frame_rate[0]."<br/>\n";
     [Channel_s_] => 1 channel
     [Sampling_rate] => 44.1 KHz
 */
-$audio = $xml->media->track[2];
+if (isset($xml->media))
+{
+        $audio = $xml->media->track[2];
+}else{
+        $audio = $xml->File->track[2];
+}
+
 if (isset($audio->Channels))
 {
     $exif['channel'] = (string)$audio->Channels;
@@ -216,6 +234,17 @@ if (isset($audio->SamplingRate))
 {
     $exif['sampling_rate'] = (string)$audio->SamplingRate;
 }
+
+if (isset($audio->Channel_s_))
+{
+    $exif['channel'] = (string)$audio->Channel_s_;
+}
+if (isset($audio->SamplingRate))
+{
+    $exif['sampling_rate'] = (string)$audio->SamplingRate;
+}
+
+
 /*
 print $audio->Bit_rate."<br/>\n";
 print $audio->Channel_s_."<br/>\n";
