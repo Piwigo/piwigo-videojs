@@ -29,13 +29,13 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 try {
 putenv('LANG=en_US.UTF-8');
-$output = shell_exec($sync_options['mediainfo'] ." --Full --Output=XML --Language=raw \"". $filename."\"");
+$output = shell_exec($sync_options['mediainfo'] ." --Full --Output=OLDXML --Language=raw \"". $filename."\"");
 //$log = shell_exec("mediainfo --Output=XML ". $filename);
 $xml = new SimpleXMLElement($output);
 //$xml = simplexml_load_file("/tmp/mediainfo.xml");
 //print_r($xml);
 } catch (Exception $e) {
-	die("Mediainfo error reading file. Is MediaInfo install? Is MediaInfo in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['mediainfo'] ." --Full --Output=XML --Language=raw '". $filename ."'");
+	die("Mediainfo error reading file. Is MediaInfo install? Is MediaInfo in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['mediainfo'] ." --Full --Output=OLDXML --Language=raw '". $filename ."'");
 }
 
 if (!isset($xml->media)&&!isset($xml->File))
