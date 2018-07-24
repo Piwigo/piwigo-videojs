@@ -14,6 +14,9 @@ $lang['VOLUME_DESC'] = 'The volume option sets the volume level. 0 is off (muted
 $lang['LANGUAGE'] = 'Language';
 $lang['LANGUAGE_DESC'] = 'Select the player language.';
 
+$lang['METADATA_DESC'] = 'Metadata desc';
+$lang['PLAYER_DESC'] = 'Player desc';
+
 $lang['PLUGIN'] = 'Plugin settings';
 $lang['SKIN'] = 'Skin';
 $lang['SKIN_DESC'] = 'Select the style you want to apply to the player or <a href="http://designer.videojs.com/" target="_blank">create your own skin</a>.';
