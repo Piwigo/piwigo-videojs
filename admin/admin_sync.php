@@ -31,6 +31,8 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 $sync_options = array(
     'mediainfo'         => 'mediainfo',
     'ffmpeg'            => 'ffmpeg',
+    'exiftool'          => 'exiftool',
+    'ffprobe'           => 'ffprobe',
     'metadata'          => true,
     'poster'            => true,
     'postersec'         => 4,
@@ -54,8 +56,10 @@ if (isset($conf['vjs_sync']))
 if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
     // Override default value from the form
     $sync_options = array(
-		'mediainfo'         => $_POST['mediainfo'],
-		'ffmpeg'            => $_POST['ffmpeg'],
+	'mediainfo'         => $_POST['mediainfo'],
+	'ffmpeg'            => $_POST['ffmpeg'],
+	'exiftool'          => $_POST['exiftool'],
+	'ffprobe'           => $_POST['ffprobe'],
         'metadata'          => isset($_POST['metadata']),
         'poster'            => isset($_POST['poster']),
         'postersec'         => $_POST['postersec'],
@@ -77,54 +81,18 @@ if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
 // Check dependencies
 $warnings = array();
 
-// Do the dependencies checks for MediaInfo & FFMPEG
-function check_mediainfo($sync_options)
-{
-    $retval = 0;
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        system($sync_options['mediainfo'] ." >NUL 2>NUL", $retval); // redirect any output
-    } else {
-        system($sync_options['mediainfo'] ." 1>&2 /dev/null", $retval); // redirect any output
-    }
-    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
-    {
-        return false;
-    } else {
-        return true;
-    }
-}
+// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
+include(dirname(__FILE__).'/../include/function_dependencies.php');
 
-function check_ffmpeg($sync_options)
+if ($sync_options['posteroverlay'] and !function_exists('gd_info'))
 {
-    $retval = 0;
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        system($sync_options['ffmpeg'] ." >NUL 2>NUL", $retval); // redirect any output
-    } else {
-        system($sync_options['ffmpeg'] ." 1>&2 /dev/null", $retval); // redirect any output
-    }
-    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
-    {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-if (!check_mediainfo($sync_options))
-{
-    $warnings[] = "Metadata parsing disable because MediaInfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
-    $sync_options['metadata'] = false;
-}
-
-if (!check_ffmpeg($sync_options))
-{
-    $warnings[] = "Poster and Thumbnail creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
-    $sync_options['poster'] = false;
-    $sync_options['thumb'] = false;
+	$warnings[] = "GD library is missing to add overlay movie frame";
 }
 
 $template->assign('sync_warnings', $warnings);
 $template->assign($sync_options); // send config value to template
+$template->assign('sync_options', $sync_options); // send config value to template
+$template->assign('sync_binaries', $sync_binaries); // send external tools binary to template
 
 if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 {
