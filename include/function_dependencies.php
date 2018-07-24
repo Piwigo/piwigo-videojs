@@ -27,34 +27,48 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-if ($sync_options['metadata'])
-{
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        system($sync_options['mediainfo'] ." >NUL 2>NUL", $retval); // redirect any output
-    } else {
-        system($sync_options['mediainfo'] ." 1>&2 /dev/null", $retval); // redirect any output
-    }
-    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
-    {
-        $warnings[] = "Metadata parsing disable because MediaInfo is not installed on the system, eg: '/usr/bin/mediainfo'.";
-        $sync_options['metadata'] = false;
-    }
-}
-
-if ($sync_options['poster'] or $sync_options['thumb'])
+// Do the dependencies checks for MediaInfo & FFMPEG & FFPROBE & exiftool
+if (!function_exists('check'))   { // Avoid Fatal error: Cannot redeclare
+function check($binary, $sync_options)
 {
     $retval = 0;
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        system($sync_options['ffmpeg'] ." >NUL 2>NUL", $retval); // redirect any output
+        system($sync_options[$binary] ." >NUL 2>NUL", $retval); // redirect any output
     } else {
-        system($sync_options['ffmpeg'] ." 1>&2 /dev/null", $retval); // redirect any output
+        system($sync_options[$binary] ." 1>&2 /dev/null", $retval); // redirect any output
     }
+    //print $retval;
     if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
     {
-        $warnings[] = "Poster creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
-        $sync_options['poster'] = false;
-        $sync_options['thumb'] = false;
+        return false;
+    } else {
+        return true;
     }
 }
+}
 
+// For each external tools try
+$binaries = array('mediainfo', 'ffprobe', 'exiftool', 'ffmpeg');
+$sync_binaries = [];
+foreach ($binaries as $binary)
+{
+ $sync_binaries[$binary] = check($binary, $sync_options);
+ /* If failed */
+ if (!$sync_binaries[$binary])
+ {
+    if ($binary != 'ffmpeg')
+    {
+       $warnings[] = "Metadata parsing disable because ".$binary." is not installed on the system, eg: '/usr/bin/".$binary."'.";
+       $sync_options['metadata'] ? true : false;
+    }
+    if ($binary == 'ffmpeg')
+    {
+      $warnings[] = "Poster and Thumbnail creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
+      $sync_options['poster'] = false;
+      $sync_options['thumb'] = false;
+    }
+ }
+}
+//print_r($sync_binaries);
+//print_r($sync_options);
 ?>

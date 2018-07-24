@@ -48,6 +48,7 @@ $thumbs = 0;
 // Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
 include("function_dependencies.php");
 //print_r($sync_options);
+//print_r($sync_binaries);
 if (!$sync_options['metadata'] and !$sync_options['poster'] and !$sync_options['thumb'])
 {
     $errors[] = "You ask me to do nothing, are you sure?";
@@ -75,7 +76,9 @@ while ($row = pwg_db_fetch_assoc($result))
         $exif = array();
         if ($sync_options['metadata'])
         {
-            include("mediainfo.php");
+            if ($sync_binaries['mediainfo']) { include('mediainfo.php'); }
+            if ($sync_binaries['exiftool']) { include('exiftool.php'); }
+            if ($sync_binaries['ffprobe']) { include('ffprobe.php'); }
         }
         //print_r($exif);
         if (isset($exif) and $sync_options['metadata'])

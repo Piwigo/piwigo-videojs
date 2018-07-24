@@ -47,6 +47,7 @@ if (!isset($xml->media)&&!isset($xml->File))
 [version] => 0.7.64 Change XML Output
 [version] => 0.7.72 [mediainfo:bugs] #886 XML Output broken / https://sourceforge.net/p/mediainfo/bugs/886/
 [version] => from v0.7.83 to v0.7.86 [mediainfo:bugs] #1002 XML version / https://sourceforge.net/p/mediainfo/bugs/1002/
+[version] => 0.2 starting version 18.x
 */
 if (isset($xml["version"]))
 {
@@ -54,38 +55,23 @@ if (isset($xml["version"]))
 	{
 		$exif['warning'] = 'Please use at least MediaInfo version 0.7.87 or higher due to known bug: <a href="https://sourceforge.net/p/mediainfo/bugs/1002/" target="_blank">XML version is broken</a>.<br/>Upgrade or downgrade.<br/><a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">Please refer to the documentation</a>';
 	}
-	if (version_compare($xml["version"], '0.7.64') < 0)
+	if (version_compare($xml["version"], '0.7.64', '<=') and version_compare($xml["version"], '0.7.72', '>='))
 	{
 		$exif['error'] = "Please use at least MediaInfo version 0.7.64 or higher, not " . $xml["version"];
 	}
 	if (version_compare($xml["version"], '0.7.72') == 0)
 	{
-		$exif['error'] = 'Please DO NOT use MediaInfo version 0.7.72 due to Important known bug: <a href="https://sourceforge.net/p/mediainfo/bugs/886/" target="_blank">XML output is broken</a>.<br/>Upgrade or downgrade.<br/><a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">Please refer to the documentation</a>';
+		$exif['error'] = 'Please DO NOT use MediaInfo version 0.7.72 due to important known bug: <a href="https://sourceforge.net/p/mediainfo/bugs/886/" target="_blank">XML output is broken</a>.<br/>Upgrade or downgrade.<br/><a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">Please refer to the documentation</a>';
+	}
+        // Version 18.x, again the version is not related to the software version...
+	// https://sourceforge.net/p/mediainfo/discussion/297610/thread/13418119/#bcb9/e2cf
+	if (version_compare($xml["version"], '0.2') == 0)
+	{
+		$exif['warning'] = 'MediaInfo version 18.x or higher detected, please use ffprobe or Exiftool instead.';
 	}
 }
 
-/*
- *General
-    [CompleteName] => /var/www/piwigo/galleries/videos/IMG_1090.mp4
-    [InternetMediaType] => video/mp4
-    [Format] => MPEG-4
-    [FileSize] => 4.99 MiB
-    [Duration] => 11s 322ms
-    [OverallBitRate_String] => 3 699 Kbps
-    [Recorded_Date] => 2013-06-04T17:02:15+0900
-    [Encoded_Date] => UTC 2013-06-04 08:02:16
-    [Tagged_Date] => UTC 2013-06-04 08:02:28
-    [Encoded_Application] => 5.1.1
-    [Encoded_Library] => Apple QuickTime
-    [Make] => Apple
-    [xyz] => +35.6445+139.7455+029.201/
-    [Model] => iPhone 3GS
-    [comapplequicktimemodel] => iPhone 3GS
-    [comapplequicktimesoftware] => 5.1.1
-    [comapplequicktimemake] => Apple
-    [comapplequicktimelocationISO6709] => +35.6445+139.7455+029.201/
-    [comapplequicktimecreationdate] => 2013-06-04T17:02:15+0900
-*/
+/* General */
 if (isset($xml->media))
 {
         $general = $xml->media->track[0];
@@ -116,7 +102,11 @@ if (isset($general->FileSize))
 if (isset($general->Duration))
 {
     $exif['duration'] = (string)$general->Duration;
-    $exif['playtime_seconds'] = (int)($general->Duration/1000);
+    if ($xml["version"] != '0.2') { // Old format
+       $exif['playtime_seconds'] = (int)($general->Duration);
+    } else { // New format
+       $exif['playtime_seconds'] = round($general->Duration, 0);
+    }
 }
 if (isset($general->BitRate_String))  //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
@@ -151,25 +141,9 @@ if (!isset($exif['date_creation']) and isset($general->Encoded_Date))
 {// http://piwigo.org/forum/viewtopic.php?pid=158021#p158021
     $exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general->Encoded_Date));
 }
-/*
-print $general->Format."<br/>\n";
-print $general->FileSize."<br/>\n";
-print $general->Duration."<br/>\n";
-print $general->Recorded_Date."<br/>\n";
-print $general->Make."<br/>\n";
-print $general->xyz."<br/>\n";
-print $general->Model."<br/>\n";
-*/
 
-/*
- *Video
-    [BitRate] => 3592927
-    [Width] => 640 pixels
-    [Height] => 480 pixels
-    [Display_aspect_ratio] => 4:3
-    [Rotation] => 90°
-    [Frame_rate] => 29.970 fps
-*/
+
+/* Video */
 if (isset($xml->media))
 {
         $video = $xml->media->track[1];
@@ -204,21 +178,8 @@ if (isset($video->FrameRate))
 {
     $exif['frame_rate'] = (string)$video->FrameRate;
 }
-/*
-print $video->Bit_rate[0]."<br/>\n";
-print $video->Width[0]."<br/>\n";
-print $video->Height[0]."<br/>\n";
-print $video->Display_aspect_ratio[0]."<br/>\n";
-print $video->Rotation[0]."<br/>\n";
-print $video->Frame_rate[0]."<br/>\n";
-*/
 
-/*
- *Audio
-    [Bit_rate] => 64.0 Kbps
-    [Channel_s_] => 1 channel
-    [Sampling_rate] => 44.1 KHz
-*/
+/* Audio */
 if (isset($xml->media))
 {
         $audio = $xml->media->track[2];
@@ -243,13 +204,5 @@ if (isset($audio->SamplingRate))
 {
     $exif['sampling_rate'] = (string)$audio->SamplingRate;
 }
-
-
-/*
-print $audio->Bit_rate."<br/>\n";
-print $audio->Channel_s_."<br/>\n";
-print $audio->Channel_positions."<br/>\n";
-print $audio->Sampling_rate."<br/>\n";
-*/
 
 ?>
