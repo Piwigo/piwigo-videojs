@@ -125,7 +125,12 @@ if (isset($exif))
 		$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$_GET['image_id'].";";
 		pwg_query($query);
 	}
-	$exif['resolution'] = $exif['width'] ."x". $exif['height']." pixels";
+	// Replace some value by human readable string
+	if (isset($exif['width']) and isset($exif['height']))
+	{
+		$exif['resolution'] = $exif['width'] ."x". $exif['height'];
+	}
+	isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
 	ksort($exif);
 }
 
