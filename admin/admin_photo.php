@@ -63,6 +63,8 @@ $template->set_filenames(
 $sync_options = array(
     'mediainfo'         => 'mediainfo',
     'ffmpeg'            => 'ffmpeg',
+    'exiftool'          => 'exiftool',
+    'ffprobe'           => 'ffprobe',
     'metadata'          => true,
     'poster'            => true,
     'postersec'         => 4,
@@ -102,8 +104,11 @@ if (isset($_GET['delete_extra']) and $_GET['delete_extra'] == 1)
 }
 
 $filename = $picture['path'];
-// Get the metadata video information
-include_once(dirname(__FILE__).'/../include/mediainfo.php');
+// Get the metadata video information if program exist
+if ($sync_binaries['mediainfo']) { include(dirname(__FILE__).'/../include/mediainfo.php'); }
+if ($sync_binaries['exiftool']) { include(dirname(__FILE__).'/../include/exiftool.php'); }
+if ($sync_binaries['ffprobe']) { include(dirname(__FILE__).'/../include/ffprobe.php'); }
+// If metadata from video
 if (isset($exif))
 {
 	$exif = array_filter($exif);
@@ -120,23 +125,16 @@ if (isset($exif))
 		$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$_GET['image_id'].";";
 		pwg_query($query);
 	}
-	// replace some value by human readable string
-	$exif['name'] = (string)$general->CompleteName;
-	$exif['filename'] = (string)$general->FileName;
-	$exif['filesize'] = (string)$general->FileSize_String;
-	$exif['duration'] = (string)$general->Duration_String;
-	$exif['bitrate'] = (string)$video->BitRate_String;
-	$exif['sampling_rate'] = (string)$audio->SamplingRate_String;
-	isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
+	$exif['resolution'] = $exif['width'] ."x". $exif['height']." pixels";
 	ksort($exif);
 }
 
 // Try to guess the poster extension
 $parts = pathinfo($picture['path']);
 $poster = vjs_get_poster_file( Array(
-	(string)$general->FolderName."/pwg_representative/".$parts['filename'].".jpg" =>
+	$parts['dirname']."/pwg_representative/".$parts['filename'].".jpg" =>
 		get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
-	(string)$general->FolderName."/pwg_representative/".$parts['filename'].".png" =>
+	$parts['dirname']."/pwg_representative/".$parts['filename'].".png" =>
 		get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
 ));
 // If none found, it create an strpos error
@@ -153,7 +151,7 @@ $videos[] = array(
 			'ext' => $extension,
 		);
 foreach ($files_ext as $file_ext) {
-	$file = (string)$general->FolderName."/pwg_representative/".$parts['filename'].".".$file_ext;
+	$file = $parts['dirname']."/pwg_representative/".$parts['filename'].".".$file_ext;
 	if (file_exists($file)){
 		array_push($videos,
 			   array (

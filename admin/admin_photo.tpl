@@ -11,8 +11,8 @@
 		{if not empty($EXIF)}
 		<div style="float: left; margin: auto; padding-left:20px; vertical-align:top;">
 			<ul style="margin:0;">
-				{foreach from=$EXIF key=name item=metadata}
-				<li>{$name}: {$metadata}</li>
+				{foreach from=$EXIF key=name item=value}
+				<li>{$name}: {$value}</li>
 				{/foreach}
 			</ul>
 		</div>
