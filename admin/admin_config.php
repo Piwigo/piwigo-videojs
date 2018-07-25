@@ -39,9 +39,11 @@ $available_skins = array(
 
 // Available player
 $available_players = array(
-	'vjs-player.tpl.v5' => 'VideoJS v5',
-	'vjs-player.tpl.v4' => 'VideoJS v4',
-	'html5-player.tpl' => 'Browser',
+	'vjs-7-player.tpl' => 'Video.js v7',
+	'vjs-6-player.tpl' => 'Video.js v6',
+	'vjs-5-player.tpl' => 'Video.js v5',
+	'vjs-4-player.tpl' => 'Video.js v4',
+	'html5-player.tpl' => 'Native Browser',
 );
 
 // Available preload value
@@ -52,7 +54,7 @@ $available_preload = array(
 
 // Available language value from the directory to be dynamic
 $available_languages = array('en');
-if ($handle = opendir(dirname(__FILE__).'/../video-js/lang/')) {
+if ($handle = opendir(dirname(__FILE__).'/../video-js-4/lang/')) {
 	while (false !== ($entry = readdir($handle))) {
 		if ($entry == '.' || $entry == '..') {
 			continue;

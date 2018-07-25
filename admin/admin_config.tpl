@@ -163,6 +163,12 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 				<label><input type="radio" name="vjs_watermark" value="false" {if not $plugins.watermark}checked="checked"{/if}/> {'No'|@translate}</label>
 				<br/><small>{'WATERMARK_DESC'|@translate}</small>
 			</li>
+			<li>
+				<label><span class="property">{'RESOLUTION'|@translate} : </span></label>
+				<label><input type="radio" name="vjs_resolution" value="true" {if $plugins.resolution}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_resolution" value="false" {if not $plugins.resolution}checked="checked"{/if}/> {'No'|@translate}</label>
+				<br/><small>{'RESOLUTION_DESC'|@translate}</small>
+			</li>
 		</ul>
 	</fieldset>
 	<p>
@@ -176,7 +182,7 @@ function player_toggle()
 {
         var select = document.getElementById("vjs_player");
         var div = document.getElementById("player");
-	if (select.selectedIndex == 1) /* Only for VideoJS v4 */
+	if (select.selectedIndex == 3) /* Only for VideoJS v4 */
         {
                 div.removeAttribute("style");
         } else {
