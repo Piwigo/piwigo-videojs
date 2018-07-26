@@ -15,7 +15,7 @@ $lang['LANGUAGE'] = 'Language';
 $lang['LANGUAGE_DESC'] = 'Select the player language.';
 
 $lang['METADATA_DESC'] = 'Metadata desc';
-$lang['PLAYER_DESC'] = 'Player desc';
+$lang['PLAYER_DESC'] = 'Select the vjs player version.';
 
 $lang['PLUGIN'] = 'Plugin settings';
 $lang['SKIN'] = 'Skin';
