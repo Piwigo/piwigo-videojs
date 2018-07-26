@@ -78,10 +78,10 @@ $sync_options = array(
     'cat_id'            => 0,
     'subcats_included'  => true,
 );
-// Override default value from configuration
+// Merge default value with user configuration
 if (isset($conf['vjs_sync']))
 {
-    $sync_options = unserialize($conf['vjs_sync']);
+    $sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options);
 }
 // Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
 require_once(dirname(__FILE__).'/../include/function_dependencies.php');

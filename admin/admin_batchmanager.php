@@ -139,6 +139,7 @@ function vjs_element_set_global_action($action, $collection)
 	    'simulate'          => false,
 	    'batch_manager'     => true,
 	);
+	// Merge default value with user configuration
 	$sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options_form);
 
 	// Do the work, share with batch manager

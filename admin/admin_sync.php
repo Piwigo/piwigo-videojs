@@ -47,15 +47,15 @@ $sync_options = array(
     'subcats_included'  => true,
 );
 
-// Override default value from configuration
+// Merge default value with user configuration
 if (isset($conf['vjs_sync']))
 {
-    $sync_options = unserialize($conf['vjs_sync']);
+    $sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options);
 }
 
 if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
     // Override default value from the form
-    $sync_options = array(
+    $sync_options_form = array(
 	'mediainfo'         => $_POST['mediainfo'],
 	'ffmpeg'            => $_POST['ffmpeg'],
 	'exiftool'          => $_POST['exiftool'],
@@ -74,6 +74,8 @@ if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
         'subcats_included'  => isset($_POST['subcats_included']),
     );
 
+    // Merge default value with user configuration
+    $sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options_form);
     // Update config to DB
     conf_update_param('vjs_sync', serialize($sync_options));
 }
