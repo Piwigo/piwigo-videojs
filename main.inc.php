@@ -89,6 +89,8 @@ function vjs_format_exif_data($exif, $filename, $map)
 	$sync_options = array(
 		'mediainfo'        => 'mediainfo',
 		'ffmpeg'           => 'ffmpeg',
+		'ffprobe'          => 'ffprobe',
+		'exiftool'         => 'exiftool',
 		'metadata'         => true,
 		'poster'           => true,
 		'postersec'        => 4,
@@ -109,26 +111,13 @@ function vjs_format_exif_data($exif, $filename, $map)
 	}
 	// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
 	require_once(dirname(__FILE__).'/include/function_dependencies.php');
-	require_once(dirname(__FILE__).'/include/mediainfo.php');
+	// Get the metadata video information if program exist
+	if ($sync_binaries['mediainfo']) { require_once(dirname(__FILE__).'/include/mediainfo.php'); }
+	if ($sync_binaries['exiftool']) { require_once(dirname(__FILE__).'/include/exiftool.php'); }
+	if ($sync_binaries['ffprobe']) { require_once(dirname(__FILE__).'/include/ffprobe.php'); }
 	if (isset($exif) and ($exif != null) and isset($general))
 	{
 		// Replace some value by human readable string
-		if (isset($general->FileSize_String))
-		{
-			$exif['filesize'] = (string)$general->FileSize_String;
-		}
-		if (isset($general->Duration_String))
-		{
-			$exif['duration'] = (string)$general->Duration_String;
-		}
-		if (isset($video->BitRate_String))
-		{
-			$exif['bitrate'] = (string)$video->BitRate_String;
-		}
-		if (isset($audio->SamplingRate_String))
-		{
-			$exif['sampling_rate'] = (string)$audio->SamplingRate_String;
-		}
 		if (isset($exif['width']) and isset($exif['height']))
 		{
 			$exif['resolution'] = $exif['width'] ."x". $exif['height'];
@@ -283,7 +272,7 @@ function vjs_render_media($content, $picture)
     // ...
     $sd_video_ext = get_extension($picture['current']['path']);
     $hd_video_ext = 'hd.'.$sd_video_ext;
-    
+
     $query = '
 SELECT *
   FROM '.IMAGE_FORMAT_TABLE.'
@@ -291,7 +280,7 @@ SELECT *
     AND ext = \''.$hd_video_ext.'\'
 ;';
     $formats = query2array($query);
-    
+
     if (count($formats) == 1)
     {
       $videos[] = array (
@@ -301,7 +290,7 @@ SELECT *
         );
     }
   }
-  
+
 	//print_r($videos);
 	// Sort array to have MP4 first in the source list for iOS support
 	foreach ($videos as $key => $row) {
