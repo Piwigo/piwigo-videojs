@@ -34,6 +34,8 @@ $lang['THUMBNAILS'] = 'Thumbnails';
 $lang['THUMBNAILS_DESC'] = 'Displays thumbnail images over the progress bar.';
 $lang['WATERMARK'] = 'Watermark';
 $lang['WATERMARK_DESC'] = 'Displays watermark over the video.';
+$lang['RESOLUTION'] = 'Resolution';
+$lang['RESOLUTION_DESC'] = 'Resolution switcher.';
 
 $lang['SYNC_ERRORS'] = 'Errors';
 $lang['SYNC_WARNINGS'] = 'Warnings';
