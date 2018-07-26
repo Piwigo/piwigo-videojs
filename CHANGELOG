@@ -1,7 +1,17 @@
+Changes from v2.8.b to v2.9.a
+- Update VideoJS player to version 5.20.5
+- Add VideoJS player to version 6.10.3
+- Add VideoJS player to version 7.0.5
+- Add warning for recent MediaInfo version
+- Add metadata export using exiftool
+- Add metadata export using ffprobe
+- Update support to latest MediaInfo version
+- Update translation, thanks to the contributors
+
 Changes from v2.8.a to v2.8.b
 - Enable custom plugins VideoJS player v5
 - Add warning for recent MediaInfo version
-- Add option to enable/diable display metadata
+- Add option to enable/disable display metadata
 - Improve video rotate page
 - Update VideoJS player to version 5.10.7
 - Fix album restriction on sync page
