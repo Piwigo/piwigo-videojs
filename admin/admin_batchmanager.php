@@ -63,12 +63,12 @@ function vjs_loc_end_element_set_global()
 	global $template;
 	$template->append('element_set_global_plugins_actions',
 		array('ID' => 'videojs', 'NAME'=>l10n('Videos'), 'CONTENT' => '
-    <legend>Synchronize metadata</legend>
+    <legend>Metadata</legend>
     <ul>
       <li>
 	<label><input type="checkbox" name="vjs_metadata" value="1" checked="checked" /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
-	<br/><small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
+	<br/><small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">\'MediaInfo\' or \'ffprobe\' or \'Exiftool\'</a> to be install.</strong></small>
       </li>
     </ul>
     <legend>Poster</legend>
@@ -119,7 +119,7 @@ function vjs_element_set_global_action($action, $collection)
 	if ($action!=="videojs")
 		return;
 
-	global $page, $conf;
+	global $page, $conf, $prefixeTable;
 
 	$query = "SELECT `id`, `file`, `path`
 			FROM ".IMAGES_TABLE."
@@ -157,7 +157,7 @@ function vjs_loc_begin_element_set_unit()
 	if (!isset($_POST['submit']))
 	      return;
 
-	global $page, $conf;
+	global $page, $conf, $prefixeTable;
 
 	$collection = explode(',', $_POST['element_ids']);
 	foreach ($collection as $id)
@@ -218,12 +218,12 @@ function vjs_prefilter_batch_manager_unit($content)
 	{
 		$add = '<tr><td><strong>{\'VideoJS\'|@translate}</strong></td>
 		  <td style="border: 2px solid rgb(221, 221, 221);">
-    <legend>Synchronize metadata</legend>
+    <legend>Metadata</legend>
     <ul>
       <li>
 	<label><input type="checkbox" name="vjs_metadata-{$element.id}" value="1"/> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>Will overwrite the information in the database with the metadata from the video.</small>
-	<br/><small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">\'MediaInfo\'</a> to be install.</strong></small>
+	<br/><small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">\'MediaInfo\' or \'ffprobe\' or \'Exiftool\'</a> to be install.</strong></small>
       </li>
     </ul>
     <legend>Poster</legend>

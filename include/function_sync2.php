@@ -76,9 +76,9 @@ while ($row = pwg_db_fetch_assoc($result))
         $exif = array();
         if ($sync_options['metadata'])
         {
-            if ($sync_binaries['mediainfo']) { include('mediainfo.php'); }
-            if ($sync_binaries['exiftool']) { include('exiftool.php'); }
-            if ($sync_binaries['ffprobe']) { include('ffprobe.php'); }
+            if (isset($sync_binaries['mediainfo']) and $sync_binaries['mediainfo']) { include('mediainfo.php'); }
+            if (isset($sync_binaries['exiftool']) and $sync_binaries['exiftool']) { include('exiftool.php'); }
+            if (isset($sync_binaries['ffprobe']) and $sync_binaries['ffprobe']) { include('ffprobe.php'); }
         }
         //print_r($exif);
         if (isset($exif) and $sync_options['metadata'])
@@ -101,12 +101,9 @@ while ($row = pwg_db_fetch_assoc($result))
 					//print $query;
 					pwg_query($query);
 
-					/* At some point we use our own table */
-					//$json = json_encode($xml); /* convert XML to JSON */
-					//$all_array = json_decode($json,TRUE); /*  Merge all general/video/audio in one array to remove duplicate entry */
-					//$merge_arr = array_merge($all_array['File']['track'][2], $all_array['File']['track'][1], $all_array['File']['track'][0]);
-					//$query = "UPDATE '".$prefixeTable."image_videojs' SET metadata=".serialize($merge_arr).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
-					//pwg_query($query);
+					/* Use our own metadata sql table */
+					$query = "INSERT INTO ".$prefixeTable."image_videojs (metadata,date_metadata_update,id) VALUES ('".serialize($exif)."',CURDATE(),'".$row['id']."') ON DUPLICATE KEY UPDATE metadata='".serialize($exif)."',date_metadata_update=CURDATE(),id='".$row['id']."';";
+					pwg_query($query);
 				}
 			}
         }

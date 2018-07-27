@@ -53,7 +53,7 @@ if (defined('IN_ADMIN')) {
 
 function vjs_format_exif_data($exif, $filename, $map)
 {
-	global $conf, $picture;
+	global $conf, $picture, $prefixeTable;
 
 	//print_r( $picture['current']);
 	// do nothing if the current picture is actually an image !
@@ -66,63 +66,31 @@ function vjs_format_exif_data($exif, $filename, $map)
 		return $exif;
 	}
 
-	// Fetch metdata configuration
-	$metadata = isset($conf['vjs_conf']['metadata']) ? $conf['vjs_conf']['metadata'] : true;
-	if ($metadata == false)
-	{
-		return $exif;
-	}
-
 	// In case it is not an image but not a supported video file by the plugin
 	if (vjs_valid_extension(get_extension($picture['current']['path'])) === false)
 	{
 		return $exif;
 	}
 
-	// If video, let's check
-	//print $filename."\n";
+	// If video, fetch sql metadata
+	//print_r($picture)."\n<br/>\n";
 	//print_r($exif)."\n<br/>\n";
 	//print_r($map)."\n<br/>\n";
-	$filename=$picture['current']['path'];
-	// TODO read from DB, instead of reading live MediaInfo result
-	// Generate default value
-	$sync_options = array(
-		'mediainfo'        => 'mediainfo',
-		'ffmpeg'           => 'ffmpeg',
-		'ffprobe'          => 'ffprobe',
-		'exiftool'         => 'exiftool',
-		'metadata'         => true,
-		'poster'           => true,
-		'postersec'        => 4,
-		'output'           => 'jpg',
-		'posteroverlay'    => false,
-		'posteroverwrite'  => true,
-		'thumb'            => false,
-		'thumbsec'         => 5,
-		'thumbsize'        => "120x68",
-		'simulate'         => true,
-		'cat_id'           => 0,
-		'subcats_included' => true,
-	);
-	// Override default value from configuration
-	if (isset($conf['vjs_sync']))
+	/* Use our own metadata sql table */
+	$query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$picture['current']['id'].";";
+	$result = pwg_query($query);
+	$videojs_metadata = pwg_db_fetch_assoc($result);
+	if (isset($videojs_metadata) and isset($videojs_metadata['metadata']))
 	{
-	    $sync_options = unserialize($conf['vjs_sync']);
-	}
-	// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
-	require_once(dirname(__FILE__).'/include/function_dependencies.php');
-	// Get the metadata video information if program exist
-	if ($sync_binaries['mediainfo']) { require_once(dirname(__FILE__).'/include/mediainfo.php'); }
-	if ($sync_binaries['exiftool']) { require_once(dirname(__FILE__).'/include/exiftool.php'); }
-	if ($sync_binaries['ffprobe']) { require_once(dirname(__FILE__).'/include/ffprobe.php'); }
-	if (isset($exif) and ($exif != null) and isset($general))
-	{
-		// Replace some value by human readable string
+		$video_metadata = unserialize($videojs_metadata['metadata']);
+		//print_r($video_metadata);
+		$exif = array_merge($exif, $video_metadata);
+		// Add some value by human readable string
 		if (isset($exif['width']) and isset($exif['height']))
 		{
 			$exif['resolution'] = $exif['width'] ."x". $exif['height'];
 		}
-		isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
+		//isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
 		ksort($exif);
 	}
 	//print_r($exif)."\n<br/>\n";

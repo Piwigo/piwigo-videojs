@@ -83,15 +83,13 @@ if (isset($conf['vjs_sync']))
 {
     $sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options);
 }
-// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
-require_once(dirname(__FILE__).'/../include/function_dependencies.php');
 
+// Get image details if video type
 $query = "SELECT * FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['image_id'].";";
 $picture = pwg_db_fetch_assoc(pwg_query($query));
 
-//if (!$sync_options['metadata'] or !isset($picture['path'])) {
+// Ensure we have an image path
 if (!isset($picture['path'])) {
-	//print_r($sync_options);
 	die("Mediainfo error reading file id: '". $_GET['image_id']."'");
 }
 
@@ -104,10 +102,12 @@ if (isset($_GET['delete_extra']) and $_GET['delete_extra'] == 1)
 }
 
 $filename = $picture['path'];
+// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
+require_once(dirname(__FILE__).'/../include/function_dependencies.php');
 // Get the metadata video information if program exist
-if ($sync_binaries['mediainfo']) { include(dirname(__FILE__).'/../include/mediainfo.php'); }
-if ($sync_binaries['exiftool']) { include(dirname(__FILE__).'/../include/exiftool.php'); }
-if ($sync_binaries['ffprobe']) { include(dirname(__FILE__).'/../include/ffprobe.php'); }
+if (isset($sync_binaries['mediainfo']) and $sync_binaries['mediainfo']) { include(dirname(__FILE__).'/../include/mediainfo.php'); }
+if (isset($sync_binaries['exiftool']) and $sync_binaries['exiftool']) { include(dirname(__FILE__).'/../include/exiftool.php'); }
+if (isset($sync_binaries['ffprobe']) and $sync_binaries['ffprobe']) { include(dirname(__FILE__).'/../include/ffprobe.php'); }
 // If metadata from video
 if (isset($exif))
 {
@@ -124,8 +124,12 @@ if (isset($exif))
 		$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
 		$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$_GET['image_id'].";";
 		pwg_query($query);
+
+		/* Use our own metadata sql table */
+		$query = "INSERT INTO ".$prefixeTable."image_videojs (metadata,date_metadata_update,id) VALUES ('".serialize($exif)."',CURDATE(),'".$_GET['image_id']."') ON DUPLICATE KEY UPDATE metadata='".serialize($exif)."',date_metadata_update=CURDATE(),id='".$_GET['image_id']."';";
+		pwg_query($query);
 	}
-	// Replace some value by human readable string
+	// Add some value by human readable string
 	if (isset($exif['width']) and isset($exif['height']))
 	{
 		$exif['resolution'] = $exif['width'] ."x". $exif['height'];

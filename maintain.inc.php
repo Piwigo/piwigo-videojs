@@ -53,7 +53,7 @@ function plugin_install()
 
 	$default_config = array(
 		'skin'		  => 'vjs-default-skin',
-		'max_height'  => '720',
+		'max_height'	  => '720',
 		'preload'	  => 'auto',
 		'controls'	  => true,
 		'autoplay'	  => false,
@@ -65,7 +65,7 @@ function plugin_install()
 					'thumbnails'    => false,
 					'watermark'     => false,
 				),
-		'player'	=> 'vjs-player.tpl.v5',
+		'player'	=> 'vjs-5-player.tpl',
 		'metadata'	=> true,
 	);
 
@@ -87,11 +87,12 @@ function plugin_install()
 	/* Table to hold videos metadata details */
 	$q = 'CREATE TABLE IF NOT EXISTS `'.videojs_table.'` (
 			`id` mediumint(8) unsigned NOT NULL,
-			`metadata` varchar(255) DEFAULT NULL,
+			`metadata` text DEFAULT NULL,
+			`date_metadata_update` DATE DEFAULT NULL,
 			PRIMARY KEY (id)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8
 		;';
-	//pwg_query($q);
+	pwg_query($q);
 }
 
 function plugin_uninstall()

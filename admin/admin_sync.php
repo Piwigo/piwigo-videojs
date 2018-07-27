@@ -76,6 +76,7 @@ if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
 
     // Merge default value with user configuration
     $sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options_form);
+
     // Update config to DB
     conf_update_param('vjs_sync', serialize($sync_options));
 }
@@ -89,6 +90,10 @@ include(dirname(__FILE__).'/../include/function_dependencies.php');
 if ($sync_options['posteroverlay'] and !function_exists('gd_info'))
 {
 	$warnings[] = "GD library is missing to add overlay movie frame";
+}
+if ($sync_options['metadata'] and $sync_binaries['mediainfo'] and !class_exists('SimpleXMLElement'))
+{
+	$warnings[] = "XML library is missing to use mediainfo";
 }
 
 $template->assign('sync_warnings', $warnings);
