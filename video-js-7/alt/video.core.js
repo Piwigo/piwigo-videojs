@@ -1,6 +1,6 @@
 /**
  * @license
- * Video.js 7.0.5 <http://videojs.com/>
+ * Video.js 7.1.0 <http://videojs.com/>
  * Copyright Brightcove, Inc. <https://www.brightcove.com/>
  * Available under Apache License Version 2.0
  * <https://github.com/videojs/video.js/blob/master/LICENSE>
@@ -15,7 +15,7 @@
   typeof define === 'function' && define.amd ? define(factory) :
   (global.videojs = factory());
 }(this, (function () {
-  var version = "7.0.5";
+  var version = "7.1.0";
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -4314,10 +4314,18 @@
     Component.prototype.setTimeout = function setTimeout(fn, timeout) {
       var _this2 = this;
 
+      // declare as variables so they are properly available in timeout function
+      // eslint-disable-next-line
+      var timeoutId, disposeFn;
+
       fn = bind(this, fn);
 
-      var timeoutId = window_1.setTimeout(fn, timeout);
-      var disposeFn = function disposeFn() {
+      timeoutId = window_1.setTimeout(function () {
+        _this2.off('dispose', disposeFn);
+        fn();
+      }, timeout);
+
+      disposeFn = function disposeFn() {
         return _this2.clearTimeout(timeoutId);
       };
 
@@ -4456,11 +4464,19 @@
     Component.prototype.requestAnimationFrame = function requestAnimationFrame(fn) {
       var _this4 = this;
 
+      // declare as variables so they are properly available in rAF function
+      // eslint-disable-next-line
+      var id, disposeFn;
+
       if (this.supportsRaf_) {
         fn = bind(this, fn);
 
-        var id = window_1.requestAnimationFrame(fn);
-        var disposeFn = function disposeFn() {
+        id = window_1.requestAnimationFrame(function () {
+          _this4.off('dispose', disposeFn);
+          fn();
+        });
+
+        disposeFn = function disposeFn() {
           return _this4.cancelAnimationFrame(id);
         };
 
@@ -4685,12 +4701,12 @@
 
   var IS_FIREFOX = /Firefox/i.test(USER_AGENT);
   var IS_EDGE = /Edge/i.test(USER_AGENT);
-  var IS_CHROME = !IS_EDGE && /Chrome/i.test(USER_AGENT);
+  var IS_CHROME = !IS_EDGE && (/Chrome/i.test(USER_AGENT) || /CriOS/i.test(USER_AGENT));
   var CHROME_VERSION = function () {
-    var match = USER_AGENT.match(/Chrome\/(\d+)/);
+    var match = USER_AGENT.match(/(Chrome|CriOS)\/(\d+)/);
 
-    if (match && match[1]) {
-      return parseFloat(match[1]);
+    if (match && match[2]) {
+      return parseFloat(match[2]);
     }
     return null;
   }();
@@ -4707,9 +4723,9 @@
   }();
 
   var IS_SAFARI = /Safari/i.test(USER_AGENT) && !IS_CHROME && !IS_ANDROID && !IS_EDGE;
-  var IS_ANY_SAFARI = IS_SAFARI || IS_IOS;
+  var IS_ANY_SAFARI = (IS_SAFARI || IS_IOS) && !IS_CHROME;
 
-  var TOUCH_ENABLED = isReal() && ('ontouchstart' in window_1 || window_1.DocumentTouch && window_1.document instanceof window_1.DocumentTouch);
+  var TOUCH_ENABLED = isReal() && ('ontouchstart' in window_1 || window_1.navigator.maxTouchPoints || window_1.DocumentTouch && window_1.document instanceof window_1.DocumentTouch);
 
   var browser = /*#__PURE__*/Object.freeze({
     IS_IPAD: IS_IPAD,
@@ -10751,6 +10767,14 @@
   Tech.prototype.featuresVolumeControl = true;
 
   /**
+   * Boolean indicating whether the `Tech` supports muting volume.
+   *
+   * @type {bolean}
+   * @default
+   */
+  Tech.prototype.featuresMuteControl = true;
+
+  /**
    * Boolean indicating whether the `Tech` supports fullscreen resize control.
    * Resizing plugins using request fullscreen reloads the plugin
    *
@@ -11193,6 +11217,12 @@
       // then call the mw's setSource method
     } else if (mwFactory) {
       var mw = getOrCreateFactory(player, mwFactory);
+
+      // if setSource isn't present, implicitly select this middleware
+      if (!mw.setSource) {
+        acc.push(mw);
+        return setSourceHelper(src, mwrest, next, player, acc, lastRun);
+      }
 
       mw.setSource(assign({}, src), function (err, _src) {
 
@@ -11876,20 +11906,27 @@
    * Construct an rgba color from a given hex color code.
    *
    * @param {number} color
-   *        Hex number for color, like #f0e.
+   *        Hex number for color, like #f0e or #f604e2.
    *
    * @param {number} opacity
    *        Value for opacity, 0.0 - 1.0.
    *
    * @return {string}
    *         The rgba color that was created, like 'rgba(255, 0, 0, 0.3)'.
-   *
-   * @private
    */
   function constructColor(color, opacity) {
-    return 'rgba(' +
-    // color looks like "#f0e"
-    parseInt(color[1] + color[1], 16) + ',' + parseInt(color[2] + color[2], 16) + ',' + parseInt(color[3] + color[3], 16) + ',' + opacity + ')';
+    var hex = void 0;
+
+    if (color.length === 4) {
+      // color looks like "#f0e"
+      hex = color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
+    } else if (color.length === 7) {
+      // color looks like "#f604e2"
+      hex = color.slice(1);
+    } else {
+      throw new Error('Invalid color code provided, ' + color + '; must be formatted as e.g. #f0e or #f604e2.');
+    }
+    return 'rgba(' + parseInt(hex.slice(0, 2), 16) + ',' + parseInt(hex.slice(2, 4), 16) + ',' + parseInt(hex.slice(4, 6), 16) + ',' + opacity + ')';
   }
 
   /**
@@ -14865,6 +14902,10 @@
       var _this = possibleConstructorReturn(this, _Button.call(this, player, options));
 
       _this.on(player, 'fullscreenchange', _this.handleFullscreenChange);
+
+      if (document_1[FullscreenApi.fullscreenEnabled] === false) {
+        _this.disable();
+      }
       return _this;
     }
 
@@ -15362,6 +15403,33 @@
   Component.registerComponent('VolumeControl', VolumeControl);
 
   /**
+   * Check if muting volume is supported and if it isn't hide the mute toggle
+   * button.
+   *
+   * @param {Component} self
+   *        A reference to the mute toggle button
+   *
+   * @param {Player} player
+   *        A reference to the player
+   *
+   * @private
+   */
+  var checkMuteSupport = function checkMuteSupport(self, player) {
+    // hide mute toggle button if it's not supported by the current tech
+    if (player.tech_ && !player.tech_.featuresMuteControl) {
+      self.addClass('vjs-hidden');
+    }
+
+    self.on(player, 'loadstart', function () {
+      if (!player.tech_.featuresMuteControl) {
+        self.addClass('vjs-hidden');
+      } else {
+        self.removeClass('vjs-hidden');
+      }
+    });
+  };
+
+  /**
    * @file mute-toggle.js
    */
 
@@ -15389,7 +15457,7 @@
       // hide this control if volume support is missing
       var _this = possibleConstructorReturn(this, _Button.call(this, player, options));
 
-      checkVolumeSupport(_this, player);
+      checkMuteSupport(_this, player);
 
       _this.on(player, ['loadstart', 'volumechange'], _this.update);
       return _this;
@@ -15468,6 +15536,13 @@
     MuteToggle.prototype.updateIcon_ = function updateIcon_() {
       var vol = this.player_.volume();
       var level = 3;
+
+      // in iOS when a player is loaded with muted attribute
+      // and volume is changed with a native mute button
+      // we want to make sure muted state is updated
+      if (IS_IOS) {
+        this.player_.muted(this.player_.tech_.el_.muted);
+      }
 
       if (vol === 0 || this.player_.muted()) {
         level = 0;
@@ -15557,10 +15632,9 @@
         options.volumeControl.vertical = !options.inline;
       }
 
-      // hide this control if volume support is missing
       var _this = possibleConstructorReturn(this, _Component.call(this, player, options));
 
-      checkVolumeSupport(_this, player);
+      _this.on(player, ['loadstart'], _this.volumePanelState_);
 
       // while the slider is active (the mouse has been pressed down and
       // is dragging) we do not want to hide the VolumeBar
@@ -15592,6 +15666,29 @@
 
     VolumePanel.prototype.sliderInactive_ = function sliderInactive_() {
       this.removeClass('vjs-slider-active');
+    };
+
+    /**
+     * Adds vjs-hidden or vjs-mute-toggle-only to the VolumePanel
+     * depending on MuteToggle and VolumeControl state
+     *
+     * @listens Player#loadstart
+     * @private
+     */
+
+
+    VolumePanel.prototype.volumePanelState_ = function volumePanelState_() {
+      // hide volume panel if neither volume control or mute toggle
+      // are displayed
+      if (this.volumeControl.hasClass('vjs-hidden') && this.muteToggle.hasClass('vjs-hidden')) {
+        this.addClass('vjs-hidden');
+      }
+
+      // if only mute toggle is visible we don't want
+      // volume panel expanding when hovered or active
+      if (this.volumeControl.hasClass('vjs-hidden') && !this.muteToggle.hasClass('vjs-hidden')) {
+        this.addClass('vjs-mute-toggle-only');
+      }
     };
 
     /**
@@ -17612,6 +17709,8 @@
 
       _this.track = track;
 
+      _this.addClass('vjs-' + track.kind + '-menu-item');
+
       var changeHandler = function changeHandler() {
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
           args[_key] = arguments[_key];
@@ -17626,6 +17725,22 @@
       });
       return _this;
     }
+
+    AudioTrackMenuItem.prototype.createEl = function createEl(type, props, attrs) {
+      var innerHTML = '<span class="vjs-menu-item-text">' + this.localize(this.options_.label);
+
+      if (this.options_.track.kind === 'main-desc') {
+        innerHTML += '\n        <span aria-hidden="true" class="vjs-icon-placeholder"></span>\n        <span class="vjs-control-text"> ' + this.localize('Descriptions') + '</span>\n      ';
+      }
+
+      innerHTML += '</span>';
+
+      var el = _MenuItem.prototype.createEl.call(this, type, assign({
+        innerHTML: innerHTML
+      }, props), attrs);
+
+      return el;
+    };
 
     /**
      * This gets called when an `AudioTrackMenuItem is "clicked". See {@link ClickableComponent}
@@ -20255,6 +20370,33 @@
   };
 
   /**
+   * Check if the volume can be muted in this browser/device.
+   * Some devices, e.g. iOS, don't allow changing volume
+   * but permits muting/unmuting.
+   *
+   * @return {bolean}
+   *      - True if volume can be muted
+   *      - False otherwise
+   */
+  Html5.canMuteVolume = function () {
+    try {
+      var muted = Html5.TEST_VID.muted;
+
+      // in some versions of iOS muted property doesn't always
+      // work, so we want to set both property and attribute
+      Html5.TEST_VID.muted = !muted;
+      if (Html5.TEST_VID.muted) {
+        setAttribute(Html5.TEST_VID, 'muted', 'muted');
+      } else {
+        removeAttribute(Html5.TEST_VID, 'muted', 'muted');
+      }
+      return muted !== Html5.TEST_VID.muted;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  /**
    * Check if the playback rate can be changed in this browser/device.
    *
    * @return {boolean}
@@ -20311,7 +20453,7 @@
    *         - False otherwise
    */
   Html5.supportsNativeTextTracks = function () {
-    return IS_ANY_SAFARI;
+    return IS_ANY_SAFARI || IS_IOS && IS_CHROME;
   };
 
   /**
@@ -20351,6 +20493,14 @@
    * @default {@link Html5.canControlVolume}
    */
   Html5.prototype.featuresVolumeControl = Html5.canControlVolume();
+
+  /**
+   * Boolean indicating whether the `Tech` supports muting volume.
+   *
+   * @type {bolean}
+   * @default {@link Html5.canMuteVolume}
+   */
+  Html5.prototype.featuresMuteControl = Html5.canMuteVolume();
 
   /**
    * Boolean indicating whether the `Tech` supports changing the speed at which the media
@@ -21508,6 +21658,15 @@
       tag.controls = false;
       tag.removeAttribute('controls');
 
+      // the attribute overrides the option
+      if (tag.hasAttribute('autoplay')) {
+        _this.options_.autoplay = true;
+      } else {
+        // otherwise use the setter to validate and
+        // set the correct value.
+        _this.autoplay(_this.options_.autoplay);
+      }
+
       /*
        * Store the internal state of scrubbing
        *
@@ -22066,13 +22225,17 @@
       // Turn off API access because we're loading a new tech that might load asynchronously
       this.isReady_ = false;
 
+      // if autoplay is a string we pass false to the tech
+      // because the player is going to handle autoplay on `loadstart`
+      var autoplay = typeof this.autoplay() === 'string' ? false : this.autoplay();
+
       // Grab tech-specific options from player options and add source and parent element to use.
       var techOptions = {
         source: source,
+        autoplay: autoplay,
         'nativeControlsForTouch': this.options_.nativeControlsForTouch,
         'playerId': this.id(),
         'techId': this.id() + '_' + titleTechName + '_api',
-        'autoplay': this.options_.autoplay,
         'playsinline': this.options_.playsinline,
         'preload': this.options_.preload,
         'loop': this.options_.loop,
@@ -22255,6 +22418,7 @@
       // http://stackoverflow.com/questions/1444562/javascript-onclick-event-over-flash-object
       // Any touch events are set to block the mousedown event from happening
       this.on(this.tech_, 'mousedown', this.handleTechClick_);
+      this.on(this.tech_, 'dblclick', this.handleTechDoubleClick_);
 
       // If the controls were hidden we don't want that to change without a tap event
       // so we'll check if the controls were already showing before reporting user
@@ -22284,6 +22448,7 @@
       this.off(this.tech_, 'touchmove', this.handleTechTouchMove_);
       this.off(this.tech_, 'touchend', this.handleTechTouchEnd_);
       this.off(this.tech_, 'mousedown', this.handleTechClick_);
+      this.off(this.tech_, 'dblclick', this.handleTechDoubleClick_);
     };
 
     /**
@@ -22306,19 +22471,6 @@
 
       // Update the duration if available
       this.handleTechDurationChange_();
-
-      // Chrome and Safari both have issues with autoplay.
-      // In Safari (5.1.1), when we move the video element into the container div, autoplay doesn't work.
-      // In Chrome (15), if you have autoplay + a poster + no controls, the video gets hidden (but audio plays)
-      // This fixes both issues. Need to wait for API, so it updates displays correctly
-      if ((this.src() || this.currentSrc()) && this.tag && this.options_.autoplay && this.paused()) {
-        try {
-          // Chrome Fix. Fixed in Chrome v16.
-          delete this.tag.poster;
-        } catch (e) {
-          log$1('deleting tag.poster throws in some browsers', e);
-        }
-      }
     };
 
     /**
@@ -22359,6 +22511,69 @@
         this.hasStarted(false);
         this.trigger('loadstart');
       }
+
+      // autoplay happens after loadstart for the browser,
+      // so we mimic that behavior
+      this.manualAutoplay_(this.autoplay());
+    };
+
+    /**
+     * Handle autoplay string values, rather than the typical boolean
+     * values that should be handled by the tech. Note that this is not
+     * part of any specification. Valid values and what they do can be
+     * found on the autoplay getter at Player#autoplay()
+     */
+
+
+    Player.prototype.manualAutoplay_ = function manualAutoplay_(type) {
+      var _this4 = this;
+
+      if (!this.tech_ || typeof type !== 'string') {
+        return;
+      }
+
+      var muted = function muted() {
+        var previouslyMuted = _this4.muted();
+
+        _this4.muted(true);
+
+        var playPromise = _this4.play();
+
+        if (!playPromise || !playPromise.then || !playPromise.catch) {
+          return;
+        }
+
+        return playPromise.catch(function (e) {
+          // restore old value of muted on failure
+          _this4.muted(previouslyMuted);
+        });
+      };
+
+      var promise = void 0;
+
+      if (type === 'any') {
+        promise = this.play();
+
+        if (promise && promise.then && promise.catch) {
+          promise.catch(function () {
+            return muted();
+          });
+        }
+      } else if (type === 'muted') {
+        promise = muted();
+      } else {
+        promise = this.play();
+      }
+
+      if (!promise || !promise.then || !promise.catch) {
+        return;
+      }
+
+      return promise.then(function () {
+        _this4.trigger({ type: 'autoplay-success', autoplay: type });
+      }).catch(function (e) {
+        _this4.trigger({ type: 'autoplay-failure', autoplay: type });
+      });
     };
 
     /**
@@ -22467,7 +22682,7 @@
 
 
     Player.prototype.handleTechSourceset_ = function handleTechSourceset_(event) {
-      var _this4 = this;
+      var _this5 = this;
 
       // only update the source cache when the source
       // was not updated using the player api
@@ -22483,10 +22698,10 @@
         if (!event.src) {
           var updateCache = function updateCache(e) {
             if (e.type !== 'sourceset') {
-              _this4.updateSourceCaches_(_this4.techGet_('currentSrc'));
+              _this5.updateSourceCaches_(_this5.techGet_('currentSrc'));
             }
 
-            _this4.tech_.off(['sourceset', 'loadstart'], updateCache);
+            _this5.tech_.off(['sourceset', 'loadstart'], updateCache);
           };
 
           this.tech_.one(['sourceset', 'loadstart'], updateCache);
@@ -22600,7 +22815,7 @@
 
 
     Player.prototype.handleTechWaiting_ = function handleTechWaiting_() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.addClass('vjs-waiting');
       /**
@@ -22611,7 +22826,7 @@
        */
       this.trigger('waiting');
       this.one('timeupdate', function () {
-        return _this5.removeClass('vjs-waiting');
+        return _this6.removeClass('vjs-waiting');
       });
     };
 
@@ -22835,6 +23050,37 @@
         silencePromise(this.play());
       } else {
         this.pause();
+      }
+    };
+
+    /**
+     * Handle a double-click on the media element to enter/exit fullscreen
+     *
+     * @param {EventTarget~Event} event
+     *        the event that caused this function to trigger
+     *
+     * @listens Tech#dblclick
+     * @private
+     */
+
+
+    Player.prototype.handleTechDoubleClick_ = function handleTechDoubleClick_(event) {
+      if (!this.controls_) {
+        return;
+      }
+
+      // we do not want to toggle fullscreen state
+      // when double-clicking inside a control bar or a modal
+      var inAllowedEls = Array.prototype.some.call(this.$$('.vjs-control-bar, .vjs-modal-dialog'), function (el) {
+        return el.contains(event.target);
+      });
+
+      if (!inAllowedEls) {
+        if (this.isFullscreen()) {
+          this.exitFullscreen();
+        } else {
+          this.requestFullscreen();
+        }
       }
     };
 
@@ -23097,7 +23343,7 @@
 
 
     Player.prototype.play = function play() {
-      var _this6 = this;
+      var _this7 = this;
 
       // If this is called while we have a play queued up on a loadstart, remove
       // that listener to avoid getting in a potentially bad state.
@@ -23117,8 +23363,8 @@
 
         this.playWaitingForReady_ = true;
         this.ready(function () {
-          _this6.playWaitingForReady_ = false;
-          silencePromise(_this6.play());
+          _this7.playWaitingForReady_ = false;
+          silencePromise(_this7.play());
         });
 
         // If the player/tech is ready and we have a source, we can attempt playback.
@@ -23134,8 +23380,8 @@
       } else {
 
         this.playOnLoadstart_ = function () {
-          _this6.playOnLoadstart_ = null;
-          silencePromise(_this6.play());
+          _this7.playOnLoadstart_ = null;
+          silencePromise(_this7.play());
         };
 
         this.one('loadstart', this.playOnLoadstart_);
@@ -23745,7 +23991,7 @@
 
 
     Player.prototype.selectSource = function selectSource(sources) {
-      var _this7 = this;
+      var _this8 = this;
 
       // Get only the techs specified in `techOrder` that exist and are supported by the
       // current platform
@@ -23794,7 +24040,7 @@
         var techName = _ref2[0],
             tech = _ref2[1];
 
-        if (tech.canPlaySource(source, _this7.options_[techName.toLowerCase()])) {
+        if (tech.canPlaySource(source, _this8.options_[techName.toLowerCase()])) {
           return { source: source, tech: techName };
         }
       };
@@ -23830,7 +24076,7 @@
 
 
     Player.prototype.src = function src(source) {
-      var _this8 = this;
+      var _this9 = this;
 
       // getter usage
       if (typeof source === 'undefined') {
@@ -23858,35 +24104,35 @@
 
       // middlewareSource is the source after it has been changed by middleware
       setSource(this, sources[0], function (middlewareSource, mws) {
-        _this8.middleware_ = mws;
+        _this9.middleware_ = mws;
 
         // since sourceSet is async we have to update the cache again after we select a source since
         // the source that is selected could be out of order from the cache update above this callback.
-        _this8.cache_.sources = sources;
-        _this8.updateSourceCaches_(middlewareSource);
+        _this9.cache_.sources = sources;
+        _this9.updateSourceCaches_(middlewareSource);
 
-        var err = _this8.src_(middlewareSource);
+        var err = _this9.src_(middlewareSource);
 
         if (err) {
           if (sources.length > 1) {
-            return _this8.src(sources.slice(1));
+            return _this9.src(sources.slice(1));
           }
 
-          _this8.changingSrc_ = false;
+          _this9.changingSrc_ = false;
 
           // We need to wrap this in a timeout to give folks a chance to add error event handlers
-          _this8.setTimeout(function () {
+          _this9.setTimeout(function () {
             this.error({ code: 4, message: this.localize(this.options_.notSupportedMessage) });
           }, 0);
 
           // we could not find an appropriate tech, but let's still notify the delegate that this is it
           // this needs a better comment about why this is needed
-          _this8.triggerReady();
+          _this9.triggerReady();
 
           return;
         }
 
-        setTech(mws, _this8.tech_);
+        setTech(mws, _this9.tech_);
       });
     };
 
@@ -23906,7 +24152,7 @@
 
 
     Player.prototype.src_ = function src_(source) {
-      var _this9 = this;
+      var _this10 = this;
 
       var sourceTech = this.selectSource([source]);
 
@@ -23919,7 +24165,7 @@
         // load this technology with the chosen source
         this.loadTech_(sourceTech.tech, sourceTech.source);
         this.tech_.ready(function () {
-          _this9.changingSrc_ = false;
+          _this10.changingSrc_ = false;
         });
         return false;
       }
@@ -24045,24 +24291,56 @@
     };
 
     /**
-     * Get or set the autoplay attribute.
+     * Get or set the autoplay option. When this is a boolean it will
+     * modify the attribute on the tech. When this is a string the attribute on
+     * the tech will be removed and `Player` will handle autoplay on loadstarts.
      *
-     * @param {boolean} [value]
-     *        - true means that we should autoplay
-     *        - false means that we should not autoplay
+     * @param {boolean|string} [value]
+     *        - true: autoplay using the browser behavior
+     *        - false: do not autoplay
+     *        - 'play': call play() on every loadstart
+     *        - 'muted': call muted() then play() on every loadstart
+     *        - 'any': call play() on every loadstart. if that fails call muted() then play().
+     *        - *: values other than those listed here will be set `autoplay` to true
      *
-     * @return {string}
+     * @return {boolean|string}
      *         The current value of autoplay when getting
      */
 
 
     Player.prototype.autoplay = function autoplay(value) {
-      if (value !== undefined) {
-        this.techCall_('setAutoplay', value);
-        this.options_.autoplay = value;
-        return;
+      // getter usage
+      if (value === undefined) {
+        return this.options_.autoplay || false;
       }
-      return this.techGet_('autoplay', value);
+
+      var techAutoplay = void 0;
+
+      // if the value is a valid string set it to that
+      if (typeof value === 'string' && /(any|play|muted)/.test(value)) {
+        this.options_.autoplay = value;
+        this.manualAutoplay_(value);
+        techAutoplay = false;
+
+        // any falsy value sets autoplay to false in the browser,
+        // lets do the same
+      } else if (!value) {
+        this.options_.autoplay = false;
+
+        // any other value (ie truthy) sets autoplay to true
+      } else {
+        this.options_.autoplay = true;
+      }
+
+      techAutoplay = techAutoplay || this.options_.autoplay;
+
+      // if we don't have a tech then we do not queue up
+      // a setAutoplay call on tech ready. We do this because the
+      // autoplay option will be passed in the constructor and we
+      // do not need to set it twice
+      if (this.tech_) {
+        this.techCall_('setAutoplay', techAutoplay);
+      }
     };
 
     /**
@@ -24797,7 +25075,7 @@
 
 
     Player.prototype.createModal = function createModal(content, options) {
-      var _this10 = this;
+      var _this11 = this;
 
       options = options || {};
       options.content = content || '';
@@ -24806,7 +25084,7 @@
 
       this.addChild(modal);
       modal.on('dispose', function () {
-        _this10.removeChild(modal);
+        _this11.removeChild(modal);
       });
 
       modal.open();
