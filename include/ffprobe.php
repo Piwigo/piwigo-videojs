@@ -49,13 +49,19 @@ if ( !isset($output['format']) and !isset($output['streams']))
 }
 
 $general = $output['format'];
-if (isset($output['streams'][0]['codec_type']) and $output['streams'][0]['codec_type'] == 'video')
+if (isset($output['streams']) and is_array($output['streams']) and !empty($output['streams']) and (count($output['streams']) > 0))
 {
-	$video = $output['streams'][0];
-	$audio = $output['streams'][1];
-} else {
-	$video = $output['streams'][1];
-	$audio = $output['streams'][0];
+	foreach ($output['streams'] as $stream)
+	{
+		if ($stream['codec_type'] == 'video')
+		{
+			$video = $stream;
+		}
+		if ($stream['codec_type'] == 'audio')
+		{
+			$audio = $stream;
+		}
+	}
 }
 
 /* General */
