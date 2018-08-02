@@ -43,12 +43,22 @@ if ( !isset($output) and !is_array($output))
 	$exif['error'] = "ffprobe error reading file: <br/>'". $filename."'";
 }
 
-if ( !isset($output['format']) and !isset($output['streams']))
+if ( isset($output['error']) and isset($output['error']['string']))
 {
-	$exif['error'] = "ffprobe error reading output json: <br/>'". $output."'";
+	$exif['error'] = "ffprobe error reading output json: <br/>'". $output['error']['string']."'";
 }
 
-$general = $output['format'];
+if ( !isset($output['format']) and !isset($output['streams']))
+{
+	if (!is_array($output)) { $exif['error'] = "ffprobe error reading output json: <br/>'". $output."'"; }
+}
+
+if (isset($output['format']))
+{
+	$general = $output['format'];
+}
+
+/* Find which stream is audio and video if any */
 if (isset($output['streams']) and is_array($output['streams']) and !empty($output['streams']) and (count($output['streams']) > 0))
 {
 	foreach ($output['streams'] as $stream)

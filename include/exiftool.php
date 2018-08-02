@@ -43,7 +43,10 @@ if ( !isset($output) and !is_array($output))
 	$exif['error'] = "Exiftool error reading file: <br/>'". $filename."'";
 }
 
-$general = $output[0];
+if (isset($output[0]))
+{
+	$general = $output[0];
+}
 
 /* General */
 if (isset($general['FileSize']))
