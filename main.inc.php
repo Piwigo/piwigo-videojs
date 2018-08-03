@@ -28,6 +28,7 @@ $vjs_extensions = array(
 	'm4v',
 	'webm',
 	'webmv',
+	'strm',
 );
 $conf['file_ext'] = array_merge ($conf['file_ext'], $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 
@@ -80,7 +81,7 @@ function vjs_format_exif_data($exif, $filename, $map)
 	$query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$picture['current']['id'].";";
 	$result = pwg_query($query);
 	$videojs_metadata = pwg_db_fetch_assoc($result);
-	if (isset($videojs_metadata) and isset($videojs_metadata['metadata']))
+	if (is_array($exif) and isset($videojs_metadata) and isset($videojs_metadata['metadata']))
 	{
 		$video_metadata = unserialize($videojs_metadata['metadata']);
 		//print_r($video_metadata);
@@ -108,7 +109,7 @@ function vjs_render_media($content, $picture)
 {
 	global $template, $picture, $page, $conf, $user, $refresh;
 
-	//print_r( $picture['current']);
+	//print_r($picture['current']);
 	// do nothing if the current picture is actually an image !
 	if ( (array_key_exists('src_image', @$picture['current'])
 		&& @$picture['current']['src_image']->is_original()) )
@@ -181,7 +182,7 @@ function vjs_render_media($content, $picture)
 	$controls = isset($conf['vjs_conf']['controls']) ? strbool($conf['vjs_conf']['controls']) : false;
 	$volume = isset($conf['vjs_conf']['volume']) ? $conf['vjs_conf']['volume'] : '1';
 	$language = isset($conf['vjs_conf']['language']) ? $conf['vjs_conf']['language'] : 'en';
-	$player = isset($conf['vjs_conf']['player']) ? $conf['vjs_conf']['player'] : 'vjs-player.tpl.v5';
+	$player = isset($conf['vjs_conf']['player']) ? $conf['vjs_conf']['player'] : 'vjs-5-player.tpl';
 
 	// Slideshow : The video needs to be launch automatically in
 	// slideshow mode. The refresh of the page is set to the
@@ -202,6 +203,8 @@ function vjs_render_media($content, $picture)
 	);
 	$skincss = $available_skins[$skin];
 
+	// read strm and return HLS playlist
+	$strm = vjs_read_strm($picture['current']['path']);
 	// Guess the poster extension
 	$file_wo_ext = pathinfo($picture['current']['path']);
 	$file_dir = dirname($picture['current']['path']);
@@ -213,9 +216,9 @@ function vjs_render_media($content, $picture)
 	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 	// Add the current file in array
 	$videos[] = array(
-				'src' => embellish_url($picture['current']['element_url']),
+				'src' => $strm ? $strm : embellish_url($picture['current']['element_url']),
 				'ext' => $extension,
-        'resolution' => 'SD',
+				'resolution' => 'SD',
 			);
 	// Add any other video source format
 	foreach ($files_ext as $file_ext) {
@@ -406,7 +409,7 @@ SELECT *
 
 function vjs_get_mimetype_icon($location, $element_info)
 {
-	if (in_array($element_info, array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv')))
+	if (in_array($element_info, array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv', 'strm')))
 	{
 		$location = 'plugins/'
 			. basename(dirname(__FILE__))
@@ -437,7 +440,8 @@ function vjs_get_mimetype_from_ext($file_ext)
 			'mp4'   => 'video/mp4',
 			'm4v'   => 'video/mp4',
 			'webm'  => 'video/webm',
-			'webmv' => 'video/webm'
+			'webmv' => 'video/webm',
+			'strm'  => 'application/x-mpegURL'
 			);
 	return $vjs_types[strtolower($file_ext)];
 }
@@ -450,8 +454,23 @@ function vjs_valid_extension($file_ext)
 			'mp4'   => 'video/mp4',
 			'm4v'   => 'video/mp4',
 			'webm'  => 'video/webm',
-			'webmv' => 'video/webm'
+			'webmv' => 'video/webm',
+			'strm'  => 'video/live'
 			);
 	return array_key_exists(strtolower($file_ext), $vjs_types) ? true : false;
+}
+
+function vjs_read_strm($image)
+{
+	if (get_extension($image) == 'strm')
+	{
+		$strmfile = fopen($image, "r") or die("Unable to open strm file!");
+		$hlsfile = fgets($strmfile);
+		$hlsfile = str_replace(array("\r", "\n", " "), "", $hlsfile);
+		fclose($strmfile);
+		if (parse_url($hlsfile))
+			return $hlsfile;
+	}
+	return false;
 }
 ?>
