@@ -153,6 +153,7 @@ function vjs_element_set_global_action($action, $collection)
 	else
 	{
 		$errors[] = "No valid vjs configuration";
+		return;
 	}
 
 	if(isset($_POST['vjs_metadata']) && isset($_POST['vjs_poster'])) {
