@@ -47,19 +47,9 @@ $sync_options = array(
     'subcats_included'  => true,
 );
 
-// Merge default value with user configuration
-if (isset($conf['vjs_sync']))
-{
-    $sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options);
-}
-
 if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
     // Override default value from the form
     $sync_options_form = array(
-	'mediainfo'         => $_POST['mediainfo'],
-	'ffmpeg'            => $_POST['ffmpeg'],
-	'exiftool'          => $_POST['exiftool'],
-	'ffprobe'           => $_POST['ffprobe'],
         'metadata'          => isset($_POST['metadata']),
         'poster'            => isset($_POST['poster']),
         'postersec'         => $_POST['postersec'],
@@ -81,15 +71,12 @@ if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
 // Set user messages
 $warnings = array();
 
-// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
-include(dirname(__FILE__).'/../include/function_dependencies.php');
-
 // Check 'gd_info' and 'SimpleXMLElement'
 if ($sync_options['posteroverlay'] and !function_exists('gd_info'))
 {
 	$warnings[] = "GD library is missing to add overlay movie frame";
 }
-if ($sync_options['metadata'] and $sync_binaries['mediainfo'] and !class_exists('SimpleXMLElement'))
+if ($sync_options['metadata'] and isset($sync_options['mediainfo']) and !class_exists('SimpleXMLElement'))
 {
 	$warnings[] = "XML library is missing to use mediainfo";
 }
@@ -97,7 +84,6 @@ if ($sync_options['metadata'] and $sync_binaries['mediainfo'] and !class_exists(
 $template->assign('sync_warnings', $warnings);
 $template->assign($sync_options); // send config value to template
 $template->assign('sync_options', $sync_options); // send config value to template
-$template->assign('sync_binaries', $sync_binaries); // send external tools binary to template
 
 if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 {

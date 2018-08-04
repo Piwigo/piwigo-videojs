@@ -76,9 +76,9 @@ while ($row = pwg_db_fetch_assoc($result))
         $exif = array();
         if ($sync_options['metadata'])
         {
-            if (isset($sync_binaries['mediainfo']) and $sync_binaries['mediainfo']) { include('mediainfo.php'); }
-            if (isset($sync_binaries['exiftool']) and $sync_binaries['exiftool']) { include('exiftool.php'); }
-            if (isset($sync_binaries['ffprobe']) and $sync_binaries['ffprobe']) { include('ffprobe.php'); }
+            if (isset($sync_options['mediainfo']) and $sync_options['mediainfo']) { include('mediainfo.php'); }
+            if (isset($sync_options['exiftool']) and $sync_options['exiftool']) { include('exiftool.php'); }
+            if (isset($sync_options['ffprobe']) and $sync_options['ffprobe']) { include('ffprobe.php'); }
         }
         //print_r($exif);
         if (isset($exif) and $sync_options['metadata'])

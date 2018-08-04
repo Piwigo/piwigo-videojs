@@ -29,46 +29,57 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 // Do the dependencies checks for MediaInfo & FFMPEG & FFPROBE & exiftool
 if (!function_exists('check'))   { // Avoid Fatal error: Cannot redeclare
-function check($binary, $sync_options)
-{
-    $retval = 0;
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        system($sync_options[$binary] ." >NUL 2>NUL", $retval); // redirect any output
-    } else {
-        system($sync_options[$binary] ." 1>&2 /dev/null", $retval); // redirect any output
-    }
-    //print $retval;
-    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
-    {
-        return false;
-    } else {
-        return true;
-    }
-}
+	function check($binary)
+	{
+	    $retval = 0;
+	    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+		system($binary ." >NUL 2>NUL", $retval); // redirect any output
+	    } else {
+		system($binary ." 1>&2 /dev/null", $retval); // redirect any output
+	    }
+	    //print $retval;
+	    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
+	    {
+		return false;
+	    } else {
+	        return true;
+	    }
+	}
 }
 
+/* Concat custom binary directory from local config local/config/config.inc.php */
+$sync_binaries = array(
+	'mediainfo'	=> isset($conf['vjs_mediainfo_dir']) ? $conf['vjs_mediainfo_dir'].$sync_options['mediainfo'] : $sync_options['mediainfo'],
+	'exiftool'	=> isset($conf['vjs_exiftool_dir']) ? $conf['vjs_exiftool_dir'].$sync_options['exiftool'] : $sync_options['exiftool'],
+	'ffprobe'	=> isset($conf['vjs_ffprobe_dir']) ? $conf['vjs_ffprobe_dir'].$sync_options['ffprobe'] : $sync_options['ffprobe'],
+	'ffmpeg'	=> isset($conf['ffmpeg_dir']) ? $conf['ffmpeg_dir'].$sync_options['ffmpeg'] : $sync_options['ffmpeg'],
+);
+
 // For each external tools try
-$binaries = array('mediainfo', 'ffprobe', 'exiftool', 'ffmpeg');
-$sync_binaries = [];
-foreach ($binaries as $binary)
+foreach ($sync_binaries as $binary => $path)
 {
- $sync_binaries[$binary] = check($binary, $sync_options);
- /* If failed */
- if (!$sync_binaries[$binary])
- {
-    if ($binary != 'ffmpeg')
-    {
-       $warnings[] = "Metadata parsing disable because ".$binary." is not installed on the system, eg: '/usr/bin/".$binary."'.";
-       $sync_options['metadata'] ? true : false;
-    }
-    if ($binary == 'ffmpeg')
-    {
-      $warnings[] = "Poster and Thumbnail creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
-      $sync_options['poster'] = false;
-      $sync_options['thumb'] = false;
-    }
- }
+	if (check($path))
+	{
+		$sync_options[$binary] = $path;
+	}
+	else /* If failed */
+	{
+		$sync_options[$binary] = false;
+		if ($binary == 'ffmpeg')
+		{
+			$warnings[] = "Poster and Thumbnail creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
+			$sync_options['poster'] = false;
+			$sync_options['thumb'] = false;
+		}
+	}
 }
+
+if (!$sync_options['mediainfo'] and !$sync_options['exiftool'] and !$sync_options['ffprobe'])
+{
+       $warnings[] = "Metadata parsing disable because 'mediainfo' or 'exiftool' or 'ffprobe' is not installed on the system, eg: '/usr/bin/".$binary."'.";
+       $sync_options['metadata'] = false;
+}
+
 //print_r($sync_binaries);
 //print_r($sync_options);
 ?>

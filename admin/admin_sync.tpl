@@ -120,29 +120,6 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 
 <form action="" method="post" id="update" oninput="thumbsecValue.value=thumbsec.value">
 
-  <fieldset id="require">
-    <legend>{'Program Dependencies'|@translate}</legend>
-    <ul>
-      {foreach from=$sync_binaries key=name item=detail}
-      <li>
-		<label>
-			{if $detail}
-				<img src="{$VIDEOJS_PATH}admin/check.png" witdh="16" height="16">
-			{else}
-				<img src="{$VIDEOJS_PATH}admin/warning.png" witdh="16" height="16">
-			{/if}
-			<input type="text" name="{$name}" value="{$sync_options[{$name}]}" class="large" /> {$name} binary path
-		</label>
-		{if $name == 'ffmpeg'}
-		<br/><small><strong><a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'FFmpeg'</a> must be install to allow video thumbnail and poster generation.</strong></small>
-		{else}
-		<br/><small><strong><a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'{$name}'</a> must be install to allow video metadata parsing.</strong></small>
-		{/if}
-      </li>
-      {/foreach}
-    </ul>
-  </fieldset>
-
   <fieldset id="syncmeta">
     <legend>{'Synchronize metadata'|@translate}</legend>
     <ul>
