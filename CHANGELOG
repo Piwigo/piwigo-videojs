@@ -1,3 +1,10 @@
+Changes from v2.9.a to v2.9.b
+- Fix configuration initalize
+- Add our own sql metadata table
+- Update VideoJS player to version 6.11.0
+- Update VideoJS player to version 7.1.0
+- Update translation, thanks to the contributors
+
 Changes from v2.8.b to v2.9.a
 - Update VideoJS player to version 5.20.5
 - Add VideoJS player to version 6.10.3
