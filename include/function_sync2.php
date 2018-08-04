@@ -91,9 +91,10 @@ while ($row = pwg_db_fetch_assoc($result))
 			else if (!empty($exif) and count($exif) > 0)
 			{
 				$metadata++;
-				isset($sync_options['batch_manager']) and $infos[] = $filename. ' metadata: '.vjs_pprint_r($exif);
-				//$infos[] = $filename. ' metadata: '.count($exif);
-				$sync_arr['metadata'] = count($exif)." ".vjs_pprint_r($exif);
+				/* Report it */
+				$infos[] = $filename. ' metadata: '.count($exif).' '.vjs_pprint_r($exif);
+				$sync_arr['metadata'] = count($exif).' '.vjs_pprint_r($exif);
+				/* Save metadata */
 				if ($sync_options['metadata'] and !$sync_options['simulate'])
 				{
 					$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
@@ -124,7 +125,7 @@ while ($row = pwg_db_fetch_assoc($result))
             $in = $filename;
             $out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['output'];
             /* Report it */
-            isset($sync_options['batch_manager']) ? $infos[] = $filename. ' poster: '.$out : '';
+            $infos[] = $filename. ' poster: '.$out;
             $sync_arr['poster'] = $out;
 
             if (!is_dir($output_dir))
@@ -191,7 +192,8 @@ while ($row = pwg_db_fetch_assoc($result))
 					if($sync_options['posteroverlay'])
 					{
 						add_movie_frame($out);
-						isset($sync_options['batch_manager']) ? $infos[] = $filename. ' overlay: '.$out : '';
+						/* Report it */
+						$infos[] = $filename. ' overlay: '.$out;
 						$sync_arr['overlay'] = "add movie frame on ".$out;
 					}
 				}
@@ -249,7 +251,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			$thumbs++;
 			$out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];
 			/* Report it */
-			isset($sync_options['batch_manager']) ? $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out : '';
+			$infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out;
 			$sync_arr['thumbnail'][] = $second.' seconds '.$out;
                         /* Lets do it , default output to JPG */
                         $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -vf ".$scale." -y \"".$out. "\"";
@@ -267,11 +269,9 @@ while ($row = pwg_db_fetch_assoc($result))
                 }
             }
         } /* End thumbnails */
-        if (!isset($sync_options['batch_manager']))
-        {
-            $infos[] = $sync_arr;
-        }
-    }
+	/* report for custum page_info */
+        $sync_infos[] = $sync_arr;
+   }
 }
 
 /***************

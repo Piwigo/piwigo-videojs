@@ -45,7 +45,7 @@ $delete_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/a
 load_language('plugin.lang', PHPWG_PLUGINS_PATH.basename(dirname(__FILE__)).'/');
 load_language('plugin.lang', VIDEOJS_PATH);
 
-global $template, $page, $conf;
+global $template, $page, $conf, $prefixeTable;
 
 include_once(PHPWG_ROOT_PATH.'admin/include/tabsheet.class.php');
 $tabsheet = new tabsheet();
@@ -66,7 +66,7 @@ $sync_options = array(
     'exiftool'          => 'exiftool',
     'ffprobe'           => 'ffprobe',
     'metadata'          => true,
-    'poster'            => true,
+    'poster'            => false,
     'postersec'         => 4,
     'output'            => 'jpg',
     'posteroverlay'     => false,
@@ -74,15 +74,10 @@ $sync_options = array(
     'thumb'             => false,
     'thumbsec'          => 5,
     'thumbsize'         => "120x68",
-    'simulate'          => true,
+    'simulate'          => false,
     'cat_id'            => 0,
     'subcats_included'  => true,
 );
-// Merge default value with user configuration
-if (isset($conf['vjs_sync']))
-{
-    $sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options);
-}
 
 // Get image details if video type
 $query = "SELECT * FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['image_id'].";";
@@ -90,7 +85,7 @@ $picture = pwg_db_fetch_assoc(pwg_query($query));
 
 // Ensure we have an image path
 if (!isset($picture['path'])) {
-	die("Mediainfo error reading file id: '". $_GET['image_id']."'");
+	die("Error reading file id: '". $_GET['image_id']."'");
 }
 
 // Delete the extra data
@@ -101,39 +96,30 @@ if (isset($_GET['delete_extra']) and $_GET['delete_extra'] == 1)
 	array_push( $page['infos'], 'Thumbnails and Subtitle and extra videos source deleted');
 }
 
-$filename = $picture['path'];
-// Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
-require_once(dirname(__FILE__).'/../include/function_dependencies.php');
-// Get the metadata video information if program exist
-if (isset($sync_binaries['mediainfo']) and $sync_binaries['mediainfo']) { include(dirname(__FILE__).'/../include/mediainfo.php'); }
-if (isset($sync_binaries['exiftool']) and $sync_binaries['exiftool']) { include(dirname(__FILE__).'/../include/exiftool.php'); }
-if (isset($sync_binaries['ffprobe']) and $sync_binaries['ffprobe']) { include(dirname(__FILE__).'/../include/ffprobe.php'); }
-// If metadata from video
-if (isset($exif))
+// Sync metadata to db, share code
+if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1)
 {
-	$exif = array_filter($exif);
-	if (isset($exif['error']))
-	{
-		array_push( $page['errors'], $exif['error']);
-		unset($exif['error']);
-	}
-	// Import metadata into the DB
-	if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1 and !empty($exif) and count($exif) > 0)
-	{
-		array_push( $page['infos'], ' metadata: '.count($exif)." ".vjs_pprint_r($exif));
-		$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
-		$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$_GET['image_id'].";";
-		pwg_query($query);
+	require_once(dirname(__FILE__).'/../include/function_sync2.php');
+	$page['errors'] = $errors;
+	$page['warnings'] = $warnings;
+	$page['infos'] = $infos;
+}
 
-		/* Use our own metadata sql table */
-		$query = "INSERT INTO ".$prefixeTable."image_videojs (metadata,date_metadata_update,id) VALUES ('".serialize($exif)."',CURDATE(),'".$_GET['image_id']."') ON DUPLICATE KEY UPDATE metadata='".serialize($exif)."',date_metadata_update=CURDATE(),id='".$_GET['image_id']."';";
-		pwg_query($query);
-	}
+// Fetch metadata from db
+$query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$_GET['image_id'].";";
+$result = pwg_query($query);
+$videojs_metadata = pwg_db_fetch_assoc($result);
+if (isset($videojs_metadata) and isset($videojs_metadata['metadata']))
+{
+	$video_metadata = unserialize($videojs_metadata['metadata']);
+	//print_r($video_metadata);
+	$exif = $video_metadata;
 	// Add some value by human readable string
 	if (isset($exif['width']) and isset($exif['height']))
 	{
 		$exif['resolution'] = $exif['width'] ."x". $exif['height'];
-	}
+        }
+	include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
 	isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
 	ksort($exif);
 }
@@ -155,14 +141,14 @@ $extension = $parts['extension'];
 $vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
 $files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 // Add the current file in array
-$videos[] = array(
+$videossrc[] = array(
 			'src' => embellish_url(get_gallery_home_url() . $picture['path']),
 			'ext' => $extension,
 		);
 foreach ($files_ext as $file_ext) {
 	$file = $parts['dirname']."/pwg_representative/".$parts['filename'].".".$file_ext;
 	if (file_exists($file)){
-		array_push($videos,
+		array_push($videossrc,
 			   array (
 				'src' => embellish_url(
 						  get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".".$file_ext
@@ -172,7 +158,7 @@ foreach ($files_ext as $file_ext) {
 			  );
 	}
 }
-//print_r($videos);
+//print_r($videossrc);
 
 /* Try to find WebVTT */
 $file = $parts['dirname']."/pwg_representative/".$parts['filename'].".vtt";
@@ -202,8 +188,8 @@ if ( is_array ( $matches ) and !empty($matches) ) {
 
 $infos = array_merge(
 				array('Poster' => $poster),
-				array('Videos source' => count($videos)),
-				array('videos' => $videos),
+				array('Videos source' => count($videossrc)),
+				array('videos' => $videossrc),
 				array('Thumbnails' => count($thumbnails)),
 				array('thumbnails' => $thumbnails),
 				array('Subtitle' => $subtitle)

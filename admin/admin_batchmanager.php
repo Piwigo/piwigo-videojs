@@ -126,7 +126,7 @@ function vjs_element_set_global_action($action, $collection)
 			WHERE id IN (".implode(',',$collection).")";
 
 	// Generate default value
-	$sync_options_default = array(
+	$sync_options = array(
 	    'mediainfo'         => 'mediainfo',
 	    'ffmpeg'            => 'ffmpeg',
 	    'exiftool'          => 'exiftool',
@@ -145,17 +145,6 @@ function vjs_element_set_global_action($action, $collection)
 	    'subcats_included'  => true,
 	);
 
-	// Merge default value with user configuration
-	if (isset($conf['vjs_sync']))
-	{
-		$sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options_default);
-	}
-	else
-	{
-		$errors[] = "No valid vjs configuration";
-		return;
-	}
-
 	if(isset($_POST['vjs_metadata']) && isset($_POST['vjs_poster'])) {
 	    // Override default value from the form
 	    $sync_options_form = array(
@@ -169,14 +158,13 @@ function vjs_element_set_global_action($action, $collection)
 	        'thumbsec'          => $_POST['vjs_thumbsec'],
 	        'thumbsize'         => $_POST['vjs_thumbsize'],
 	        'simulate'          => false,
-	        'batch_manager'     => true,
 	    );
 
 	    // Merge default value with user data from the form
 	    $sync_options = array_merge($sync_options, $sync_options_form);
 	}
 
-	// Do the work, share with batch manager
+	// Do the work, share with admin sync and photo
 	require_once(dirname(__FILE__).'/../include/function_sync2.php');
 
 	$page['errors'] = $errors;
@@ -192,6 +180,26 @@ function vjs_loc_begin_element_set_unit()
 	      return;
 
 	global $page, $conf, $prefixeTable;
+
+	// Generate default value
+	$sync_options = array(
+	    'mediainfo'         => 'mediainfo',
+	    'ffmpeg'            => 'ffmpeg',
+	    'exiftool'          => 'exiftool',
+	    'ffprobe'           => 'ffprobe',
+	    'metadata'          => true,
+	    'poster'            => true,
+	    'postersec'         => 4,
+	    'output'            => 'jpg',
+	    'posteroverlay'     => false,
+	    'posteroverwrite'   => true,
+	    'thumb'             => false,
+	    'thumbsec'          => 5,
+	    'thumbsize'         => "120x68",
+	    'simulate'          => true,
+	    'cat_id'            => 0,
+	    'subcats_included'  => true,
+	);
 
 	$collection = explode(',', $_POST['element_ids']);
 	foreach ($collection as $id)
@@ -211,24 +219,16 @@ function vjs_loc_begin_element_set_unit()
 		    'thumbsec'          => $_POST['vjs_thumbsec-'.$id],
 		    'thumbsize'         => $_POST['vjs_thumbsize-'.$id],
 		    'simulate'          => false,
-		    'batch_manager'     => true,
 		);
 
 		// Merge default value with user data from the form
-		if (isset($conf['vjs_sync']))
-		{
-			$sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options_form);
-		}
-		else
-		{
-			$errors[] = "No valid vjs configuration";
-		}
+		$sync_options = array_merge($sync_options, $sync_options_form);
 
 		$query = "SELECT `id`, `file`, `path`
 				FROM ".IMAGES_TABLE."
 				WHERE `id`='".$id."';";
 
-		// Do the work, share with batch manager
+		// Do the work, share with admin sync and photo
 		include(dirname(__FILE__).'/../include/function_sync2.php');
 
 		$page['errors'] = array_merge($page['errors'], $errors);

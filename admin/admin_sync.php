@@ -75,18 +75,16 @@ if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
     );
 
     // Merge default value with user configuration
-    $sync_options = array_merge(unserialize($conf['vjs_sync']), $sync_options_form);
-
-    // Update config to DB
-    conf_update_param('vjs_sync', serialize($sync_options));
+    $sync_options = array_merge($sync_options, $sync_options_form);
 }
 
-// Check dependencies
+// Set user messages
 $warnings = array();
 
 // Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
 include(dirname(__FILE__).'/../include/function_dependencies.php');
 
+// Check 'gd_info' and 'SimpleXMLElement'
 if ($sync_options['posteroverlay'] and !function_exists('gd_info'))
 {
 	$warnings[] = "GD library is missing to add overlay movie frame";
@@ -141,7 +139,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     // Send sync result to template
     $template->assign('sync_errors', $errors );
     $template->assign('sync_warnings', $warnings );
-    $template->assign('sync_infos', $infos );
+    $template->assign('sync_infos', $sync_infos );
 
     // Send result to templates
     $template->assign(
