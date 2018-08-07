@@ -145,7 +145,8 @@ function vjs_element_set_global_action($action, $collection)
 	    'subcats_included'  => true,
 	);
 
-	if(isset($_POST['vjs_metadata']) && isset($_POST['vjs_poster'])) {
+	if(isset($_POST['submit']))
+	{
 	    // Override default value from the form
 	    $sync_options_form = array(
 	        'metadata'          => isset($_POST['vjs_metadata']),

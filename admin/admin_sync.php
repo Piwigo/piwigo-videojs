@@ -47,27 +47,6 @@ $sync_options = array(
     'subcats_included'  => true,
 );
 
-if(isset($_POST['mediainfo']) && isset($_POST['ffmpeg'])) {
-    // Override default value from the form
-    $sync_options_form = array(
-        'metadata'          => isset($_POST['metadata']),
-        'poster'            => isset($_POST['poster']),
-        'postersec'         => $_POST['postersec'],
-        'output'            => $_POST['output'],
-        'posteroverlay'     => isset($_POST['posteroverlay']),
-        'posteroverwrite'   => isset($_POST['posteroverwrite']),
-        'thumb'             => isset($_POST['thumb']),
-        'thumbsec'          => $_POST['thumbsec'],
-        'thumbsize'         => $_POST['thumbsize'],
-        'simulate'          => isset($_POST['simulate']),
-        'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
-        'subcats_included'  => isset($_POST['subcats_included']),
-    );
-
-    // Merge default value with user configuration
-    $sync_options = array_merge($sync_options, $sync_options_form);
-}
-
 // Set user messages
 $warnings = array();
 
@@ -87,6 +66,25 @@ $template->assign('sync_options', $sync_options); // send config value to templa
 
 if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 {
+    // Override default value from the form
+    $sync_options_form = array(
+        'metadata'          => isset($_POST['metadata']),
+        'poster'            => isset($_POST['poster']),
+        'postersec'         => $_POST['postersec'],
+        'output'            => $_POST['output'],
+        'posteroverlay'     => isset($_POST['posteroverlay']),
+        'posteroverwrite'   => isset($_POST['posteroverwrite']),
+        'thumb'             => isset($_POST['thumb']),
+        'thumbsec'          => $_POST['thumbsec'],
+        'thumbsize'         => $_POST['thumbsize'],
+        'simulate'          => isset($_POST['simulate']),
+        'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
+        'subcats_included'  => isset($_POST['subcats_included']),
+    );
+
+    // Merge default value with user configuration
+    $sync_options = array_merge($sync_options, $sync_options_form);
+
     // Filter on existing poster
     $OVERWRITE = "";
     if (!$sync_options['posteroverwrite'])
@@ -121,6 +119,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 
     // Do the work, share with batch manager
     require_once(dirname(__FILE__).'/../include/function_sync2.php');
+    //print_r($sync_options);
 
     // Send sync result to template
     $template->assign('sync_errors', $errors );
