@@ -101,11 +101,11 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 			{foreach from=$infos key=name item=detail}
 				{if $name == 'thumbnail'}
 					<li>{$name}:</li>
-					{foreach from=$detail item=thumb}
 					<ul>
-						<li>{$thumb}</li>
+						{foreach from=$detail item=thumb}
+							<li>{$thumb}</li>
+						{/foreach}
 					</ul>
-					{/foreach}
 				{else}
 					<li>{$name}: {$detail}</li>
 				{/if}

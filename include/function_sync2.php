@@ -110,6 +110,28 @@ while ($row = pwg_db_fetch_assoc($result))
 			}
         }
 
+	/* If we don't parse metadata, fetch them from the db */
+	/* as we need $exif['playtime_seconds'] */
+	if (isset($exif) and !$sync_options['metadata'])
+	{
+		$infos[] = $filename. ' metadata fetch from the db.';
+		$sync_arr['metadata'] = ' fetch from the db.';
+		$query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$row['id'].";";
+		$result = pwg_query($query);
+		$videojs_metadata = pwg_db_fetch_assoc($result);
+		if (is_array($exif) and isset($videojs_metadata) and is_array($videojs_metadata) and isset($videojs_metadata['metadata']))
+		{
+			$video_metadata = unserialize($videojs_metadata['metadata']);
+			//print_r($video_metadata);
+			$exif = array_merge($exif, $video_metadata);
+		}
+		if (!isset($exif['playtime_seconds']))
+		{
+			$warnings[] = "Unable to gather 'playtime_seconds' metadata, you may need to parse metadata first.";
+		}
+	}
+	//print_r($exif);
+
         /* Create poster */
         if ($sync_options['poster'])
         {
@@ -137,7 +159,7 @@ while ($row = pwg_db_fetch_assoc($result))
             {
                 $errors[] = "Directory ".$output_dir." has wrong permission";
             }
-            else if ($sync_options['postersec'] and !$sync_options['simulate'])
+            else if (isset($exif['playtime_seconds']) and $sync_options['postersec'] and !$sync_options['simulate'])
             {/* We really want to create the poster */
 
 		/* Delete any previous poster, avoid duplication on different output format */
@@ -151,7 +173,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			}
 		}
 		/* if video is shorter fallback to last second */
-                if (isset($exif['playtime_seconds']) and $sync_options['postersec'] > $exif['playtime_seconds'])
+                if ($sync_options['postersec'] > $exif['playtime_seconds'])
                 {
                     $warnings[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". $exif['playtime_seconds'] ." secondes";
                     $sync_options['postersec'] = (int)$exif['playtime_seconds'];
