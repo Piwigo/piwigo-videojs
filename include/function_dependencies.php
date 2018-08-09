@@ -27,24 +27,32 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
+// Check 'gd_info' and 'SimpleXMLElement'
+if ($sync_options['posteroverlay'] and !function_exists('gd_info'))
+{
+        $warnings[] = "GD library is missing to add overlay movie frame";
+}
+if ($sync_options['metadata'] and isset($sync_options['mediainfo']) and !class_exists('SimpleXMLElement'))
+{
+        $warnings[] = "XML library is missing to use mediainfo";
+}
+
 // Do the dependencies checks for MediaInfo & FFMPEG & FFPROBE & exiftool
-if (!function_exists('check'))   { // Avoid Fatal error: Cannot redeclare
-	function check($binary)
-	{
-	    $retval = 0;
-	    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-		system($binary ." >NUL 2>NUL", $retval); // redirect any output
-	    } else {
-		system($binary ." 1>&2 /dev/null", $retval); // redirect any output
-	    }
-	    //print $retval;
-	    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
-	    {
-		return false;
-	    } else {
-	        return true;
-	    }
-	}
+function check($binary)
+{
+    $retval = 0;
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+	system($binary ." >NUL 2>NUL", $retval); // redirect any output
+    } else {
+	system($binary ." 1>&2 /dev/null", $retval); // redirect any output
+    }
+    //print $retval;
+    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
+    {
+	return false;
+    } else {
+        return true;
+    }
 }
 
 /* Concat custom binary directory from local config local/config/config.inc.php */

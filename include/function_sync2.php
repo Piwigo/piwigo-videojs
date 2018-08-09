@@ -47,6 +47,7 @@ $thumbs = 0;
 
 // Do the Check dependencies, MediaInfo & FFMPEG, share with batch manager & photo edit & admin sync
 include("function_dependencies.php");
+
 //print_r($sync_options);
 //print_r($sync_binaries);
 if (!$sync_options['metadata'] and !$sync_options['poster'] and !$sync_options['thumb'])

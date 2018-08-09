@@ -47,23 +47,6 @@ $sync_options = array(
     'subcats_included'  => true,
 );
 
-// Set user messages
-$warnings = array();
-
-// Check 'gd_info' and 'SimpleXMLElement'
-if ($sync_options['posteroverlay'] and !function_exists('gd_info'))
-{
-	$warnings[] = "GD library is missing to add overlay movie frame";
-}
-if ($sync_options['metadata'] and isset($sync_options['mediainfo']) and !class_exists('SimpleXMLElement'))
-{
-	$warnings[] = "XML library is missing to use mediainfo";
-}
-
-$template->assign('sync_warnings', $warnings);
-$template->assign($sync_options); // send config value to template
-$template->assign('sync_options', $sync_options); // send config value to template
-
 if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 {
     // Override default value from the form
@@ -119,12 +102,13 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 
     // Do the work, share with batch manager
     require_once(dirname(__FILE__).'/../include/function_sync2.php');
-    //print_r($sync_options);
 
     // Send sync result to template
     $template->assign('sync_errors', $errors );
     $template->assign('sync_warnings', $warnings );
-    $template->assign('sync_infos', $sync_infos );
+    if (isset($sync_infos)) {
+	$template->assign('sync_infos', $sync_infos );
+    }
 
     // Send result to templates
     $template->assign(
@@ -138,6 +122,9 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
             'NB_WARNINGS'               => count($warnings),
     ));
 }
+
+// Send user options result to template
+$template->assign($sync_options);
 
 /* Get statistics */
 // All videos with supported extensions by VideoJS
