@@ -81,7 +81,7 @@ function vjs_format_exif_data($exif, $filename, $map)
 	$query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$picture['current']['id'].";";
 	$result = pwg_query($query);
 	$videojs_metadata = pwg_db_fetch_assoc($result);
-	if (is_array($exif) and isset($videojs_metadata) and isset($videojs_metadata['metadata']))
+	if (is_array($exif) and isset($videojs_metadata) and is_array($videojs_metadata) and isset($videojs_metadata['metadata']))
 	{
 		$video_metadata = unserialize($videojs_metadata['metadata']);
 		//print_r($video_metadata);
@@ -91,7 +91,8 @@ function vjs_format_exif_data($exif, $filename, $map)
 		{
 			$exif['resolution'] = $exif['width'] ."x". $exif['height'];
 		}
-		//isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
+		include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
+		isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
 		ksort($exif);
 	}
 	//print_r($exif)."\n<br/>\n";
