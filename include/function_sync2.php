@@ -117,8 +117,8 @@ while ($row = pwg_db_fetch_assoc($result))
 		$infos[] = $filename. ' metadata fetch from the db.';
 		$sync_arr['metadata'] = ' fetch from the db.';
 		$query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$row['id'].";";
-		$result = pwg_query($query);
-		$videojs_metadata = pwg_db_fetch_assoc($result);
+		$sql_metadata = pwg_query($query);
+		$videojs_metadata = pwg_db_fetch_assoc($sql_metadata);
 		if (is_array($exif) and isset($videojs_metadata) and is_array($videojs_metadata) and isset($videojs_metadata['metadata']))
 		{
 			$video_metadata = unserialize($videojs_metadata['metadata']);
