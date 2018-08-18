@@ -1,6 +1,6 @@
 /**
  * @license
- * Video.js 6.11.0 <http://videojs.com/>
+ * Video.js 6.12.1 <http://videojs.com/>
  * Copyright Brightcove, Inc. <https://www.brightcove.com/>
  * Available under Apache License Version 2.0
  * <https://github.com/videojs/video.js/blob/master/LICENSE>
@@ -16,7 +16,7 @@
 	(global.videojs = factory());
 }(this, (function () {
 
-var version = "6.11.0";
+var version = "6.12.1";
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -7619,9 +7619,8 @@ var TextTrack = function (_Track) {
       // Accessing this.activeCues for the side-effects of updating itself
       // due to it's nature as a getter function. Do not remove or cues will
       // stop updating!
-      /* eslint-disable no-unused-expressions */
-      this.activeCues;
-      /* eslint-enable no-unused-expressions */
+      // Use the setter to prevent deletion from uglify (pure_getters rule)
+      this.activeCues = this.activeCues;
       if (changed) {
         this.trigger('cuechange');
         changed = false;
@@ -7753,6 +7752,9 @@ var TextTrack = function (_Track) {
 
         return activeCues;
       },
+
+
+      // /!\ Keep this setter empty (see the timeupdate handler above)
       set: function set$$1() {}
     });
 
@@ -22918,6 +22920,14 @@ var Player = function (_Component) {
       src = srcObj.src;
       type = srcObj.type;
     }
+
+    // if we are a blob url, don't update the source cache
+    // blob urls can arise when playback is done via Media Source Extension (MSE)
+    // such as m3u8 sources with @videojs/http-streaming (VHS)
+    if (/^blob:/.test(src)) {
+      return;
+    }
+
     // make sure all the caches are set to default values
     // to prevent null checking
     this.cache_.source = this.cache_.source || {};
@@ -23256,7 +23266,7 @@ var Player = function (_Component) {
    * @fires Player#firstplay
    * @listens Tech#firstplay
    * @deprecated As of 6.0 firstplay event is deprecated.
-   * @deprecated As of 6.0 passing the `starttime` option to the player and the firstplay event are deprecated.
+   *             As of 6.0 passing the `starttime` option to the player and the firstplay event are deprecated.
    * @private
    */
 
@@ -23623,14 +23633,43 @@ var Player = function (_Component) {
    * Attempt to begin playback at the first opportunity.
    *
    * @return {Promise|undefined}
-   *         Returns a `Promise` only if the browser returns one and the player
-   *         is ready to begin playback. For some browsers and all non-ready
-   *         situations, this will return `undefined`.
+   *         Returns a promise if the browser supports Promises (or one
+   *         was passed in as an option). This promise will be resolved on
+   *         the return value of play. If this is undefined it will fulfill the
+   *         promise chain otherwise the promise chain will be fulfilled when
+   *         the promise from play is fulfilled.
    */
 
 
   Player.prototype.play = function play() {
     var _this7 = this;
+
+    var PromiseClass = this.options_.Promise || window_1.Promise;
+
+    if (PromiseClass) {
+      return new PromiseClass(function (resolve) {
+        _this7.play_(resolve);
+      });
+    }
+
+    return this.play_();
+  };
+
+  /**
+   * The actual logic for play, takes a callback that will be resolved on the
+   * return value of play. This allows us to resolve to the play promise if there
+   * is one on modern browsers.
+   *
+   * @private
+   * @param {Function} [callback]
+   *        The callback that should be called when the techs play is actually called
+   */
+
+
+  Player.prototype.play_ = function play_() {
+    var _this8 = this;
+
+    var callback = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : silencePromise;
 
     // If this is called while we have a play queued up on a loadstart, remove
     // that listener to avoid getting in a potentially bad state.
@@ -23650,13 +23689,14 @@ var Player = function (_Component) {
 
       this.playWaitingForReady_ = true;
       this.ready(function () {
-        _this7.playWaitingForReady_ = false;
-        silencePromise(_this7.play());
+        _this8.playWaitingForReady_ = false;
+        callback(_this8.play());
       });
 
       // If the player/tech is ready and we have a source, we can attempt playback.
     } else if (!this.changingSrc_ && (this.src() || this.currentSrc())) {
-      return this.techGet_('play');
+      callback(this.techGet_('play'));
+      return;
 
       // If the tech is ready, but we do not have a source, we'll need to wait
       // for both the `ready` and a `loadstart` when the source is finally
@@ -23667,8 +23707,8 @@ var Player = function (_Component) {
     } else {
 
       this.playOnLoadstart_ = function () {
-        _this7.playOnLoadstart_ = null;
-        silencePromise(_this7.play());
+        _this8.playOnLoadstart_ = null;
+        callback(_this8.play());
       };
 
       this.one('loadstart', this.playOnLoadstart_);
@@ -24278,7 +24318,7 @@ var Player = function (_Component) {
 
 
   Player.prototype.selectSource = function selectSource(sources) {
-    var _this8 = this;
+    var _this9 = this;
 
     // Get only the techs specified in `techOrder` that exist and are supported by the
     // current platform
@@ -24327,7 +24367,7 @@ var Player = function (_Component) {
       var techName = _ref2[0],
           tech = _ref2[1];
 
-      if (tech.canPlaySource(source, _this8.options_[techName.toLowerCase()])) {
+      if (tech.canPlaySource(source, _this9.options_[techName.toLowerCase()])) {
         return { source: source, tech: techName };
       }
     };
@@ -24363,7 +24403,7 @@ var Player = function (_Component) {
 
 
   Player.prototype.src = function src(source) {
-    var _this9 = this;
+    var _this10 = this;
 
     // getter usage
     if (typeof source === 'undefined') {
@@ -24391,35 +24431,35 @@ var Player = function (_Component) {
 
     // middlewareSource is the source after it has been changed by middleware
     setSource(this, sources[0], function (middlewareSource, mws) {
-      _this9.middleware_ = mws;
+      _this10.middleware_ = mws;
 
       // since sourceSet is async we have to update the cache again after we select a source since
       // the source that is selected could be out of order from the cache update above this callback.
-      _this9.cache_.sources = sources;
-      _this9.updateSourceCaches_(middlewareSource);
+      _this10.cache_.sources = sources;
+      _this10.updateSourceCaches_(middlewareSource);
 
-      var err = _this9.src_(middlewareSource);
+      var err = _this10.src_(middlewareSource);
 
       if (err) {
         if (sources.length > 1) {
-          return _this9.src(sources.slice(1));
+          return _this10.src(sources.slice(1));
         }
 
-        _this9.changingSrc_ = false;
+        _this10.changingSrc_ = false;
 
         // We need to wrap this in a timeout to give folks a chance to add error event handlers
-        _this9.setTimeout(function () {
+        _this10.setTimeout(function () {
           this.error({ code: 4, message: this.localize(this.options_.notSupportedMessage) });
         }, 0);
 
         // we could not find an appropriate tech, but let's still notify the delegate that this is it
         // this needs a better comment about why this is needed
-        _this9.triggerReady();
+        _this10.triggerReady();
 
         return;
       }
 
-      setTech(mws, _this9.tech_);
+      setTech(mws, _this10.tech_);
     });
   };
 
@@ -24439,7 +24479,7 @@ var Player = function (_Component) {
 
 
   Player.prototype.src_ = function src_(source) {
-    var _this10 = this;
+    var _this11 = this;
 
     var sourceTech = this.selectSource([source]);
 
@@ -24452,7 +24492,7 @@ var Player = function (_Component) {
       // load this technology with the chosen source
       this.loadTech_(sourceTech.tech, sourceTech.source);
       this.tech_.ready(function () {
-        _this10.changingSrc_ = false;
+        _this11.changingSrc_ = false;
       });
       return false;
     }
@@ -24493,6 +24533,9 @@ var Player = function (_Component) {
 
 
   Player.prototype.reset = function reset() {
+    if (this.tech_) {
+      this.tech_.clearTracks('text');
+    }
     this.loadTech_(this.options_.techOrder[0], null);
     this.techCall_('reset');
   };
@@ -25362,7 +25405,7 @@ var Player = function (_Component) {
 
 
   Player.prototype.createModal = function createModal(content, options) {
-    var _this11 = this;
+    var _this12 = this;
 
     options = options || {};
     options.content = content || '';
@@ -25371,7 +25414,7 @@ var Player = function (_Component) {
 
     this.addChild(modal);
     modal.on('dispose', function () {
-      _this11.removeChild(modal);
+      _this12.removeChild(modal);
     });
 
     modal.open();
@@ -26790,6 +26833,20 @@ videojs.bind = bind;
  *         basic plugins, a wrapper function that initializes the plugin.
  */
 videojs.registerPlugin = Plugin.registerPlugin;
+
+/**
+ * Deregister a Video.js plugin.
+ *
+ * @borrows plugin:deregisterPlugin as videojs.deregisterPlugin
+ * @method deregisterPlugin
+ *
+ * @param  {string} name
+ *         The name of the plugin to be deregistered. Must be a string and
+ *         must match an existing plugin or a method on the `Player`
+ *         prototype.
+ *
+ */
+videojs.deregisterPlugin = Plugin.deregisterPlugin;
 
 /**
  * Deprecated method to register a plugin with Video.js
