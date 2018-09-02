@@ -95,7 +95,7 @@ if (isset($general['tags']['creation_time']))
 if (isset($general['tags']['location']))
 {
 	$gps = (string)$general['tags']['location'];
-	$value = preg_split('/(\+|\-)/', $gps, -1, PREG_SPLIT_DELIM_CAPTURE);
+	$value = preg_split('/(\+|\-|\/)/', $gps, -1, PREG_SPLIT_DELIM_CAPTURE);
 	$exif['latitude'] = $value[1].$value[2];
 	$exif['longitude'] = $value[3].$value[4];
 }
