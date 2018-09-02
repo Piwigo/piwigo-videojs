@@ -117,7 +117,7 @@ if (isset($general->xyz) or isset($general->comapplequicktimelocationISO6709))	/
     isset($general->xyz) ? $gps = (string)$general->xyz : $gps = (string)$general->comapplequicktimelocationISO6709;
     //$test = "+35.6445-139.7455-029.201/";
     //print_r(preg_split('/(\+|\-)/', $general->xyz, -1, PREG_SPLIT_DELIM_CAPTURE));
-    $value = preg_split('/(\+|\-)/', $gps, -1, PREG_SPLIT_DELIM_CAPTURE);
+    $value = preg_split('/(\+|\-|\/)/', $gps, -1, PREG_SPLIT_DELIM_CAPTURE);
     $exif['latitude'] = $value[1].$value[2];
     $exif['longitude'] = $value[3].$value[4];
 }
