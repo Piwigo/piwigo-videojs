@@ -145,6 +145,7 @@ while ($row = pwg_db_fetch_assoc($result))
             	continue;
             }
             $output_dir = dirname($row['path']) . '/pwg_representative/';
+            //$output_dir = PWG_DERIVATIVE_DIR . dirname($row['path']) . '/pwg_representative/';
             $in = $filename;
             $out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['output'];
             /* Report it */
@@ -200,7 +201,7 @@ while ($row = pwg_db_fetch_assoc($result))
 
 					/* Delete any previous square or thumbnail or small images, avoid duplication on different output format */
 					/* They are now out of date, thumbnail are autogenerate by Piwigo on request */
-					$idata = "_data/i/".dirname($row['path']).'/pwg_representative/';
+					$idata = PWG_DERIVATIVE_DIR . dirname($row['path']) . '/pwg_representative/';
 					$extensions = array('-th.jpg', '-sq.jpg', '-th.png', '-sq.png', '-sm.png', '-sm.png');
 					foreach ($extensions as $extension)
 					{
@@ -236,6 +237,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			continue;
 		}
                 $output_dir = dirname($row['path']) . '/pwg_representative/';
+                //$output_dir = PWG_DERIVATIVE_DIR . dirname($row['path']) . '/pwg_representative/';
 
                 if (!is_dir($output_dir) or !is_writable($output_dir))
                 {
