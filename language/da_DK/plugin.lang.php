@@ -67,3 +67,7 @@ $lang['HEIGHT_DESC'] = 'Maksimal højde-attributten sætter den maksimale visnin
 ';
 $lang['LANGUAGE'] = 'Sprog';
 $lang['LANGUAGE_DESC'] = 'Vælg afspillerens sprog';
+$lang['METADATA_DESC'] = 'Metadatabeskrivelse';
+$lang['PLAYER_DESC'] = 'Vælg vjs-afspillerversion';
+$lang['RESOLUTION'] = 'Opløsning';
+$lang['RESOLUTION_DESC'] = 'Opløsningsskifter.';
