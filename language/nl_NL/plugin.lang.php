@@ -65,3 +65,7 @@ $lang['HEIGHT'] = 'Maximale hoogte';
 $lang['HEIGHT_DESC'] = 'De instelling maximale hoogte bepaalt de maximale weergave-hoogte van de video. Als de video-hoogte groter is dan de ingestelde maximale hoogte, wordt de hoogte van de video aangepast naar de ingestelde maximale hoogte.';
 $lang['LANGUAGE'] = 'Taal';
 $lang['LANGUAGE_DESC'] = 'Selecteer de taal van de speler';
+$lang['METADATA_DESC'] = 'Metadata omschrijving';
+$lang['PLAYER_DESC'] = 'Selecteer de vjs player versie';
+$lang['RESOLUTION'] = 'Resolutie';
+$lang['RESOLUTION_DESC'] = 'Resolutiewisselaar.';
