@@ -65,3 +65,7 @@ $lang['HEIGHT_DESC'] = 'L\'attributo altezza max imposta l\'altezza massima di v
 $lang['LANGUAGE_DESC'] = 'Seleziona la lingua giocatore.';
 $lang['LANGUAGE'] = 'Lingua';
 $lang['HEIGHT'] = 'Altezza Massima';
+$lang['METADATA_DESC'] = 'Descrizione dei metadati';
+$lang['PLAYER_DESC'] = 'Seleziona la versione del lettore vjs';
+$lang['RESOLUTION'] = 'Risoluzione';
+$lang['RESOLUTION_DESC'] = 'Dispositivo di scorrimento della risoluzione';
