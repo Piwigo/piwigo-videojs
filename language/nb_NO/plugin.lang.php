@@ -65,3 +65,7 @@ $lang['HEIGHT_DESC'] = 'Maks høyde valget angir maksimal visningshøyden på vi
 $lang['HEIGHT'] = 'Maks høyde';
 $lang['LANGUAGE'] = 'Språk';
 $lang['LANGUAGE_DESC'] = 'Avspillerspråk';
+$lang['METADATA_DESC'] = 'Metadate beskrivelse';
+$lang['PLAYER_DESC'] = 'Velg vjs spillerversjon.';
+$lang['RESOLUTION'] = 'Oppløsning';
+$lang['RESOLUTION_DESC'] = 'Oppløsningsbryter';
