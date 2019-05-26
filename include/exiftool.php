@@ -117,4 +117,9 @@ if (isset($general['AudioSampleRate']))
 	$exif['sampling_rate'] = (string)$general['AudioSampleRate'];
 }
 
+if (isset($general['ProjectionType']))
+{
+	$exif['projection'] = (string)$general['ProjectionType'];
+}
+
 ?>

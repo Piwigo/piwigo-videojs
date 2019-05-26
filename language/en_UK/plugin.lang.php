@@ -36,6 +36,8 @@ $lang['WATERMARK'] = 'Watermark';
 $lang['WATERMARK_DESC'] = 'Displays watermark over the video.';
 $lang['RESOLUTION'] = 'Resolution';
 $lang['RESOLUTION_DESC'] = 'Resolution switcher.';
+$lang['VR'] = 'View 360 videos';
+$lang['VR_DESC'] = '360 Videos viewing (works with v6 only).';
 
 $lang['SYNC_ERRORS'] = 'Errors';
 $lang['SYNC_WARNINGS'] = 'Warnings';

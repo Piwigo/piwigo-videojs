@@ -15,4 +15,6 @@
     <p>Video Playback Not Supported<br/>Your browser does not support the video tag.</p>
 </video>
 {/literal}
-
+{if not empty($vr)}
+	{literal}<b>Note:</b>This video is a(n) {/literal}{$vr.projection}{literal} spherical video, but VR doesn't support VideoJS &lg;= 7.{/literal}
+{/if}
