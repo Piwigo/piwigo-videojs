@@ -65,3 +65,7 @@ $lang['HEIGHT_DESC'] = 'Max augstuma atribūts nosaka maksimālo displeja augstu
 $lang['LANGUAGE_DESC'] = 'Spēlētāja valodas izvēle';
 $lang['LANGUAGE'] = 'Valoda';
 $lang['HEIGHT'] = 'Maksimālais Augstums';
+$lang['RESOLUTION_DESC'] = 'Izšķirtspējas pārslēdzējs';
+$lang['RESOLUTION'] = 'Izšķirtspēja';
+$lang['PLAYER_DESC'] = 'Izvēlēties vjs atskaņotāja versiju';
+$lang['METADATA_DESC'] = 'Metadatu galds';
