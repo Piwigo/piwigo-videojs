@@ -65,3 +65,7 @@ $lang['LANGUAGE'] = 'Idioma';
 $lang['LANGUAGE_DESC'] = 'Seleccione el idioma del reproductor.';
 $lang['HEIGHT'] = 'Altura máxima ';
 $lang['HEIGHT_DESC'] = 'El atributo de altura máxima define la altura máxima de la pantalla de vídeo. Si la altura de vídeo es más grande que la altura máxima, será reducir tamaño del vídeo al atributo de altura máxima.';
+$lang['METADATA_DESC'] = 'Descripción metadata';
+$lang['PLAYER_DESC'] = 'Selecciona la versión del reproductor vjs';
+$lang['RESOLUTION'] = 'Resolución';
+$lang['RESOLUTION_DESC'] = 'Selector de resolución';
