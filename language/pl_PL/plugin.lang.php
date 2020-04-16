@@ -65,3 +65,7 @@ $lang['LANGUAGE'] = 'Język';
 $lang['LANGUAGE_DESC'] = 'Wybierz język odtwarzacza.';
 $lang['HEIGHT'] = 'Maksymalna wysokość';
 $lang['HEIGHT_DESC'] = 'Maksymalna wysokość ustawia maksymalną wysokość wyświetlacza urządzenia. Jeśli wysokość wideo jest większa niz maksymalna wysokość wyświetlacza - zostanie ona proporcjonalnie zeskalowana zeby dopasowac sie do urządzenia.';
+$lang['METADATA_DESC'] = 'Metadane';
+$lang['PLAYER_DESC'] = 'Wybierz wersję odtwarzacza vjs.';
+$lang['RESOLUTION'] = 'Rozdzielczość';
+$lang['RESOLUTION_DESC'] = 'Przełącznik rozdzielczości.';
