@@ -138,7 +138,7 @@ if (strlen($poster) > 0) { $poster = embellish_url($poster); }
 
 // Try to find multiple video source
 $extension = $parts['extension'];
-$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
+$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv', 'mov');
 $files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 // Add the current file in array
 $videossrc[] = array(
