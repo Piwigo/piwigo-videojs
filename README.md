@@ -42,7 +42,7 @@ Supported formats
 
 * webm,webmv
 * ogg,ogv
-* mp4,m4v
+* mp4,m4v,mov
 
 Usage
 -----
