@@ -30,6 +30,7 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 // Define all videos with supported extensions
 define('SQL_VIDEOS', "(LOWER(`file`) LIKE '%.ogg' OR LOWER(`file`) LIKE '%.ogv' OR
                 LOWER(`file`) LIKE '%.mp4' OR LOWER(`file`) LIKE '%.m4v' OR
+		LOWER(`file`) LIKE '%.mov' OR LOWER(`file`) LIKE '%.mkv' OR
                 LOWER(`file`) LIKE '%.webm' OR LOWER(`file`) LIKE '%.webmv')");
 
 // Hook to add an admin config page
