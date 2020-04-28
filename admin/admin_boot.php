@@ -95,6 +95,7 @@ function vjs_begin_delete_elements($ids)
         'm4v',
         'webm',
         'webmv',
+	'mov',
   );
   $files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 
