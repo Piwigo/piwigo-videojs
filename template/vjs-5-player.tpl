@@ -46,7 +46,11 @@ videojs("my_video_1", {}, function(){
 });
 </script>
 {/literal}
-
+{if not empty($vr) and not empty($vr.projection)}
+{literal}
+	<b>Note:</b> This video is an {/literal}{$vr.projection}{literal} spherical video, but VideoJS 5 doesn't support the VR plugin.
+{/literal}
+{/if}
 {if not empty($thumbnails)}
 {literal}
 <script>

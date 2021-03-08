@@ -169,6 +169,12 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 				<label><input type="radio" name="vjs_resolution" value="false" {if not $plugins.resolution}checked="checked"{/if}/> {'No'|@translate}</label>
 				<br/><small>{'RESOLUTION_DESC'|@translate}</small>
 			</li>
+			<li>
+				<label><span class="property">{'VR'|@translate} : </span></label>
+				<label><input type="radio" name="vjs_vr" value="true" {if $plugins.vr}checked="checked"{/if}/> {'Yes'|@translate}</label>
+				<label><input type="radio" name="vjs_vr" value="false" {if not $plugins.vr}checked="checked"{/if}/> {'No'|@translate}</label>
+				<br/><small>{'VR_DESC'|@translate}</small>
+			</li>
 		</ul>
 	</fieldset>
 	<p>
