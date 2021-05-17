@@ -129,7 +129,7 @@ function vjs_render_media($content, $picture)
 	$MAX_HEIGHT = isset($conf['vjs_conf']['max_height']) ? $conf['vjs_conf']['max_height'] : '480';
 	if (isset($user['maxheight']) and $user['maxheight']!='')
 	{
-		$MAX_HEIGHT = $user['maxwidth'];
+		$MAX_HEIGHT = $user['maxheight'];
 	}
 	//print "MAX_HEIGHT=" . $MAX_HEIGHT;
 	//print_r($user);
@@ -381,6 +381,13 @@ SELECT *
 	{
 		$ratio = round($width/$height*100, 2);
 	}
+
+	// Get max-height and max-width from the picture derivative settings of the current session
+	$deriv_type = pwg_get_session_var('picture_deriv', $conf['derivative_default_size']);
+	$type_map = ImageStdParams::get_defined_type_map();
+	$deriv_max_height = array_key_exists($deriv_type, $type_map) ? $type_map[$deriv_type]->max_height() : 480;
+	$deriv_max_width  = array_key_exists($deriv_type, $type_map) ? $type_map[$deriv_type]->max_width()  : round(16 * 480 / 9, 0);
+
 	// Assign the template variables
 	// We use here the piwigo's get_gallery_home_url function to build
 	// the full URL as suggested by videojs for flash fallback compatibility
@@ -400,6 +407,8 @@ SELECT *
 			'zoomrotate'         => $zoomrotate,
 			'watermark'          => $watermark,
 			'videos'             => $videos,
+			'DERIV_MAX_HEIGHT'   => $deriv_max_height,
+			'DERIV_MAX_WIDTH'    => $deriv_max_width
 		)
 	);
 
