@@ -1,14 +1,9 @@
-{html_head}
+{html_head}{literal}
 <style>
-{literal}
-.video-js{ width: 80%; }
-.videocontent{ max-width: {/literal}{$WIDTH}{literal}px; min-width: 400px; margin: 0 auto; }
-{/literal}
+.video-js{ max-height: {/literal}{$DERIV_MAX_HEIGHT}{literal}px; max-width: {/literal}{$DERIV_MAX_WIDTH}{literal}px; margin: 0 auto; }
 </style>
-{/html_head}
+{/literal}{/html_head}
 
-<div class="wrapper">
- <div class="videocontent">
 {literal}
 <video id="my_video_1" class="video-js" {/literal}{$OPTIONS}{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} x-webkit-airplay="allow" width="auto" height="auto">
 {/literal}
@@ -21,5 +16,3 @@
     <p>Video Playback Not Supported<br/>Your browser does not support the video tag.</p>
 </video>
 {/literal}
- </div>
-</div>
