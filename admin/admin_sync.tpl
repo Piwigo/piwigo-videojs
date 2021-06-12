@@ -156,6 +156,10 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 	<a class="showInfo" title="<img src='{$VIDEOJS_PATH}admin/example-frame.jpg'>">i</a>
 	<br/><small>{'SYNC_POSTEROVERLAY_DESC'|@translate}</small>
       </li>
+      <li>
+	<label><input type="checkbox" name="check_poster" value="1" {if $check_poster}checked="checked"{/if}/> {'SYNC_CHECK_POSTER'|@translate}</label>
+	<br/><small>{'SYNC_CHECK_POSTER_DESC'|@translate}</small>
+      </li>
     </ul>
   </fieldset>
 

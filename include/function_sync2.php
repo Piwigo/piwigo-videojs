@@ -50,7 +50,7 @@ include("function_dependencies.php");
 
 //print_r($sync_options);
 //print_r($sync_binaries);
-if (!$sync_options['metadata'] and !$sync_options['poster'] and !$sync_options['thumb'])
+if (!$sync_options['metadata'] and !$sync_options['poster'] and !$sync_options['check_poster'] and !$sync_options['thumb'])
 {
     $errors[] = "You ask me to do nothing, are you sure?";
 }
@@ -125,7 +125,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			//print_r($video_metadata);
 			$exif = array_merge($exif, $video_metadata);
 		}
-		if (!isset($exif['playtime_seconds']))
+		if (!isset($exif['playtime_seconds']) and ($sync_options['poster'] or $sync_options['thumb']))
 		{
 			$warnings[] = "Unable to gather 'playtime_seconds' metadata, you may need to parse metadata first.";
 		}
@@ -202,7 +202,7 @@ while ($row = pwg_db_fetch_assoc($result))
 					/* Delete any previous square or thumbnail or small images, avoid duplication on different output format */
 					/* They are now out of date, thumbnail are autogenerate by Piwigo on request */
 					$idata = PWG_DERIVATIVE_DIR . dirname($row['path']) . '/pwg_representative/';
-					$extensions = array('-th.jpg', '-sq.jpg', '-th.png', '-sq.png', '-sm.png', '-sm.png');
+					$extensions = array('-th.jpg', '-sq.jpg', '-th.png', '-sq.png', '-sm.jpg', '-sm.png');
 					foreach ($extensions as $extension)
 					{
 						$ifile = $idata.$file_wo_ext['filename'].$extension;
@@ -223,6 +223,79 @@ while ($row = pwg_db_fetch_assoc($result))
 				}
             }
         } /* End poster */
+
+        /* Check if there is a poster in the 'pwg_representative' folder and update the DB accordingly */
+        if ($sync_options['check_poster'])
+        {
+            $file_wo_ext = pathinfo($row['path']);
+            if (!isset($file_wo_ext['filename']) or (isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0))
+            {
+                $errors[] = "Unable to read filename ".$row['path'];
+                continue;
+            }
+
+            $representative_dir = dirname($row['path']) . '/pwg_representative/';
+            $representative_exists = false;
+            $query = ""; /* default query, do nothing */
+
+            /* check if the representative extension in the DB is correct */
+            if (array_key_exists('representative_ext',$row) and !is_null($row['representative_ext']))
+            {
+                $representative_ext = $row['representative_ext'];
+                $representative = $representative_dir.$file_wo_ext['filename'].'.'.$representative_ext;
+                if (is_file($representative))
+                {
+                    $representative_exists = true;
+                    /* report it */
+                    $sync_arr['poster'] = $representative;
+                    $infos[] = $filename. ' poster: '.$representative;
+                }
+                else
+                {
+                    /* representative does not exist */
+                    $query = "UPDATE ".IMAGES_TABLE." SET representative_ext = NULL WHERE id = ".$row['id'].";";
+
+                    /* Delete any previous square or thumbnail or small images, avoid duplication on different output format */
+					/* They are now out of date, thumbnail are autogenerate by Piwigo on request */
+					$idata = PWG_DERIVATIVE_DIR . dirname($row['path']) . '/pwg_representative/';
+					$extensions = array('-th.'.$representative_ext, '-sq.'.$representative_ext, '-sm.'.$representative_ext);
+					foreach ($extensions as $extension)
+					{
+						$ifile = $idata.$file_wo_ext['filename'].$extension;
+						if(is_file($ifile))
+						{
+							unlink($ifile);
+						}
+					}
+                }
+            }
+
+            if (!$representative_exists)
+            {
+                /* check if there is a representative with one of the following extensions */
+                $representative_extensions = array('jpg','JPG','jpeg','JPEG','png','PNG','gif','GIF');
+                foreach ($representative_extensions as $extension)
+                {
+                    $representative = $representative_dir.$file_wo_ext['filename'].'.'.$extension;
+                    if(is_file($representative))
+                    {
+                        /* representative exists */
+                        $query = "UPDATE ".IMAGES_TABLE." SET representative_ext = '".$extension."' WHERE id = ".$row['id'].";";
+                        /* report it */
+                        $sync_arr['poster'] = $representative;
+                        $infos[] = $filename. ' poster: '.$representative;
+                        break;
+                    }
+                }
+            }
+
+            if (!empty($query) and !$sync_options['simulate'])
+            {
+                /* execute query */
+                pwg_query($query);
+            }
+
+        } /* End check poster  */
 
         /* Create multiple thumbnails */
         if ($sync_options['thumb'])

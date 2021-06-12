@@ -77,6 +77,7 @@ $sync_options = array(
     'simulate'          => false,
     'cat_id'            => 0,
     'subcats_included'  => true,
+    'check_poster'      => false,
 );
 
 // Get image details if video type
@@ -109,6 +110,7 @@ if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1)
 $query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$_GET['image_id'].";";
 $result = pwg_query($query);
 $videojs_metadata = pwg_db_fetch_assoc($result);
+$exif = null;
 if (isset($videojs_metadata) and isset($videojs_metadata['metadata']))
 {
 	$video_metadata = unserialize($videojs_metadata['metadata']);

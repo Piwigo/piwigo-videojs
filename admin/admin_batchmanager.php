@@ -94,6 +94,10 @@ function vjs_loc_end_element_set_global()
 	<label><input type="checkbox" name="vjs_posteroverlay" value="1" /> Add film effect</label>
 	<br/><small>Apply an overlay on the poster creation.</small>
       </li>
+      <li>
+	<label><input type="checkbox" name="vjs_check_poster" value="1"/> Use existing poster in \'pwg_representative\' folder.</label>
+	<br/><small>Check if there is a poster with the extension .jpg, .jpeg, .png or .gif in the \'pwg_representative\' folder.</small>
+      </li>
     </ul>
     <legend>Thumbnail</legend>
     <ul>
@@ -121,7 +125,7 @@ function vjs_element_set_global_action($action, $collection)
 
 	global $page, $conf, $prefixeTable;
 
-	$query = "SELECT `id`, `file`, `path`
+	$query = "SELECT `id`, `file`, `path`, `representative_ext`
 			FROM ".IMAGES_TABLE."
 			WHERE id IN (".implode(',',$collection).")";
 
@@ -143,6 +147,7 @@ function vjs_element_set_global_action($action, $collection)
 	    'simulate'          => true,
 	    'cat_id'            => 0,
 	    'subcats_included'  => true,
+	    'check_poster'      => false,
 	);
 
 	if(isset($_POST['submit']))
@@ -159,6 +164,7 @@ function vjs_element_set_global_action($action, $collection)
 	        'thumbsec'          => $_POST['vjs_thumbsec'],
 	        'thumbsize'         => $_POST['vjs_thumbsize'],
 	        'simulate'          => false,
+	        'check_poster'      => isset($_POST['vjs_check_poster']),
 	    );
 
 	    // Merge default value with user data from the form
@@ -200,6 +206,7 @@ function vjs_loc_begin_element_set_unit()
 	    'simulate'          => true,
 	    'cat_id'            => 0,
 	    'subcats_included'  => true,
+	    'check_poster'      => false,
 	);
 
 	$collection = explode(',', $_POST['element_ids']);
@@ -220,12 +227,13 @@ function vjs_loc_begin_element_set_unit()
 		    'thumbsec'          => $_POST['vjs_thumbsec-'.$id],
 		    'thumbsize'         => $_POST['vjs_thumbsize-'.$id],
 		    'simulate'          => false,
+		    'check_poster'      => isset($_POST['vjs_check_poster-'.$id]),
 		);
 
 		// Merge default value with user data from the form
 		$sync_options = array_merge($sync_options, $sync_options_form);
 
-		$query = "SELECT `id`, `file`, `path`
+		$query = "SELECT `id`, `file`, `path`, `representative_ext`
 				FROM ".IMAGES_TABLE."
 				WHERE `id`='".$id."';";
 
@@ -291,6 +299,10 @@ function vjs_prefilter_batch_manager_unit($content)
       <li>
 	<label><input type="checkbox" name="vjs_posteroverlay-{$element.id}" value="1" /> Add film effect</label>
 	<br/><small>Apply an overlay on the poster creation.</small>
+      </li>
+      <li>
+	<label><input type="checkbox" name="vjs_check_poster-{$element.id}" value="1"/> Use existing poster in \'pwg_representative\' folder.</label>
+	<br/><small>Check if there is a poster with the extension .jpg, .jpeg, .png or .gif in the \'pwg_representative\' folder.</small>
       </li>
     </ul>
     <legend>Thumbnail</legend>
