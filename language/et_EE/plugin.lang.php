@@ -62,3 +62,5 @@ $lang['SYNC_INFOS'] = 'Üksikasjalik informatsioon';
 $lang['SYNC_METADATA_DESC'] = 'Asendab andmebaasi informatsiooni video metaandmetega';
 $lang['SYNC_OUTPUT'] = 'Väljundi formaat';
 $lang['SYNC_OUTPUT_DESC'] = 'Vali väljundi formaat postri ja pisipildi jaoks';
+$lang['SYNC_CHECK_POSTER'] = 'Utilice el póster existente en la carpeta \'pwg_representative\'';
+$lang['SYNC_CHECK_POSTER_DESC'] = 'Kontrollige, kas kaustas \'pwg_representative\' on plakat laiendiga .jpg, .jpeg, .png või .gif.';

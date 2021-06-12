@@ -54,5 +54,6 @@ $lang['SYNC_THUMBSEC'] = 'Create a thumbnail at every seconds';
 $lang['SYNC_THUMBSEC_DESC'] = 'Create a thumbnail every x seconds.';
 $lang['SYNC_THUMBSIZE'] = 'Size of the thumbnail';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Size in pixel, keep it small, default is fine, Youtube use 190x68.';
-
+$lang['SYNC_CHECK_POSTER'] = 'Use existing poster in \'pwg_representative\' folder';
+$lang['SYNC_CHECK_POSTER_DESC'] = 'Check if there is a poster with the extension .jpg, .jpeg, .png or .gif in the \'pwg_representative\' folder.';
 ?>
