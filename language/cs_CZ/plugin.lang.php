@@ -48,3 +48,7 @@ $lang['HEIGHT'] = 'Max výška';
 $lang['HEIGHT_DESC'] = 'Atribut maximální výška nastavuje maximální výšku videa. Pokud je výška videa větší než hodnota maximální výška, bude video zmenšeno na velikost hodnoty max výška.';
 $lang['LANGUAGE'] = 'Jazyk';
 $lang['LANGUAGE_DESC'] = 'Vyberte jazyk přehrávače.';
+$lang['METADATA_DESC'] = 'Metadata';
+$lang['PLAYER_DESC'] = 'Zvolte verzi přehrávače';
+$lang['RESOLUTION'] = 'Rozlišení';
+$lang['RESOLUTION_DESC'] = 'Změna rozlišení.';
