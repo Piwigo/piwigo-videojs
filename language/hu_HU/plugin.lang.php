@@ -65,3 +65,7 @@ $lang['HEIGHT'] = 'Max magasság';
 $lang['AUTOPLAY_DESC'] = 'Ha az automatikus lejátszás be van kapcsolva, a videó elindul amint az oldal betöltődött. (Felhasználói beavatkozás nélkül) APPLE IOS ESZKÖZÖK NEM TÁMOGATOTTAK.';
 $lang['SYNC_POSTEROVERLAY'] = 'Filmes hatás hozzáadása';
 $lang['PRELOAD'] = 'Előtöltés';
+$lang['METADATA_DESC'] = 'Metaadatok';
+$lang['PLAYER_DESC'] = 'Használandó VJS verzió';
+$lang['RESOLUTION'] = 'Felbontás';
+$lang['RESOLUTION_DESC'] = 'Felbontásváltó';
