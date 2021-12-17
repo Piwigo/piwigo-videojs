@@ -6,7 +6,7 @@ Description: videojs integration for piwigo
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=610
 Author: xbmgsharp
 Author URI: https://github.com/xbgmsharp/piwigo-videojs
-Has Settings: true
+Has Settings: webmaster
 */
 
 // Check whether we are indeed included by Piwigo.
