@@ -33,6 +33,9 @@ check_status(ACCESS_ADMINISTRATOR);
 // Setup plugin Language
 load_language('plugin.lang', VIDEOJS_PATH);
 
+// Check and bail out if not webmaster.
+check_status(ACCESS_WEBMASTER);
+
 // Fetch the template.
 global $template, $conf, $lang;
 

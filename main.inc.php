@@ -12,9 +12,6 @@ Has Settings: webmaster
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-// Check and bail out if not webmaster.
-check_status(ACCESS_WEBMASTER);
-
 // Define the path to our plugin.
 define('VIDEOJS_PATH', PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)).'/');
 
