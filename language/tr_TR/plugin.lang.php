@@ -65,3 +65,7 @@ $lang['HEIGHT_DESC'] = 'Azami yükseklik seçeneği görüntülenecek videonun m
 $lang['HEIGHT'] = 'Azami yükseklik';
 $lang['LANGUAGE'] = 'Dil';
 $lang['LANGUAGE_DESC'] = 'Oynatıcı dilini seç';
+$lang['RESOLUTION_DESC'] = 'Çözünürlük değiştirici.';
+$lang['RESOLUTION'] = 'Çözünürlük';
+$lang['PLAYER_DESC'] = 'vjs oynatıcı sürümünü seçin.';
+$lang['METADATA_DESC'] = 'Meta veri açıklaması';
