@@ -65,3 +65,7 @@ $lang['HEIGHT'] = 'Maxhöjd';
 $lang['HEIGHT_DESC'] = 'Maxhöjden sätter filmens maximala höjd. Om filmen är större än maxhöjden kommer den skalas ned till maxhöjden.';
 $lang['LANGUAGE'] = 'Språk';
 $lang['LANGUAGE_DESC'] = 'Välj spelarens språk.';
+$lang['METADATA_DESC'] = 'Metadatabeskrivning';
+$lang['PLAYER_DESC'] = 'Välj version av vjsspelaren.';
+$lang['RESOLUTION'] = 'Upplösning';
+$lang['RESOLUTION_DESC'] = 'Upplösningsväxlare.';
