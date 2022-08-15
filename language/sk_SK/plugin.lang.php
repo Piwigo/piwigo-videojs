@@ -66,3 +66,7 @@ $lang['HEIGHT_DESC'] = 'Maximálna výška určuje maximálnu výšku zobrazenie
 $lang['LANGUAGE_DESC'] = 'Zvoľte jazyk prehrávača.';
 $lang['LANGUAGE'] = 'Jazyk';
 $lang['HEIGHT'] = 'Maximálna výška';
+$lang['METADATA_DESC'] = 'Popis metadát';
+$lang['PLAYER_DESC'] = 'Vyberte verziu prehrávača vjs.';
+$lang['RESOLUTION'] = 'Rozlíšenie';
+$lang['RESOLUTION_DESC'] = 'Prepínač rozlíšenia.';
