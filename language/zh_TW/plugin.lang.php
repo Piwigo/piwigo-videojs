@@ -65,3 +65,7 @@ $lang['HEIGHT'] = '最大高度';
 $lang['HEIGHT_DESC'] = '最大高度屬性是設置影片的最大高度，如果影片高度超出此值，將會被限制在此最大高度。';
 $lang['LANGUAGE'] = '語言';
 $lang['LANGUAGE_DESC'] = '選擇播放語言';
+$lang['METADATA_DESC'] = '銓敘資料內容';
+$lang['PLAYER_DESC'] = '選擇 vjs 播放器版本。';
+$lang['RESOLUTION'] = '解析度';
+$lang['RESOLUTION_DESC'] = '切換解析度。';
