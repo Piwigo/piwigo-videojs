@@ -93,6 +93,7 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 							'zoomrotate'    => get_boolean($_POST['vjs_zoomrotate']),
 							'thumbnails'    => get_boolean($_POST['vjs_thumbnails']),
 							'watermark'     => get_boolean($_POST['vjs_watermark']),
+							'resolution'    => get_boolean($_POST['vjs_resolution']),
 						),
 		'player'	=> $_POST['vjs_player'],
 		'metadata'	=> get_boolean($_POST['vjs_metadata']),
