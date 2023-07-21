@@ -61,6 +61,8 @@ $lang['PRELOAD_DESC'] = 'De-van-te-voren-laden-optie geeft de browser informatie
 $lang['SKIN_DESC'] = 'Kies de stijl die je wilt toepassen op de speler of <a href="http://designer.videojs.com/" target="_blank">creëer je eigen thema</a>.';
 $lang['SYNC_OUTPUT_DESC'] = 'Selecteer het uitvoer-formaat voor de poster en het klikplaatje.';
 $lang['SYNC_POSTER'] = 'Maak in seconden een poster op positie';
+$lang['SYNC_CHECK_POSTER'] = 'Gebruik bestaande poster in map \'pwg_representative\'';
+$lang['SYNC_CHECK_POSTER_DESC'] = 'Controleer of er een poster met de extensie .jpg, .jpeg, .png of .gif in de map \'pwg_representative\' staat.';
 $lang['HEIGHT'] = 'Maximale hoogte';
 $lang['HEIGHT_DESC'] = 'De instelling maximale hoogte bepaalt de maximale weergave-hoogte van de video. Als de video-hoogte groter is dan de ingestelde maximale hoogte, wordt de hoogte van de video aangepast naar de ingestelde maximale hoogte.';
 $lang['LANGUAGE'] = 'Taal';

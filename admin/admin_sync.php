@@ -45,6 +45,7 @@ $sync_options = array(
     'simulate'          => true,
     'cat_id'            => 0,
     'subcats_included'  => true,
+    'check_poster'      => false,
 );
 
 if ( isset($_POST['submit']) and isset($_POST['postersec']) )
@@ -63,6 +64,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
         'simulate'          => isset($_POST['simulate']),
         'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
         'subcats_included'  => isset($_POST['subcats_included']),
+        'check_poster'      => isset($_POST['check_poster']),
     );
 
     // Merge default value with user configuration
@@ -87,7 +89,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
                 $query .= 'id='.$sync_options['cat_id'];
         $cat_ids = array_from_query($query, 'id');
         $query="
-            SELECT `id`, `file`, `path`
+            SELECT `id`, `file`, `path`, `representative_ext`
             FROM ".IMAGES_TABLE." INNER JOIN ".IMAGE_CATEGORY_TABLE." ON id=image_id
             WHERE ". SQL_VIDEOS ." ". $OVERWRITE ."
             AND category_id IN (".implode(',', $cat_ids).")
@@ -95,7 +97,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     }
     else
     {
-        $query = "SELECT `id`, `file`, `path`
+        $query = "SELECT `id`, `file`, `path`, `representative_ext`
             FROM ".IMAGES_TABLE."
             WHERE ". SQL_VIDEOS ." ". $OVERWRITE .";";
     }
