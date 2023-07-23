@@ -47,7 +47,7 @@ function check($binary)
 	system($binary ." 1>&2 /dev/null", $retval); // redirect any output
     }
     //print $retval;
-    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
+    if($retval == 127 or $retval == 9009 || $retval == 1) // Linux or windows exit code for command not found.
     {
 	return false;
     } else {
