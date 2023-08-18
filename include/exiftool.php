@@ -27,6 +27,8 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
+include_once("function_utils.php");
+
 try {
 putenv('LANG=en_US.UTF-8');
 $json = shell_exec($sync_options['exiftool'] ." -struct -n -json \"". $filename."\"");
@@ -65,9 +67,9 @@ if (isset($general['AvgBitrate']))
 {
 	$exif['bitrate'] = (string)$general['AvgBitrate'];
 }
-if (isset($general['MediaCreateDate']))
+if (isset($general['MediaCreateDate']) and check_date((string)$general['MediaCreateDate']))
 {
-	$exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general['MediaCreateDate']));
+	$exif['date_creation'] = check_date((string)$general['MediaCreateDate']);
 }
 if (isset($general['GPSLatitude']) and isset($general['GPSLongitude']))
 {

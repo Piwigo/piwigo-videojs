@@ -27,6 +27,8 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
+include_once("function_utils.php");
+
 try {
 putenv('LANG=en_US.UTF-8');
 $output = shell_exec($sync_options['mediainfo'] ." --Full --Output=XML --Language=raw \"". $filename."\" 2>&1 ");
@@ -133,13 +135,13 @@ if (isset($general->Make) or isset($general->comapplequicktimemake)) //Not prese
 {
     isset($general->Make) ? $exif['make'] = (string)$general->Make : $exif['make'] = (string)$general->comapplequicktimemake;
 }
-if (isset($general->Recorded_Date))
+if (isset($general->Recorded_Date) and check_date($general->Recorded_Date))
 {
-    $exif['date_creation'] = (string)$general->Recorded_Date;
+    $exif['date_creation'] = check_date((string)$general->Recorded_Date);
 }
-if (!isset($exif['date_creation']) and isset($general->Encoded_Date))
+if (!isset($exif['date_creation']) and isset($general->Encoded_Date) and check_date($general->Encoded_Date))
 {// http://piwigo.org/forum/viewtopic.php?pid=158021#p158021
-    $exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general->Encoded_Date));
+    $exif['date_creation'] = check_date((string)$general->Encoded_Date);
 }
 
 
