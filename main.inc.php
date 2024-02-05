@@ -29,6 +29,7 @@ $vjs_extensions = array(
 	'm4v',
 	'webm',
 	'webmv',
+	'mov',
 	'strm',
 );
 $conf['file_ext'] = array_merge ($conf['file_ext'], $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
@@ -214,7 +215,7 @@ function vjs_render_media($content, $picture)
 	//print $poster;
 
 	// Try to find multiple video source
-	$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
+	$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv', 'mov');
 	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 	// Add the current file in array
 	$videos[] = array(
@@ -420,7 +421,7 @@ SELECT *
 
 function vjs_get_mimetype_icon($location, $element_info)
 {
-	if (in_array($element_info, array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv', 'strm')))
+	if (in_array($element_info, array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv', 'mov', 'strm')))
 	{
 		$location = 'plugins/'
 			. basename(dirname(__FILE__))
@@ -452,6 +453,7 @@ function vjs_get_mimetype_from_ext($file_ext)
 			'm4v'   => 'video/mp4',
 			'webm'  => 'video/webm',
 			'webmv' => 'video/webm',
+			'mov'	=> 'video/mp4',
 			'strm'  => 'application/x-mpegURL'
 			);
 	return $vjs_types[strtolower($file_ext)];
@@ -466,6 +468,7 @@ function vjs_valid_extension($file_ext)
 			'm4v'   => 'video/mp4',
 			'webm'  => 'video/webm',
 			'webmv' => 'video/webm',
+			'mov'	=> 'video/mp4',
 			'strm'  => 'video/live'
 			);
 	return array_key_exists(strtolower($file_ext), $vjs_types) ? true : false;
