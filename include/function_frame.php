@@ -95,7 +95,7 @@ function add_movie_frame($src, $dest=null)
   }
 
   // add source to band
-  imagecopy($imgBand, $srcImage, 3*$const, (3/2)*$const, 0, 0, $srcWidth, $srcHeight);
+  imagecopy($imgBand, $srcImage, (int)(3*$const), (int)((3/2)*$const), 0, 0, (int)$srcWidth, (int)$srcHeight);
   
   // save image
   switch (strtolower(get_extension($dest)))
@@ -119,15 +119,15 @@ function add_movie_frame($src, $dest=null)
  */
 function imagefilledroundrectangle(&$img, $x1, $y1, $x2, $y2, $color, $radius)
 {
-  imagefilledrectangle($img, $x1+$radius, $y1, $x2-$radius, $y2, $color);
+  imagefilledrectangle($img, (int)($x1+$radius), (int)$y1, (int)($x2-$radius), (int)$y2, $color);
   
   if ($radius > 0)
   {
-    imagefilledrectangle($img, $x1, $y1+$radius, $x2, $y2-$radius, $color);
-    imagefilledellipse($img, $x1+$radius, $y1+$radius, $radius*2, $radius*2, $color);
-    imagefilledellipse($img, $x2-$radius, $y1+$radius, $radius*2, $radius*2, $color);
-    imagefilledellipse($img, $x1+$radius, $y2-$radius, $radius*2, $radius*2, $color);
-    imagefilledellipse($img, $x2-$radius, $y2-$radius, $radius*2, $radius*2, $color);
+    imagefilledrectangle($img, (int)$x1, (int)($y1+$radius), (int)$x2, (int)($y2-$radius), $color);
+    imagefilledellipse($img, (int)($x1+$radius), (int)($y1+$radius), (int)($radius*2), (int)($radius*2), $color);
+    imagefilledellipse($img, (int)($x2-$radius), (int)($y1+$radius), (int)($radius*2), (int)($radius*2), $color);
+    imagefilledellipse($img, (int)($x1+$radius), (int)($y2-$radius), (int)($radius*2), (int)($radius*2), $color);
+    imagefilledellipse($img, (int)($x2-$radius), (int)($y2-$radius), (int)($radius*2), (int)($radius*2), $color);
   }
 }
 
