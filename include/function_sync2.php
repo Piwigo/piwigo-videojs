@@ -98,6 +98,11 @@ while ($row = pwg_db_fetch_assoc($result))
 				/* Save metadata */
 				if ($sync_options['metadata'] and !$sync_options['simulate'])
 				{
+					// Workaround invalid timestamp from exif
+					if ($exif['date_creation'] == '-0001-11-30 00:00:00') {
+						$exif['date_creation'] = '1990-01-01 00:00:00';
+					}
+
 					$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
 					$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
 					//print $query;
