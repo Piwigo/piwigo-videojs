@@ -55,7 +55,7 @@ if (isset($general['FileSize']))
 }
 if (isset($general['Duration']))
 {
-	$exif['duration'] = round($general['Duration']*1000, 0);
+	$exif['duration'] = round((int)$general['Duration']*1000, 0);
 }
 if (isset($general['TrackDuration']))
 {
