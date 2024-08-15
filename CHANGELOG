@@ -1,6 +1,7 @@
 Changes from v2.9.b to v2.9.c
 - Calls external programs with system() or exec() according to their availability
 - Fixes empty thumbnail produced from very short videos
+- Fixes crash occurring when the duration is an array
 - Updates VideoJS player to version 7.21.5
 
 Changes from v2.9.a to v2.9.b
