@@ -1,3 +1,8 @@
+Changes from v2.9.b to v2.9.c
+- Calls external programs with system() or exec() according to their availability
+- Fixes empty thumbnail produced from very short videos
+- Updates VideoJS player to version 7.21.5
+
 Changes from v2.9.a to v2.9.b
 - Fix configuration initalize
 - Add our own sql metadata table

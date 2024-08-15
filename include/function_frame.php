@@ -95,7 +95,7 @@ function add_movie_frame($src, $dest=null)
   }
 
   // add source to band
-  imagecopy($imgBand, $srcImage, 3*$const, (3/2)*$const, 0, 0, $srcWidth, $srcHeight);
+  imagecopy($imgBand, $srcImage, (int)3*$const, (int)(3/2)*$const, 0, 0, (int)$srcWidth, (int)$srcHeight);
   
   // save image
   switch (strtolower(get_extension($dest)))
@@ -119,7 +119,7 @@ function add_movie_frame($src, $dest=null)
  */
 function imagefilledroundrectangle(&$img, $x1, $y1, $x2, $y2, $color, $radius)
 {
-  imagefilledrectangle($img, $x1+$radius, $y1, $x2-$radius, $y2, $color);
+  imagefilledrectangle($img, (int)$x1+$radius, (int)$y1, (int)$x2-$radius, (int)$y2, (int)$color);
   
   if ($radius > 0)
   {

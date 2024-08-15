@@ -28,6 +28,7 @@
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 include_once("function_frame.php");
+include_once("function_caller.php");
 
 /***************
  *
@@ -59,7 +60,7 @@ if (!$sync_options['sync_gps'])
 
 if ($sync_options['poster'] or $sync_options['thumb'])
 {
-    $log = system("ffmpeg -version 2>&1", $retval); // Does it works on Windows
+    $retval = execCMD("ffmpeg -version 2>&1"); // Does it work?
     if (($retval != 0))
     {
         $warnings[] = "Poster creation disable because ffmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
@@ -182,8 +183,7 @@ while ($row = pwg_db_fetch_assoc($result))
                     $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i ".$in." -vcodec png -vframes 1 -an -f rawvideo -y ".$out;
                 }
                 //echo $ffmpeg;
-                $log = system($ffmpeg, $retval);
-                //$infos[] = $filename. ' poster : retval:'. $retval. ", log:". print_r($log, True);
+                $retval = execCMD($ffmpeg);
                 if($retval != 0 or !file_exists($out))
                 {
                     $errors[] = "Error poster running ffmpeg, try it manually:\n<br/>". $ffmpeg;
@@ -244,8 +244,7 @@ while ($row = pwg_db_fetch_assoc($result))
                         {
                             $ffmpeg = "ffmpeg -itsoffset -".$second." -i ".$in." -vcodec png -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y ".$out;
                         }
-                        $log = system($ffmpeg, $retval);
-                        //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);
+                        $retval = execCMD($ffmpeg);
                         if($retval != 0 or !file_exists($out))
                         {
                             $errors[] = "Error thumbnail running ffmpeg, try it manually:\n<br/>". $ffmpeg;

@@ -65,13 +65,11 @@ $lang['HEIGHT'] = 'Maximale Höhe';
 $lang['LANGUAGE'] = 'Sprache';
 $lang['HEIGHT_DESC'] = 'Das Attribut maximale Höhe legt die maximale Anzeigegrösse des Videos fest. Falls die Video-Breite höher ist, als die maximale Höhe, wird das Video entsprechend auf die maximale Höhe verkleinert.';
 $lang['LANGUAGE_DESC'] = 'Player-Sprache festlegen';
-// + 2023.07
+$lang['METADATA_DESC'] = 'Metadatenbeschreibung';
+$lang['PLAYER_DESC'] = 'Wählen Sie die vjs Player Version aus.';
+$lang['RESOLUTION'] = 'Auflösung';
+$lang['METADATA_DESC'] = 'Metadatenbeschreibung';
 $lang['videos in your gallery'] = 'Videos in der Gallerie';
 $lang['videos with poster in your gallery'] = 'Videos mit Vorschaubild in der Gallerie';
-$lang['METADATA_DESC'] = 'Zeigt wenn aktiviert diverse Metadaten an';
-$lang['PLAYER_DESC'] = 'Versch. Versionen der Bibliothek - tw. Browserabhängig (Standard = v5 oder Native Browser)';
-$lang['RESOLUTION'] = 'Auflösung';
-$lang['RESOLUTION_DESC'] = 'Aktuell keine weitere Beschreibung';
-    // sync
 $lang['geotagged videos in your gallery'] = 'Videos mit Geotags';
 $lang['Program Dependencies'] = 'Programmabhängigkeiten';
