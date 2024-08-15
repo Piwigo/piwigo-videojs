@@ -49,13 +49,29 @@ if (isset($output[0]))
 }
 
 /* General */
+global $logger;
 if (isset($general['FileSize']))
 {
 	$exif['filesize'] = round($general['FileSize']/1024);
 }
 if (isset($general['Duration']))
 {
-	$exif['duration'] = round($general['Duration']*1000, 0);
+	if (is_array($general['Duration']))
+	{
+		$durationArray = $general['Duration'];
+		foreach ($durationArray as $key => $value)
+		{
+			$logger->info('exiftool : $durationArray has '.$value.' for key '.$key);
+		}
+		$duration = $durationArray['Scale'] * $durationArray['Value'];
+		$logger->info('exiftool : duration of '.round($duration).' seconds');
+		$exif['duration'] = round($duration * 1000, 0);
+	}
+	else 
+	{
+		$logger->info('exiftool : duration of '.$general['Duration'].' seconds');
+		$exif['duration'] = round($general['Duration']*1000, 0);
+	}
 }
 if (isset($general['TrackDuration']))
 {
