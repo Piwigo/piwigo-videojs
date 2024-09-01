@@ -6,7 +6,7 @@
 *
 * Created   :   26.09.2014
 *
-* Copyright 2012-2018 <xbgmsharp@gmail.com>
+* Copyright 2012-2024 <xbgmsharp@gmail.com>
 *
 *
 * This program is free software: you can redistribute it and/or modify

@@ -4,7 +4,7 @@
 * Project   :   piwigo-videojs
 * Descr     :   Install / Uninstall method
 *
-* Created   :   15.07.2024
+* Created   :   24.06.2012
 *
 * Copyright 2012-2024 <xbgmsharp@gmail.com>
 *
