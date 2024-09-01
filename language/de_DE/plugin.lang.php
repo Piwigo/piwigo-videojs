@@ -68,6 +68,7 @@ $lang['LANGUAGE_DESC'] = 'Player-Sprache festlegen';
 $lang['METADATA_DESC'] = 'Metadatenbeschreibung';
 $lang['PLAYER_DESC'] = 'Wählen Sie die vjs Player Version aus.';
 $lang['RESOLUTION'] = 'Auflösung';
+$lang['RESOLUTION_DESC'] = 'Auflösungswähler.';
 $lang['METADATA_DESC'] = 'Metadatenbeschreibung';
 $lang['videos in your gallery'] = 'Videos in der Gallerie';
 $lang['videos with poster in your gallery'] = 'Videos mit Vorschaubild in der Gallerie';
