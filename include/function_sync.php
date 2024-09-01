@@ -55,7 +55,7 @@ $infos = array();
 
 if (!$sync_options['sync_gps'])
 {
-    $warnings[] = "latitude and longitude disable because the require plugin is not present, eg: 'OpenStreetMap'.";
+    $warnings[] = "latitude and longitude disable because the required plugin is not present, eg: 'OpenStreetMap'.";
 }
 
 if ($sync_options['poster'] or $sync_options['thumb'])

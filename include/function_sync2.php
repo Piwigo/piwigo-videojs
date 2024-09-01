@@ -74,7 +74,7 @@ while ($row = pwg_db_fetch_assoc($result))
 		continue;
 	}
 
-	/* Metadata via MediaInfo */
+	/* Metadata via MediaInfo, ExifTool or ffprobe */
         $exif = array();
         if ($sync_options['metadata'])
         {

@@ -5,7 +5,7 @@ Changes from v2.9.b to v2.9.c
 - Updates VideoJS player to version 7.21.5
 
 Changes from v2.9.a to v2.9.b
-- Fix configuration initalize
+- Fix configuration initialisation
 - Add our own sql metadata table
 - Update VideoJS player to version 6.11.0
 - Update VideoJS player to version 7.1.0

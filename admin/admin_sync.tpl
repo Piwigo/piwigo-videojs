@@ -46,9 +46,17 @@ jQuery(".showInfo").tipTip({
 });
 {/literal}{/footer_script}
 
-Synchronization of metadata information and poster creation for videos.
-<br/><br/>
-Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin documentation</a> for additional information. Create an <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">issue</a> for support, or feedback, or feature request.
+<fieldset>
+<div style="text-align:left">
+Synchronization of metadata information and thumbnail creation for videos:<br/>
+<ul>
+  <li class="update_summary_new">extracts metadata with <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> (if available)</li>
+  <li class="update_summary_new">produces thumbnails with <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a> (if available)</li>
+</ul>
+Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin documentation</a> for additional information and look at the <a href="https://piwigo.org/forum/" target="_blank">forums</a> if you encounter some issues.<br/>
+To report bugs and suggest new features, please create a new <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">issue</a>.
+</div>
+</fieldset>
 
 <div class="vjs_layout">
   <legend>{'Statistics'|@translate}</legend>
@@ -126,7 +134,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
       <li>
 	<label><input type="checkbox" name="metadata" value="1" {if $metadata}checked="checked"{/if} /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
 	<br/><small>{'SYNC_METADATA_DESC'|@translate}</small>
-	<small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'MediaInfo' or 'ffprobe' or 'Exiftool'</a> to be install.</strong></small>
+	<small><strong>Requires <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'MediaInfo' or 'ffprobe' or 'Exiftool'</a> to be installed.</strong></small>
       </li>
     </ul>
   </fieldset>
@@ -139,7 +147,7 @@ Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="
 	<!-- <input type="range" name="postersec" value="4" min="0" max="60" step="1"/> -->
 	<input type="text" name="postersec" value="{$postersec}" size="2" required/>
 	<br/><small>{'SYNC_POSTER_DESC'|@translate}</small>
-	<small><strong>Require <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'FFmpeg'</a> to be install.</strong></small>
+	<small><strong>Requires <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'FFmpeg'</a> to be installed.</strong></small>
       </li>
       <li>
 	<label><input type="checkbox" name="posteroverwrite" value="1" {if $posteroverwrite}checked="checked"{/if}> {'SYNC_POSTEROVERWRITE'|@translate}</label>

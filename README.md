@@ -27,11 +27,11 @@ Then, go to the admin site, in the plugin section and activate it.
 Requirement
 -----
 
-Piwigo-videojs require those 2 programs to be install on your system:
+Piwigo-videojs requires software to be installed on your server:
 
 * [MediaInfo](http://mediaarea.net/en/MediaInfo)
-* [Libav](https://libav.org/)
-* [FFmpeg](http://www.ffmpeg.org/)
+* [ExifTool](https://exiftool.org)
+* [FFmpeg](http://www.ffmpeg.org)
 
 Please refer to the [wiki](https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#step-2-install) for additional information.
 
@@ -53,8 +53,9 @@ Please refer to the [wiki](https://github.com/xbgmsharp/piwigo-videojs/wiki) for
 
 Support
 -----
+Please have a look at the forums if you encounter some issues during installation.
 
-To get support, please create new [issue](https://github.com/xbgmsharp/piwigo-videojs/issues)
+To report bugs and suggest new features, please create a new [issue](https://github.com/xbgmsharp/piwigo-videojs/issues)
 
 Help me improve the plugin, rate my [plugin](http://piwigo.org/ext/extension_view.php?eid=610), and if possible please send a greeting message to me ;)
 
@@ -62,10 +63,10 @@ Thanks
 -----
 
 * [videojs](http://videojs.com/)
-* [getid3](http://getid3.sourceforge.net/)
+* [getID3](http://getid3.sourceforge.net/)
 * [FFmpeg](http://www.ffmpeg.org/)
 * [MediaInfo](http://mediaarea.net/en/MediaInfo)
-* [Libav](https://libav.org/)
+* [ExifTool](https://exiftool.org)
 * [piwigo-jplayer](https://github.com/d-matt/piwigo-jplayer)
 
 Licence
