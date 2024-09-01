@@ -22,6 +22,7 @@
 // +-----------------------------------------------------------------------+
 $lang['PRELOAD_DESC'] = 'Eellaadimise atribuut ütleb lehitsejale, kas video infot peaks hakkama alla laadima kui video tag on laetud.';
 $lang['SKIN_DESC'] = 'Vali stiil, mida mängijal rakendada';
+$lang['WIDTH_DESC'] = 'Maksimaalse laiuse atribuut valib video laiuse kui suurem siis see jagatakse 2-ga.';
 $lang['AUTOPLAY'] = 'Automaatesitus';
 $lang['AUTOPLAY_DESC'] = 'Sisselülitatud automaatesitusega alustab video mängimist lehe laadimisel. Ei ole toetatud Apple\'i iOS seadmetes.';
 $lang['CONTROLS'] = 'Juhtmikud';
@@ -34,6 +35,7 @@ $lang['LOOP_DESC'] = 'Silmusmängimine alustab uuesti video mängimist, kui see 
 $lang['PLUGIN'] = 'Plugin-i seaded';
 $lang['PRELOAD'] = 'Eellaadimine';
 $lang['SKIN'] = 'Nahk';
+$lang['WIDTH'] = 'Maksimaalne laius';
 $lang['THUMBNAILS'] = 'Pisipildid';
 $lang['THUMBNAILS_DESC'] = 'Kuva pisipilte üleval olekuribal.';
 $lang['UPSCALE'] = 'Suurenda';

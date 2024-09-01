@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: VideoJS
-Version: 2.9.b
+Version: 2.10
 Description: videojs integration for piwigo
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=610
 Author: xbmgsharp
@@ -184,7 +184,7 @@ function vjs_render_media($content, $picture)
 	$controls = isset($conf['vjs_conf']['controls']) ? strbool($conf['vjs_conf']['controls']) : false;
 	$volume = isset($conf['vjs_conf']['volume']) ? $conf['vjs_conf']['volume'] : '1';
 	$language = isset($conf['vjs_conf']['language']) ? $conf['vjs_conf']['language'] : 'en';
-	$player = isset($conf['vjs_conf']['player']) ? $conf['vjs_conf']['player'] : 'vjs-5-player.tpl';
+	$player = isset($conf['vjs_conf']['player']) ? $conf['vjs_conf']['player'] : 'html5-player.tpl';
 
 	// Slideshow : The video needs to be launch automatically in
 	// slideshow mode. The refresh of the page is set to the

@@ -6,7 +6,7 @@
 *
 * Created   :   9.07.2013
 *
-* Copyright 2012-2018 <xbgmsharp@gmail.com>
+* Copyright 2012-2024 <xbgmsharp@gmail.com>
 *
 *
 * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 //setlocale(LC_ALL, "en_US.UTF-8");
 include_once("function_frame.php");
+include_once("function_caller.php");
 
 /***************
  *
@@ -73,7 +74,7 @@ while ($row = pwg_db_fetch_assoc($result))
 		continue;
 	}
 
-	/* Metadata via MediaInfo */
+	/* Metadata via MediaInfo, ExifTool or ffprobe */
         $exif = array();
         if ($sync_options['metadata'])
         {
@@ -177,7 +178,7 @@ while ($row = pwg_db_fetch_assoc($result))
                 if ($sync_options['postersec'] > $exif['playtime_seconds'])
                 {
                     $warnings[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". $exif['playtime_seconds'] ." secondes";
-                    $sync_options['postersec'] = (int)$exif['playtime_seconds'];
+                    $sync_options['postersec'] = (int)round($exif['playtime_seconds']/2, 2, PHP_ROUND_HALF_DOWN);
                 }
 		/* default output to JPG */
                 $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
@@ -186,8 +187,7 @@ while ($row = pwg_db_fetch_assoc($result))
                     $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -y \"".$out. "\"";
                 }
                 //echo $ffmpeg;
-                $log = system($ffmpeg, $retval);
-                //$infos[] = $filename. ' poster : retval:'. $retval. ", log:". print_r($log, True);
+                $retval = execCMD($ffmpeg);
                 if($retval != 0 or !file_exists($out))
                 {
                     $errors[] = "Error poster running ffmpeg/avconv, try it manually, check your webserver error log:\n<br/>". $ffmpeg;
@@ -284,8 +284,7 @@ while ($row = pwg_db_fetch_assoc($result))
                         {
                             $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -vf ".$scale." -y \"".$out. "\"";
                         }
-                        $log = system($ffmpeg, $retval);
-                        //$infos[] = $filename. ' thumbnail : retval:'. $retval. ", log:". print_r($log, True);
+                        $retval = execCMD($ffmpeg);
                         if($retval != 0 or !file_exists($out))
                         {
                             $errors[] = "Error thumbnail running ffmpeg/avconv, try it manually, check your webserver error log:\n<br/>". $ffmpeg;

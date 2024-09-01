@@ -6,7 +6,7 @@
 *
 * Created   :   24.06.2012
 *
-* Copyright 2012-2018 <xbgmsharp@gmail.com>
+* Copyright 2012-2024 <xbgmsharp@gmail.com>
 *
 *
 * This program is free software: you can redistribute it and/or modify
@@ -39,11 +39,11 @@ $available_skins = array(
 
 // Available player
 $available_players = array(
+	'html5-player.tpl' => 'Native Browser',
 	'vjs-7-player.tpl' => 'Video.js v7',
 	'vjs-6-player.tpl' => 'Video.js v6',
 	'vjs-5-player.tpl' => 'Video.js v5',
 	'vjs-4-player.tpl' => 'Video.js v4',
-	'html5-player.tpl' => 'Native Browser',
 );
 
 // Available preload value

@@ -6,7 +6,7 @@
 *
 * Created   :   24.06.2012
 *
-* Copyright 2012-2018 <xbgmsharp@gmail.com>
+* Copyright 2012-2024 <xbgmsharp@gmail.com>
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ function plugin_install()
 
 	$default_config = array(
 		'skin'		  => 'vjs-default-skin',
-		'max_height'	  => '720',
+		'max_height'  => '720',
 		'preload'	  => 'auto',
 		'controls'	  => true,
 		'autoplay'	  => false,
@@ -66,7 +66,7 @@ function plugin_install()
 					'watermark'     => false,
 					'resolution'    => false,
 				),
-		'player'	=> 'vjs-5-player.tpl',
+		'player'	=> 'html5-player.tpl',
 		'metadata'	=> true,
 	);
 

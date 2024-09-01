@@ -6,7 +6,7 @@
 *
 * Created   :   26.09.2014
 *
-* Copyright 2012-2018 <xbgmsharp@gmail.com>
+* Copyright 2012-2024 <xbgmsharp@gmail.com>
 *
 *
 * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,8 @@
 *
 ************************************************/
 
+include_once("function_caller.php");
+
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
@@ -40,18 +42,28 @@ if ($sync_options['metadata'] and isset($sync_options['mediainfo']) and !class_e
 // Do the dependencies checks for MediaInfo & FFMPEG & FFPROBE & exiftool
 function check($binary)
 {
+	global $logger;
     $retval = 0;
+    $logger->info(__FUNCTION__.' : checking '.$binary);
+    
+	$retval = execCMD('exiftool -ver'); // redirect any output
+    $logger->info(__FUNCTION__.' : checking exiftool -ver, retval: '.$retval);
+	$retval = execCMD('ffmpeg -version'); // redirect any output
+    $logger->info(__FUNCTION__.' : checking exiftool -ver, retval: '.$retval);
+	$retval = execCMD('ffprobe -version'); // redirect any output
+    $logger->info(__FUNCTION__.' : checking exiftool -ver, retval: '.$retval);
+
+
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-	system($binary ." >NUL 2>NUL", $retval); // redirect any output
+		$retval = execCMD($binary." >NUL 2>NUL"); // redirect any output
     } else {
-	system($binary ." 1>&2 /dev/null", $retval); // redirect any output
+		$retval = execCMD($binary." 1>&2 /dev/null"); // redirect any output
     }
-    //print $retval;
-    if($retval == 127 or $retval == 9009) // Linux or windows exit code for command not found.
-    {
-	return false;
-    } else {
+	if($retval < 2) { // Command found?
         return true;
+    } else {
+	    $logger->info(__FUNCTION__.' : system() and exec() unavailable!');
+	    return false;
     }
 }
 
