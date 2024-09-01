@@ -1,8 +1,14 @@
-Changes from v2.9.b to v2.9.c
-- Calls external programs with system() or exec() according to their availability
-- Fixes empty thumbnail produced from very short videos
-- Fixes crash occurring when the duration is an array
-- Updates VideoJS player to version 7.21.5
+Changes from v2.9.b to v2.10
+- Adopts native browser player by default
+- Adds translations and fixes typos
+- Fixes #133, #205: crash occurring when ExifTool returns a wrong date_creation (thanks @Catfriend1)
+- Fixes #136: updates VideoJS player to version 7.21.5 (thanks to @klaoun)
+- Fixes #179, #197, #205: a crash occurring when the duration returned by ExifTool is an array
+- Fixes #205: deprecated float to int casting (thanks to @klaoun)
+- Fixes #140, #214: no thumbnail produced from very short videos
+- Fixes #192, #216: calls binaries with system() or exec() according to their availability
+- Fixes #194, #201, #203, #217, #228: undefined array key "resolution" warning (thanks to @klaoun)
+- Fixes #145, #153, #162, #189, #204, #222: undefined array key "vjs_sync" warning
 
 Changes from v2.9.a to v2.9.b
 - Fix configuration initialisation
