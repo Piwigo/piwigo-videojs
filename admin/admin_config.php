@@ -39,11 +39,11 @@ $available_skins = array(
 
 // Available player
 $available_players = array(
+	'html5-player.tpl' => 'Native Browser',
 	'vjs-7-player.tpl' => 'Video.js v7',
 	'vjs-6-player.tpl' => 'Video.js v6',
 	'vjs-5-player.tpl' => 'Video.js v5',
 	'vjs-4-player.tpl' => 'Video.js v4',
-	'html5-player.tpl' => 'Native Browser',
 );
 
 // Available preload value

@@ -66,7 +66,7 @@ function plugin_install()
 					'watermark'     => false,
 					'resolution'    => false,
 				),
-		'player'	=> 'vjs-5-player.tpl',
+		'player'	=> 'html5-player.tpl',
 		'metadata'	=> true,
 	);
 
