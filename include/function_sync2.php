@@ -192,6 +192,10 @@ while ($row = pwg_db_fetch_assoc($result))
                 {
                     $errors[] = "Error poster running ffmpeg/avconv, try it manually, check your webserver error log:\n<br/>". $ffmpeg;
                 }
+                else if (filesize($out) == 0)
+                {
+                    $warnings[] = "Poster for Movie ". $filename ." is zero bytes, likely due to video shorter than 1 sec \n<br/";
+                }
 				else
 				{/* We have a poster, lets update the DB */
 
