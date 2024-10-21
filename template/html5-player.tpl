@@ -5,7 +5,7 @@
 {/literal}{/html_head}
 
 {literal}
-<video id="my_video_1" class="video-js" {/literal}{$OPTIONS}{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} x-webkit-airplay="allow" width="auto" height="auto">
+<video id="my_video_1" class="video-js" {/literal}{$OPTIONS}{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} x-webkit-airplay="allow" width="100%" height="auto">
 {/literal}
 {if not empty($videos)}
 {foreach from=$videos item=video}
