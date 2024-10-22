@@ -33,24 +33,6 @@ function plugin_install()
 	if (!defined('VIDEOJS_PATH'))
 		define('VIDEOJS_PATH', PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)).'/');
 
-	// Remove unused files from previous version
-	$toremove = array("skin", "js", "include/getid3");
-	foreach ($toremove as $dir)
-	{
-		if (is_dir(VIDEOJS_PATH.$dir))
-		{
-			vjs_deltree(VIDEOJS_PATH.$dir);
-		}
-	}
-	$toremove = array("language/index.htm", "language/fr_FR/index.htm", "language/en_UK/index.htm", "admin.tpl", "admin.php", "include/README.md");
-	foreach ($toremove as $file)
-	{
-		if (is_file(VIDEOJS_PATH.$file))
-		{
-			@unlink(VIDEOJS_PATH.$file);
-		}
-	}
-
 	$default_config = array(
 		'skin'		  => 'vjs-default-skin',
 		'max_height'  => '720',
@@ -124,31 +106,4 @@ function plugin_activate()
 		plugin_install();
 	}
 }
-
-function vjs_deltree($path)
-{
-	if (is_dir($path))
-	{
-		$fh = opendir($path);
-		while ($file = readdir($fh))
-		{
-			if ($file != '.' and $file != '..')
-			{
-				$pathfile = $path . '/' . $file;
-				if (is_dir($pathfile))
-				{
-					vjs_deltree($pathfile);
-				}
-				else
-				{
-					@unlink($pathfile);
-				}
-			}
-		}
-		closedir($fh);
-		return @rmdir($path);
-	}
-}
-
-
 ?>
