@@ -1,4 +1,4 @@
-Changes from v2.9.b to v2.10
+Changes from v2.9.b to v15.a
 - Adopts native browser player by default
 - Adds translations and fixes typos
 - Fixes #133, #205: crash occurring when ExifTool returns a wrong date_creation (thanks @Catfriend1)
@@ -9,6 +9,8 @@ Changes from v2.9.b to v2.10
 - Fixes #192, #216: calls binaries with system() or exec() according to their availability
 - Fixes #194, #201, #203, #217, #228: undefined array key "resolution" warning (thanks to @klaoun)
 - Fixes #145, #153, #162, #189, #204, #222: undefined array key "vjs_sync" warning
+- Compatibility Piwigo 15 : Remove action in batch manager unit mode
+- Reset configuration (sorry for that)
 
 Changes from v2.9.a to v2.9.b
 - Fix configuration initialisation
