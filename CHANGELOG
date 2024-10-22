@@ -1,3 +1,7 @@
+Changes from 15.a to 15.b
+- Add a root admin.php : Use the standard link to plugin setting
+- Cleanup maintain.inc.php : let PEM generate the list of obsolete.file
+
 Changes from v2.9.b to v15.a
 - Adopts native browser player by default
 - Adds translations and fixes typos
