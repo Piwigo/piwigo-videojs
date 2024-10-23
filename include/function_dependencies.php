@@ -46,20 +46,26 @@ function check($binary)
     $retval = 0;
     $logger->info(__FUNCTION__.' : checking '.$binary);
     
-	$retval = execCMD('exiftool -ver'); // redirect any output
-    $logger->info(__FUNCTION__.' : checking exiftool -ver, retval: '.$retval);
-	$retval = execCMD('ffmpeg -version'); // redirect any output
-    $logger->info(__FUNCTION__.' : checking exiftool -ver, retval: '.$retval);
-	$retval = execCMD('ffprobe -version'); // redirect any output
-    $logger->info(__FUNCTION__.' : checking exiftool -ver, retval: '.$retval);
+    # the version argument parameter
+    $binary_version_arg = array(
+        'exiftool' => '-ver',
+        'ffmpeg' => '-version',
+        'ffprobe' => '-version',
+        'mediainfo' => '--Version'
+    );
 
+    if (array_key_exists($binary, $binary_version_arg)){
+        $binary_args = $binary_version_arg[$binary];
+    } else {
+        $binary_args = '';
+    }
 
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-		$retval = execCMD($binary." >NUL 2>NUL"); // redirect any output
+		$retval = execCMD($binary . " " . $binary_args . " >NUL 2>NUL"); // redirect any output
     } else {
-		$retval = execCMD($binary." 1>&2 /dev/null"); // redirect any output
+		$retval = execCMD($binary . " " . $binary_args . " 2>&1 > /dev/null"); // redirect any output
     }
-	if($retval < 2) { // Command found?
+	if($retval == 0) { // Command found?
         return true;
     } else {
 	    $logger->info(__FUNCTION__.' : system() and exec() unavailable!');
