@@ -39,40 +39,51 @@ if ($sync_options['metadata'] and isset($sync_options['mediainfo']) and !class_e
         $warnings[] = "XML library is missing to use mediainfo";
 }
 
-// Do the dependencies checks for MediaInfo & FFMPEG & FFPROBE & exiftool
+// Do the dependencies checks for MediaInfo & FFmpeg & FFprobe & ExifTool
 function check($binary)
 {
 	global $logger;
+//	$logger->debug('checking '.$binary.':');
+
+	// Determine appropriate argument
+	if (str_contains($binary, 'exiftool')) {
+		$cmd = $binary.' -ver';
+	}
+	else if (str_contains($binary, 'ffmpeg') || str_contains($binary, 'ffprobe')) {
+		$cmd = $binary.' -version';
+	} 
+	else if (str_contains($binary, 'mediainfo')) {
+		$cmd = $binary.' --Version';
+	}
+	else { 
+		return false; 
+	}
+	
+	// Execute the test
     $retval = 0;
-    $logger->info(__FUNCTION__.' : checking '.$binary);
-    
-	$retval = execCMD('exiftool -ver'); // redirect any output
-    $logger->info(__FUNCTION__.' : checking exiftool -ver, retval: '.$retval);
-	$retval = execCMD('ffmpeg -version'); // redirect any output
-    $logger->info(__FUNCTION__.' : checking exiftool -ver, retval: '.$retval);
-	$retval = execCMD('ffprobe -version'); // redirect any output
-    $logger->info(__FUNCTION__.' : checking exiftool -ver, retval: '.$retval);
-
-
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-		$retval = execCMD($binary." >NUL 2>NUL"); // redirect any output
-    } else {
-		$retval = execCMD($binary." 1>&2 /dev/null"); // redirect any output
+		$retval = execCMD($cmd.' >NUL 2>NUL'); 			// redirect any output
     }
-	if($retval < 2) { // Command found?
+    else {
+		$retval = execCMD($cmd.' 2>&1 >/dev/null');		// redirect any output
+    }
+    
+    // Command found?
+	if ($retval == 0) {
         return true;
-    } else {
-	    $logger->info(__FUNCTION__.' : system() and exec() unavailable!');
+    }
+    else {
+	    $logger->debug('ERROR: Calling '.$binary.' did fail.');
 	    return false;
     }
 }
 
 /* Concat custom binary directory from local config local/config/config.inc.php */
 $sync_binaries = array(
-	'mediainfo'	=> isset($conf['vjs_mediainfo_dir']) ? $conf['vjs_mediainfo_dir'].$sync_options['mediainfo'] : $sync_options['mediainfo'],
 	'exiftool'	=> isset($conf['vjs_exiftool_dir']) ? $conf['vjs_exiftool_dir'].$sync_options['exiftool'] : $sync_options['exiftool'],
 	'ffprobe'	=> isset($conf['vjs_ffprobe_dir']) ? $conf['vjs_ffprobe_dir'].$sync_options['ffprobe'] : $sync_options['ffprobe'],
 	'ffmpeg'	=> isset($conf['ffmpeg_dir']) ? $conf['ffmpeg_dir'].$sync_options['ffmpeg'] : $sync_options['ffmpeg'],
+	'mediainfo'	=> isset($conf['vjs_mediainfo_dir']) ? $conf['vjs_mediainfo_dir'].$sync_options['mediainfo'] : $sync_options['mediainfo'],
 );
 
 // For each external tools try

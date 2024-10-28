@@ -44,16 +44,16 @@ function execCMD($cmd)
 	$retval = null;
 	$output = null;
 	
-	if (isAvailable('system')) {
-		$output = system($cmd, $retval);
-		$logger->info('system('.$cmd.') returns '.$output.', retval: '.$retval);
-		return $retval;
-	} 
-	else if (isAvailable('exec')) {
+	if (isAvailable('exec')) {
 		exec($cmd, $output, $retval);
 		$outputStr = implode(',', $output);
-		$logger->info('exec('.$cmd.') returns '.$outputStr.', retval: '.$retval);
+		$logger->debug('exec('.$cmd.') returns "'.$outputStr.'", retval: '.$retval);
 		return $retval;
 	}
-	return 127;
+	else if (isAvailable('system')) {
+		$output = system($cmd, $retval);
+		$logger->debug('system('.$cmd.') returns "'.$output.'", retval: '.$retval);
+		return $retval;
+	}
+	return -1;
 }
