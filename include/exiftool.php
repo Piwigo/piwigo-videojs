@@ -61,15 +61,15 @@ if (isset($general['Duration']))
 		$durationArray = $general['Duration'];
 		foreach ($durationArray as $key => $value)
 		{
-			$logger->info('exiftool : $durationArray has '.$value.' for key '.$key);
+			$logger->debug('exiftool: $durationArray has '.$value.' for key '.$key);
 		}
 		$duration = $durationArray['Scale'] * $durationArray['Value'];
-		$logger->info('exiftool : duration of '.round($duration).' seconds');
+		$logger->debug('exiftool: duration of '.round($duration).' seconds');
 		$exif['duration'] = round($duration * 1000, 0);
 	}
 	else 
 	{
-		$logger->info('exiftool : duration of '.$general['Duration'].' seconds');
+		$logger->debug('exiftool: duration of '.$general['Duration'].' seconds');
 		$exif['duration'] = round($general['Duration']*1000, 0);
 	}
 }
@@ -83,7 +83,18 @@ if (isset($general['AvgBitrate']))
 }
 if (isset($general['MediaCreateDate']))
 {
-	$exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general['MediaCreateDate']));
+	$logger->debug('exiftool: date creation is '.$general['MediaCreateDate']);
+	if (str_contains($general['MediaCreateDate'], ':'))
+	{
+		if (($timestamp = strtotime($general['MediaCreateDate'])) === true)
+		{
+			$exif['date_creation'] = date('Y-m-d H:i:s', strtotime($timestamp));
+		}
+	}
+	else
+	{
+		$exif['date_creation'] = date('Y-m-d H:i:s', substr($general['MediaCreateDate'], 0, 10));
+	}
 }
 if (isset($general['GPSLatitude']) and isset($general['GPSLongitude']))
 {
