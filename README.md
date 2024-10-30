@@ -1,6 +1,15 @@
 piwigo-videojs
 ==============
 
+[![Version](https://img.shields.io/github/release/Piwigo/piwigo-videojs.svg)](https://piwigo.org/ext/index.php?eid=610)
+[![ReleaseDate](https://img.shields.io/github/release-date/Piwigo/piwigo-videojs.svg?color=screen)](https://piwigo.org/ext/index.php?eid=610)
+[![ClosedIssues](https://img.shields.io/github/issues-closed-raw/Piwigo/piwigo-videojs.svg?color=success)](https://github.com/Piwigo/piwigo-videojs/issues?utf8=✓&q=is%3Aissue+is%3Aclosed)
+[![OpenedIssues](https://img.shields.io/github/issues-raw/Piwigo/piwigo-videojs.svg?style=flat)](https://github.com/Piwigo/piwigo-videojs/issues)
+
+[![Git](https://img.shields.io/badge/GitHub-Piwigo-blue.svg?style=flat)](https://github.com/Piwigo)
+[![Twitter](https://img.shields.io/badge/twitter-@piwigo-blue.svg?style=flat)](http://twitter.com/piwigo)
+[![Website](https://img.shields.io/badge/website-piwigo.org-orange.svg?style=flat)](http://piwigo.org)
+
 Extend Piwigo with video support. [Videojs](http://videojs.com/) port for piwigo. Play your videos in the HTML5 video tag on your web gallery!
 
 Piwigo-videojs is a [plugin](http://piwigo.org/ext/extension_view.php?eid=610) for the [Piwigo](http://piwigo.org/) web gallery that allows you to render various video files within your piwigo install.
