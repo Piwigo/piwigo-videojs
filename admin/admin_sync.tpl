@@ -75,22 +75,21 @@ jQuery(".showInfo").tipTip({
 
 <fieldset>
 <div style="text-align:left">
-Synchronization of metadata information and thumbnail creation for videos:<br/>
+{'SYNC_INTRO'|@translate}<br/>
 <ul>
-  <li class="update_summary_new">extracts metadata with <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> (if available)</li>
-  <li class="update_summary_new">produces thumbnails with <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a> (if available)</li>
+  <li class="update_summary_new">{'INTRO_METADATA'|@translate},</li>
+  <li class="update_summary_new">{'INTRO_THUMB'|@translate}</li>
 </ul>
-Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin documentation</a> for additional information and look at the <a href="https://piwigo.org/forum/" target="_blank">forums</a> if you encounter some issues.<br/>
-To report bugs and suggest new features, please create a new <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">issue</a>.
+{'INTRO_SUPPORT'|@translate}}
 </div>
 </fieldset>
 
 <div class="vjs_layout">
-  <legend>{'Statistics'|@translate}</legend>
+  <legend>{'STATS'|@translate}</legend>
   <ul>
-    <li class="update_summary_new">{$NB_VIDEOS} {'videos in your gallery'|@translate}</li>
-    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster in your gallery'|@translate}</li>
-    <li class="update_summary_new">{$NB_VIDEOS_GEOTAGGED} {'geotagged videos in your gallery'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS} {'VIDEOS'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'VIDEOS_THUMB'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_GEOTAGGED} {'VIDEOS_GEOTAGGED'|@translate}</li>
   </ul>
 </div>
 
@@ -165,9 +164,8 @@ To report bugs and suggest new features, please create a new <a href="https://gi
     <legend>{'Synchronize metadata'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="metadata" value="1" {if $metadata}checked="checked"{/if} /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
-	<br/><small>{'SYNC_METADATA_DESC'|@translate}</small>
-	<small><strong>Requires <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'MediaInfo' or 'ffprobe' or 'Exiftool'</a> to be installed.</strong></small>
+		<label><input type="checkbox" name="metadata" value="1" {if $metadata}checked="checked"{/if} /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
+		<a class="icon-info-circled-1" title="{'SYNC_METADATA_DESC'|@translate}"></a>
       </li>
     </ul>
   </fieldset>
@@ -176,26 +174,25 @@ To report bugs and suggest new features, please create a new <a href="https://gi
     <legend>{'Poster'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="poster" value="1" {if $poster}checked="checked"{/if} /> {'SYNC_POSTER'|@translate}:</label>
-	<!-- <input type="range" name="postersec" value="4" min="0" max="60" step="1"/> -->
-	<input type="text" name="postersec" value="{$postersec}" size="2" required/>
-	<br/><small>{'SYNC_POSTER_DESC'|@translate}</small>
-	<small><strong>Requires <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki/How-to-add-videos#external-tools" target="_blank">'FFmpeg'</a> to be installed.</strong></small>
+		<label><input type="checkbox" name="poster" value="1" {if $poster}checked="checked"{/if} /> {'SYNC_POSTER'|@translate}:</label>
+		<!-- <input type="range" name="postersec" value="4" min="0" max="60" step="1"/> -->
+		<input type="text" name="postersec" value="{$postersec}" size="2" required/>
+		<a class="icon-info-circled-1" title="{'SYNC_POSTER_DESC'|@translate}"></a>
       </li>
       <li>
-	<label><input type="checkbox" name="posteroverwrite" value="1" {if $posteroverwrite}checked="checked"{/if}> {'SYNC_POSTEROVERWRITE'|@translate}</label>
-	<br/><small>{'SYNC_POSTEROVERWRITE_DESC'|@translate}</small>
+		<label><input type="checkbox" name="posteroverwrite" value="1" {if $posteroverwrite}checked="checked"{/if}> {'SYNC_POSTEROVERWRITE'|@translate}</label>
+		<a class="icon-info-circled-1" title="{'SYNC_POSTEROVERWRITE_DESC'|@translate}"></a>
       </li>
       <li>
-	<label><span class="property">{'SYNC_OUTPUT'|@translate}: </span></label>
-	<label><input type="radio" name="output" value="jpg" {if $output=="jpg"}checked="checked"{/if}/> JPG</label>
-	<label><input type="radio" name="output" value="png" {if $output=="png"}checked="checked"{/if}/> PNG</label>
-	<br/><small>{'SYNC_OUTPUT_DESC'|@translate}</small>
+		<label><span class="property">{'SYNC_OUTPUT'|@translate}: </span></label>
+		<label><input type="radio" name="output" value="jpg" {if $output=="jpg"}checked="checked"{/if}/> JPG</label>
+		<label><input type="radio" name="output" value="png" {if $output=="png"}checked="checked"{/if}/> PNG</label>
+		<a class="icon-info-circled-1" title="{'SYNC_OUTPUT_DESC'|@translate}"></a>
       </li>
       <li>
-	<label><input type="checkbox" name="posteroverlay" value="1" {if $posteroverlay}checked="checked"{/if}/> {'SYNC_POSTEROVERLAY'|@translate}</label>
-	<a class="showInfo" title="<img src='{$VIDEOJS_PATH}admin/example-frame.jpg'>">i</a>
-	<br/><small>{'SYNC_POSTEROVERLAY_DESC'|@translate}</small>
+		<label><input type="checkbox" name="posteroverlay" value="1" {if $posteroverlay}checked="checked"{/if}/> {'SYNC_POSTEROVERLAY'|@translate}</label>
+		<a class="icon-info-circled-1" title="{'SYNC_POSTEROVERLAY_DESC'|@translate}"></a>
+		<a class="showInfo" title="<img src='{$VIDEOJS_PATH}admin/example-frame.jpg'>">i</a>
       </li>
     </ul>
   </fieldset>
@@ -204,16 +201,16 @@ To report bugs and suggest new features, please create a new <a href="https://gi
     <legend>{'Thumbnail'|@translate}</legend>
     <ul>
       <li>
-	<label><input type="checkbox" name="thumb" value="1" {if $thumb}checked="checked"{/if}/> {'SYNC_THUMBSEC'|@translate}:</label>
-	<input class="range-input" type="range" id="thumbsec" name="thumbsec" value="{$thumbsec}" min="0" max="60" step="1"/>
-	<output name="thumbsecValue" for="thumbsec">{$thumbsec}</output>
-	<!-- <input type="text" name="thumbsec" value="5" size="2" required/> -->
-	<br/><small>{'SYNC_THUMBSEC_DESC'|@translate} <strong>Use by the videoJS plugin thumbnail</strong>.</small>
+		<label><input type="checkbox" name="thumb" value="1" {if $thumb}checked="checked"{/if}/> {'SYNC_THUMBSEC'|@translate}:</label>
+		<input class="range-input" type="range" id="thumbsec" name="thumbsec" value="{$thumbsec}" min="0" max="60" step="1"/>
+		<output name="thumbsecValue" for="thumbsec">{$thumbsec}</output>
+		<!-- <input type="text" name="thumbsec" value="5" size="2" required/> -->
+		<a class="icon-info-circled-1" title="{'SYNC_THUMBSEC_DESC'|@translate}"></a>
       </li>
       <li>
-	<label>{'SYNC_THUMBSIZE'|@translate}:</label>
-	<input type="text" name="thumbsize" value="{$thumbsize}" size="6" placeholder="120x68" required/>
-	<br/><small>{'SYNC_THUMBSIZE_DESC'|@translate}</small>
+		<label>{'SYNC_THUMBSIZE'|@translate}:</label>
+		<input type="text" name="thumbsize" value="{$thumbsize}" size="6" placeholder="120x68" required/>
+		<a class="icon-info-circled-1" title="{'SYNC_THUMBSIZE_DESC'|@translate}"></a>
       </li>
     </ul>
   </fieldset>
@@ -228,14 +225,14 @@ To report bugs and suggest new features, please create a new <a href="https://gi
   <fieldset id="catSubset">
     <legend>{'reduce to single existing albums'|@translate}</legend>
     <ul>
-    <li>
-    <select class="categoryList" name="cat_id" size="10">
-	{html_options options=$categories selected=$categories_selected}
-    </select>
-    </li>
-
-    <li><label><input type="checkbox" name="subcats_included" value="1" {$SUBCATS_INCLUDED_CHECKED} /> {'Search in sub-albums'|@translate}</label></li>
-    </ul>
+      <li>
+		<select class="categoryList" name="cat_id" size="10">
+		{html_options options=$categories selected=$categories_selected}
+		</select>
+      </li>
+      <li>
+        <label><input type="checkbox" name="subcats_included" value="1" {$SUBCATS_INCLUDED_CHECKED} /> {'Search in sub-albums'|@translate}</label></li>
+      </ul>
   </fieldset>
 
   <p>

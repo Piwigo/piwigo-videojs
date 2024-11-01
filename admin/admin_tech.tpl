@@ -2,7 +2,7 @@
 <style>
   {literal}
 FORM.properties SPAN.property {
-  width:100px;
+  width:150px;
 }
   {/literal}
 </style>

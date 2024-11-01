@@ -8,7 +8,7 @@
       margin: 1em;
     }
     FORM.properties SPAN.property {
-      width:100px;
+      width:150px;
     }
 	.range-input {
 	  position: relative; height: 10px; border: none; padding: 0;
@@ -29,20 +29,20 @@
 
 <fieldset>
 <div style="text-align:left">
-This plugin:<br/>
-<ul>
-  <li class="update_summary_new">adds the open source HTML5 video player <a href="http://www.videojs.com/" target="_blank">VideoJS</a>.</li>
-  <li class="update_summary_new">extracts metadata with <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> (if available)</li>
-  <li class="update_summary_new">produces thumbnails with <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a> (if available)</li>
-</ul>
+{'INTRO_CONFIG'|@translate}<br/>
+  <ul>
+    <li class="update_summary_new">{'INTRO_VIDEOJS'|@translate},</li>
+    <li class="update_summary_new">{'INTRO_METADATA'|@translate},</li>
+    <li class="update_summary_new">{'INTRO_THUMB'|@translate}.</li>
+  </ul>
 </div>
 </fieldset>
 
 <div class="vjs_layout">
-  <legend>{'Statistics'|@translate}</legend>
+  <legend>{'STATS'|@translate}</legend>
   <ul>
-    <li class="update_summary_new">{$NB_VIDEOS} {'videos in your gallery'|@translate}</li>
-    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'videos with poster in your gallery'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS} {'VIDEOS'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'VIDEOS_THUMB'|@translate}</li>
   </ul>
 </div>
 
@@ -51,43 +51,43 @@ This plugin:<br/>
 		<legend>{'HTML5'|@translate}</legend>
 		<ul>
 			<li>
-				<label><span class="property">{'PRELOAD'|@translate} : </span></label>
+				<label><span class="property">{'PRELOAD'|@translate}</span></label>
 				<select name="vjs_preload">
 					{html_options options=$AVAILABLE_PRELOAD selected=$preload}
 				</select>
-				<br/><small>{'PRELOAD_DESC'|@translate}</small>
+				<a class="icon-info-circled-1" title="{'PRELOAD_DESC'|@translate}"></a>
 			</li>
 			<li>
-				<label><span class="property">{'CONTROLS'|@translate} : </span></label>
+				<label><span class="property">{'CONTROLS'|@translate}</span></label>
 				<label><input type="radio" name="vjs_controls" value="true" {if $controls}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_controls" value="false" {if not $controls}checked="checked"{/if}/> {'No'|@translate}</label>
-				<br/><small>{'CONTROLS_DESC'|@translate}</small>
+				&nbsp;<label><input type="radio" name="vjs_controls" value="false" {if not $controls}checked="checked"{/if}/> {'No'|@translate}</label>
+				<a class="icon-info-circled-1" title="{'CONTROLS_DESC'|@translate}"></a>
 			</li>
 			<li>
 				<label><span class="property">{'AUTOPLAY'|@translate} : </span></label>
 				<label><input type="radio" name="vjs_autoplay" value="true" {if $autoplay}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_autoplay" value="false" {if not $autoplay}checked="checked"{/if}/> {'No'|@translate}</label>
-				<br/><small>{'AUTOPLAY_DESC'|@translate}</small>
+				&nbsp;<label><input type="radio" name="vjs_autoplay" value="false" {if not $autoplay}checked="checked"{/if}/> {'No'|@translate}</label>
+				<a class="icon-info-circled-1" title="{'AUTOPLAY_DESC'|@translate}"></a>
 			</li>
 			<li>
-				<label><span class="property">{'LOOP'|@translate} : </span></label>
+				<label><span class="property">{'LOOP'|@translate}</span></label>
 				<label><input type="radio" name="vjs_loop" value="true" {if $loop}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_loop" value="false" {if not $loop}checked="checked"{/if}/> {'No'|@translate}</label>
-				<br/><small>{'LOOP_DESC'|@translate}</small>
+				&nbsp;<label><input type="radio" name="vjs_loop" value="false" {if not $loop}checked="checked"{/if}/> {'No'|@translate}</label>
+				<a class="icon-info-circled-1" title="{'LOOP_DESC'|@translate}"></a>
 			</li>
 			<li>
-				<label><span class="property">{'VOLUME'|@translate} : </span></label>
+				<label><span class="property">{'VOLUME'|@translate}</span></label>
 				<input class="range-input" type="range" id="vjs_volume" name="vjs_volume" value="{$volume}" min="0" max="1" step="0.1"/>
 				<output name="volumelevelValue" for="vjs_volume">{$volume}</output>
 				<!-- <label><input type="text" name="vjs_volume" value="1" placeholder="1"/></label> -->
-				<br/><small>{'VOLUME_DESC'|@translate}</small>
+				<a class="icon-info-circled-1" title="{'VOLUME_DESC'|@translate}"></a>
 			</li>
 			<li>
-				<label><span class="property">{'LANGUAGE'|@translate} : </span></label>
+				<label><span class="property">{'LANGUAGE'|@translate}</span></label>
 				<select name="vjs_language">
 					{html_options options=$AVAILABLE_LANGUAGES selected=$language}
 				</select>
-				<br/><small>{'LANGUAGE_DESC'|@translate}</small>
+				<a class="icon-info-circled-1" title="{'LANGUAGE_DESC'|@translate}"></a>
 			</li>
 		</ul>
 	</fieldset>
@@ -96,10 +96,10 @@ This plugin:<br/>
 		<legend>{'METADATA'|@translate}</legend>
 		<ul>
 			<li>
-				<label><span class="property">{'Show file metadata'|@translate} : </span></label>
+				<label><span class="property">{'METADATA_FILE'|@translate}</span></label>
 				<label><input type="radio" name="vjs_metadata" value="true" {if $metadata}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_metadata" value="false" {if not $metadata}checked="checked"{/if}/> {'No'|@translate}</label>
-				<br/><small>{'METADATA_DESC'|@translate}</small>
+				&nbsp;<label><input type="radio" name="vjs_metadata" value="false" {if not $metadata}checked="checked"{/if}/> {'No'|@translate}</label>
+				<a class="icon-info-circled-1" title="{'METADATA_DESC'|@translate}"></a>
 			</li>
 		</ul>
 	</fieldset>
@@ -108,11 +108,11 @@ This plugin:<br/>
 		<legend>{'PLAYER'|@translate}</legend>
 		<ul>
 			<li>
-				<label><span class="property">{'PLAYER'|@translate} : </span></label>
+				<label><span class="property">{'PLAYER_TYPE'|@translate}</span></label>
 				<select name="vjs_player" id="vjs_player" onchange="player_toggle(this);">
 					{html_options options=$AVAILABLE_PLAYERS selected=$player}
 				</select>
-				<br/><small>{'PLAYER_DESC'|@translate}</small>
+				<a class="icon-info-circled-1" title="{'PLAYER_DESC'|@translate}"></a>
 			</li>
 		</ul>
 	</fieldset>
@@ -122,29 +122,29 @@ This plugin:<br/>
 		<legend>{'PLUGIN'|@translate}</legend>
 		<ul>
 			<li>
-				<label><span class="property">{'SKIN'|@translate} : </span></label>
+				<label><span class="property">{'SKIN'|@translate}</span></label>
 				<select name="vjs_skin">
 					{html_options options=$AVAILABLE_SKINS selected=$skin}
 				</select>
-				<br/><small>{'SKIN_DESC'|@translate}</small>
+				<a class="icon-info-circled-1" title="{'SKIN_DESC'|@translate}"></a>
 			</li>
 			<li>
-				<label><span class="property">{'CUSTOMCSS'|@translate} : </span></label>
+				<label><span class="property">{'CUSTOMCSS'|@translate}</span></label>
 				<textarea rows="5" cols="90" class="description" name="vjs_customcss" id="vjs_customcss">{$CUSTOM_CSS}</textarea>
-				<br/><small>{'CUSTOMCSS_DESC'|@translate}</small>
+				<a class="icon-info-circled-1" title="{'CUSTOMCSS_DESC'|@translate}"></a>
 			</li>
 			<li>
-				<label><span class="property">{'HEIGHT'|@translate} : </span></label>
+				<label><span class="property">{'HEIGHT'|@translate}</span></label>
 				<select name="vjs_max_height">
 					{html_options options=$AVAILABLE_HEIGHT selected=$max_height}
 				</select>
-				<br/><small>{'HEIGHT_DESC'|@translate}</small>
+				<a class="icon-info-circled-1" title="{'HEIGHT_DESC'|@translate}"></a>
 			</li>
 			<li>
-				<label><span class="property">{'UPSCALE'|@translate} : </span></label>
+				<label><span class="property">{'UPSCALE'|@translate}</span></label>
 				<label><input type="radio" name="vjs_upscale" value="true" {if $upscale}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_upscale" value="false" {if not $upscale}checked="checked"{/if}/> {'No'|@translate}</label>
-				<br/><small>{'UPSCALE_DESC'|@translate}</small>
+				&nbsp;<label><input type="radio" name="vjs_upscale" value="false" {if not $upscale}checked="checked"{/if}/> {'No'|@translate}</label>
+				<a class="icon-info-circled-1" title="{'UPSCALE_DESC'|@translate}"></a>
 			</li>
 		<ul>
 	</fieldset>
@@ -153,28 +153,28 @@ This plugin:<br/>
 		<legend>{'VIDEOJSPLUGIN'|@translate}</legend>
 		<ul>
 			<li>
-				<label><span class="property">{'ZOOMROTATE'|@translate} : </span></label>
+				<label><span class="property">{'ZOOMROTATE'|@translate}</span></label>
 				<label><input type="radio" name="vjs_zoomrotate" value="true" {if $plugins.zoomrotate}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_zoomrotate" value="false" {if not $plugins.zoomrotate}checked="checked"{/if}/> {'No'|@translate}</label>
-				<br/><small>{'ZOOMROTATE_DESC'|@translate}</small>
+				&nbsp;<label><input type="radio" name="vjs_zoomrotate" value="false" {if not $plugins.zoomrotate}checked="checked"{/if}/> {'No'|@translate}</label>
+				<a class="icon-info-circled-1" title="{'ZOOMROTATE_DESC'|@translate}"></a>
 			</li>
 			<li>
-				<label><span class="property">{'THUMBNAILS'|@translate} : </span></label>
+				<label><span class="property">{'THUMBNAILS'|@translate}</span></label>
 				<label><input type="radio" name="vjs_thumbnails" value="true" {if $plugins.thumbnails}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_thumbnails" value="false" {if not $plugins.thumbnails}checked="checked"{/if}/> {'No'|@translate}</label>
-				<br/><small>{'THUMBNAILS_DESC'|@translate}</small>
+				&nbsp;<label><input type="radio" name="vjs_thumbnails" value="false" {if not $plugins.thumbnails}checked="checked"{/if}/> {'No'|@translate}</label>
+				<a class="icon-info-circled-1" title="{'THUMBNAILS_DESC'|@translate}"></a>
 			</li>
 			<li>
-				<label><span class="property">{'WATERMARK'|@translate} : </span></label>
+				<label><span class="property">{'WATERMARK'|@translate}</span></label>
 				<label><input type="radio" name="vjs_watermark" value="true" {if $plugins.watermark}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_watermark" value="false" {if not $plugins.watermark}checked="checked"{/if}/> {'No'|@translate}</label>
-				<br/><small>{'WATERMARK_DESC'|@translate}</small>
+				&nbsp;<label><input type="radio" name="vjs_watermark" value="false" {if not $plugins.watermark}checked="checked"{/if}/> {'No'|@translate}</label>
+				<a class="icon-info-circled-1" title="{'WATERMARK_DESC'|@translate}"></a>
 			</li>
 			<li>
-				<label><span class="property">{'RESOLUTION'|@translate} : </span></label>
+				<label><span class="property">{'RESOLUTION'|@translate}</span></label>
 				<label><input type="radio" name="vjs_resolution" value="true" {if $plugins.resolution}checked="checked"{/if}/> {'Yes'|@translate}</label>
-				<label><input type="radio" name="vjs_resolution" value="false" {if not $plugins.resolution}checked="checked"{/if}/> {'No'|@translate}</label>
-				<br/><small>{'RESOLUTION_DESC'|@translate}</small>
+				&nbsp;<label><input type="radio" name="vjs_resolution" value="false" {if not $plugins.resolution}checked="checked"{/if}/> {'No'|@translate}</label>
+				<a class="icon-info-circled-1" title="{'RESOLUTION_DESC'|@translate}"></a>
 			</li>
 		</ul>
 	</fieldset>
