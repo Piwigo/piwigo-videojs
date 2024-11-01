@@ -20,54 +20,68 @@
 // | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, |
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
+$lang['STATS'] = 'Statistika';
+$lang['VIDEOS'] = 'videot teie galeriis';
+$lang['VIDEOS_THUMB'] = 'videot koos pisipiltidega teie galeriis';
+$lang['VIDEOS_GEOTAGGED'] = 'geotagidega videot teie galeriis';
+
+$lang['HTML5'] = 'HTML5 video siltide seadistused';
+$lang['PRELOAD'] = 'Eellaadimine';
 $lang['PRELOAD_DESC'] = 'Eellaadimise atribuut ütleb lehitsejale, kas video infot peaks hakkama alla laadima kui video tag on laetud.';
-$lang['SKIN_DESC'] = 'Vali stiil, mida mängijal rakendada';
-$lang['WIDTH_DESC'] = 'Maksimaalse laiuse atribuut valib video laiuse kui suurem siis see jagatakse 2-ga.';
-$lang['AUTOPLAY'] = 'Automaatesitus';
-$lang['AUTOPLAY_DESC'] = 'Sisselülitatud automaatesitusega alustab video mängimist lehe laadimisel. Ei ole toetatud Apple\'i iOS seadmetes.';
 $lang['CONTROLS'] = 'Juhtmikud';
 $lang['CONTROLS_DESC'] = 'Juhtmikute valik tekitab video mängimise ajal kontrollnupud';
-$lang['CUSTOMCSS'] = 'Isikupärastatud CSS';
-$lang['CUSTOMCSS_DESC'] = 'Isikupärastatud CSS, et saaks kopeerida ja kleepid VideoJS veebilehelt.';
-$lang['HTML5'] = 'HTML5 video siltide seadistused';
+$lang['AUTOPLAY'] = 'Automaatesitus';
+$lang['AUTOPLAY_DESC'] = 'Sisselülitatud automaatesitusega alustab video mängimist lehe laadimisel. Ei ole toetatud Apple\'i iOS seadmetes.';
 $lang['LOOP'] = 'Silmusmängimine';
 $lang['LOOP_DESC'] = 'Silmusmängimine alustab uuesti video mängimist, kui see on lõpuni käinud';
+$lang['VOLUME'] = 'Heli tugevus';
+$lang['VOLUME_DESC'] = 'Määrab heli tugevuse taseme. 0 on hääletu, 1.0 on maksimum, 0.5 on pool tugevusest';
+$lang['LANGUAGE'] = 'Keel';
+$lang['LANGUAGE_DESC'] = 'Valige mängija keel.';
+
+$lang['METADATA_DESC'] = 'Metaandmete kirjeldus';
+
+$lang['PLAYER_DESC'] = 'Valige vjs-mängija versioon.';
+
 $lang['PLUGIN'] = 'Plugin-i seaded';
-$lang['PRELOAD'] = 'Eellaadimine';
 $lang['SKIN'] = 'Nahk';
+$lang['SKIN_DESC'] = 'Vali stiil, mida mängijal rakendada';
+$lang['CUSTOMCSS'] = 'Isikupärastatud CSS';
+$lang['CUSTOMCSS_DESC'] = 'Isikupärastatud CSS, et saaks kopeerida ja kleepid VideoJS veebilehelt.';
 $lang['WIDTH'] = 'Maksimaalne laius';
-$lang['THUMBNAILS'] = 'Pisipildid';
-$lang['THUMBNAILS_DESC'] = 'Kuva pisipilte üleval olekuribal.';
+$lang['WIDTH_DESC'] = 'Maksimaalse laiuse atribuut valib video laiuse kui suurem siis see jagatakse 2-ga.';
+$lang['HEIGHT'] = 'Maksimaalne kõrgus';
+$lang['HEIGHT_DESC'] = 'Maksimaalse kõrguse atribuut määrab video maksimaalse kuvakõrguse. Kui video kõrgus on suurem kui maksimaalne kõrgus, vähendatakse video suurust maksimaalsele kõrgusele.';
 $lang['UPSCALE'] = 'Suurenda';
 $lang['UPSCALE_DESC'] = 'Kui video suurus on väiksem, kui max laius siis suurenda videot max laiuseni.';
+
 $lang['VIDEOJSPLUGIN'] = 'VideoJS plugin';
-$lang['WATERMARK'] = 'Vesimärk';
-$lang['WATERMARK_DESC'] = 'Kuva vesimärki videol';
 $lang['ZOOMROTATE'] = 'SuurendaKeera';
 $lang['ZOOMROTATE_DESC'] = 'Keera ja suurenda videot, kui võimalik, kasuta keeramiseks metainfot.';
-$lang['SYNC_POSTEROVERWRITE_DESC'] = 'Kirjuta üle olemasolevad pisipildid uutega. Märkimata jätmisel mängib ainult uuesti lisatud videot';
-$lang['SYNC_POSTEROVERWRITE'] = 'Kirjuta üle olemasolevad postrid';
+$lang['THUMBNAILS'] = 'Pisipildid';
+$lang['THUMBNAILS_DESC'] = 'Kuva pisipilte üleval olekuribal.';
+$lang['WATERMARK'] = 'Vesimärk';
+$lang['WATERMARK_DESC'] = 'Kuva vesimärki videol';
+$lang['RESOLUTION'] = 'Eraldusvõime';
+$lang['RESOLUTION_DESC'] = 'Eraldusvõime lüliti.';
+
+$lang['SYNC_ERRORS'] = 'Vead';
+$lang['SYNC_WARNINGS'] = 'Hoiatused';
+$lang['SYNC_INFOS'] = 'Üksikasjalik informatsioon';
+
+$lang['SYNC_METADATA_DESC'] = 'Asendab andmebaasi informatsiooni video metaandmetega';
+
+$lang['SYNC_POSTER'] = 'Looge plakat teises kohas';
 $lang['SYNC_POSTER_DESC'] = 'Loo poster videost ja määra asukoht';
+$lang['SYNC_POSTEROVERWRITE'] = 'Kirjuta üle olemasolevad postrid';
+$lang['SYNC_POSTEROVERWRITE_DESC'] = 'Kirjuta üle olemasolevad pisipildid uutega. Märkimata jätmisel mängib ainult uuesti lisatud videot';
+$lang['SYNC_OUTPUT'] = 'Väljundi formaat';
+$lang['SYNC_OUTPUT_DESC'] = 'Vali väljundi formaat postri ja pisipildi jaoks';
+$lang['SYNC_POSTEROVERLAY'] = 'Lisa filmi efekt';
+$lang['SYNC_POSTEROVERLAY_DESC'] = 'Lisa aplikatsioon postrile';
+
 $lang['SYNC_THUMBSEC'] = 'Loo pisipilt igal sekundil';
 $lang['SYNC_THUMBSEC_DESC'] = 'Loo pisipilt igal x sekundil';
 $lang['SYNC_THUMBSIZE'] = 'Pisipildi suurus';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Suurus piksiltes, hoia see väiksena, vaikimisi valik on sobilik, Youtube kasutab 190x68';
-$lang['SYNC_WARNINGS'] = 'Hoiatused';
-$lang['VOLUME'] = 'Heli tugevus';
-$lang['VOLUME_DESC'] = 'Määrab heli tugevuse taseme. 0 on hääletu, 1.0 on maksimum, 0.5 on pool tugevusest';
-$lang['SYNC_POSTEROVERLAY'] = 'Lisa filmi efekt';
-$lang['SYNC_POSTEROVERLAY_DESC'] = 'Lisa aplikatsioon postrile';
-$lang['SYNC_ERRORS'] = 'Vead';
-$lang['SYNC_INFOS'] = 'Üksikasjalik informatsioon';
-$lang['SYNC_METADATA_DESC'] = 'Asendab andmebaasi informatsiooni video metaandmetega';
-$lang['SYNC_OUTPUT'] = 'Väljundi formaat';
-$lang['SYNC_OUTPUT_DESC'] = 'Vali väljundi formaat postri ja pisipildi jaoks';
-$lang['SYNC_POSTER'] = 'Looge plakat teises kohas';
-$lang['RESOLUTION'] = 'Eraldusvõime';
-$lang['RESOLUTION_DESC'] = 'Eraldusvõime lüliti.';
-$lang['PLAYER_DESC'] = 'Valige vjs-mängija versioon.';
-$lang['METADATA_DESC'] = 'Metaandmete kirjeldus';
-$lang['LANGUAGE_DESC'] = 'Valige mängija keel.';
-$lang['HEIGHT_DESC'] = 'Maksimaalse kõrguse atribuut määrab video maksimaalse kuvakõrguse. Kui video kõrgus on suurem kui maksimaalne kõrgus, vähendatakse video suurust maksimaalsele kõrgusele.';
-$lang['LANGUAGE'] = 'Keel';
-$lang['HEIGHT'] = 'Maksimaalne kõrgus';
+?>

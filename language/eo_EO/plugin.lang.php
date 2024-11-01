@@ -20,19 +20,23 @@
 // | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, |
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
+$lang['PRELOAD'] = 'Antaŭalŝuto';
+$lang['CONTROLS'] = 'Kontroloj';
+$lang['AUTOPLAY'] = 'Memstarto';
+$lang['LOOP'] = 'Iteracio';
+$lang['LOOP_DESC'] = 'La eco "iteracio" igas la videon rekomenciĝi ekde ĝi finiĝas.';
 $lang['LANGUAGE'] = 'Lingvaĵo';
+$lang['LANGUAGE_DESC'] = 'Selektu la lingvon de la legilo.';
+
+$lang['PLUGIN'] = 'Kromaĵaj agordoj';
+$lang['SKIN'] = 'Etoso';
+$lang['HEIGHT'] = 'Maksimuma alteco';
+
 $lang['SYNC_ERRORS'] = 'Eraroj';
+$lang['SYNC_INFOS'] = 'Detala informo';
+
+$lang['SYNC_POSTEROVERLAY'] = 'Aldoni filmefekton';
+
 $lang['SYNC_THUMBSEC'] = 'Krei miniaturon ĉiun sekundon.';
 $lang['SYNC_THUMBSEC_DESC'] = 'Krei miniaturon ĉiujn x sekundojn.';
 $lang['SYNC_THUMBSIZE'] = 'Grandeco de la miniaturo';
-$lang['SKIN'] = 'Etoso';
-$lang['SYNC_POSTEROVERLAY'] = 'Aldoni filmefekton';
-$lang['LANGUAGE_DESC'] = 'Selektu la lingvon de la legilo.';
-$lang['LOOP'] = 'Iteracio';
-$lang['LOOP_DESC'] = 'La eco "iteracio" igas la videon rekomenciĝi ekde ĝi finiĝas.';
-$lang['AUTOPLAY'] = 'Memstarto';
-$lang['CONTROLS'] = 'Kontroloj';
-$lang['HEIGHT'] = 'Maksimuma alteco';
-$lang['PLUGIN'] = 'Kromaĵaj agordoj';
-$lang['PRELOAD'] = 'Antaŭalŝuto';
-$lang['SYNC_INFOS'] = 'Detala informo';

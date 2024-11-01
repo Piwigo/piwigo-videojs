@@ -21,7 +21,11 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 $lang['LANGUAGE'] = 'Yezh';
-$lang['SYNC_ERRORS'] = 'Fazioù';
-$lang['AUTOPLAY'] = 'Loc\'hañ emgefreek';
+
 $lang['CONTROLS'] = 'Kontrolloù';
+$lang['AUTOPLAY'] = 'Loc\'hañ emgefreek';
+
 $lang['CUSTOMCSS'] = 'Follenn stil CSS personelaet';
+
+$lang['SYNC_ERRORS'] = 'Fazioù';
+?>
