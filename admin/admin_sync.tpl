@@ -7,6 +7,33 @@
       padding: 1em;
       margin: 1em;
     }
+	.vjs_infos, .vjs_errors, .vjs_warnings {
+	  text-align: left;
+	  margin: 20px;
+	  padding: 5px;
+	  font-weight:bold;
+	  min-height: 54px;
+	  flex-direction: row;
+	  display: flex;
+      flex-wrap: wrap;
+	  align-items: center;
+	  justify-content: start;
+	}
+	.vjs_infos {
+	  color: #0a0;
+	  background-color:#c2f5c2;
+	  border-left: 4px solid #0a0;
+	}
+	.vjs_errors {
+	  color: #f22;
+	  background-color: #ffd5dc;
+	  border-left: 4px solid #f22;
+	}
+	.vjs_warnings {
+	  color: #ee8800;
+	  background-color:#ffdd99;
+	  border-left:4px solid #ee8800;
+	}
     .showInfo {
       position:static;
       display:inline-block;
@@ -81,7 +108,7 @@ To report bugs and suggest new features, please create a new <a href="https://gi
 
 {if not empty($sync_errors)}
   <h3>{'SYNC_ERRORS'|@translate}</h3>
-  <div class="errors">
+  <div class="vjs_errors">
     <ul>
       {foreach from=$sync_errors item=error}
       <li>{$error}</li>
@@ -92,7 +119,7 @@ To report bugs and suggest new features, please create a new <a href="https://gi
 
 {if not empty($sync_warnings)}
   <h3>{'SYNC_WARNINGS'|@translate}</h3>
-  <div class="warnings">
+  <div class="vjs_warnings">
     <ul>
       {foreach from=$sync_warnings item=warning}
       <li>{$warning}</li>
@@ -103,19 +130,25 @@ To report bugs and suggest new features, please create a new <a href="https://gi
 
 {if not empty($sync_infos)}
   <h3>{'SYNC_INFOS'|@translate}</h3>
-  <div class="infos">
+  <div class="vjs_infos">
 		{foreach from=$sync_infos item=infos}
 		<ul>
 			{foreach from=$infos key=name item=detail}
-				{if $name == 'thumbnail'}
-					<li>{$name}:</li>
-					<ul>
-						{foreach from=$detail item=thumb}
-							<li>{$thumb}</li>
-						{/foreach}
-					</ul>
-				{else}
-					<li>{$name}: {$detail}</li>
+			    {if $name == 'file'}
+			    	<li>Movie {$detail}</li>
+			    {else}
+			    	<ul style="list-style-type:none;">
+					{if $name == 'thumbnail'}
+						<li>{$name}:</li>
+						<ul style="list-style-type:none;">
+							{foreach from=$detail item=thumb}
+								<li>{$thumb}</li>
+							{/foreach}
+						</ul>
+					{else}
+						<li>{$name}: {$detail}</li>
+					{/if}
+			    	</ul>
 				{/if}
 			{/foreach}
 		</ul>
@@ -179,7 +212,7 @@ To report bugs and suggest new features, please create a new <a href="https://gi
       </li>
       <li>
 	<label>{'SYNC_THUMBSIZE'|@translate}:</label>
-	<input type="text" name="thumbsize" value="{$thumbsize}" size="5" placeholder="120x68" required/>
+	<input type="text" name="thumbsize" value="{$thumbsize}" size="6" placeholder="120x68" required/>
 	<br/><small>{'SYNC_THUMBSIZE_DESC'|@translate}</small>
       </li>
     </ul>
