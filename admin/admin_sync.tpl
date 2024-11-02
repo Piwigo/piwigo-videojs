@@ -80,7 +80,7 @@ jQuery(".showInfo").tipTip({
   <li class="update_summary_new">{'INTRO_METADATA'|@translate},</li>
   <li class="update_summary_new">{'INTRO_THUMB'|@translate}</li>
 </ul>
-{'INTRO_SUPPORT'|@translate}}
+{'INTRO_SUPPORT'|@translate}
 </div>
 </fieldset>
 
