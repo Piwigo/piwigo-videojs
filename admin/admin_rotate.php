@@ -2,7 +2,7 @@
 /***********************************************
 * File      :   admin_rotate.php
 * Project   :   piwigo-videojs
-* Descr     :   Video rotate in admin photo panel
+* Descr     :   Set video orientation in admin photo panel
 * Base      :   Base on RotateImage plugin adapt for video
 *
 * Created   :   16.03.2015
@@ -41,9 +41,6 @@ check_input_parameter('image_id', $_GET, false, PATTERN_ID);
 include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
 include_once(PHPWG_ROOT_PATH.'admin/include/tabsheet.class.php');
 include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
-
-load_language('plugin.lang', PHPWG_PLUGINS_PATH.basename(dirname(__FILE__)).'/');
-load_language('plugin.lang', VIDEOJS_PATH);
 
 global $template, $page, $conf;
 

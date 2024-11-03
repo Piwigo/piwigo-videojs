@@ -84,7 +84,7 @@ function vjs_begin_delete_elements($ids)
   );
   $files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 
-  // Find details base on ID and if supported video files
+  // Find details based on ID and if supported video files
   $query = '
 SELECT
     id,

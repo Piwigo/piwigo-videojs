@@ -20,8 +20,7 @@
 		<div style="float: left; margin: auto; padding-left:20px; vertical-align:top;" class="photoLinks">
 			<ul style="margin:0;">
 				<li><a class="icon-arrows-cw" href="{$SYNC_URL}">{'Synchronize metadata'|@translate}</a></li>
-				<li><a class="icon-trash" href="{$DELETE_URL}" onclick="return confirm('{'Are you sure?
-Extra videos source and Thumbnails and Subtitle will be delete.'|@translate|@escape:javascript}');">{'Delete extra'|@translate}</a></li>
+				<li><a class="icon-trash" href="{$DELETE_URL}" onclick="return confirm('{'SYNC_DELETE_ASK'|@translate|@escape:javascript}');">{'SYNC_DELETE'|@translate}</a></li>
 			</ul>
 		</div>
 

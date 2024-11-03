@@ -88,6 +88,9 @@ $lang['SYNC_ERROR_COUNT'] = 'error(s) during synchronization';
 $lang['SYNC_METADATA'] = 'Metadata';
 $lang['SYNC_REQUIRE'] = 'Requires <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>';
 $lang['SYNC_METADATA_DESC'] = 'Will overwrite the information in the database with the metadata from the video.';
+$lang['SYNC_DELETE'] = 'Delete VideoJS thumbnails and extra video sources';
+$lang['SYNC_DELETE_ASK'] = 'Are you sure? Extra video sources and VideoJS thumbnails will be delete.';
+$lang['SYNC_DELETE_DESC'] = 'Useful for videos that do not include an orientation metadata and which are displayed with a VideoJS player in conjonction with the videojs-zoomrotate plugin. The video and its poster remain untouched. Only the orientation parameter stored in the database is updated.';
 
 $lang['SYNC_POSTER_TITLE'] = 'Posters for photo gallery';
 $lang['SYNC_POSTER'] = 'Create a poster at position in seconds:';

@@ -88,6 +88,9 @@ $lang['SYNC_ERROR_COUNT'] = 'erreur(s) pendant la synchronisation';
 $lang['SYNC_METADATA'] = 'Meta-données';
 $lang['SYNC_REQUIRE'] = 'Requiert <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> ou <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>';
 $lang['SYNC_METADATA_DESC'] = 'Remplacera les informations en base de données par les méta-données de la vidéo. ';
+$lang['SYNC_DELETE'] = 'Effacer les sources secondaires et les miniatures VideoJS';
+$lang['SYNC_DELETE_ASK'] = 'Etes-vous certain(e)? Les vidéos source secondaires et les miniatures VideoJS seront effacées.';
+$lang['SYNC_DELETE_DESC'] = 'Utile pour les vidéos qui n\'incluent pas de métadonnées d\'orientation et qui sont affichées avec un lecteur VideoJS en conjonction avec le plugin videojs-zoomrotate. La vidéo et son affiche restent inchangées. Seul le paramètre d\'orientation stocké dans la base de données est mis à jour.';
 
 $lang['SYNC_POSTER_TITLE'] = 'Affiches pour la galerie photo';
 $lang['SYNC_POSTER'] = 'Créer une affiche à la position en secondes :';

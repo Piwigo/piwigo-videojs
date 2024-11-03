@@ -42,9 +42,6 @@ $self_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/adm
 $sync_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;sync_metadata=1&amp;image_id='.$_GET['image_id'];
 $delete_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;delete_extra=1&amp;image_id='.$_GET['image_id'].'&amp;pwg_token='.get_pwg_token();
 
-load_language('plugin.lang', PHPWG_PLUGINS_PATH.basename(dirname(__FILE__)).'/');
-load_language('plugin.lang', VIDEOJS_PATH);
-
 global $template, $page, $conf, $prefixeTable;
 
 include_once(PHPWG_ROOT_PATH.'admin/include/tabsheet.class.php');
@@ -132,7 +129,7 @@ $poster = vjs_get_poster_file( Array(
 	$parts['dirname']."/pwg_representative/".$parts['filename'].".png" =>
 		get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
 ));
-// If none found, it create an strpos error
+// If none found, it creates an strpos error
 if (strlen($poster) > 0) { $poster = embellish_url($poster); }
 //print $poster;
 
