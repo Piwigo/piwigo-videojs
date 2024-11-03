@@ -83,3 +83,15 @@ $lang['INTRO_VIDEOJS'] = '添加开源 HTML5 视频播放器 <a href="http://www
 $lang['INTRO_SUPPORT'] = '有关更多信息，请参阅<a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">插件文档</a>；如果遇到问题，请查看<a href="https://piwigo.org/forum/" target="_blank">论坛</a>。<br/>如需报告错误和建议新功能，请创建一个新的<a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">问题</a>。';
 $lang['INTRO_CONFIG'] = '此插件：';
 $lang['INTRO_METADATA'] = '使用<a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> 或 <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> (如果可用)提取元数据';
+$lang['SYNC_DETECTED'] = '检测到的视频';
+$lang['SYNC_ERROR_COUNT'] = '同步过程中的错误';
+$lang['SYNC_METADATA'] = '元数据';
+$lang['SYNC_METADATA_ADDED'] = '添加了元数据的视频';
+$lang['SYNC_POSTERS_NEW'] = '创建海报';
+$lang['SYNC_POSTER_TITLE'] = '图库的海报';
+$lang['SYNC_RESULTS'] = '同步结果';
+$lang['SYNC_THUMB'] = 'VideoJS缩略图';
+$lang['SYNC_THUMBS_NEW'] = '已创建VideoJS缩略图';
+$lang['SYNC_WARNINGS_COUNT'] = '同步期间的警告';
+$lang['SYNC_POSTER_REQUIRE'] = '需要 <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>';
+$lang['SYNC_REQUIRE'] = '需要<a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a>或<a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>';
