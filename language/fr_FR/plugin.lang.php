@@ -24,11 +24,11 @@ $lang['INTRO_CONFIG'] = 'Ce plugin:';
 $lang['INTRO_VIDEOJS'] = 'ajoute un lecteur HTML5 open source <a href="http://www.videojs.com/" target="_blank">VideoJS</a>';
 $lang['INTRO_METADATA'] = 'extrait les métadonnées avec <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> ou <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> (si disponible)';
 $lang['INTRO_THUMB'] = 'produit des vignettes avec <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a> (si disponible)';
-$lang['INTRO_SUPPORT'] = 'Reportez-vous à la <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">documentation du plugin</a> pour de plus amples informations et consultez les <a href="https://piwigo.org/forum/" target="_blank">forums</a> si vous rencontrez des problèmes.<br/>Pour signaler des bogues et suggérer de nouvelles fonctionnalités, veuillez créer un nouveau <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">problème</a>.';
+$lang['INTRO_SUPPORT'] = 'Reportez-vous à la <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">documentation du plugin</a> pour de plus amples informations et consultez les <a href="https://piwigo.org/forum/" target="_blank">forums</a> si vous rencontrez des problèmes.<br/>Pour signaler des bogues et suggérer de nouvelles fonctionnalités, veuillez créer une nouvelle <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">issue</a>.';
 
 $lang['STATS'] = 'Statistiques';
 $lang['VIDEOS'] = 'vidéos dans votre galerie';
-$lang['VIDEOS_THUMB'] = 'vidéos avec vignette dans votre galerie';
+$lang['VIDEOS_THUMB'] = 'vidéos avec affiche dans votre galerie';
 $lang['VIDEOS_GEOTAGGED'] = 'vidéos géolocalisées dans votre galerie';
 
 $lang['HTML5'] = 'Réglages HTML5';
@@ -45,7 +45,7 @@ $lang['VOLUME_DESC'] = 'L\'option de volume positionne le niveau du volume. 0 so
 $lang['LANGUAGE'] = 'Langue :';
 $lang['LANGUAGE_DESC'] = 'Sélectionner la langue du lecteur';
 
-$lang['METADATA'] = 'Métadonnées';
+$lang['METADATA'] = 'Méta-données';
 $lang['METADATA_FILE'] = 'Montrer le fichier :';
 $lang['METADATA_DESC'] = 'Présente ou pas les métadonnées';
 
@@ -74,23 +74,35 @@ $lang['RESOLUTION'] = 'Résolution :';
 $lang['RESOLUTION_DESC'] = 'Curseur de résolution';
 
 $lang['SYNC_INTRO'] = 'Synchronisation des méta-données et création de vignettes pour les vidéos :';
-$lang['SYNC_ERRORS'] = 'Erreurs';
-$lang['SYNC_WARNINGS'] = 'Alertes';
 $lang['SYNC_INFOS'] = 'Informations détaillées';
+$lang['SYNC_RESULTS'] = 'Résultats de la synchronisation';
+$lang['SYNC_DETECTED'] = 'vidéo(s) détectées';
+$lang['SYNC_METADATA_ADDED'] = 'vidéo(s) avec méta-données ajoutées';
+$lang['SYNC_POSTERS_NEW'] = 'affiche(s) créées';
+$lang['SYNC_THUMBS_NEW'] = 'miniature(s) VideoJS créées';
+$lang['SYNC_WARNINGS'] = 'Alertes';
+$lang['SYNC_WARNINGS_COUNT'] = 'alerte(s) pendant la synchronisation';
+$lang['SYNC_ERRORS'] = 'Erreurs';
+$lang['SYNC_ERROR_COUNT'] = 'erreur(s) pendant la synchronisation';
 
-$lang['SYNC_METADATA_DESC'] = 'Remplacera les informations en base de données par les métadonnées de la vidéo. ';
+$lang['SYNC_METADATA'] = 'Meta-données';
+$lang['SYNC_REQUIRE'] = 'Requiert <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> ou <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>';
+$lang['SYNC_METADATA_DESC'] = 'Remplacera les informations en base de données par les méta-données de la vidéo. ';
 
-$lang['SYNC_POSTER'] = 'Crée une affiche à la position en seconde';
-$lang['SYNC_POSTER_DESC'] = 'Crée une affiche pour la vidéo à la position spécifiée. ';
-$lang['SYNC_POSTEROVERWRITE'] = 'Remplace les affiches existantes';
+$lang['SYNC_POSTER_TITLE'] = 'Affiches pour la galerie photo';
+$lang['SYNC_POSTER'] = 'Créer une affiche à la position en secondes :';
+$lang['SYNC_POSTER_DESC'] = 'Créer une affiche pour la vidéo à la position spécifiée en secondes. ';
+$lang['SYNC_POSTER_REQUIRE'] = 'Requiert <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>';
+$lang['SYNC_POSTEROVERWRITE'] = 'Remplacer les affiches existantes';
 $lang['SYNC_POSTEROVERWRITE_DESC'] = 'Remplace les affiches existantes par les nouvelles. Si décoché cela sera actif uniquement pour les prochaines vidéos ajoutées. ';
 $lang['SYNC_OUTPUT'] = 'Format de sortie';
 $lang['SYNC_OUTPUT_DESC'] = 'Sélectionne le format de sortie pour l\'affiche et la miniature. ';
-$lang['SYNC_POSTEROVERLAY'] = 'Ajouter un effet au film';
+$lang['SYNC_POSTEROVERLAY'] = 'Ajouter un effet de film';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Applique un calque à la création de l\'affiche. ';
 
-$lang['SYNC_THUMBSEC'] = 'Crée une miniature à chaque seconde';
-$lang['SYNC_THUMBSEC_DESC'] = 'Crée une miniature toutes les x secondes';
-$lang['SYNC_THUMBSIZE'] = 'Taille de la miniature';
+$lang['SYNC_THUMB'] = 'Miniatures VideoJS';
+$lang['SYNC_THUMBSEC'] = 'Créer une vignette toutes les N secondes où N = ';
+$lang['SYNC_THUMBSEC_DESC'] = 'Ces miniatures sont seulement utilisées par VideoJS.';
+$lang['SYNC_THUMBSIZE'] = 'Taille de la miniature :';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Taille en pixels, gardez une petite taille, celle par défaut est correcte, Youtube utilise 190x68';
 ?>

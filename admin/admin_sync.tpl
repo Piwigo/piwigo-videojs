@@ -95,14 +95,14 @@ jQuery(".showInfo").tipTip({
 
 {if isset($update_result)}
 <div class="vjs_layout">
-  <legend>Synchronization results</legend>
+  <legend>{'SYNC_RESULTS'|@translate}</legend>
   <ul>
-    <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'video(s) selected'|@translate}</li>
-    <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'video(s) with metadata added'|@translate}</li>
-    <li class="update_summary_new">{$update_result.NB_ELEMENTS_POSTER} {'poster(s) created'|@translate}</li>
-    <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'thumbnail(s) created'|@translate}</li>
-    <li class="update_summary_new">{$update_result.NB_WARNINGS} {'warnings during synchronization'|@translate}</li>
-    <li class="update_summary_err">{$update_result.NB_ERRORS} {'errors during synchronization'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_CANDIDATES} {'SYNC_DETECTED'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_EXIF} {'SYNC_METADATA_ADDED'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_POSTER} {'SYNC_POSTERS_NEW'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_ELEMENTS_THUMB} {'SYNC_THUMBS_NEW'|@translate}</li>
+    <li class="update_summary_new">{$update_result.NB_WARNINGS} {'SYNC_WARNINGS_COUNT'|@translate}</li>
+    <li class="update_summary_err">{$update_result.NB_ERRORS} {'SYNC_ERROR_COUNT'|@translate}</li>
   </ul>
 
 {if not empty($sync_errors)}
@@ -161,20 +161,26 @@ jQuery(".showInfo").tipTip({
 <form action="" method="post" id="update" oninput="thumbsecValue.value=thumbsec.value">
 
   <fieldset id="syncmeta">
-    <legend>{'Synchronize metadata'|@translate}</legend>
+    <legend>{'SYNC_METADATA'|@translate}</legend>
     <ul>
       <li>
-		<label><input type="checkbox" name="metadata" value="1" {if $metadata}checked="checked"{/if} /> filesize, width, height, latitude, longitude, date_creation, rotation</label>
+        <small>({'SYNC_REQUIRE'|@translate})</small>
+	  </li>
+      <li>
+		<label><input type="checkbox" name="metadata" value="1" {if $metadata}checked="checked"{/if} /> {'Synchronize metadata'|@translate}</label>
 		<a class="icon-info-circled-1" title="{'SYNC_METADATA_DESC'|@translate}"></a>
       </li>
     </ul>
   </fieldset>
 
   <fieldset id="syncposter">
-    <legend>{'Poster'|@translate}</legend>
+    <legend>{'SYNC_POSTER_TITLE'|@translate}</legend>
     <ul>
       <li>
-		<label><input type="checkbox" name="poster" value="1" {if $poster}checked="checked"{/if} /> {'SYNC_POSTER'|@translate}:</label>
+        <small>({'SYNC_POSTER_REQUIRE'|@translate})</small>
+	  </li>
+      <li>
+		<label><input type="checkbox" name="poster" value="1" {if $poster}checked="checked"{/if} /> {'SYNC_POSTER'|@translate}</label>
 		<!-- <input type="range" name="postersec" value="4" min="0" max="60" step="1"/> -->
 		<input type="text" name="postersec" value="{$postersec}" size="2" required/>
 		<a class="icon-info-circled-1" title="{'SYNC_POSTER_DESC'|@translate}"></a>
@@ -198,17 +204,20 @@ jQuery(".showInfo").tipTip({
   </fieldset>
 
   <fieldset id="syncthumb">
-    <legend>{'Thumbnail'|@translate}</legend>
+    <legend>{'SYNC_THUMB'|@translate}</legend>
     <ul>
       <li>
-		<label><input type="checkbox" name="thumb" value="1" {if $thumb}checked="checked"{/if}/> {'SYNC_THUMBSEC'|@translate}:</label>
-		<input class="range-input" type="range" id="thumbsec" name="thumbsec" value="{$thumbsec}" min="0" max="60" step="1"/>
+        <small>({'SYNC_POSTER_REQUIRE'|@translate})</small>
+	  </li>
+      <li>
+		<label><input type="checkbox" name="thumb" value="1" {if $thumb}checked="checked"{/if}/> {'SYNC_THUMBSEC'|@translate}</label>
+		<input class="range-input" type="range" id="thumbsec" name="thumbsec" value="{$thumbsec}" min="1" max="60" step="1"/>
 		<output name="thumbsecValue" for="thumbsec">{$thumbsec}</output>
 		<!-- <input type="text" name="thumbsec" value="5" size="2" required/> -->
 		<a class="icon-info-circled-1" title="{'SYNC_THUMBSEC_DESC'|@translate}"></a>
       </li>
       <li>
-		<label>{'SYNC_THUMBSIZE'|@translate}:</label>
+		<label>{'SYNC_THUMBSIZE'|@translate}</label>
 		<input type="text" name="thumbsize" value="{$thumbsize}" size="6" placeholder="120x68" required/>
 		<a class="icon-info-circled-1" title="{'SYNC_THUMBSIZE_DESC'|@translate}"></a>
       </li>

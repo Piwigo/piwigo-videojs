@@ -28,7 +28,7 @@ $lang['INTRO_SUPPORT'] = 'Refer to the <a href="https://github.com/xbgmsharp/piw
 
 $lang['STATS'] = 'Statistics';
 $lang['VIDEOS'] = 'videos in your gallery';
-$lang['VIDEOS_THUMB'] = 'videos with thumbnail in your gallery';
+$lang['VIDEOS_THUMB'] = 'videos with poster in your gallery';
 $lang['VIDEOS_GEOTAGGED'] = 'geotagged videos in your gallery';
 
 $lang['HTML5'] = 'HTML5 video tag settings';
@@ -74,14 +74,25 @@ $lang['RESOLUTION'] = 'Resolution:';
 $lang['RESOLUTION_DESC'] = 'Resolution switcher.';
 
 $lang['SYNC_INTRO'] = 'Synchronization of metadata and thumbnail creation for videos:';
-$lang['SYNC_ERRORS'] = 'Errors';
-$lang['SYNC_WARNINGS'] = 'Warnings';
 $lang['SYNC_INFOS'] = 'Detailed information';
+$lang['SYNC_RESULTS'] = 'Synchronization results';
+$lang['SYNC_DETECTED'] = 'video(s) detected';
+$lang['SYNC_METADATA_ADDED'] = 'video(s) with metadata added';
+$lang['SYNC_POSTERS_NEW'] = 'poster(s) create';
+$lang['SYNC_THUMBS_NEW'] = 'VideoJS thumbnail(s) created';
+$lang['SYNC_WARNINGS'] = 'Warnings';
+$lang['SYNC_WARNINGS_COUNT'] = 'warning(s) during synchronization';
+$lang['SYNC_ERRORS'] = 'Errors';
+$lang['SYNC_ERROR_COUNT'] = 'error(s) during synchronization';
 
+$lang['SYNC_METADATA'] = 'Metadata';
+$lang['SYNC_REQUIRE'] = 'Requires <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>';
 $lang['SYNC_METADATA_DESC'] = 'Will overwrite the information in the database with the metadata from the video.';
 
-$lang['SYNC_POSTER'] = 'Create a poster at position in second';
-$lang['SYNC_POSTER_DESC'] = 'Create a poster from the video at specify position.';
+$lang['SYNC_POSTER_TITLE'] = 'Posters for photo gallery';
+$lang['SYNC_POSTER'] = 'Create a poster at position in seconds:';
+$lang['SYNC_POSTER_DESC'] = 'Create a poster from the video at the specified position in seconds.';
+$lang['SYNC_POSTER_REQUIRE'] = 'Requires <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>';
 $lang['SYNC_POSTEROVERWRITE'] = 'Overwrite existing posters';
 $lang['SYNC_POSTEROVERWRITE_DESC'] = 'Overwrite existing thumbnails with new ones. If uncheck it should only run for newly added video.';
 $lang['SYNC_OUTPUT'] = 'Output format';
@@ -89,8 +100,9 @@ $lang['SYNC_OUTPUT_DESC'] = 'Select the output format for the poster and thumbna
 $lang['SYNC_POSTEROVERLAY'] = 'Add film effect';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Apply an overlay on the poster creation.';
 
-$lang['SYNC_THUMBSEC'] = 'Create a thumbnail at every seconds';
-$lang['SYNC_THUMBSEC_DESC'] = 'Create a thumbnail every x seconds.';
-$lang['SYNC_THUMBSIZE'] = 'Size of the thumbnail';
+$lang['SYNC_THUMB'] = 'VideoJS thumbnails';
+$lang['SYNC_THUMBSEC'] = 'Create a thumbnail every N seconds where N =';
+$lang['SYNC_THUMBSEC_DESC'] = 'These thumbnails are only used by VideoJS.';
+$lang['SYNC_THUMBSIZE'] = 'Size of the thumbnail:';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Size in pixel, keep it small, default is fine, Youtube use 190x68.';
 ?>
