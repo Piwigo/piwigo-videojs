@@ -30,9 +30,6 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 // Check access and exit when user status is not ok
 check_status(ACCESS_ADMINISTRATOR);
 
-// Setup plugin Language
-load_language('plugin.lang', VIDEOJS_PATH);
-
 // Fetch the template.
 global $template, $conf, $lang;
 

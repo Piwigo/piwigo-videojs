@@ -190,7 +190,7 @@ jQuery(".showInfo").tipTip({
 		<a class="icon-info-circled-1" title="{'SYNC_POSTEROVERWRITE_DESC'|@translate}"></a>
       </li>
       <li>
-		<label><span class="property">{'SYNC_OUTPUT'|@translate}: </span></label>
+		<label><span class="property">{'SYNC_OUTPUT'|@translate} </span></label>
 		<label><input type="radio" name="output" value="jpg" {if $output=="jpg"}checked="checked"{/if}/> JPG</label>
 		<label><input type="radio" name="output" value="png" {if $output=="png"}checked="checked"{/if}/> PNG</label>
 		<a class="icon-info-circled-1" title="{'SYNC_OUTPUT_DESC'|@translate}"></a>

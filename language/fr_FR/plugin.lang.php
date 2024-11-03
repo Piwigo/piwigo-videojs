@@ -95,7 +95,7 @@ $lang['SYNC_POSTER_DESC'] = 'Créer une affiche pour la vidéo à la position sp
 $lang['SYNC_POSTER_REQUIRE'] = 'Requiert <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>';
 $lang['SYNC_POSTEROVERWRITE'] = 'Remplacer les affiches existantes';
 $lang['SYNC_POSTEROVERWRITE_DESC'] = 'Remplace les affiches existantes par les nouvelles. Si décoché cela sera actif uniquement pour les prochaines vidéos ajoutées. ';
-$lang['SYNC_OUTPUT'] = 'Format de sortie';
+$lang['SYNC_OUTPUT'] = 'Format :';
 $lang['SYNC_OUTPUT_DESC'] = 'Sélectionne le format de sortie pour l\'affiche et la miniature. ';
 $lang['SYNC_POSTEROVERLAY'] = 'Ajouter un effet de film';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Applique un calque à la création de l\'affiche. ';
@@ -105,4 +105,9 @@ $lang['SYNC_THUMBSEC'] = 'Créer une vignette toutes les N secondes où N = ';
 $lang['SYNC_THUMBSEC_DESC'] = 'Ces miniatures sont seulement utilisées par VideoJS.';
 $lang['SYNC_THUMBSIZE'] = 'Taille de la miniature :';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Taille en pixels, gardez une petite taille, celle par défaut est correcte, Youtube utilise 190x68';
+
+$lang['VIDEOS_ALL'] = 'Toutes les vidéos';
+$lang['VIDEOS_W_POSTER'] = 'Toutes les vidéos avec affiche';
+$lang['VIDEOS_WO_POSTER'] = 'Toutes les vidéos sans affiche';
+$lang['VIDEOS_METADATA_POSTERS'] = 'Meta-données et posters des vidéos';
 ?>

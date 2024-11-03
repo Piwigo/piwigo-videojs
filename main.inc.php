@@ -15,6 +15,12 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 // Define the path to our plugin.
 define('VIDEOJS_PATH', PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)).'/');
 
+// Setup plugin language
+add_event_handler('loading_lang', 'videojs_load_lang');	  
+function videojs_load_lang(){
+  load_language('plugin.lang', VIDEOJS_PATH);
+}
+
 global $conf;
 
 // Prepare configuration

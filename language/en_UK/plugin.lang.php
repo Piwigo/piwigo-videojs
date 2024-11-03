@@ -95,7 +95,7 @@ $lang['SYNC_POSTER_DESC'] = 'Create a poster from the video at the specified pos
 $lang['SYNC_POSTER_REQUIRE'] = 'Requires <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>';
 $lang['SYNC_POSTEROVERWRITE'] = 'Overwrite existing posters';
 $lang['SYNC_POSTEROVERWRITE_DESC'] = 'Overwrite existing thumbnails with new ones. If uncheck it should only run for newly added video.';
-$lang['SYNC_OUTPUT'] = 'Output format';
+$lang['SYNC_OUTPUT'] = 'Format:';
 $lang['SYNC_OUTPUT_DESC'] = 'Select the output format for the poster and thumbnail.';
 $lang['SYNC_POSTEROVERLAY'] = 'Add film effect';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Apply an overlay on the poster creation.';
@@ -105,4 +105,9 @@ $lang['SYNC_THUMBSEC'] = 'Create a thumbnail every N seconds where N =';
 $lang['SYNC_THUMBSEC_DESC'] = 'These thumbnails are only used by VideoJS.';
 $lang['SYNC_THUMBSIZE'] = 'Size of the thumbnail:';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Size in pixel, keep it small, default is fine, Youtube use 190x68.';
+
+$lang['VIDEOS_ALL'] = 'All videos';
+$lang['VIDEOS_W_POSTER'] = 'All videos with poster';
+$lang['VIDEOS_WO_POSTER'] = 'All videos without poster';
+$lang['VIDEOS_METADATA_POSTERS'] = 'Video metadata and posters';
 ?>
