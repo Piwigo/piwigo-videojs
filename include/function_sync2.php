@@ -192,7 +192,7 @@ while ($row = pwg_db_fetch_assoc($result))
 					$ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -y \"".$out. "\"";
 				}
 				$retval = execCMD($ffmpeg);
-				if($retval != 0 or !file_exists($out))
+				if($retval != 0 or !file_exists($out) or !filesize($out))
 				{
 					$errors[] = "Poster could not be produced with ffmpeg, try manually and check your web server error logs:\n<br/>".$ffmpeg;
 				}
@@ -295,7 +295,7 @@ while ($row = pwg_db_fetch_assoc($result))
 						$retval = execCMD($ffmpeg);
 						
 						/* Thumbnail produced successfully? */
-						if($retval != 0 or !file_exists($out))
+						if($retval != 0 or !file_exists($out) or !filesize($out))
 						{
 							$errors[] = "Poster could not be produced with ffmpeg, try manually and check your web server error logs:\n<br/>". $ffmpeg;
 						}
