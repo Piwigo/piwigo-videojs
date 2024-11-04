@@ -1,6 +1,16 @@
+Changes from 15.c to 15.d
+- Adds missing translations
+- Fixes video player too large on small devices
+- Fixes a bug leading to the incomplete deletion of thumbnails
+- Fixes non-detection of failing FFmpeg calls
+
+Changes from 15.b to 15.c
+- Fixes warning returned when retrieving MediaCreateDate
+- Fixes warning after syncing mp4 files and trying to create posters
+
 Changes from 15.a to 15.b
-- Add a root admin.php : Use the standard link to plugin setting
-- Cleanup maintain.inc.php : let PEM generate the list of obsolete.file
+- Adds a root admin.php : Use the standard link to plugin setting
+- Cleans maintain.inc.php : let PEM generate the list of obsolete files
 
 Changes from v2.9.b to v15.a
 - Adopts native browser player by default
