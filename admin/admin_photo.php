@@ -129,7 +129,7 @@ $poster = vjs_get_poster_file( Array(
 	$parts['dirname']."/pwg_representative/".$parts['filename'].".png" =>
 		get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
 ));
-// If none found, it creates an strpos error
+// If none found, it creates a strpos error
 if (strlen($poster) > 0) { $poster = embellish_url($poster); }
 //print $poster;
 
