@@ -134,10 +134,16 @@ jQuery(".showInfo").tipTip({
 		<ul>
 			{foreach from=$infos key=name item=detail}
 			    {if $name == 'file'}
-			    	<li>Movie {$detail}</li>
+			    	<li>{'VIDEO'|@translate} {$detail}</li>
 			    {else}
 			    	<ul style="list-style-type:none;">
-					{if $name == 'thumbnail'}
+					{if $name == 'metadata'}
+						<li>{'METADATA_COUNT'|@translate} {$detail}</li>
+					{else if $name == 'database'}
+						<li>{$detail}</li>
+					{else if $name == 'poster'}
+						<li>{'POSTER'|@translate} {$detail}</li>
+					{else if $name == 'thumbnail'}
 						<li>{$name}:</li>
 						<ul style="list-style-type:none;">
 							{foreach from=$detail item=thumb}

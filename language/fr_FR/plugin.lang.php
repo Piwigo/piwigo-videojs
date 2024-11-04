@@ -27,6 +27,7 @@ $lang['INTRO_THUMB'] = 'produit des vignettes avec <a href="http://www.ffmpeg.or
 $lang['INTRO_SUPPORT'] = 'Reportez-vous à la <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">documentation du plugin</a> pour de plus amples informations et consultez les <a href="https://piwigo.org/forum/" target="_blank">forums</a> si vous rencontrez des problèmes.<br/>Pour signaler des bogues et suggérer de nouvelles fonctionnalités, veuillez créer une nouvelle <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">issue</a>.';
 
 $lang['STATS'] = 'Statistiques';
+$lang['VIDEO'] = 'Vidéo';
 $lang['VIDEOS'] = 'vidéos dans votre galerie';
 $lang['VIDEOS_THUMB'] = 'vidéos avec affiche dans votre galerie';
 $lang['VIDEOS_GEOTAGGED'] = 'vidéos géolocalisées dans votre galerie';
@@ -84,14 +85,20 @@ $lang['SYNC_WARNINGS'] = 'Alertes';
 $lang['SYNC_WARNINGS_COUNT'] = 'alerte(s) pendant la synchronisation';
 $lang['SYNC_ERRORS'] = 'Erreurs';
 $lang['SYNC_ERROR_COUNT'] = 'erreur(s) pendant la synchronisation';
+$lang['FILE_NOT_READABLE'] = 'fichier illisible';
+$lang['DIR_NOT_WRITABLE'] = 'répertoire sans accès en écriture';
 
 $lang['SYNC_METADATA'] = 'Meta-données';
+$lang['METADATA_COUNT'] = 'Nombre de méta-données :';
+$lang['SYNC_DATABASE'] = 'Méta-données extraites de la base de données';
 $lang['SYNC_REQUIRE'] = 'Requiert <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> ou <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>';
 $lang['SYNC_METADATA_DESC'] = 'Remplacera les informations en base de données par les méta-données de la vidéo. ';
 $lang['SYNC_DELETE'] = 'Effacer les sources secondaires et les miniatures VideoJS';
 $lang['SYNC_DELETE_ASK'] = 'Etes-vous certain(e)? Les vidéos source secondaires et les miniatures VideoJS seront effacées.';
 $lang['SYNC_DELETE_DESC'] = 'Utile pour les vidéos qui n\'incluent pas de métadonnées d\'orientation et qui sont affichées avec un lecteur VideoJS en conjonction avec le plugin videojs-zoomrotate. La vidéo et son affiche restent inchangées. Seul le paramètre d\'orientation stocké dans la base de données est mis à jour.';
 
+$lang['POSTER'] = 'Affiche';
+$lang['POSTER_ERROR'] = 'FFmpeg n\'a pas pu générer l\'affiche, vérifiez les journaux et essayez manuellement';
 $lang['SYNC_POSTER_TITLE'] = 'Affiches pour la galerie photo';
 $lang['SYNC_POSTER'] = 'Créer une affiche à la position en secondes :';
 $lang['SYNC_POSTER_DESC'] = 'Créer une affiche pour la vidéo à la position spécifiée en secondes. ';
@@ -102,12 +109,16 @@ $lang['SYNC_OUTPUT'] = 'Format :';
 $lang['SYNC_OUTPUT_DESC'] = 'Sélectionne le format de sortie pour l\'affiche et la miniature. ';
 $lang['SYNC_POSTEROVERLAY'] = 'Ajouter un effet de film';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Applique un calque à la création de l\'affiche. ';
+$lang['SYNC_DURATION_ERROR'] = 'durée inconnue, l\'affiche ne peut être créée';
+$lang['SYNC_DURATION_SHORT'] = 'durée trop courte, l\'affiche sera produite à un autre endroit';
 
 $lang['SYNC_THUMB'] = 'Miniatures VideoJS';
+$lang['SYNC_THUMB_ERROR'] = 'FFmpeg n\'a pas pu générer les vignettes, vérifiez les logs et essayez manuellement';
 $lang['SYNC_THUMBSEC'] = 'Créer une vignette toutes les N secondes où N = ';
 $lang['SYNC_THUMBSEC_DESC'] = 'Ces miniatures sont seulement utilisées par VideoJS.';
 $lang['SYNC_THUMBSIZE'] = 'Taille de la miniature :';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Taille en pixels, gardez une petite taille, celle par défaut est correcte, Youtube utilise 190x68';
+$lang['SYNC_THUMBSIZE_ERROR'] = 'taille de vignette non valide, retour à la valeur par défaut de 120 px';
 
 $lang['VIDEOS_ALL'] = 'Toutes les vidéos';
 $lang['VIDEOS_W_POSTER'] = 'Toutes les vidéos avec affiche';

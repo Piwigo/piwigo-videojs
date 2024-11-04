@@ -27,6 +27,7 @@ $lang['INTRO_THUMB'] = 'produces thumbnails with <a href="http://www.ffmpeg.org"
 $lang['INTRO_SUPPORT'] = 'Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin documentation</a> for additional information and look at the <a href="https://piwigo.org/forum/" target="_blank">forums</a> if you encounter some issues.<br/>To report bugs and suggest new features, please create a new <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">issue</a>.';
 
 $lang['STATS'] = 'Statistics';
+$lang['MOVIE'] = 'Movie';
 $lang['VIDEOS'] = 'videos in your gallery';
 $lang['VIDEOS_THUMB'] = 'videos with poster in your gallery';
 $lang['VIDEOS_GEOTAGGED'] = 'geotagged videos in your gallery';
@@ -84,14 +85,20 @@ $lang['SYNC_WARNINGS'] = 'Warnings';
 $lang['SYNC_WARNINGS_COUNT'] = 'warning(s) during synchronization';
 $lang['SYNC_ERRORS'] = 'Errors';
 $lang['SYNC_ERROR_COUNT'] = 'error(s) during synchronization';
+$lang['FILE_NOT_READABLE'] = 'file not readable';
+$lang['DIR_NOT_WRITABLE'] = 'directory without write access';
 
 $lang['SYNC_METADATA'] = 'Metadata';
+$lang['METADATA_COUNT'] = 'Number of metadata items:';
+$lang['SYNC_DATABASE'] = 'Metadata extracted from the database';
 $lang['SYNC_REQUIRE'] = 'Requires <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>';
 $lang['SYNC_METADATA_DESC'] = 'Will overwrite the information in the database with the metadata from the video.';
 $lang['SYNC_DELETE'] = 'Delete VideoJS thumbnails and extra video sources';
 $lang['SYNC_DELETE_ASK'] = 'Are you sure? Extra video sources and VideoJS thumbnails will be delete.';
 $lang['SYNC_DELETE_DESC'] = 'Useful for videos that do not include an orientation metadata and which are displayed with a VideoJS player in conjonction with the videojs-zoomrotate plugin. The video and its poster remain untouched. Only the orientation parameter stored in the database is updated.';
 
+$lang['POSTER'] = 'Affiche';
+$lang['POSTER_ERROR'] = 'FFmpeg could not generate the poster, check logs and try manually';
 $lang['SYNC_POSTER_TITLE'] = 'Posters for photo gallery';
 $lang['SYNC_POSTER'] = 'Create a poster at position in seconds:';
 $lang['SYNC_POSTER_DESC'] = 'Create a poster from the video at the specified position in seconds.';
@@ -102,12 +109,16 @@ $lang['SYNC_OUTPUT'] = 'Format:';
 $lang['SYNC_OUTPUT_DESC'] = 'Select the output format for the poster and thumbnail.';
 $lang['SYNC_POSTEROVERLAY'] = 'Add film effect';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Apply an overlay on the poster creation.';
+$lang['SYNC_DURATION_ERROR'] = 'unknown duration, the poster cannot be created';
+$lang['SYNC_DURATION_SHORT'] = 'too short duration, poster will be produced at another position';
 
 $lang['SYNC_THUMB'] = 'VideoJS thumbnails';
+$lang['SYNC_THUMB_ERROR'] = 'FFmpeg could not generate the thumbnails, check logs and try manually';
 $lang['SYNC_THUMBSEC'] = 'Create a thumbnail every N seconds where N =';
 $lang['SYNC_THUMBSEC_DESC'] = 'These thumbnails are only used by VideoJS.';
 $lang['SYNC_THUMBSIZE'] = 'Size of the thumbnail:';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Size in pixel, keep it small, default is fine, Youtube use 190x68.';
+$lang['SYNC_THUMBSIZE_ERROR'] = 'Invalid thumbnail size, fallback to default value of 120 px';
 
 $lang['VIDEOS_ALL'] = 'All videos';
 $lang['VIDEOS_W_POSTER'] = 'All videos with poster';

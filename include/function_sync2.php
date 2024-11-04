@@ -70,8 +70,7 @@ while ($row = pwg_db_fetch_assoc($result))
         
         /* Ensure file is readabale for MediaInfo and FFmpeg */
 		if (!is_readable($filename)) {
-			$errors[] = "Unable to read file for synchronisation process".$filename;
-			$errors[] = "File ".$filename." has wrong permission";
+			$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('FILE_NOT_READABLE');
 			$logger->debug('sync: Unable to read file for synchronisation process');
 			continue;
 		}
@@ -80,18 +79,9 @@ while ($row = pwg_db_fetch_assoc($result))
         $exif = array();
         if ($sync_options['metadata'])
         {
-            if (isset($sync_options['mediainfo']) and $sync_options['mediainfo'])
-            {
-            	include('mediainfo.php');
-            }
-            if (isset($sync_options['exiftool']) and $sync_options['exiftool'])
-            {
-            	include('exiftool.php');
-            }
-            if (isset($sync_options['ffprobe']) and $sync_options['ffprobe'])
-            {
-            	include('ffprobe.php');
-            }
+            if (isset($sync_options['mediainfo']) and $sync_options['mediainfo']) { include('mediainfo.php'); }
+            if (isset($sync_options['exiftool']) and $sync_options['exiftool']) { include('exiftool.php'); }
+            if (isset($sync_options['ffprobe']) and $sync_options['ffprobe']) { include('ffprobe.php'); }
         }
         if (isset($exif) and $sync_options['metadata'])
         {
@@ -121,13 +111,13 @@ while ($row = pwg_db_fetch_assoc($result))
 				}
 			}
         }
-
+        
 		/* If we don't parse metadata, fetch them from the database */
 		/* as we need $exif['playtime_seconds'] */
 		if (isset($exif) and !$sync_options['metadata'])
 		{
 			$infos[] = $filename. ' metadata fetched from the database.';
-			$sync_arr['metadata'] = ' fetched from the database.';
+			$sync_arr['database'] = l10n('SYNC_DATABASE');
 			$query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$row['id'].";";
 			$sql_metadata = pwg_query($query);
 			$videojs_metadata = pwg_db_fetch_assoc($sql_metadata);
@@ -138,7 +128,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			}
 			if (!isset($exif['playtime_seconds']))
 			{
-				$warnings[] = "Unable to gather 'playtime_seconds' metadata, you may need to parse metadata first.";
+				$warnings[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DURATION_ERROR');
 			}
 		}
 
@@ -151,7 +141,7 @@ while ($row = pwg_db_fetch_assoc($result))
             //$file_wo_ext['filename'] ? '' : $file_wo_ext['filename'] = substr($filename,0 ,-5);
             if (!isset($file_wo_ext['filename']) or (isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0))
             {
-            	$errors[] = "Unable to read filename for generating poster ".$row['path'];
+            	$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('FILE_NOT_READABLE');
             	continue;
             }
             $output_dir = dirname($row['path']) . '/pwg_representative/';
@@ -173,11 +163,10 @@ while ($row = pwg_db_fetch_assoc($result))
             /* Check access rights to folder */
             if (!is_writable($output_dir))
             {
-                $errors[] = "Directory ".$output_dir." has wrong permission";
+                $errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('DIR_NOT_WRITABLE');
             }
             else if (isset($exif['playtime_seconds']) and $sync_options['postersec'] and !$sync_options['simulate'])
             {   /* We really want to create the poster */
-				
 				/* Delete any previous poster, avoid duplication on different output format */
 				$extensions = array('.jpg', '.png');
 				foreach ($extensions as $extension)
@@ -189,23 +178,24 @@ while ($row = pwg_db_fetch_assoc($result))
 					}
 				}
 				
-				/* If video is shorter fallback to last second */
+				/* If video is shorter fallback to half duration */
+				$posterSec = $sync_options['postersec'];
 				if ($sync_options['postersec'] > $exif['playtime_seconds'])
 				{
-					$warnings[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". $exif['playtime_seconds'] ." secondes";
-					$sync_options['postersec'] = (int)round($exif['playtime_seconds']/2, 2, PHP_ROUND_HALF_DOWN);
+					$warnings[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DURATION_SHORT');
+					$posterSec = (int)round($exif['playtime_seconds']/2, 2, PHP_ROUND_HALF_DOWN);
 				}
 				
 				/* Default output to JPG */
-				$ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
+				$ffmpeg = $sync_options['ffmpeg'] ." -ss ".$posterSec." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
 				if ($sync_options['output'] == "png")
 				{
-					$ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -y \"".$out. "\"";
+					$ffmpeg = $sync_options['ffmpeg'] ." -ss ".$posterSec." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -y \"".$out. "\"";
 				}
 				$retval = execCMD($ffmpeg);
 				if($retval != 0 or !file_exists($out) or !filesize($out))
 				{
-					$errors[] = "Poster could not be produced with ffmpeg, try manually and check your web server error logs:\n<br/>".$ffmpeg;
+					$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('POSTER_ERROR');
 				}
 				else
 				{/* We have a poster, lets update the database */
@@ -239,7 +229,7 @@ while ($row = pwg_db_fetch_assoc($result))
                 $file_wo_ext = pathinfo($filename);
 				if (!isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0)
 				{
-					$errors[] = "Unable to read filename for generating thumbnails ".$filename;
+					$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('FILE_NOT_READABLE');
 					continue;
 				}
                 $output_dir = dirname($row['path']) . '/pwg_representative/';
@@ -247,7 +237,7 @@ while ($row = pwg_db_fetch_assoc($result))
 
                 if (!is_dir($output_dir) or !is_writable($output_dir))
                 {
-                    $errors[] = "Directory ".$output_dir." does not exist or wrong permission";
+                    $errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('DIR_NOT_WRITABLE');
                 }
                 else if ($sync_options['thumbsec'] and !$sync_options['simulate'])
                 {   /* We really want to create the frames */
@@ -270,7 +260,7 @@ while ($row = pwg_db_fetch_assoc($result))
 					/* Invalid width x height fallback to default thumbsize (default 120x68) */
 					if (!isset($thumb_width[0]))
 					{
-						$warnings[] = "Invalid thumbnail size [".$sync_options['thumbsize'] ."], fallback to default width of 120 px";
+						$warnings[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_THUMBSIZE_ERROR');
 						$thumb_width[0] = "120";
 					}
 					
@@ -299,7 +289,7 @@ while ($row = pwg_db_fetch_assoc($result))
 						/* Thumbnail produced successfully? */
 						if($retval != 0 or !file_exists($out) or !filesize($out))
 						{
-							$errors[] = "Poster could not be produced with ffmpeg, try manually and check your web server error logs:\n<br/>". $ffmpeg;
+							$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_THUMB_ERROR');
 						}
 					}
 				}
