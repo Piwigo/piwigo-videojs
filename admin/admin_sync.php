@@ -69,10 +69,10 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     $sync_options = array_merge($sync_options, $sync_options_form);
 
     // Filter on existing poster
-    $OVERWRITE = "";
+    $OVERWRITE = '';
     if (!$sync_options['posteroverwrite'])
     {
-        $OVERWRITE = " AND `representative_ext` IS NULL ";
+        $OVERWRITE = ' AND representative_ext IS NULL ';
     }
 
     // Filter on selected ablum
@@ -86,18 +86,18 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
             else
                 $query .= 'id='.$sync_options['cat_id'];
         $cat_ids = array_from_query($query, 'id');
-        $query="
-            SELECT `id`, `file`, `path`
-            FROM ".IMAGES_TABLE." INNER JOIN ".IMAGE_CATEGORY_TABLE." ON id=image_id
-            WHERE ". SQL_VIDEOS ." ". $OVERWRITE ."
-            AND category_id IN (".implode(',', $cat_ids).")
-            GROUP BY id";
+        $query='
+            SELECT id, file, path, representative_ext
+            FROM '.IMAGES_TABLE.' INNER JOIN '.IMAGE_CATEGORY_TABLE.' ON id=image_id
+            WHERE '. SQL_VIDEOS .' '. $OVERWRITE .'
+            AND category_id IN ('.implode(',', $cat_ids).')
+            GROUP BY id';
     }
     else
     {
-        $query = "SELECT `id`, `file`, `path`
-            FROM ".IMAGES_TABLE."
-            WHERE ". SQL_VIDEOS ." ". $OVERWRITE .";";
+        $query = 'SELECT id, file, path, representative_ext
+            FROM '.IMAGES_TABLE.'
+            WHERE '.SQL_VIDEOS.' '. $OVERWRITE .';';
     }
 
     // Do the work, share with batch manager

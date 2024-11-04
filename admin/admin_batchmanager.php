@@ -121,9 +121,9 @@ function vjs_element_set_global_action($action, $collection)
 
 	global $page, $conf, $prefixeTable;
 
-	$query = "SELECT `id`, `file`, `path`
-			FROM ".IMAGES_TABLE."
-			WHERE id IN (".implode(',',$collection).")";
+	$query = 'SELECT id, file, path, representative_ext
+			FROM '.IMAGES_TABLE.'
+			WHERE id IN ('.implode(',',$collection).')';
 
 	// Generate default value
 	$sync_options = array(
