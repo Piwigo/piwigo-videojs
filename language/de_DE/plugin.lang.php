@@ -112,3 +112,14 @@ $lang['INTRO_SUPPORT'] = 'Siehe dazu die <a href="https://github.com/xbgmsharp/p
 $lang['INTRO_THUMB'] = 'erzeugt Miniaturbilder mit <a href=„http://www.ffmpeg.org“ target=„_blank“>FFmpeg</a> (falls verfügbar)';
 $lang['INTRO_VIDEOJS'] = 'fügt den quelloffenen HTML5-Video-Player <a href=„http://www.videojs.com/“ target=„_blank“>VideoJS</a> hinzu';
 $lang['SYNC_DELETE_DESC'] = 'Nützlich für Videos, die keine Orientierungsmetadaten enthalten und die mit einem VideoJS-Player in Verbindung mit dem videojs-zoomrotate-Plugin angezeigt werden. Das Video und sein Poster bleiben unangetastet. Nur der in der Datenbank gespeicherte Orientierungsparameter wird aktualisiert.';
+$lang['SYNC_DURATION_ERROR'] = 'unbekannte Dauer, das Plakat kann nicht erstellt werden';
+$lang['SYNC_DURATION_SHORT'] = 'zu kurze Dauer, wird das Plakat an einer anderen Stelle erstellt';
+$lang['SYNC_THUMBSIZE_ERROR'] = 'Ungültige Thumbnail-Größe, Rückfall auf Standardwert von 120 px';
+$lang['SYNC_THUMB_ERROR'] = 'FFmpeg konnte die Thumbnails nicht erzeugen, prüfen Sie die Logs und versuchen Sie es manuell';
+$lang['MOVIE'] = 'Film';
+$lang['POSTER'] = 'Poster';
+$lang['POSTER_ERROR'] = 'FFmpeg konnte das Poster nicht erstellen, prüfen Sie die Protokolle und versuchen Sie es manuell';
+$lang['SYNC_DATABASE'] = 'us der Datenbank extrahierte Metadaten';
+$lang['DIR_NOT_WRITABLE'] = 'Verzeichnis ohne Schreibzugriff';
+$lang['FILE_NOT_READABLE'] = 'Datei nicht lesbar';
+$lang['METADATA_COUNT'] = 'Anzahl der Metadatenelemente:';
