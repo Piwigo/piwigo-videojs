@@ -24,7 +24,7 @@ $lang['INTRO_CONFIG'] = 'This plugin:';
 $lang['INTRO_VIDEOJS'] = 'adds the open source HTML5 video player <a href="http://www.videojs.com/" target="_blank">VideoJS</a>';
 $lang['INTRO_METADATA'] = 'extracts metadata with <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> (if available)';
 $lang['INTRO_THUMB'] = 'produces thumbnails with <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a> (if available)';
-$lang['INTRO_SUPPORT'] = 'Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin documentation</a> for additional information and look at the <a href="https://piwigo.org/forum/" target="_blank">forums</a> if you encounter some issues.<br/>To report bugs and suggest new features, please create a new <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">issue</a>.';
+$lang['INTRO_SUPPORT'] = 'Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin documentation</a> for additional information and look at the <a href="https://piwigo.org/forum/" target="_blank">forums</a> if you encounter any issues.<br/>To report bugs and suggest new features, please create a new <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">issue</a>.';
 
 $lang['STATS'] = 'Statistics';
 $lang['MOVIE'] = 'Movie';
@@ -94,10 +94,10 @@ $lang['SYNC_DATABASE'] = 'Metadata extracted from the database';
 $lang['SYNC_REQUIRE'] = 'Requires <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>';
 $lang['SYNC_METADATA_DESC'] = 'Will overwrite the information in the database with the metadata from the video.';
 $lang['SYNC_DELETE'] = 'Delete VideoJS thumbnails and extra video sources';
-$lang['SYNC_DELETE_ASK'] = 'Are you sure? Extra video sources and VideoJS thumbnails will be delete.';
+$lang['SYNC_DELETE_ASK'] = 'Are you sure? Extra video sources and VideoJS thumbnails will be deleted.';
 $lang['SYNC_DELETE_DESC'] = 'Useful for videos that do not include an orientation metadata and which are displayed with a VideoJS player in conjonction with the videojs-zoomrotate plugin. The video and its poster remain untouched. Only the orientation parameter stored in the database is updated.';
 
-$lang['POSTER'] = 'Affiche';
+$lang['POSTER'] = 'Poster';
 $lang['POSTER_ERROR'] = 'FFmpeg could not generate the poster, check logs and try manually';
 $lang['SYNC_POSTER_TITLE'] = 'Posters for photo gallery';
 $lang['SYNC_POSTER'] = 'Create a poster at position in seconds:';
@@ -124,4 +124,3 @@ $lang['VIDEOS_ALL'] = 'All videos';
 $lang['VIDEOS_W_POSTER'] = 'All videos with poster';
 $lang['VIDEOS_WO_POSTER'] = 'All videos without poster';
 $lang['VIDEOS_METADATA_POSTERS'] = 'Video metadata and posters';
-?>
