@@ -28,6 +28,7 @@ $lang['INTRO_SUPPORT'] = 'Reportez-vous à la <a href="https://github.com/xbgmsh
 
 $lang['STATS'] = 'Statistiques';
 $lang['VIDEO'] = 'Vidéo';
+$lang['VIDEO_SRC'] = 'Sources vidéo';
 $lang['VIDEOS'] = 'vidéo(s) dans votre galerie';
 $lang['VIDEOS_THUMB'] = 'vidéo(s) avec affiche dans votre galerie';
 $lang['VIDEOS_GEOTAGGED'] = 'vidéo(s) géolocalisée(s) dans votre galerie';
@@ -90,7 +91,7 @@ $lang['DIR_NOT_WRITABLE'] = 'répertoire sans accès en écriture';
 $lang['SYNC_METADATA'] = 'Meta-données';
 $lang['METADATA_COUNT'] = 'Nombre de méta-données :';
 $lang['SYNC_DATABASE'] = 'Méta-données extraites de la base de données';
-$lang['SYNC_REQUIRE'] = 'Requiert <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> ou <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>';
+$lang['SYNC_REQUIRE'] = 'Requiert <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> ou <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> :';
 $lang['SYNC_METADATA_DESC'] = 'Remplacera les informations en base de données par les méta-données de la vidéo. ';
 $lang['SYNC_METADATA_ERROR'] = 'Les métadonnées ne peuvent pas être récupérées car ExifTool, FFprobe ou MediaInfo ne sont pas installés ou leurs chemins d\'accès sont incorrects.';
 $lang['SYNC_MEDIAINFO_ERROR'] = 'Les métadonnées ne peuvent pas être récupérées avec MediaInfo car la bibliothèque XML n\'est pas installée.';
@@ -105,7 +106,7 @@ $lang['SYNC_REPRESENTATIVES_DESC'] = 'Pour chaque vidéo, met à jour les inform
 $lang['SYNC_POSTER_TITLE'] = 'Affiches pour la galerie photo';
 $lang['SYNC_POSTER'] = 'Créer des affiches à la position en secondes :';
 $lang['SYNC_POSTER_DESC'] = 'Crée une affiche à partir de la vidéo à la position spécifiée en secondes. ';
-$lang['SYNC_POSTER_REQUIRE'] = 'Requiert <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>';
+$lang['SYNC_POSTER_REQUIRE'] = 'Requiert <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a> :';
 $lang['SYNC_POSTER_ERROR'] = 'La création de posters et de vignettes est désactivée car FFmpeg n\'est pas installé ou son chemin d\'accès est incorrect.';
 $lang['SYNC_POSTEROVERWRITE'] = 'Remplacer les affiches existantes';
 $lang['SYNC_POSTEROVERWRITE_DESC'] = 'Remplace les affiches existantes par les nouvelles. Si décoché cela sera actif uniquement pour les prochaines vidéos ajoutées. ';

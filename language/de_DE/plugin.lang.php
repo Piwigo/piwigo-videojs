@@ -21,6 +21,7 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 $lang['STATS'] = 'Statistik';
+$lang['VIDEO'] = 'Film';
 $lang['VIDEOS'] = 'Videos in Ihrer Galerie';
 $lang['VIDEOS_THUMB'] = 'Videos mit Miniaturbild in Ihrer Galerie';
 $lang['VIDEOS_GEOTAGGED'] = 'mit Geotags versehene Videos in Ihrer Galerie';
@@ -113,7 +114,6 @@ $lang['SYNC_DURATION_ERROR'] = 'unbekannte Dauer, das Plakat kann nicht erstellt
 $lang['SYNC_DURATION_SHORT'] = 'zu kurze Dauer, wird das Plakat an einer anderen Stelle erstellt';
 $lang['SYNC_THUMBSIZE_ERROR'] = 'Ungültige Thumbnail-Größe, Rückfall auf Standardwert von 120 px';
 $lang['SYNC_THUMB_ERROR'] = 'FFmpeg konnte die Thumbnails nicht erzeugen, prüfen Sie die Logs und versuchen Sie es manuell';
-$lang['MOVIE'] = 'Film';
 $lang['POSTER'] = 'Poster';
 $lang['POSTER_ERROR'] = 'FFmpeg konnte das Poster nicht erstellen, prüfen Sie die Protokolle und versuchen Sie es manuell';
 $lang['SYNC_DATABASE'] = 'us der Datenbank extrahierte Metadaten';

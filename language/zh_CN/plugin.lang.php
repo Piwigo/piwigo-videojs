@@ -103,7 +103,6 @@ $lang['VIDEOS_W_POSTER'] = '所有视频(有海报)';
 $lang['DIR_NOT_WRITABLE'] = '没有目录的写入权限';
 $lang['FILE_NOT_READABLE'] = '文件不可读';
 $lang['METADATA_COUNT'] = '元数据项的数量：';
-$lang['MOVIE'] = 'Movie';
 $lang['POSTER'] = '海报';
 $lang['POSTER_ERROR'] = 'FFmpeg 无法生成海报，请检查日志并手动尝试';
 $lang['SYNC_DATABASE'] = '从数据库中提取的元数据';

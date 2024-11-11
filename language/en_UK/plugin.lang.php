@@ -27,7 +27,8 @@ $lang['INTRO_THUMB'] = 'produces thumbnails with <a href="http://www.ffmpeg.org"
 $lang['INTRO_SUPPORT'] = 'Refer to the <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin documentation</a> for additional information and look at the <a href="https://piwigo.org/forum/" target="_blank">forums</a> if you encounter any issues.<br/>To report bugs and suggest new features, please create a new <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">issue</a>.';
 
 $lang['STATS'] = 'Statistics';
-$lang['MOVIE'] = 'Movie';
+$lang['VIDEO'] = 'Video';
+$lang['VIDEO_SRC'] = 'Video sources';
 $lang['VIDEOS'] = 'video(s) in your gallery';
 $lang['VIDEOS_THUMB'] = 'video(s) with poster in your gallery';
 $lang['VIDEOS_GEOTAGGED'] = 'geotagged video(s) in your gallery';
@@ -90,7 +91,7 @@ $lang['DIR_NOT_WRITABLE'] = 'directory without write access';
 $lang['SYNC_METADATA'] = 'Metadata';
 $lang['METADATA_COUNT'] = 'Number of metadata items:';
 $lang['SYNC_DATABASE'] = 'Metadata extracted from the database';
-$lang['SYNC_REQUIRE'] = 'Requires <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>';
+$lang['SYNC_REQUIRE'] = 'Requires <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>:';
 $lang['SYNC_METADATA_DESC'] = 'Will overwrite the information in the database with the metadata from the video.';
 $lang['SYNC_METADATA_ERROR'] = 'Metadata cannot be retrieved because ExifTool, FFprobe or MediaInfo are not installed or their paths are incorrect.';
 $lang['SYNC_MEDIAINFO_ERROR'] = 'Metadata cannot be retrieved with MediaInfo because the XML library is missing';
@@ -105,7 +106,7 @@ $lang['SYNC_REPRESENTATIVES_DESC'] = 'For each video, updates the information re
 $lang['SYNC_POSTER_TITLE'] = 'Posters for photo gallery';
 $lang['SYNC_POSTER'] = 'Create posters at position in seconds:';
 $lang['SYNC_POSTER_DESC'] = 'Create	a poster from the video at the specified position in seconds.';
-$lang['SYNC_POSTER_REQUIRE'] = 'Requires <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>';
+$lang['SYNC_POSTER_REQUIRE'] = 'Requires <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>:';
 $lang['SYNC_POSTER_ERROR'] = 'Poster and thumbnail creation disabled because FFmpeg is not installed or its path is incorrect.';
 $lang['SYNC_POSTEROVERWRITE'] = 'Overwrite existing posters';
 $lang['SYNC_POSTEROVERWRITE_DESC'] = 'Overwrite existing thumbnails with new ones. If uncheck it should only run for newly added video.';

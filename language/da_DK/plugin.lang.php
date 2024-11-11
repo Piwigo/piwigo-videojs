@@ -21,6 +21,7 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 $lang['STATS'] = 'Statistik';
+$lang['VIDEO'] = 'Film';
 $lang['VIDEOS'] = 'videoer i dit galleri';
 $lang['VIDEOS_THUMB'] = 'videoer med miniaturebilleder i dit galleri';
 $lang['VIDEOS_GEOTAGGED'] = 'geotaggede videoer i dit galleri';
@@ -112,7 +113,6 @@ $lang['INTRO_CONFIG'] = 'Denne plugin:';
 $lang['METADATA'] = 'Metadata';
 $lang['METADATA_COUNT'] = 'Antal metadataelementer';
 $lang['METADATA_FILE'] = 'Vis fil:';
-$lang['MOVIE'] = 'Film';
 $lang['PLAYER'] = 'Afspiller';
 $lang['PLAYER_TYPE'] = 'Type:';
 $lang['POSTER_ERROR'] = 'FFmpeg kunne ikke generere plakaten, tjek logninger og prøv manuelt';
