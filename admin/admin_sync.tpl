@@ -144,7 +144,7 @@ jQuery(".showInfo").tipTip({
 					{else if $name == 'poster'}
 						<li>{'POSTER'|@translate} {$detail}</li>
 					{else if $name == 'thumbnail'}
-						<li>{$name}:</li>
+						<li>{'SYNC_THUMB'|@translate}:</li>
 						<ul style="list-style-type:none;">
 							{foreach from=$detail item=thumb}
 								<li>{$thumb}</li>
@@ -170,7 +170,7 @@ jQuery(".showInfo").tipTip({
     <legend>{'SYNC_METADATA'|@translate}</legend>
     <ul>
       <li>
-        <small>({'SYNC_REQUIRE'|@translate})</small>
+        <strong>{'SYNC_REQUIRE'|@translate}</strong>
 	  </li>
       <li>
 		<label><input type="checkbox" name="metadata" value="1" {if $metadata}checked="checked"{/if} /> {'Synchronize metadata'|@translate}</label>
@@ -183,7 +183,11 @@ jQuery(".showInfo").tipTip({
     <legend>{'SYNC_POSTER_TITLE'|@translate}</legend>
     <ul>
       <li>
-        <small>({'SYNC_POSTER_REQUIRE'|@translate})</small>
+		<label><input type="checkbox" name="representative" value="1" {if $representative}checked="checked"{/if} /> <span class="property">{'SYNC_REPRESENTATIVES'|@translate} </span></label>
+		<a class="icon-info-circled-1" title="{'SYNC_REPRESENTATIVES_DESC'|@translate}"></a>
+      </li>
+      <li>
+        <strong>{'SYNC_POSTER_REQUIRE'|@translate}</strong>
 	  </li>
       <li>
 		<label><input type="checkbox" name="poster" value="1" {if $poster}checked="checked"{/if} /> {'SYNC_POSTER'|@translate}</label>
@@ -213,7 +217,7 @@ jQuery(".showInfo").tipTip({
     <legend>{'SYNC_THUMB'|@translate}</legend>
     <ul>
       <li>
-        <small>({'SYNC_POSTER_REQUIRE'|@translate})</small>
+        <strong>{'SYNC_POSTER_REQUIRE'|@translate}</strong>
 	  </li>
       <li>
 		<label><input type="checkbox" name="thumb" value="1" {if $thumb}checked="checked"{/if}/> {'SYNC_THUMBSEC'|@translate}</label>

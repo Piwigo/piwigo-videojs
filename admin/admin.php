@@ -46,18 +46,18 @@ else
 $my_base_url = get_admin_plugin_menu_link(__FILE__);
 
 $tabsheet = new tabsheet();
-// Configuration Tab
-$tabsheet->add( 'config', l10n('Configuration'), add_url_params( $my_base_url, array('tab'=>'config') ) );
+$tabsheet->add( 'config', '<span class="icon-cog"></span>'.l10n('Configuration'), add_url_params($my_base_url, array('tab'=>'config')));
 // Disable sync if global setting say so, http://piwigo.org/forum/viewtopic.php?id=22376
 if ($conf['enable_synchronization'])
 {
-	$tabsheet->add( 'sync', l10n('Synchronize'), add_url_params( $my_base_url, array('tab'=>'sync') ) );
+	$tabsheet->add( 'sync', '<span class="icon-arrows-cw"></span>'.l10n('Synchronize'), add_url_params($my_base_url, array('tab'=>'sync')));
 }
+
 // Tab to handle external video like Vimeo or YouTube via videosjs-plugins
 // https://github.com/videojs/video.js/wiki/Plugins
 //$tabsheet->add( 'tech', l10n('Add video'), add_url_params( $my_base_url, array('tab'=>'tech') ) );
-$tabsheet->select($page['tab']);
 
+$tabsheet->select($page['tab']);
 $tabsheet->assign();
 
 $my_base_url = $tabsheet->sheets[ $page['tab'] ]['url'];

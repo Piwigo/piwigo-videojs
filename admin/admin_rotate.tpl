@@ -1,4 +1,4 @@
-<h2>{$TITLE} &#8250; {'Edit photo'|@translate} {$TABSHEET_TITLE}</h2>
+<h2>{'Edit photo'|@translate} <span class="image-id">#{$IMAGE_ID}</span></h2>
 
 <fieldset>
   <legend>{'Rotate'|@translate}</legend>

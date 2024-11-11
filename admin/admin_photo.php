@@ -63,11 +63,12 @@ $sync_options = array(
     'exiftool'          => 'exiftool',
     'ffprobe'           => 'ffprobe',
     'metadata'          => true,
+    'representative'    => true,
     'poster'            => false,
     'postersec'         => 4,
     'output'            => 'jpg',
     'posteroverlay'     => false,
-    'posteroverwrite'   => true,
+    'posteroverwrite'   => false,
     'thumb'             => false,
     'thumbsec'          => 5,
     'thumbsize'         => "120x68",
@@ -115,54 +116,67 @@ if (isset($videojs_metadata) and isset($videojs_metadata['metadata']))
 	if (isset($exif['width']) and isset($exif['height']))
 	{
 		$exif['resolution'] = $exif['width'] ."x". $exif['height'];
-        }
+	}
 	include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
 	isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
 	ksort($exif);
 }
 
-// Try to guess the poster extension
+// Try to find multiple video sources
+global $logger;
+$output_dir = dirname($picture['path']) . '/pwg_representative/';
 $parts = pathinfo($picture['path']);
-$poster = vjs_get_poster_file( Array(
-	$parts['dirname']."/pwg_representative/".$parts['filename'].".jpg" =>
-		get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".jpg",
-	$parts['dirname']."/pwg_representative/".$parts['filename'].".png" =>
-		get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".png",
-));
-// If none found, it creates a strpos error
-if (strlen($poster) > 0) { $poster = embellish_url($poster); }
-//print $poster;
-
-// Try to find multiple video source
 $extension = $parts['extension'];
 $vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
 $files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 // Add the current file in array
-$videossrc[] = array(
-			'src' => embellish_url(get_gallery_home_url() . $picture['path']),
-			'ext' => $extension,
-		);
+$videossrc[] = embellish_url($picture['path']);
 foreach ($files_ext as $file_ext) {
-	$file = $parts['dirname']."/pwg_representative/".$parts['filename'].".".$file_ext;
+	$file = $output_dir.$parts['filename'].'.'.$file_ext;
 	if (file_exists($file)){
-		array_push($videossrc,
-			   array (
-				'src' => embellish_url(
-						  get_gallery_home_url() . $parts['dirname'] . "/pwg_representative/".$parts['filename'].".".$file_ext
-						 ),
-				'ext' => vjs_get_mimetype_from_ext($file_ext)
-				)
-			  );
+		$videossrc[] = embellish_url($output_dir.$parts['filename'].'.'.$file_ext);
 	}
 }
 //print_r($videossrc);
+$infos[l10n('VIDEO_SRC')] = count($videossrc);
+$infos['videos'] = $videossrc;
 
-/* Try to find WebVTT */
-$file = $parts['dirname']."/pwg_representative/".$parts['filename'].".vtt";
-file_exists($file) ? $subtitle = embellish_url(get_gallery_home_url() .$file) : $subtitle = null;
+/* Try to guess the poster extension */
+$extensions = array('jpg', 'jpeg', 'png', 'gif');
+foreach ($extensions as $extension)
+{
+	/* Extension in lowercase */
+	$ilcfile = $output_dir.$parts['filename'].'.'.strtolower($extension);
+	$logger->debug('photo: $ilcfile = '.$ilcfile);
+	if (is_file($ilcfile))
+	{
+		$poster = $ilcfile;
+		$logger->debug('photo: $poster[] = '.$ilcfile);
+		break;
+	}
+	
+	/* Extension in uppercase */
+	$iucfile = $output_dir.$parts['filename'].'.'.strtoupper($extension);
+	$logger->debug('photo: $iucfile = '.$iucfile);
+	if (is_file($iucfile) and $representative_ext != $extension)
+	{
+		/* We have a poster, create query for updating the database */
+		$poster = $iucfile;
+		$logger->debug('photo: $poster[] = '.$iucfile);
+		break;
+	}
+}
+
+// If none found, it creates a strpos error
+if (strlen($poster) > 0)
+{
+	$poster = embellish_url($poster);
+}
+//print $poster;
+$infos['poster'] = $poster;
 
 /* Thumbnail videojs plugin */
-$filematch = $parts['dirname']."/pwg_representative/".$parts['filename']."-th_*";
+$filematch = $output_dir.$parts['filename'].'-th_*';
 $matches = glob($filematch);
 $thumbnails = array();
 $sort = array(); // A list of sort columns and their data to pass to array_multisort
@@ -170,11 +184,9 @@ if ( is_array ( $matches ) and !empty($matches) ) {
 	foreach ( $matches as $filename) {
 		 $ext = explode("-th_", $filename);
 		 $second = explode(".", $ext[1]);
-		 // ./galleries/videos/pwg_representative/trailer_480p-th_0.jpg
-		 //echo "$filename second " . $second[0]. "\n";
 		 $thumbnails[] = array(
 				   'second' => $second[0],
-				   'source' => embellish_url(get_gallery_home_url() . $filename)
+				   'source' => embellish_url($filename)
 				);
 		 $sort['second'][$second[0]] = $second[0];
 	}
@@ -182,18 +194,30 @@ if ( is_array ( $matches ) and !empty($matches) ) {
 //print_r($thumbnails);
 // Sort thumbnails by second
 !empty($sort['second']) and array_multisort($sort['second'], SORT_ASC, $thumbnails);
+$infos[l10n('SYNC_THUMB')] = count($thumbnails);
+$infos['thumbnails'] = $thumbnails;
 
+/* Try to find WebVTT */
+$file = $output_dir.$parts['filename'].'.vtt';
+file_exists($file) ? $subtitle = embellish_url(get_gallery_home_url() .$file) : $subtitle = null;
+if (isset($subtitle))
+{
+	$infos['Subtitle'] = $subtitle;
+}
+
+/*
 $infos = array_merge(
-				array('Poster' => $poster),
-				array('Videos source' => count($videossrc)),
+				array(l10n('VIDEO_SRC') => count($videossrc)),
 				array('videos' => $videossrc),
-				array('Thumbnails' => count($thumbnails)),
+				array('poster' => $poster),
+				array(l10n('SYNC_THUMB') => count($thumbnails)),
 				array('thumbnails' => $thumbnails),
 				array('Subtitle' => $subtitle)
 			);
-//print_r($infos);
+//print_r($infos); */
 
 $template->assign(array(
+	'IMAGE_ID' => $_GET['image_id'],
 	'PWG_TOKEN' => get_pwg_token(),
 	'F_ACTION' => $self_url,
 	'SYNC_URL' => $sync_url,

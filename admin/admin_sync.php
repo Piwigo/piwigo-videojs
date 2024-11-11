@@ -34,11 +34,12 @@ $sync_options = array(
     'exiftool'          => 'exiftool',
     'ffprobe'           => 'ffprobe',
     'metadata'          => true,
+    'representative'    => true,
     'poster'            => true,
     'postersec'         => 4,
     'output'            => 'jpg',
     'posteroverlay'     => false,
-    'posteroverwrite'   => true,
+    'posteroverwrite'   => false,
     'thumb'             => false,
     'thumbsec'          => 5,
     'thumbsize'         => "120x68",
@@ -52,6 +53,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     // Override default value from the form
     $sync_options_form = array(
         'metadata'          => isset($_POST['metadata']),
+        'representative'    => isset($_POST['representative']),
         'poster'            => isset($_POST['poster']),
         'postersec'         => $_POST['postersec'],
         'output'            => $_POST['output'],
@@ -107,7 +109,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     $template->assign('sync_errors', $errors );
     $template->assign('sync_warnings', $warnings );
     if (isset($sync_infos)) {
-	$template->assign('sync_infos', $sync_infos );
+        $template->assign('sync_infos', $sync_infos );
     }
 
     // Send result to templates

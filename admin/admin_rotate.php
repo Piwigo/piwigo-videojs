@@ -106,6 +106,7 @@ $angles = array(
 
 $template->assign(
   array(
+	'IMAGE_ID' => $_GET['image_id'],
     'F_ACTION' => $self_url,
     'TN_SRC' => DerivativeImage::thumb_url($row),
     'TITLE' => render_element_name($row),
