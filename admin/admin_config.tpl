@@ -149,6 +149,7 @@
 		<ul>
 	</fieldset>
 	</div>
+	
 	<fieldset>
 		<legend>{'VIDEOJSPLUGIN'|@translate}</legend>
 		<ul>
@@ -187,17 +188,16 @@
 <script>
 function player_toggle()
 {
-        var select = document.getElementById("vjs_player");
-        var div = document.getElementById("player");
-	if (select.selectedIndex == 3) /* Only for VideoJS v4 */
-        {
-                div.removeAttribute("style");
-        } else {
-                div.setAttribute("style","visibility:hidden; width:0px; height:0px; display:none;");
-        }
+    var select = document.getElementById("vjs_player");
+    var div = document.getElementById("player");
+	if (select.selectedIndex == 4) /* Only for VideoJS v4 */
+	{
+			div.removeAttribute("style");
+	} else {
+			div.setAttribute("style","visibility:hidden; width:0px; height:0px; display:none;");
+	}
 }
 
 window.onload = player_toggle();
-
 </script>
 {/literal}
