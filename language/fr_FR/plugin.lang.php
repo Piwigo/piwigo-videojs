@@ -28,9 +28,9 @@ $lang['INTRO_SUPPORT'] = 'Reportez-vous à la <a href="https://github.com/xbgmsh
 
 $lang['STATS'] = 'Statistiques';
 $lang['VIDEO'] = 'Vidéo';
-$lang['VIDEOS'] = 'vidéos dans votre galerie';
-$lang['VIDEOS_THUMB'] = 'vidéos avec affiche dans votre galerie';
-$lang['VIDEOS_GEOTAGGED'] = 'vidéos géolocalisées dans votre galerie';
+$lang['VIDEOS'] = 'vidéo(s) dans votre galerie';
+$lang['VIDEOS_THUMB'] = 'vidéo(s) avec affiche dans votre galerie';
+$lang['VIDEOS_GEOTAGGED'] = 'vidéo(s) géolocalisée(s) dans votre galerie';
 
 $lang['HTML5'] = 'Réglages HTML5';
 $lang['PRELOAD'] = 'Préchargement :';
@@ -76,10 +76,10 @@ $lang['SYNC_INTRO'] = 'Synchronisation des méta-données et création de vignet
 $lang['SYNC_NONE'] = 'Vous m\'avez demandé de ne rien faire!';
 $lang['SYNC_INFOS'] = 'Informations détaillées';
 $lang['SYNC_RESULTS'] = 'Résultats de la synchronisation';
-$lang['SYNC_DETECTED'] = 'vidéo(s) détectées';
+$lang['SYNC_DETECTED'] = 'vidéo(s) détectée(s)';
 $lang['SYNC_METADATA_ADDED'] = 'vidéo(s) avec méta-données ajoutées';
-$lang['SYNC_POSTERS_NEW'] = 'affiche(s) créées';
-$lang['SYNC_THUMBS_NEW'] = 'miniature(s) VideoJS créées';
+$lang['SYNC_POSTERS_NEW'] = 'affiche(s) créée(s)';
+$lang['SYNC_THUMBS_NEW'] = 'miniature(s) VideoJS créée(s)';
 $lang['SYNC_WARNINGS'] = 'Alertes';
 $lang['SYNC_WARNINGS_COUNT'] = 'alerte(s) pendant la synchronisation';
 $lang['SYNC_ERRORS'] = 'Erreurs';

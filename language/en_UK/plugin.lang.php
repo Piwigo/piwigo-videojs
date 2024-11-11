@@ -28,9 +28,9 @@ $lang['INTRO_SUPPORT'] = 'Refer to the <a href="https://github.com/xbgmsharp/piw
 
 $lang['STATS'] = 'Statistics';
 $lang['MOVIE'] = 'Movie';
-$lang['VIDEOS'] = 'videos in your gallery';
-$lang['VIDEOS_THUMB'] = 'videos with poster in your gallery';
-$lang['VIDEOS_GEOTAGGED'] = 'geotagged videos in your gallery';
+$lang['VIDEOS'] = 'video(s) in your gallery';
+$lang['VIDEOS_THUMB'] = 'video(s) with poster in your gallery';
+$lang['VIDEOS_GEOTAGGED'] = 'geotagged video(s) in your gallery';
 
 $lang['HTML5'] = 'HTML5 video tag settings';
 $lang['PRELOAD'] = 'Preload:';
