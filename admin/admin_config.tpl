@@ -190,7 +190,7 @@ function player_toggle()
 {
     var select = document.getElementById("vjs_player");
     var div = document.getElementById("player");
-	if (select.selectedIndex == 4) /* Only for VideoJS v4 */
+	if (select.selectedIndex == 3 || select.selectedIndex == 4) /* Only for VideoJS v4, v5 */
 	{
 			div.removeAttribute("style");
 	} else {
