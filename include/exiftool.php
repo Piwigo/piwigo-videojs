@@ -28,12 +28,12 @@
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 try {
-putenv('LANG=en_US.UTF-8');
-$json = shell_exec($sync_options['exiftool'] ." -struct -n -json \"". $filename."\"");
-if (!isset($json) or empty($json))
-	die("Exiftool error reading file. Is Exiftool install? Is Exiftool in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['exiftool'] ." -json '". $filename ."'");
-$output = json_decode($json, true);
-//print_r($output);
+	putenv('LANG=en_US.UTF-8');
+	$json = shell_exec($sync_options['exiftool'] ." -struct -n -json \"". $filename."\"");
+	if (!isset($json) or empty($json))
+		die("Exiftool error reading file. Is Exiftool install? Is Exiftool in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['exiftool'] ." -json '". $filename ."'");
+	$output = json_decode($json, true);
+	//print_r($output);
 } catch (Exception $e) {
 	die("Exiftool error reading file. Is Exiftool install? Is Exiftool in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['exiftool'] ." -json '". $filename ."'");
 }

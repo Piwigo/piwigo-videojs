@@ -28,12 +28,12 @@
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 try {
-putenv('LANG=en_US.UTF-8');
-$json = shell_exec($sync_options['ffprobe'] ." -hide_banner -loglevel fatal -show_error -show_format -show_streams -show_programs -show_chapters -show_private_data -print_format json \"". $filename."\"");
-if (!isset($json) or empty($json))
-	die("ffprobe error reading file. Is ffprobe install? Is ffprobe in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['ffprobe'] ." -hide_banner -loglevel fatal -show_error -show_format -show_streams -print_format json '". $filename ."'");
-$output = json_decode($json, true);
-//print_r($output);
+	putenv('LANG=en_US.UTF-8');
+	$json = shell_exec($sync_options['ffprobe'] ." -hide_banner -loglevel fatal -show_error -show_format -show_streams -show_programs -show_chapters -show_private_data -print_format json \"". $filename."\"");
+	if (!isset($json) or empty($json))
+		die("ffprobe error reading file. Is ffprobe install? Is ffprobe in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['ffprobe'] ." -hide_banner -loglevel fatal -show_error -show_format -show_streams -print_format json '". $filename ."'");
+	$output = json_decode($json, true);
+	//print_r($output);
 } catch (Exception $e) {
 	die("ffprobe error reading file. Is ffprobe install? Is ffprobe in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['ffprobe'] ." -hide_banner -loglevel fatal -show_error -show_format -show_streams -print_format json '". $filename ."'");
 }
