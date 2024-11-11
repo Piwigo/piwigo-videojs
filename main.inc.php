@@ -322,7 +322,7 @@ SELECT *
 	$zoomrotate = array();
 	if ($zoomrotate_plugin)
 	{
-		// TODO Disable if playing on iOS, as it read the metadata itself
+		// TODO Disable if playing on iOS, as it reads the metadata itself
 		if ($picture['current']['rotation'] != null)
 		{
 			include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
