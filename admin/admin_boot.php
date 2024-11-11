@@ -35,7 +35,7 @@ define('SQL_VIDEOS', "(LOWER(`file`) LIKE '%.ogg' OR LOWER(`file`) LIKE '%.ogv' 
 // Batch_manager support
 include_once(dirname(__FILE__).'/admin_batchmanager.php');
 
-// Hook to add an photo edit tab in photo edit
+// Hook to add a photo edit tab in photo edit
 add_event_handler('tabsheet_before_select','vjs_add_tab', 55, 2);
 function vjs_add_tab($sheets, $id)
 {
