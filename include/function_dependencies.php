@@ -32,11 +32,11 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 // Check 'gd_info' and 'SimpleXMLElement'
 if ($sync_options['posteroverlay'] and !function_exists('gd_info'))
 {
-        $warnings[] = "GD library is missing to add overlay movie frame";
+        $warnings[] = l10n('SYNC_POSTEROVERLAY_ERROR');
 }
 if ($sync_options['metadata'] and isset($sync_options['mediainfo']) and !class_exists('SimpleXMLElement'))
 {
-        $warnings[] = "XML library is missing to use mediainfo";
+        $warnings[] = l10n('SYNC_MEDIAINFO_ERROR');
 }
 
 // Do the dependencies checks for MediaInfo & FFmpeg & FFprobe & ExifTool
@@ -98,7 +98,7 @@ foreach ($sync_binaries as $binary => $path)
 		$sync_options[$binary] = false;
 		if ($binary == 'ffmpeg')
 		{
-			$warnings[] = "Poster and Thumbnail creation disable because FFmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
+			$warnings[] = l10n('SYNC_POSTER_ERROR');
 			$sync_options['poster'] = false;
 			$sync_options['thumb'] = false;
 		}
@@ -107,7 +107,7 @@ foreach ($sync_binaries as $binary => $path)
 
 if (!$sync_options['mediainfo'] and !$sync_options['exiftool'] and !$sync_options['ffprobe'])
 {
-       $warnings[] = "Metadata parsing disable because 'mediainfo' or 'exiftool' or 'ffprobe' is not installed on the system, eg: '/usr/bin/".$binary."'.";
+       $warnings[] = l10n('SYNC_METADATA_ERROR');
        $sync_options['metadata'] = false;
 }
 

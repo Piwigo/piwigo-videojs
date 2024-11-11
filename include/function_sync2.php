@@ -52,7 +52,7 @@ include("function_dependencies.php");
 global $logger;
 if (!$sync_options['metadata'] and !$sync_options['poster'] and !$sync_options['thumb'])
 {
-    $errors[] = "You ask me to do nothing, are you sure?";
+    $errors[] = l10n('SYNC_NONE');
 }
 
 // Do the job
