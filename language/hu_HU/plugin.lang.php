@@ -43,7 +43,6 @@ $lang['METADATA_DESC'] = 'Metaadatok';
 
 $lang['PLAYER_DESC'] = 'Használandó VJS verzió';
 
-$lang['PLUGIN'] = 'Bővítmény beállítások';
 $lang['SKIN'] = 'Bőr';
 $lang['SKIN_DESC'] = 'Válassza ki a videó lejátszó kinézetét, vagy <a href="http://designer.videojs.com/" target="_blank"> hozzon létre sajátot</a>.';
 $lang['CUSTOMCSS'] = 'Egyéni CSS';
@@ -52,8 +51,6 @@ $lang['HEIGHT'] = 'Max magasság';
 $lang['HEIGHT_DESC'] = 'A maximális magasság határozza meg a videó maximális magasságát. Ha a videó magassága nagyobb a maximális magasságnál, akkor a videó mérete lecsökken a maximális magasságra.';
 $lang['UPSCALE'] = 'Felskálázás';
 $lang['UPSCALE_DESC'] = 'Ha a videó magassága kisebb, mint a maximális magasság, akkor a videó mérete a maximális magassághoz lesz igazítva.';
-
-$lang['VIDEOJSPLUGIN'] = 'VideoJS bővítmények';
 $lang['ZOOMROTATE'] = 'Zoom elforgatás';
 $lang['ZOOMROTATE_DESC'] = 'Forgatásra és nagyításra használja a metaadatokat, ha elérhető.';
 $lang['THUMBNAILS'] = 'Bélyegképek';

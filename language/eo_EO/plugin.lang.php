@@ -28,7 +28,6 @@ $lang['LOOP_DESC'] = 'La eco "iteracio" igas la videon rekomenciĝi ekde ĝi fin
 $lang['LANGUAGE'] = 'Lingvaĵo';
 $lang['LANGUAGE_DESC'] = 'Selektu la lingvon de la legilo.';
 
-$lang['PLUGIN'] = 'Kromaĵaj agordoj';
 $lang['SKIN'] = 'Etoso';
 $lang['HEIGHT'] = 'Maksimuma alteco';
 

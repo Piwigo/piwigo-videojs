@@ -43,7 +43,6 @@ $lang['METADATA_DESC'] = 'Metadata';
 
 $lang['PLAYER_DESC'] = 'Zvolte verzi přehrávače';
 
-$lang['PLUGIN'] = 'Nastavení pluginu';
 $lang['SKIN'] = 'Vzhled';
 $lang['SKIN_DESC'] = 'Vyberte si šablonu jakou chcete použít na přehrávač nebo si <a href="http://designer.videojs.com/" target="_blank">vytvořte vzhled vlastní</a>.';
 $lang['CUSTOMCSS'] = 'Vlastní nastylování CSS';
@@ -52,8 +51,6 @@ $lang['HEIGHT'] = 'Max výška';
 $lang['HEIGHT_DESC'] = 'Atribut maximální výška nastavuje maximální výšku videa. Pokud je výška videa větší než hodnota maximální výška, bude video zmenšeno na velikost hodnoty max výška.';
 $lang['UPSCALE'] = 'Zvětšení';
 $lang['UPSCALE_DESC'] = 'POkud je video měnší než nastavená hodnota pro max. šířku tak bude obsah zvětšen právě na tuto hodnotu.';
-
-$lang['VIDEOJSPLUGIN'] = 'VideoJS moduly';
 $lang['ZOOMROTATE'] = 'ZoomRotate';
 $lang['ZOOMROTATE_DESC'] = 'Rotace a zvětšování videa pokud jej takto ovládat lze, používá metadata o možnosti rotace.';
 $lang['THUMBNAILS'] = 'Náhledy';

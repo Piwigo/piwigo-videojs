@@ -21,7 +21,6 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 $lang['CUSTOMCSS_DESC'] = 'Custom CSS att klippa och klistra från <a href="http://www.videojs.com/" target="_blank">VideoJS webbsidan</a>.';
-$lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
 $lang['WATERMARK'] = 'Vattenmärkning';
 $lang['WATERMARK_DESC'] = 'Vattenmärk videon';
 $lang['ZOOMROTATE'] = 'Zoom och rotation';
@@ -34,7 +33,6 @@ $lang['CUSTOMCSS'] = 'Custom CSS';
 $lang['HTML5'] = 'HTML5 video-tagg-inställningar';
 $lang['LOOP'] = 'Loopa';
 $lang['LOOP_DESC'] = 'Gör så att videon börjar om från början när den kommer till slutet.';
-$lang['PLUGIN'] = 'Plugin-inställningar';
 $lang['PRELOAD'] = 'Förladda';
 $lang['PRELOAD_DESC'] = 'Informerar webbläsaren att den ska börja ladda ner videon direkt när sidan laddas.';
 $lang['SKIN'] = 'Skal';

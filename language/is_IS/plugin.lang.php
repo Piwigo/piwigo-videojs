@@ -7,7 +7,6 @@
 // +-----------------------------------------------------------------------+
 $lang['UPSCALE'] = 'Skala upp';
 $lang['UPSCALE_DESC'] = 'Ef hæð myndbandsins er minni en hámarkshæð mun það stækka myndbandsstærðina í hámarkshæð.';
-$lang['VIDEOJSPLUGIN'] = 'VideoJS viðbætur';
 $lang['VOLUME'] = 'Hljóðstyrkur';
 $lang['VOLUME_DESC'] = 'Hljóðstyrksvalkosturinn stillir hljóðstyrkinn. Slökkt er á 0 (þaggað), 1,0 er alla leið upp, 0,5 er hálfa leið.';
 $lang['WATERMARK'] = 'Vatnsmerki';
@@ -49,7 +48,6 @@ $lang['LOOP'] = 'Lykkja';
 $lang['LOOP_DESC'] = 'Lykkjueiginleikinn veldur því að myndbandið byrjar aftur um leið og því lýkur.';
 $lang['METADATA_DESC'] = 'Lýsing lýsigagna';
 $lang['PLAYER_DESC'] = 'Velja útgáfu vjs spilara';
-$lang['PLUGIN'] = 'Stillingar viðbótar';
 $lang['PRELOAD'] = 'Forhlaða';
 $lang['PRELOAD_DESC'] = 'Forhleðslueiginleikinn upplýsir vafrann um hvort byrja eigi að hlaða niður myndbandsgögnum um leið og myndbandsmerkinu er hlaðið.';
 $lang['RESOLUTION'] = 'Upplausn';

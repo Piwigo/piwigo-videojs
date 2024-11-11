@@ -43,7 +43,6 @@ $lang['METADATA_DESC'] = 'Metadatabeskrivelse';
 
 $lang['PLAYER_DESC'] = 'Vælg vjs-afspillerversion';
 
-$lang['PLUGIN'] = 'Pluginindstillinger';
 $lang['SKIN'] = 'Skind';
 $lang['SKIN_DESC'] = 'Vælg det udseende, du ønsker at give afspilleren, eller <a href="http://designer.videojs.com/" target="_blank">opret dit eget udseende</a>.';
 $lang['CUSTOMCSS'] = 'Skræddersyet CSS';
@@ -52,8 +51,6 @@ $lang['HEIGHT'] = 'Maksimal højde';
 $lang['HEIGHT_DESC'] = 'Maksimal højde-attributten sætter den maksimale visningshøjde på videoen. Hvis videohøjden er større end den maksimale højde, vil videohøjden blive nedskaleret til den maksimale højde.';
 $lang['UPSCALE'] = 'Opskalér';
 $lang['UPSCALE_DESC'] = 'Hvis videostørrelsen er mindre end den maksimale bredde, vil videostørrelsen blive opskaleret til den maksimale bredde.';
-
-$lang['VIDEOJSPLUGIN'] = 'VideoJS-plugins';
 $lang['ZOOMROTATE'] = 'ZoomRotering';
 $lang['ZOOMROTATE_DESC'] = 'Rotér og zoom en video, anvend om muligt roteringsmetadata.';
 $lang['THUMBNAILS'] = 'Miniturebilleder';

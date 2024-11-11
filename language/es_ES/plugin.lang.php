@@ -43,7 +43,6 @@ $lang['METADATA_DESC'] = 'Descripción metadata';
 
 $lang['PLAYER_DESC'] = 'Selecciona la versión del reproductor vjs';
 
-$lang['PLUGIN'] = 'Ajustes del plugin';
 $lang['SKIN'] = 'Tema';
 $lang['SKIN_DESC'] = 'Selecciona el tema que quieras aplicar al reproductor';
 $lang['CUSTOMCSS'] = 'CSS personalizado';
@@ -52,8 +51,6 @@ $lang['HEIGHT'] = 'Altura máxima ';
 $lang['HEIGHT_DESC'] = 'El atributo de altura máxima define la altura máxima de la pantalla de vídeo. Si la altura de vídeo es más grande que la altura máxima, será reducir tamaño del vídeo al atributo de altura máxima.';
 $lang['UPSCALE'] = 'Mejora la resolución';
 $lang['UPSCALE_DESC'] = 'Si el tamaño del vídeo es más pequeño que el ancho máximo, se aumentara el tamaño del vídeo al ancho máximo.';
-
-$lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
 $lang['ZOOMROTATE'] = ' Rotación zoom';
 $lang['ZOOMROTATE_DESC'] = 'Rotar y hacer zoom un video si es aplicable, utilizar los metadatos de rotación.';
 $lang['THUMBNAILS'] = 'Miniaturas';

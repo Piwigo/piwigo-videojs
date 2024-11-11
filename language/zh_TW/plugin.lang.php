@@ -32,7 +32,6 @@ $lang['CUSTOMCSS_DESC'] = '從<a href="http://www.videojs.com/" target="_blank">
 $lang['HTML5'] = 'HTML5 視頻標籤(tag)設定';
 $lang['LOOP'] = '循環';
 $lang['LOOP_DESC'] = '循環選項設定，視頻結束後立即再次從頭播放。';
-$lang['PLUGIN'] = '插件設定';
 $lang['PRELOAD'] = '預加載';
 $lang['PRELOAD_DESC'] = '預加載選項，將告訴瀏覽器視頻數據，是否在視頻標籤加載後立即開始下載。';
 $lang['SKIN'] = '皮膚';
@@ -41,7 +40,6 @@ $lang['THUMBNAILS'] = '縮略圖';
 $lang['THUMBNAILS_DESC'] = '在進度條上顯示縮略圖。';
 $lang['UPSCALE'] = '提升';
 $lang['UPSCALE_DESC'] = '如果視頻尺寸小於最大寬度，它會將視頻尺寸提升至最大寬度。';
-$lang['VIDEOJSPLUGIN'] = 'VideoJS 插件';
 $lang['WATERMARK'] = '水印';
 $lang['SYNC_ERRORS'] = '錯誤';
 $lang['SYNC_INFOS'] = '詳情';

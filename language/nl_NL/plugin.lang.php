@@ -20,8 +20,6 @@
 // | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, |
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
-$lang['PLUGIN'] = 'Plugin-instellingen';
-$lang['VIDEOJSPLUGIN'] = 'VideoJS plugins';
 $lang['WATERMARK'] = 'Watermerk';
 $lang['LOOP'] = 'Herhalen';
 $lang['WATERMARK_DESC'] = 'Toont een watermerk op de video.';

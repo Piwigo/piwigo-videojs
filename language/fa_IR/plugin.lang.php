@@ -27,13 +27,10 @@ $lang['AUTOPLAY'] = 'پخش خودکار';
 $lang['LOOP'] = 'تکرار ';
 $lang['VOLUME'] = 'مقدار ';
 
-$lang['PLUGIN'] = 'تنظیمات پلاگین';
 $lang['SKIN'] = 'پوسته';
 $lang['CUSTOMCSS'] = 'استایل سفارشی';
 $lang['WIDTH'] = 'حداکثر عرض';
 $lang['UPSCALE'] = 'مجلل';
-
-$lang['VIDEOJSPLUGIN'] = 'پلاگین جاوا اسکریپت';
 $lang['ZOOMROTATE'] = 'زوم چرخشی';
 $lang['ZOOMROTATE_DESC'] = 'چرخش و زوم یک ویدیو در صورت امکان، استفاده از ابرداده چرخش.';
 $lang['THUMBNAILS'] = 'ریز عکسها';

@@ -119,19 +119,22 @@
 
 	<div id="player">
 	<fieldset>
-		<legend>{'PLUGIN'|@translate}</legend>
+		<legend>{'VIDEOJS_SETTINGS'|@translate}</legend>
 		<ul>
 			<li>
 				<label><span class="property">{'SKIN'|@translate}</span></label>
 				<select name="vjs_skin">
 					{html_options options=$AVAILABLE_SKINS selected=$skin}
 				</select>
-				<a class="icon-info-circled-1" title="{'SKIN_DESC'|@translate}"></a>
+				<small> {'SKIN_DESC'|@translate}</small>
 			</li>
 			<li>
 				<label><span class="property">{'CUSTOMCSS'|@translate}</span></label>
 				<textarea rows="5" cols="90" class="description" name="vjs_customcss" id="vjs_customcss">{$CUSTOM_CSS}</textarea>
-				<a class="icon-info-circled-1" title="{'CUSTOMCSS_DESC'|@translate}"></a>
+			</li>
+			<li>
+				<label><span class="property">&nbsp;</span></label>
+				<small>{'CUSTOMCSS_DESC'|@translate}</small>
 			</li>
 			<li>
 				<label><span class="property">{'HEIGHT'|@translate}</span></label>
@@ -146,13 +149,6 @@
 				&nbsp;<label><input type="radio" name="vjs_upscale" value="false" {if not $upscale}checked="checked"{/if}/> {'No'|@translate}</label>
 				<a class="icon-info-circled-1" title="{'UPSCALE_DESC'|@translate}"></a>
 			</li>
-		<ul>
-	</fieldset>
-	</div>
-	
-	<fieldset>
-		<legend>{'VIDEOJSPLUGIN'|@translate}</legend>
-		<ul>
 			<li>
 				<label><span class="property">{'ZOOMROTATE'|@translate}</span></label>
 				<label><input type="radio" name="vjs_zoomrotate" value="true" {if $plugins.zoomrotate}checked="checked"{/if}/> {'Yes'|@translate}</label>
@@ -179,6 +175,8 @@
 			</li>
 		</ul>
 	</fieldset>
+	</div>
+	
 	<p>
 		<input class="submit" type="submit" value="{'Save Settings'|@translate}" name="submit"/>
 	</p>

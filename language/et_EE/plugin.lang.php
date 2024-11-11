@@ -43,7 +43,6 @@ $lang['METADATA_DESC'] = 'Metaandmete kirjeldus';
 
 $lang['PLAYER_DESC'] = 'Valige vjs-mängija versioon.';
 
-$lang['PLUGIN'] = 'Plugin-i seaded';
 $lang['SKIN'] = 'Nahk';
 $lang['SKIN_DESC'] = 'Vali stiil, mida mängijal rakendada';
 $lang['CUSTOMCSS'] = 'Isikupärastatud CSS';
@@ -54,8 +53,6 @@ $lang['HEIGHT'] = 'Maksimaalne kõrgus';
 $lang['HEIGHT_DESC'] = 'Maksimaalse kõrguse atribuut määrab video maksimaalse kuvakõrguse. Kui video kõrgus on suurem kui maksimaalne kõrgus, vähendatakse video suurust maksimaalsele kõrgusele.';
 $lang['UPSCALE'] = 'Suurenda';
 $lang['UPSCALE_DESC'] = 'Kui video suurus on väiksem, kui max laius siis suurenda videot max laiuseni.';
-
-$lang['VIDEOJSPLUGIN'] = 'VideoJS plugin';
 $lang['ZOOMROTATE'] = 'SuurendaKeera';
 $lang['ZOOMROTATE_DESC'] = 'Keera ja suurenda videot, kui võimalik, kasuta keeramiseks metainfot.';
 $lang['THUMBNAILS'] = 'Pisipildid';

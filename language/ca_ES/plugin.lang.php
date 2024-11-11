@@ -38,7 +38,6 @@ $lang['METADATA_DESC'] = 'Descripció de la metadada';
 
 $lang['PLAYER_DESC'] = 'Seleccioneu la versió del reproductor vjs.';
 
-$lang['PLUGIN'] = 'Paràmetres del connector';
 $lang['SKIN'] = 'Aparença';
 $lang['SKIN_DESC'] = 'Seleccioneu l\'estil que voleu aplicar al reproductor o <a href="http://designer.videojs.com/" target="_blank">creeu la vostra pròpia aparença</a>.';
 $lang['CUSTOMCSS'] = 'CSS personalitzat';
@@ -47,8 +46,6 @@ $lang['HEIGHT'] = 'Alçada màxima';
 $lang['HEIGHT_DESC'] = 'L\'atribut d\'alçada màxima defineix l\'alçada màxima de visualització del vídeo. Si l\'alçada del vídeo és més gran que l\'alçada màxima, baixarà la mida del vídeo a l\'alçada màxima.';
 $lang['UPSCALE'] = 'Escala superior';
 $lang['UPSCALE_DESC'] = 'Si l\'alçada del vídeo és més petita que l\'alçada màxima, augmentarà la mida del vídeo fins a l\'alçada màxima.';
-
-$lang['VIDEOJSPLUGIN'] = 'Connectors del VideoJS';
 $lang['ZOOMROTATE'] = 'ZoomRotate';
 $lang['ZOOMROTATE_DESC'] = 'Gira i amplia un vídeo si escau, utilitza les metadades de rotació.';
 $lang['THUMBNAILS'] = 'Miniatures';
