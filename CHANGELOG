@@ -3,7 +3,9 @@ Changes from 15.c to 15.d
 - Fixes video player too large on small devices
 - Fixes a bug leading to the incomplete deletion of thumbnails
 - Fixes non-detection of failing FFmpeg calls
+- Fixes FFmpeg availability test failing when using a custom path
 - Fixes VideoJS v4 player options not displayed
+- VideoJS options only apply to v4 and v5 players for the time being
 
 Changes from 15.b to 15.c
 - Fixes warning returned when retrieving MediaCreateDate

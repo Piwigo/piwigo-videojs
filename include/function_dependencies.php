@@ -93,10 +93,10 @@ foreach ($sync_binaries as $binary => $path)
 	{
 		$sync_options[$binary] = $path;
 	}
-	else /* If failed */
+	else /* Case where $binary cannot be called */
 	{
 		$sync_options[$binary] = false;
-		if ($binary == 'ffmpeg')
+		if (str_contains($binary, 'ffmpeg'))
 		{
 			$warnings[] = l10n('SYNC_POSTER_ERROR');
 			$sync_options['poster'] = false;
