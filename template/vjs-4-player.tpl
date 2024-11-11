@@ -1,12 +1,14 @@
 {html_head}
 <link href="{$VIDEOJS_PATH}video-js-4/{$VIDEOJS_SKINCSS}" rel="stylesheet">
 {$VIDEOJS_CUSTOMCSS}
-<link href="{$VIDEOJS_PATH}video-js-4/video-js-resolutions.css" rel="stylesheet"/>
 {if not empty($thumbnails)}
 <link href="{$VIDEOJS_PATH}video-js-4/videojs.thumbnails.css" rel="stylesheet">
 {/if}
 {if not empty($watermark)}
 <link href="{$VIDEOJS_PATH}video-js-4/videojs.watermark.css" rel="stylesheet">
+{/if}
+{if not empty($resolution)}
+<link href="{$VIDEOJS_PATH}video-js-4/video-js-resolutions.css" rel="stylesheet"/>
 {/if}
 <script src="{$VIDEOJS_PATH}video-js-4/video.js"></script>
 <script type="text/javascript" src="{$VIDEOJS_PATH}video-js-4/video-js-resolutions.js"></script>
