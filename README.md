@@ -113,7 +113,7 @@ Copy/paste the below lines in LocalFiles Editor and replace the paths with those
 If you encounter difficulties, for example to determine the full paths, add the following lines so that errors are displayed in the browser and logs are gathered in the `_data/logs folder` when you sync files:
 
     $conf['log_level'] = 'DEBUG';
-    $conf ['show_php_errors'] = E_ERROR;
+    $conf['show_php_errors'] = E_ERROR;
     $conf['show_php_errors_on_frontend'] = true;
 
 
