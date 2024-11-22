@@ -106,3 +106,17 @@ $lang['INTRO_VIDEOJS'] = 'aggiungi il video player open source HTML5 <a href="ht
 $lang['PLAYER_TYPE'] = 'Tipologia';
 $lang['INTRO_SUPPORT'] = 'Fai riferimento a <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin documentation</a> per maggiori informazioni e guarda <a href="https://piwigo.org/forum/" target="_blank">forums</a> se incontri qualche problema.<br/>Per riportare bugs and suggerire nuove implementazioni, crea per favore un nuovo <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">caso</a>.';
 $lang['INTRO_METADATA'] = 'estrai i metadata con <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> oppure <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> (se possibile)';
+$lang['SYNC_DELETE_DESC'] = 'Utile per i video che non includono metadati relativi all\'orientamento e che vengono visualizzati con un player VideoJS associato al plugin videojs-zoomrotate. Il video e il suo poster rimangono intatti. Soltanto il parametro di orientamento memorizzato nel database viene aggiornato.';
+$lang['SYNC_INTRO'] = 'Sincronizzazione dei metadati e creazione delle miniature per i video:';
+$lang['SYNC_MEDIAINFO_ERROR'] = 'I metadati non possono essere recuperati con MediaInfo perché manca la libreria XML';
+$lang['SYNC_METADATA_ADDED'] = 'video con metadati aggiunti';
+$lang['SYNC_METADATA_ERROR'] = 'Non è stato possibile recuperare i metadati perché ExifTool, FFprobe o MediaInfo non sono installati, oppure i loro percorsi sono errati.';
+$lang['SYNC_POSTEROVERLAY_ERROR'] = 'Effetto pellicola disabilitato perché manca la libreria GD.';
+$lang['SYNC_POSTER_ERROR'] = 'Creazione di poster e miniature disabilitata perché FFmpeg non è installato o il suo percorso è errato.';
+$lang['SYNC_POSTER_REQUIRE'] = 'Richiede <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>:';
+$lang['SYNC_REPRESENTATIVES'] = 'Adotta poster caricati manualmente';
+$lang['SYNC_REPRESENTATIVES_DESC'] = 'Per ogni video aggiorna le informazioni relative al suo autore.';
+$lang['SYNC_REQUIRE'] = 'Richiede <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> or <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a>:';
+$lang['SYNC_THUMBSIZE_ERROR'] = 'Dimensione miniatura non valida, torna al valore predefinito di 120 px';
+$lang['VIDEOS_GEOTAGGED'] = 'video geolocalizzati nella tua galleria';
+$lang['VIDEOS_THUMB'] = 'video con poster nella tua galleria';
