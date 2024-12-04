@@ -90,3 +90,4 @@ $lang['POSTER'] = 'Plakat';
 $lang['PLAYER_TYPE'] = 'Tüüp:';
 $lang['PLAYER'] = 'Mängija';
 $lang['METADATA_FILE'] = 'Näita faili:';
+$lang['INTRO_METADATA'] = 'ekstraktib metaandmed rakendusega <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> või <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> (kui see on saadaval)';
