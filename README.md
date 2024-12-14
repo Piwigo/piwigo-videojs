@@ -108,7 +108,7 @@ Copy/paste the below lines in LocalFiles Editor and replace the paths with those
     //      > chmod +x ffprobe
     //   3. check it with e.g. './ffmpeg -version' on Linux
     $conf['vjs_ffprobe_dir'] = '/home/clients/.../ffmpeg/ffmpag-7.1/';
-    $conf['vjs_ffmpeg_dir'] = '/home/clients/.../ffmpeg/ffmpag-7.1/';
+    $conf['ffmpeg_dir'] = '/home/clients/.../ffmpeg/ffmpag-7.1/';
 ```
 If you encounter difficulties, for example to determine the full paths, add the following lines so that errors are displayed in the browser and logs are gathered in the `_data/logs folder` when you sync files:
 
