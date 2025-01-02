@@ -100,15 +100,15 @@ Copy/paste the below lines in LocalFiles Editor and replace the paths with those
     //   1. download the library and CLI from https://exiftool.org
     //   2. make it executable with e.g. chmod +x exiftool on Linux
     //   3. check it with e.g. './exiftool -ver' on Linux
-    $conf['vjs_exiftool_dir'] = '/home/clients/.../exiftool/Image-ExifTool-12.92/';
+    $conf['vjs_exiftool_dir'] = '/home/clients/.../exiftool/Image-ExifTool-13.11/';
     //=> FFmpeg:
-    //   1. download binaries from https://ffbinaries.com/downloads
+    //   1. download binaries from https://ffbinaries.com/downloads or https://ffmpeg.org/download.html
     //   2. on Linux: make ffmpeg and ffprobe executable with:
     //      > chmod +x ffmpeg
     //      > chmod +x ffprobe
     //   3. check it with e.g. './ffmpeg -version' on Linux
-    $conf['vjs_ffprobe_dir'] = '/home/clients/.../ffmpeg/ffmpag-7.1/';
-    $conf['ffmpeg_dir'] = '/home/clients/.../ffmpeg/ffmpag-7.1/';
+    $conf['vjs_ffprobe_dir'] = '/home/clients/.../ffmpeg/ffmpag-7.0.2/';
+    $conf['ffmpeg_dir'] = '/home/clients/.../ffmpeg/ffmpag-7.0.2/';
 ```
 If you encounter difficulties, for example to determine the full paths, add the following lines so that errors are displayed in the browser and logs are gathered in the `_data/logs folder` when you sync files:
 
