@@ -142,6 +142,7 @@ $infos[l10n('VIDEO_SRC')] = count($videossrc);
 $infos['videos'] = $videossrc;
 
 /* Try to guess the poster extension */
+$poster = '';
 $extensions = array('jpg', 'jpeg', 'png', 'gif');
 foreach ($extensions as $extension)
 {
