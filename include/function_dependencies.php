@@ -81,7 +81,7 @@ function check($binary)
 /* Concat custom binary directory from local config local/config/config.inc.php */
 $sync_binaries = array(
 	'exiftool'	=> isset($conf['vjs_exiftool_dir']) ? $conf['vjs_exiftool_dir'].$sync_options['exiftool'] : $sync_options['exiftool'],
-	'ffprobe'	=> isset($conf['vjs_ffprobe_dir']) ? $conf['vjs_ffprobe_dir'].$sync_options['ffprobe'] : $sync_options['ffprobe'],
+	'ffprobe'	=> isset($conf['ffmpeg_dir']) ? $conf['ffmpeg_dir'].$sync_options['ffprobe'] : $sync_options['ffprobe'],
 	'ffmpeg'	=> isset($conf['ffmpeg_dir']) ? $conf['ffmpeg_dir'].$sync_options['ffmpeg'] : $sync_options['ffmpeg'],
 	'mediainfo'	=> isset($conf['vjs_mediainfo_dir']) ? $conf['vjs_mediainfo_dir'].$sync_options['mediainfo'] : $sync_options['mediainfo'],
 );
