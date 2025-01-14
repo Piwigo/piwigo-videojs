@@ -86,7 +86,8 @@ if (isset($general['MediaCreateDate']))
 	$logger->debug('exiftool: date creation is '.$general['MediaCreateDate']);
 	if (str_contains($general['MediaCreateDate'], ':'))
 	{
-		if (($timestamp = strtotime($general['MediaCreateDate'])) === true)
+		if ((strcmp($general['MediaCreateDate'], "0000:00:00 00:00:00") !== 0) and
+			($timestamp = strtotime($general['MediaCreateDate'])) === true)
 		{
 			$exif['date_creation'] = date('Y-m-d H:i:s', strtotime($timestamp));
 		}
