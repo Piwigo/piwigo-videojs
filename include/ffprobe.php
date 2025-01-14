@@ -33,26 +33,29 @@ try {
 	if (!isset($json) or empty($json))
 		die("ffprobe error reading file. Is ffprobe install? Is ffprobe in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['ffprobe'] ." -hide_banner -loglevel fatal -show_error -show_format -show_streams -print_format json '". $filename ."'");
 	$output = json_decode($json, true);
-	//print_r($output);
 } catch (Exception $e) {
 	die("ffprobe error reading file. Is ffprobe install? Is ffprobe in path?<br/>Is the video accessible & readable, Try to run the command manually.<br/>". $sync_options['ffprobe'] ." -hide_banner -loglevel fatal -show_error -show_format -show_streams -print_format json '". $filename ."'");
 }
 
+// Could we extract the metadata?
 if ( !isset($output) and !is_array($output))
 {
 	$exif['error'] = "ffprobe error reading file: <br/>'". $filename."'";
 }
 
+// Any error reported by ffprobe? 
 if ( isset($output['error']) and isset($output['error']['string']))
 {
 	$exif['error'] = "ffprobe error reading output json: <br/>'". $output['error']['string']."'";
 }
 
+// Was the format and streams returned?
 if ( !isset($output['format']) and !isset($output['streams']))
 {
 	if (!is_array($output)) { $exif['error'] = "ffprobe error reading output json: <br/>'". $output."'"; }
 }
 
+// var_dump($output);
 if (isset($output['format']))
 {
 	$general = $output['format'];
@@ -74,6 +77,7 @@ if (isset($output['streams']) and is_array($output['streams']) and !empty($outpu
 	}
 }
 
+global $logger;
 /* General */
 if (isset($general['size']))
 {
@@ -81,6 +85,7 @@ if (isset($general['size']))
 }
 if (isset($general['duration']))
 {
+	$logger->debug('ffprobe: duration of '.round($general['duration'], 1).' seconds');
 	$exif['duration'] = round($general['duration']*1000, 0);
 	$exif['playtime_seconds'] = round($general['duration'], 0);
 }
@@ -90,6 +95,7 @@ if (isset($general['bit_rate']))
 }
 if (isset($general['tags']['creation_time']))
 {
+	$logger->debug('ffprobe: date creation is '.$general['tags']['creation_time']);
 	$exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general['tags']['creation_time']));
 }
 if (isset($general['tags']['location']))
