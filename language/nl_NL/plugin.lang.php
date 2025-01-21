@@ -110,3 +110,13 @@ $lang['INTRO_METADATA'] = 'extraheert metagegevens met <a href="https://exiftool
 $lang['INTRO_CONFIG'] = 'Deze plugin:';
 $lang['FILE_NOT_READABLE'] = 'bestand niet leesbaar';
 $lang['DIR_NOT_WRITABLE'] = 'Directory zonder schrijftoegang';
+$lang['SYNC_REPRESENTATIVES'] = 'Adopteer posters die handmatig zijn geüpload';
+$lang['SYNC_MEDIAINFO_ERROR'] = 'Metadata kan niet worden opgehaald met MediaInfo omdat de XML-bibliotheek ontbreekt';
+$lang['SYNC_METADATA_ERROR'] = 'Metadata kan niet worden opgehaald omdat ExifTool, FFprobe of MediaInfo niet zijn geïnstalleerd of omdat hun paden onjuist zijn.';
+$lang['SYNC_NONE'] = 'U hebt me niet gevraagd om iets te doen!';
+$lang['SYNC_POSTEROVERLAY_ERROR'] = 'Filmeffect uitgeschakeld omdat de GD-bibliotheek ontbreekt.';
+$lang['SYNC_POSTER_ERROR'] = 'Poster- en thumbnail-creatie uitgeschakeld omdat FFmpeg niet is geïnstalleerd of omdat het pad onjuist is.';
+$lang['SYNC_REPRESENTATIVES_DESC'] = 'Voor elke video worden de gegevens met betrekking tot de poster bijgewerkt.';
+$lang['VIDEO'] = 'Video';
+$lang['VIDEOJS_SETTINGS'] = 'VideoJS-instellingen';
+$lang['VIDEO_SRC'] = 'Videobronnen';
