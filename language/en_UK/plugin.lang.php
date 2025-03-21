@@ -105,7 +105,7 @@ $lang['SYNC_REPRESENTATIVES'] = 'Adopt posters uploaded manually';
 $lang['SYNC_REPRESENTATIVES_DESC'] = 'For each video, updates the information related with its poster.';
 $lang['SYNC_POSTER_TITLE'] = 'Posters for photo gallery';
 $lang['SYNC_POSTER'] = 'Create posters at position in seconds:';
-$lang['SYNC_POSTER_DESC'] = 'Create	a poster from the video at the specified position in seconds.';
+$lang['SYNC_POSTER_DESC'] = 'Create a poster from the video at the specified position in seconds.';
 $lang['SYNC_POSTER_REQUIRE'] = 'Requires <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>:';
 $lang['SYNC_POSTER_ERROR'] = 'Poster and thumbnail creation disabled because FFmpeg is not installed or its path is incorrect.';
 $lang['SYNC_POSTEROVERWRITE'] = 'Overwrite existing posters';
