@@ -56,9 +56,6 @@ $template->set_filenames(
     )
   );
 
-// Get default sync options
-$sync_options = $conf['vjs_sync'];
-
 // Get image details if video type
 $query = "SELECT * FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['image_id'].";";
 $picture = pwg_db_fetch_assoc(pwg_query($query));
@@ -76,9 +73,18 @@ if (isset($_GET['delete_extra']) and $_GET['delete_extra'] == 1)
     array_push( $page['infos'], 'Thumbnails and Subtitle and extra videos source deleted');
 }
 
-// Sync metadata to db, share code
+// Get default sync options
+$sync_options = $conf['vjs_sync'];
+
+// Sync metadata to db and create poster if needed, share code
 if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1)
 {
+    $sync_options['metadata'] = true;
+    $sync_options['representative'] = true;
+    $sync_options['poster'] = true;
+    $sync_options['posteroverwrite'] = false;
+    $sync_options['simulate'] = false;
+    $sync_options['subcats_included'] = false;
     require_once(dirname(__FILE__).'/../include/function_sync.php');
     $page['errors'] = $errors;
     $page['warnings'] = $warnings;
@@ -150,7 +156,7 @@ foreach ($extensions as $extension)
     }
 }
 
-// If none found, it creates a strpos error
+// If none found, will display a question mark icon
 if (strlen($poster) > 0)
 {
     $poster = embellish_url($poster);
@@ -200,15 +206,15 @@ $infos = array_merge(
 //print_r($infos); */
 
 $template->assign(array(
-    'IMAGE_ID' => $_GET['image_id'],
-    'PWG_TOKEN' => get_pwg_token(),
-    'F_ACTION' => $self_url,
-    'SYNC_URL' => $sync_url,
+    'IMAGE_ID'   => $_GET['image_id'],
+    'PWG_TOKEN'  => get_pwg_token(),
+    'F_ACTION'   => $self_url,
+    'SYNC_URL'   => $sync_url,
     'DELETE_URL' => $delete_url,
-    'TN_SRC' => DerivativeImage::thumb_url($picture),
-    'TITLE' => render_element_name($picture),
-    'EXIF' => $exif,
-    'INFOS' => $infos,
+    'TN_SRC'     => DerivativeImage::thumb_url($picture),
+    'TITLE'      => render_element_name($picture),
+    'EXIF'       => $exif,
+    'INFOS'      => $infos,
 ));
 
 $template->assign_var_from_handle('ADMIN_CONTENT', 'plugin_admin_content');
