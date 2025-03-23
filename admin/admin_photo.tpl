@@ -43,7 +43,7 @@
 								<li>thumbnail at second="{$thumb.second}" source="{$thumb.source}"</li>
 							{/foreach}
 							</ul>
-						{else}
+						{elseif !is_numeric($name)}
 							<li>{$name}: {$data}</li>
 						{/if}
 					{/foreach}
