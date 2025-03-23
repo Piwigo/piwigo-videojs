@@ -6,7 +6,7 @@
 *
 * Created   :   4.06.2013
 *
-* Copyright 2012-2024 <xbgmsharp@gmail.com>
+* Copyright 2012-2025 <xbgmsharp@gmail.com>
 *
 *
 * This program is free software: you can redistribute it and/or modify
@@ -202,7 +202,7 @@ function vjs_element_set_global_action($action, $collection)
     }
 
     // Do the work, share with admin sync and photo
-    require_once(dirname(__FILE__).'/../include/function_sync2.php');
+    require_once(dirname(__FILE__).'/../include/function_sync.php');
 
     $page['errors'] = $errors;
     $page['warnings'] = $warnings;

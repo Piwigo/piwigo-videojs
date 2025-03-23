@@ -4,9 +4,9 @@
 * Project   :   piwigo-videojs
 * Descr     :   Handle the syncronisation process
 *
-* Created   :   9.06.2013
+* Created   :   9.07.2013
 *
-* Copyright 2012-2024 <xbgmsharp@gmail.com>
+* Copyright 2012-2025 <xbgmsharp@gmail.com>
 *
 *
 * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,7 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
+//setlocale(LC_ALL, "en_US.UTF-8");
 include_once("function_frame.php");
 include_once("function_caller.php");
 
@@ -36,224 +37,364 @@ include_once("function_caller.php");
  *
  */
 
-// Check the presence of the DB schema
-$sync_options['sync_gps'] = true;
-$q = 'SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = "'.IMAGES_TABLE.'" AND COLUMN_NAME = "lat" OR COLUMN_NAME = "lon"';
-list($result) = pwg_db_fetch_row( pwg_query($q) );
-if($result != 4)
-{
-    $sync_options['sync_gps'] = false;
-}
-
 // Init value for result table
 $videos = 0;
 $metadata = 0;
+$representative_created = false;
+$posters = 0;
 $thumbs = 0;
-$errors = array();
-$warnings = array();
-$infos = array();
+!isset($errors) and $errors = array();
+!isset($warnings) and $warnings = array();
+!isset($infos) and $infos = array();
 
-if (!$sync_options['sync_gps'])
+// Check dependencies: MediaInfo & FFmpeg, share with batch manager & photo edit & admin sync
+include("function_dependencies.php");
+
+global $logger;
+if (!$sync_options['metadata'] and !$sync_options['representative'] and !$sync_options['poster'] and !$sync_options['thumb'])
 {
-    $warnings[] = "latitude and longitude disable because the required plugin is not present, eg: 'OpenStreetMap'.";
+    $errors[] = l10n('SYNC_NONE');
 }
 
-if ($sync_options['poster'] or $sync_options['thumb'])
-{
-    $retval = execCMD("ffmpeg -version 2>&1"); // Does it work?
-    if (($retval != 0))
-    {
-        $warnings[] = "Poster creation disable because ffmpeg is not installed on the system, eg: '/usr/bin/ffmpeg'.";
-        $sync_options['poster'] = false;
-        $sync_options['thumb'] = false;
-    }
-}
-
-if (!$sync_options['metadata'] and !$sync_options['poster'] and !$sync_options['thumb'])
-{
-    $errors[] = "You ask me to do nothing, are you sure?";
-}
-
-// Avoid Conflict with other plugin using getID3
-if( !class_exists('getID3')){
-    // Get video infos with getID3 lib
-    require_once(dirname(__FILE__) . '/../include/getid3/getid3.php');
-}
-$getID3 = new getID3;
 // Do the job
 $result = pwg_query($query);
 while ($row = pwg_db_fetch_assoc($result))
 {
-    //print_r($row);
+ 	/* Check full-res file */
     $filename = $row['path'];
-    if (is_file($filename))
-    {
-        $videos++;
-        //echo $filename;
-        $fileinfo = $getID3->analyze($filename);
-        //print_r($fileinfo);
-        $exif = array();
-        if (isset($fileinfo['filesize']))
-        {
-                $exif['filesize'] = round($fileinfo['filesize']/1024);
-        }
-        /*
-        if (isset($fileinfo['playtime_string']))
-        {
-                $exif['playtime_string'] = $fileinfo['playtime_string'];
-        }
-        */
-        if (isset($fileinfo['video']['resolution_x']))
-        {
-                $exif['width'] = $fileinfo['video']['resolution_x'];
-        }
-        if (isset($fileinfo['video']['resolution_y']))
-        {
-                $exif['height'] = $fileinfo['video']['resolution_y'];
-        }
-        if (isset($fileinfo['tags']['quicktime']['gps_latitude'][0]) and $sync_options['sync_gps'])
-        {
-                $exif['latitude'] = $fileinfo['tags']['quicktime']['gps_latitude'][0];
-        }
-        if (isset($fileinfo['tags']['quicktime']['gps_longitude'][0]) and $sync_options['sync_gps'])
-        {
-                $exif['longitude'] = $fileinfo['tags']['quicktime']['gps_longitude'][0];
-        }
-        if (isset($fileinfo['tags']['quicktime']['model'][0]))
-        {
-                $exif['Model'] = substr($fileinfo['tags']['quicktime']['model'][0], 2);
-        }
-        if (isset($fileinfo['tags']['quicktime']['software'][0]))
-        {
-                $exif['Model'] .= " ". substr($fileinfo['tags']['quicktime']['software'][0], 2);
-        }
-        if (isset($fileinfo['tags']['quicktime']['make'][0]))
-        {
-                $exif['Make'] = $fileinfo['tags']['quicktime']['make'][0];
-        }
-        if (isset($fileinfo['tags']['quicktime']['creation_date'][0]))
-        {
-                // ?2013-03-25T09:46:54+0900
-                $exif['DateTimeOriginal'] = substr($fileinfo['tags']['quicktime']['creation_date'][0], 1);
-        }
-        //print_r($exif);
-        if (isset($exif) and $sync_options['metadata'])
-        {
-            $metadata++;
-            $infos[] = $filename. ' metadata: '.implode(",", array_keys($exif));
-            if ($sync_options['metadata'] and !$sync_options['simulate'])
-            {
-                $dbfields = explode(",", "filesize,width,height,latitude,longitude");
-                $query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
-                pwg_query($query);
-            }
-        }
-
-        /* Create poster */
-        if ($sync_options['poster'])
-        {
-            $thumbs++;
-            /* Init value */
-            $file_wo_ext = pathinfo($row['file']);
-            $output_dir = dirname($row['path']) . '/pwg_representative/';
-            if ($conf['piwigo_db_version'] == "2.4")
-            {
-                $file_wo_ext['filename'] = "TN-" . $file_wo_ext['filename'];
-                $output_dir = dirname($row['path']) . '/thumbnail/';
-            }
-            $in = $filename;
-            $out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['output'];
-            /* report it */
-            $infos[] = $filename. ' poster: '.$out;
-
-            if (!is_dir($output_dir) or !is_writable($output_dir))
-            {
-                $errors[] = "Directory ".$output_dir." doesn't exist or wrong permission";
-            }
-            else if ($sync_options['postersec'] and !$sync_options['simulate'])
-            {
-                if (isset($fileinfo['playtime_seconds']) and $sync_options['postersec'] > $fileinfo['playtime_seconds'])
-                {
-                    $errors[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". (int)$fileinfo['playtime_seconds'] ." secondes";
-                    $sync_options['postersec'] = (int)$fileinfo['playtime_seconds'];
-                }
-                $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -y ".$out;
-                if ($sync_options['output'] == "png")
-                {
-                    $ffmpeg = "ffmpeg -itsoffset -".$sync_options['postersec']." -i ".$in." -vcodec png -vframes 1 -an -f rawvideo -y ".$out;
-                }
-                //echo $ffmpeg;
-                $retval = execCMD($ffmpeg);
-                if($retval != 0 or !file_exists($out))
-                {
-                    $errors[] = "Error poster running ffmpeg, try it manually:\n<br/>". $ffmpeg;
-                }
-		else
-		{
-                    /* Update DB */
-                    $query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='".$sync_options['output']."' WHERE `id`=".$row['id'].";";
-                    pwg_query($query);
-
-                    /* Delete any previous square or thumbnail or small images */
-                    $idata = "_data/i/".dirname($row['path']).'/pwg_representative/';
-                    $extensions = array('-th.jpg', '-sq.jpg', '-th.png', '-sq.png', '-sm.png', '-sm.png');
-                    foreach ($extensions as $extension)
-                    {
-                        $ifile = $idata.$file_wo_ext['filename'].$extension;
-                        if(is_file($ifile))
-                        {
-                            unlink($ifile);
-                        }
-                    }
-
-                    /* Generate the overlay */
-                    if($sync_options['posteroverlay'])
-                    {
-                        add_movie_frame($out);
-                        $infos[] = $filename. ' overlay: '.$out;
-                    }
-		}
-            }
-        }
-
-        /* Create multiple thumbnails */
-        if ($sync_options['thumb'])
-        {
-            if (isset($fileinfo['playtime_seconds']) and isset($sync_options['thumbsec']) and isset($sync_options['thumbsize']))
-            {
-                /* Init value */
-                $file_wo_ext = pathinfo($row['file']);
-                if ($conf['piwigo_db_version'] == "2.4")
-                {
-                    $output_dir = dirname($row['path']) . '/thumbnail/';
-                }
-
-                if (!is_dir($output_dir) or !is_writable($output_dir))
-                {
-                    $errors[] = "Directory ".$output_dir." doesn't exist or wrong permission";
-                }
-                else if ($sync_options['thumbsec'] and !$sync_options['simulate'])
-                {
-                    for ($second=0; $second <= (int)$fileinfo['playtime_seconds']; $second+=$sync_options['thumbsec'])
-                    {
-                        $out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];
-                        $infos[] = $filename. ' thumbnail: '.$second.' seconds '.$out;
-                        /* Lets do it */
-                        $ffmpeg = "ffmpeg -itsoffset -".$second." -i ".$in." -vcodec mjpeg -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y ".$out;
-                        if ($sync_options['output'] == "png")
-                        {
-                            $ffmpeg = "ffmpeg -itsoffset -".$second." -i ".$in." -vcodec png -vframes 1 -an -f rawvideo -s ".$sync_options['thumbsize']." -y ".$out;
-                        }
-                        $retval = execCMD($ffmpeg);
-                        if($retval != 0 or !file_exists($out))
-                        {
-                            $errors[] = "Error thumbnail running ffmpeg, try it manually:\n<br/>". $ffmpeg;
-                        }
-                    }
-                }
-            }
-        }
+    if (!is_file($filename)) {
+		$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('FILE_NOT_READABLE');
+    	$logger->debug('sync: No full-res. file "'.$filename.'"');
+    	continue;
     }
+    
+	/* Will report it */
+	$videos++;
+	$sync_arr = array();
+	$sync_arr['file'] = $filename;
+	$logger->debug('sync: $filename = '.$filename);
+	
+	/* Ensure file is readabale */
+	if (!is_readable($filename)) {
+		$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('FILE_NOT_READABLE');
+		$logger->debug('sync: Unable to read file for synchronisation process');
+		continue;
+	}
+
+	/* Retrieve metadata if requested */
+	$exif = array();
+	if ($sync_options['metadata'])
+	{
+		/* Retrieve metadata with MediaInfo, ExifTool or FFprobe */
+		if (isset($sync_options['mediainfo']) and $sync_options['mediainfo']) { include('mediainfo.php'); }
+		if (isset($sync_options['exiftool']) and $sync_options['exiftool']) { include('exiftool.php'); }
+		if (isset($sync_options['ffprobe']) and $sync_options['ffprobe']) { include('ffprobe.php'); }
+		
+		/* Did we retrieve metadata successfully? */
+		if (isset($exif))
+		{
+			$exif = array_filter($exif);
+			if (isset($exif['error']))
+			{
+				$errors[] = $exif['error'];
+			}
+			else if (!empty($exif) and count($exif) > 0)
+			{
+				/* Will report it */
+				$metadata++;
+				$infos[] = l10n('VIDEO').' '.$filename. ' — '.l10n('SYNC_METADATA').': '.count($exif).' '.vjs_pprint_r($exif);
+				$sync_arr['metadata'] = count($exif).' '.vjs_pprint_r($exif);
+				
+				/* Save metadata */
+				if ($sync_options['metadata'] and !$sync_options['simulate'])
+				{
+					/* Update Piwigo SQL table */
+					$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
+					$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
+					pwg_query($query);
+	
+					/* Use our own metadata SQL table */
+					$query = "INSERT INTO ".$prefixeTable."image_videojs (metadata,date_metadata_update,id) VALUES ('".serialize($exif)."',CURDATE(),'".$row['id']."') ON DUPLICATE KEY UPDATE metadata='".serialize($exif)."',date_metadata_update=CURDATE(),id='".$row['id']."';";
+					pwg_query($query);
+				}
+			}
+		}
+	}
+	else	/* Fetch metadata as we will need $exif['playtime_seconds'] */
+	{
+		/* Will report it */
+		$infos[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DATABASE');
+		$sync_arr['database'] = l10n('SYNC_DATABASE');
+		
+		/* Fetch metadata from the database */
+		$query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$row['id'].";";
+		$sql_metadata = pwg_query($query);
+		$videojs_metadata = pwg_db_fetch_assoc($sql_metadata);
+		if (is_array($exif) and isset($videojs_metadata) and is_array($videojs_metadata) and isset($videojs_metadata['metadata']))
+		{
+			$video_metadata = unserialize($videojs_metadata['metadata']);
+			$exif = array_merge($exif, $video_metadata);
+		}
+		if (!isset($exif['playtime_seconds']) and ($sync_options['poster'] or $sync_options['thumb']))
+		{
+			/* Will report it */
+			$warnings[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DURATION_ERROR');
+		}
+	}
+
+	/* Should we create a poster? */
+	if ($sync_options['poster'])
+	{
+		/* Full-res file available? */
+		$file_wo_ext = pathinfo($row['path']);
+		//$file_wo_ext['filename'] ? '' : $file_wo_ext['filename'] = substr($filename,0 ,-5);
+		if (!isset($file_wo_ext['filename']) or (isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0))
+		{
+			/* Will report it */
+			$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('FILE_NOT_READABLE');
+			continue;
+		}
+		$output_dir = dirname($row['path']) . '/pwg_representative/';
+		//$output_dir = PWG_DERIVATIVE_DIR . dirname($row['path']) . '/pwg_representative/';
+		$in = $filename;
+		$out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['output'];
+		
+		/* Create folder if needed */
+		if (!is_dir($output_dir))
+		{
+			mkdir($output_dir);
+		}
+		
+		/* Check access rights to folder */
+		if (!is_writable($output_dir))
+		{
+			/* Will report it */
+			$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('DIR_NOT_WRITABLE');
+		}
+		else if (isset($exif['playtime_seconds']) and $sync_options['postersec'] and !$sync_options['simulate'])
+		{   /* We really want to create the poster */
+			$posters++;
+			
+			/* Delete any previous poster, avoid duplication on different output format */
+			$extensions = array('jpg', 'jpeg', 'png', 'gif');
+			foreach ($extensions as $extension)
+			{
+				/* Extension in lowercase */
+				$ifile = $output_dir.$file_wo_ext['filename'].'.'.strtolower($extension);
+				if (is_file($ifile))
+				{
+					unlink($ifile);
+				}
+				
+				/* Extension in uppercase */
+				$ifile = $output_dir.$file_wo_ext['filename'].'.'.strtoupper($extension);
+				if (is_file($ifile))
+				{
+					unlink($ifile);
+				}
+			}
+			
+			/* If video is shorter fallback to half duration */
+			$posterSec = $sync_options['postersec'];
+			if ($sync_options['postersec'] > $exif['playtime_seconds'])
+			{
+				/* Will report it */
+				$warnings[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DURATION_SHORT');
+				$posterSec = (int)round($exif['playtime_seconds']/2, 2, PHP_ROUND_HALF_DOWN);
+			}
+			
+			/* Default output to JPG */
+			$ffmpeg = $sync_options['ffmpeg'] ." -ss ".$posterSec." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
+			if ($sync_options['output'] == "png")
+			{
+				$ffmpeg = $sync_options['ffmpeg'] ." -ss ".$posterSec." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -y \"".$out. "\"";
+			}
+			
+			/* Create poster */
+			$retval = execCMD($ffmpeg);
+			if ($retval != 0 or !file_exists($out) or !filesize($out))
+			{
+				/* Will report it */
+				$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('POSTER_ERROR');
+			}
+			else	/* We have a poster, lets update the database */
+			{
+				/* Will report it */
+				$infos[] = l10n('POSTER').' '.$out;
+				$sync_arr['poster'] = $out;
+				$logger->debug('sync: $out = '.$out);
+
+				/* Will not need to adopt this poster */
+				$representative_created = true;
+				
+				/* Update database */
+				$query = "UPDATE ".IMAGES_TABLE." SET `representative_ext`='".$sync_options['output']."' WHERE `id`=".$row['id'].";";
+				pwg_query($query);
+
+				/* Delete previous thumbnails, new ones will be autogenerated by Piwigo on request */
+				delete_element_derivatives($row);
+
+				/* Generate the overlay (film effect) */
+				if ($sync_options['posteroverlay'])
+				{
+					add_movie_frame($out);
+				}
+			}
+		}
+	} /* End poster */
+
+	/* Should we adopt a poster? */
+	if ($sync_options['representative'] and !$representative_created)
+	{
+		/* Initialisation */
+		$output_dir = dirname($row['path']) . '/pwg_representative/';
+		$file_wo_ext = pathinfo($row['path']);
+		$out = '';
+		$query = '';
+		
+		/* Check if there already exists a poster */
+		$representative_ext = isset($representative_ext) ? $row['representative_ext'] : '';
+		$extensions = array('jpg', 'jpeg', 'png', 'gif');
+		foreach ($extensions as $extension)
+		{
+			/* Extension in lowercase */
+			$ilcfile = $output_dir.$file_wo_ext['filename'].'.'.strtolower($extension);
+//  			$logger->debug('sync: $ilcfile = '.$ilcfile);
+			if (is_file($ilcfile) and $representative_ext != $extension)
+			{
+				/* We have a poster, create query for updating the database */
+				$query = "UPDATE ".IMAGES_TABLE." SET representative_ext = '".$extension."' WHERE id = ".$row['id'].";";
+				$out = $ilcfile;
+// 				$logger->debug('sync: $query = '.$query);
+			}
+			
+			/* Extension in uppercase */
+			$iucfile = $output_dir.$file_wo_ext['filename'].'.'.strtoupper($extension);
+// 			$logger->debug('sync: $iucfile = '.$iucfile);
+			if (is_file($iucfile) and $representative_ext != $extension)
+			{
+				/* We have a poster, create query for updating the database */
+				$query = "UPDATE ".IMAGES_TABLE." SET representative_ext = '".$extension."' WHERE id = ".$row['id'].";";
+				$out = $iucfile;
+// 				$logger->debug('sync: $query = '.$query);
+				
+				/* Rename file with extension in lowercase */
+				if (is_file($ilcfile)) 
+				{
+					unlink($iucfile);				// Keep file with extension in lowercase
+				}
+				else 
+				{
+					rename($iucfile, $ilcfile);		// Rename file with extension in lowercase
+				}
+			}
+		}
+		
+		/* Update database */
+		if (!empty($query))
+		{	
+			/* We really want to adopt the poster */
+			$posters++;
+			
+			/* Will report it */
+			$infos[] = l10n('POSTER').' '.$out;
+			$sync_arr['poster'] = $out;
+			$logger->debug('sync: adopt poster '.$out);
+
+			/* Update the database */
+			if (!$sync_options['simulate'])
+			{
+				pwg_query($query);
+			}
+		}
+	}
+	
+	/* Create multiple frames for VideoJS player */
+	if ($sync_options['thumb'])
+	{
+		if (isset($exif['playtime_seconds']) and isset($sync_options['thumbsec']) and isset($sync_options['thumbsize']))
+		{
+			/* Initialise file name and path */
+			$file_wo_ext = pathinfo($filename);
+			if (!isset($file_wo_ext['filename']) and strlen($file_wo_ext['filename']) == 0)
+			{
+				/* Will report it */
+				$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('FILE_NOT_READABLE');
+				continue;
+			}
+			$output_dir = dirname($row['path']) . '/pwg_representative/';
+			//$output_dir = PWG_DERIVATIVE_DIR . dirname($row['path']) . '/pwg_representative/';
+
+			/* Check access rights to folder */
+			if (!is_dir($output_dir) or !is_writable($output_dir))
+			{
+				/* Will report it */
+				$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('DIR_NOT_WRITABLE');
+				continue;
+			}
+			
+			if ($sync_options['thumbsec'] and !$sync_options['simulate'])
+			{   /* We really want to create the frames */
+				/* Delete any previous frames, avoiding duplication on different output format */
+				$filematch = $output_dir.$file_wo_ext['filename']."-th_*";
+				$matches = glob($filematch);
+				if ( is_array ( $matches ) ) {
+					foreach ( $matches as $eachfile) {
+						if(is_file($eachfile))
+						{
+							unlink($eachfile);
+						}
+					}
+				}
+	
+				/* Override the thumbsize (default 120x68) in order to respect the video aspect ratio base on the user specified width */
+				/* https://github.com/xbgmsharp/piwigo-videojs/issues/52 */
+				$thumb_width = preg_split("/x/", $sync_options['thumbsize']);
+				
+				/* Invalid width x height fallback to default thumbsize (default 120x68) */
+				if (!isset($thumb_width[0]))
+				{
+					/* Will report it */
+					$warnings[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_THUMBSIZE_ERROR');
+					$thumb_width[0] = "120";
+				}
+				
+				/* Takes output width (ow), divides it by aspect ratio (a), truncates digits after decimal point */
+				$scale = "scale='".$thumb_width[0].":trunc(ow/a)'";
+		
+				/* Loop over all frames */
+				$in = $filename;
+				for ($second=0; $second <= $exif['playtime_seconds']; $second += $sync_options['thumbsec'])
+				{
+					/* Output filename */
+					$out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];
+					
+					/* Will report it */
+					$thumbs++;
+					$infos[] = l10n('SYNC_THUMB').' — '.$second.' s — '.$out;
+					$sync_arr['thumbnail'][] = $second.' s — '.$out;
+					
+					/* Create frame, default output to JPG */
+					$ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -vf ".$scale." -y \"".$out. "\"";
+					if ($sync_options['output'] == "png")
+					{
+						$ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -vf ".$scale." -y \"".$out. "\"";
+					}
+					$retval = execCMD($ffmpeg);
+					
+					/* Frame produced successfully? */
+					if ($retval != 0 or !file_exists($out) or !filesize($out))
+					{
+						/* Will report it */
+						$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_THUMB_ERROR');
+					}
+				}
+			}
+		}
+	} /* End thumbnails */
+	
+	/* Report for custom page_info */
+	$sync_infos[] = $sync_arr;
 }
 
 /***************

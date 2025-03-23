@@ -6,7 +6,7 @@
 *
 * Created   :   10.07.2013
 *
-* Copyright 2012-2024 <xbgmsharp@gmail.com>
+* Copyright 2012-2025 <xbgmsharp@gmail.com>
 *
 *
 * This program is free software: you can redistribute it and/or modify
@@ -79,7 +79,7 @@ if (isset($_GET['delete_extra']) and $_GET['delete_extra'] == 1)
 // Sync metadata to db, share code
 if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1)
 {
-    require_once(dirname(__FILE__).'/../include/function_sync2.php');
+    require_once(dirname(__FILE__).'/../include/function_sync.php');
     $page['errors'] = $errors;
     $page['warnings'] = $warnings;
     $page['infos'] = $infos;

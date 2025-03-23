@@ -6,7 +6,7 @@
 *
 * Created   :   4.06.2013
 *
-* Copyright 2012-2024 <xbgmsharp@gmail.com>
+* Copyright 2012-2025 <xbgmsharp@gmail.com>
 *
 *
 * This program is free software: you can redistribute it and/or modify
@@ -89,7 +89,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     }
 
     // Do the work, share with batch manager
-    require_once(dirname(__FILE__).'/../include/function_sync2.php');
+    require_once(dirname(__FILE__).'/../include/function_sync.php');
 
     // Send sync result to template
     $template->assign('sync_errors', $errors );

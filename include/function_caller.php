@@ -7,7 +7,7 @@
 *
 * Created   :   26.12.2023
 *
-* Copyright 2023-2024 <eddy@lelievre-berna.net>
+* Copyright 2023-2025 <eddy@lelievre-berna.net>
 *
 *
 * This program is free software: you can redistribute it and/or modify
