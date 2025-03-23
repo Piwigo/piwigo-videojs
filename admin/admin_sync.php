@@ -52,9 +52,9 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     $sync_options = array_merge($sync_options, $sync_options_form);
 
     // Update sync options in DB but in simulation mode
-    $sync_options_stored = $sync_options;
-    $sync_options_stored['simulate'] = true;
-    conf_update_param('vjs_sync', serialize($sync_options));
+    $sync_options_backup = $sync_options;
+    $sync_options_backup['simulate'] = true;
+    conf_update_param('vjs_sync', serialize($sync_options_backup));
 
     // Filter on existing poster
     $OVERWRITE = '';

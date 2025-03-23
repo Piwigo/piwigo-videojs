@@ -105,7 +105,7 @@ if (isset($videojs_metadata) and isset($videojs_metadata['metadata']))
 }
 
 // Try to find multiple video sources
-global $logger;
+// global $logger;
 $output_dir = dirname($picture['path']) . '/pwg_representative/';
 $parts = pathinfo($picture['path']);
 $extension = $parts['extension'];

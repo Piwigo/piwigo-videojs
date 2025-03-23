@@ -122,7 +122,8 @@ function plugin_uninstall()
 
 function plugin_activate()
 {
-    global $conf, $logger;
+    global $conf;
+//    global $logger;
 
     if (!is_array($conf['vjs_conf']))
         $conf['vjs_conf'] = unserialize($conf['vjs_conf']);
@@ -136,8 +137,8 @@ function plugin_activate()
         or (!empty($conf['vjs_sync']))
         or (count($conf['vjs_sync'], COUNT_RECURSIVE) != 17) )
     {
-        $logger->debug(__FUNCTION__.': Load '.count($conf['vjs_conf'], COUNT_RECURSIVE).' vjs_conf parameters');
-        $logger->debug(__FUNCTION__.': Load '.count($conf['vjs_sync'], COUNT_RECURSIVE).' vjs_sync parameters');
+//        $logger->debug(__FUNCTION__.': Load '.count($conf['vjs_conf'], COUNT_RECURSIVE).' vjs_conf parameters');
+//        $logger->debug(__FUNCTION__.': Load '.count($conf['vjs_sync'], COUNT_RECURSIVE).' vjs_sync parameters');
         plugin_install();
     }
 }

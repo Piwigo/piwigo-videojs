@@ -43,7 +43,7 @@ if ($sync_options['metadata'] and isset($sync_options['mediainfo']) and !class_e
 function check($binary)
 {
 	global $logger;
-	$logger->debug('checking '.$binary.':');
+//	$logger->debug('checking '.$binary.':');
 
 	// Determine appropriate argument (str_contains requires PHP8)
 	if (strpos($binary, 'exiftool') !== false) {

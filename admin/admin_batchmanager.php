@@ -195,8 +195,10 @@ function vjs_element_set_global_action($action, $collection)
         // Merge default value with user data from the form
         $sync_options = array_merge($sync_options, $sync_options_form);
 
-        // Update sync options in DB
-        conf_update_param('vjs_sync', serialize($sync_options));
+        // Update sync options in DB but in simulation mode
+        $sync_options_backup = $sync_options;
+        $sync_options_backup['simulate'] = true;
+        conf_update_param('vjs_sync', serialize($sync_options_backup));
     }
 
     // Do the work, share with admin sync and photo
