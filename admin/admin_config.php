@@ -80,23 +80,23 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 {
 	// keep the value in the admin form
 	$conf['vjs_conf'] = array(
-		'skin'          => $_POST['vjs_skin'],
-		'max_height'    => $_POST['vjs_max_height'],
-		'preload'       => $_POST['vjs_preload'],
-		'controls'      => get_boolean($_POST['vjs_controls']),
-		'autoplay'      => get_boolean($_POST['vjs_autoplay']),
-		'loop'          => get_boolean($_POST['vjs_loop']),
-		'volume'        => $_POST['vjs_volume'],
-		'language'      => $_POST['vjs_language'],
-		'upscale'       => get_boolean($_POST['vjs_upscale']),
-		'plugins'       => array(
+		  'skin'        => $_POST['vjs_skin'],
+		  'max_height'  => $_POST['vjs_max_height'],
+		  'preload'     => $_POST['vjs_preload'],
+		  'controls'    => get_boolean($_POST['vjs_controls']),
+		  'autoplay'    => get_boolean($_POST['vjs_autoplay']),
+		  'loop'        => get_boolean($_POST['vjs_loop']),
+		  'volume'      => $_POST['vjs_volume'],
+		  'language'    => $_POST['vjs_language'],
+		  'upscale'     => get_boolean($_POST['vjs_upscale']),
+		  'plugins'     => array(
 							'zoomrotate'    => get_boolean($_POST['vjs_zoomrotate']),
 							'thumbnails'    => get_boolean($_POST['vjs_thumbnails']),
 							'watermark'     => get_boolean($_POST['vjs_watermark']),
 							'resolution'    => get_boolean($_POST['vjs_resolution']),
 						),
-		'player'	=> $_POST['vjs_player'],
-		'metadata'	=> get_boolean($_POST['vjs_metadata']),
+		  'player'		=> $_POST['vjs_player'],
+		  'metadata'	=> get_boolean($_POST['vjs_metadata']),
 	);
 	$customcss = $_POST['vjs_customcss'];
 
@@ -120,7 +120,7 @@ list($nb_videos) = pwg_db_fetch_row( pwg_query($query) );
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NOT NULL AND ".SQL_VIDEOS.";";
 list($nb_videos_thumb) = pwg_db_fetch_row( pwg_query($query) );
 
-// send value to template
+// Send value to template
 $template->assign($conf['vjs_conf']);
 $template->assign(
 	array(

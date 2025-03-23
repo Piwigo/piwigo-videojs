@@ -60,43 +60,82 @@ function vjs_perform_batch_manager_prefilters($filter_sets, $prefilter)
 add_event_handler('loc_end_element_set_global', 'vjs_loc_end_element_set_global');
 function vjs_loc_end_element_set_global()
 {
-    global $template;
+    global $template, $conf;
+
+    // Get user's sync options
+    $sync_options = $conf['vjs_sync'];
+    $metadata_checked ='';
+    if ($sync_options['metadata']) {
+        $metadata_checked = 'checked="checked"';
+    }
+    $representative_checked = '';
+    if ($sync_options['representative']) {
+        $representative_checked = 'checked="checked"';
+    }
+    $poster_checked = '';
+    if ($sync_options['poster']) {
+        $poster_checked = 'checked="checked"';
+    }
+    $posteroverwrite_checked = '';
+    if ($sync_options['posteroverwrite']) {
+        $posteroverwrite_checked = 'checked="checked"';
+    }
+    $jpg_output_checked = '';
+    $png_output_checked = '';
+    if ($sync_options['output'] == 'jpg') {
+        $jpg_output_checked = 'checked="checked"';
+    }
+    else if ($sync_options['output'] == 'png') {
+        $png_output_checked = 'checked="checked"';
+    }
+    else {
+        $jpg_output_checked = 'checked="checked"';
+    }
+    $posteroverlay_checked = '';
+    if ($sync_options['posteroverlay']) {
+        $posteroverlay_checked ='checked="checked"';
+    }
+    $thumb_checked = '';
+    if ($sync_options['thumb']) {
+        $thumb_checked = 'checked="checked"';
+    }
+    
     $template->append('element_set_global_plugins_actions',
         array('ID' => 'videojs', 'NAME'=>l10n('VIDEOS_METADATA_POSTERS'), 'CONTENT' => '
     <legend>'.l10n('SYNC_METADATA').'</legend>
     <small><strong>'.l10n('SYNC_REQUIRE').'</strong></small>
     <ul>
       <li>
-        <label><input type="checkbox" name="vjs_metadata" value="1" checked="checked" /> '.l10n('Synchronize metadata').'</label>
+        <label><input type="checkbox" name="vjs_metadata" value="1" '.$metadata_checked.'/> '.l10n('Synchronize metadata').'</label>
         <a class="icon-info-circled-1" title="'.l10n('SYNC_METADATA_DESC').'"></a>
       </li>
     </ul>
     <legend>'.l10n('SYNC_POSTER_TITLE').'</legend>
     <ul>
       <li>
-        <label><input type="checkbox" name="vjs_representative" value="1" checked="checked"> '.l10n('SYNC_REPRESENTATIVES').' </label>
+        <label><input type="checkbox" name="vjs_representative" value="1" '.$representative_checked.'"> '.l10n('SYNC_REPRESENTATIVES').' </label>
         <a class="icon-info-circled-1" title="'.l10n('SYNC_REPRESENTATIVES_DESC').'"></a>
       </li>
     </ul>
     <small><strong>'.l10n('SYNC_POSTER_REQUIRE').'</strong></small>
     <ul>
       <li>
-        <label><input type="checkbox" name="vjs_poster" value="1"> '.l10n('SYNC_POSTER').'</label>
-        <input type="text" name="vjs_postersec" value="4" size="2" required/>
+        <label><input type="checkbox" name="vjs_poster" value="1" '.$poster_checked.'> '.l10n('SYNC_POSTER').'</label>
+        <input type="text" name="vjs_postersec" value="'.$sync_options['postersec'].'" size="2" required/>
         <a class="icon-info-circled-1" title="'.l10n('SYNC_POSTER_DESC').'"></a>
       </li>
       <li>
-        <label><input type="checkbox" name="vjs_posteroverwrite" value="1"> '.l10n('SYNC_POSTEROVERWRITE').'</label>
+        <label><input type="checkbox" name="vjs_posteroverwrite" value="1" '.$posteroverwrite_checked.'> '.l10n('SYNC_POSTEROVERWRITE').'</label>
         <a class="icon-info-circled-1" title="'.l10n('SYNC_POSTEROVERWRITE_DESC').'"></a>
       </li>
       <li>
         <label>'.l10n('SYNC_OUTPUT').'</label>
-        <label><input type="radio" name="vjs_output" value="jpg" checked="checked"/> JPG</label>
-        &nbsp;<label><input type="radio" name="vjs_output" value="png" /> PNG</label>
+        <label><input type="radio" name="vjs_output" value="jpg" '.$jpg_output_checked.'/> JPG</label>
+        &nbsp;<label><input type="radio" name="vjs_output" value="png" '.$png_output_checked.'/> PNG</label>
         <a class="icon-info-circled-1" title="'.l10n('SYNC_OUTPUT_DESC').'"></a>
       </li>
       <li>
-        <label><input type="checkbox" name="vjs_posteroverlay" value="1"> '.l10n('SYNC_POSTEROVERLAY').'</label>
+        <label><input type="checkbox" name="vjs_posteroverlay" value="1" '.$posteroverlay_checked.'> '.l10n('SYNC_POSTEROVERLAY').'</label>
         <a class="icon-info-circled-1" title="'.l10n('SYNC_POSTEROVERLAY_DESC').'"></a>
       </li>
     </ul>
@@ -104,13 +143,13 @@ function vjs_loc_end_element_set_global()
     <small><strong>'.l10n('SYNC_POSTER_REQUIRE').'</strong></small>
     <ul>
       <li>
-        <label><input type="checkbox" name="vjs_thumb" value="1" /> '.l10n('SYNC_THUMBSEC').'</label>
-        <input type="text" name="vjs_thumbsec" value="5" size="2" required/>
+        <label><input type="checkbox" name="vjs_thumb" value="1" '.$thumb_checked.'/> '.l10n('SYNC_THUMBSEC').'</label>
+        <input type="text" name="vjs_thumbsec" value="'.$sync_options['thumbsec'].'" size="2" required/>
         <a class="icon-info-circled-1" title="'.l10n('SYNC_THUMBSEC_DESC').'"></a>
       </li>
       <li>
         <label>'.l10n('SYNC_THUMBSIZE').'</label><br/>
-        <input type="text" name="vjs_thumbsize" value="120x68" size="5" placeholder="120x68" required/>
+        <input type="text" name="vjs_thumbsize" value="'.$sync_options['thumbsize'].'" size="6" placeholder="120x68" required/>
         <a class="icon-info-circled-1" title="'.l10n('SYNC_THUMBSIZE_DESC').'"></a>
       </li>
     </ul>
@@ -130,28 +169,9 @@ function vjs_element_set_global_action($action, $collection)
             FROM '.IMAGES_TABLE.'
             WHERE id IN ('.implode(',',$collection).')';
 
-    // Generate default value
-    $sync_options = array(
-        'mediainfo'         => 'mediainfo',
-        'ffmpeg'            => 'ffmpeg',
-        'exiftool'          => 'exiftool',
-        'ffprobe'           => 'ffprobe',
-        'metadata'          => true,
-        'representative'    => true,
-        'poster'            => true,
-        'postersec'         => 4,
-        'output'            => 'jpg',
-        'posteroverlay'     => false,
-        'posteroverwrite'   => false,
-        'thumb'             => false,
-        'thumbsec'          => 5,
-        'thumbsize'         => "120x68",
-        'simulate'          => true,
-        'cat_id'            => 0,
-        'subcats_included'  => true,
-    );
-
-    if(isset($_POST['submit']))
+    // Update sync options if submitted in admin site
+    $sync_options = $conf['vjs_sync'];
+    if (isset($_POST['submit']))
     {
         // Override default value from the form
         $sync_options_form = array(
@@ -167,9 +187,16 @@ function vjs_element_set_global_action($action, $collection)
             'thumbsize'         => $_POST['vjs_thumbsize'],
             'simulate'          => false,
         );
+        
+        // Ensure thumbsec remains bewteen 1 and 60 seconds
+        $sync_options_form['thumbsec'] = max(1, $sync_options_form['thumbsec']);        
+        $sync_options_form['thumbsec'] = min($sync_options_form['thumbsec'], 60);
 
         // Merge default value with user data from the form
         $sync_options = array_merge($sync_options, $sync_options_form);
+
+        // Update sync options in DB
+        conf_update_param('vjs_sync', serialize($sync_options));
     }
 
     // Do the work, share with admin sync and photo

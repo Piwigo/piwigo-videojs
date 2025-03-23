@@ -1,3 +1,7 @@
+Changes from 15.d to 15.e
+- Fixes #247: sync options are stored in the database and reused
+- Fixes #246: UK translation including a tab instead of a space
+
 Changes from 15.c to 15.d
 - Adds missing translations
 - Adds a synchronization option to adopt downloaded posters

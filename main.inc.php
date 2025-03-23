@@ -25,6 +25,7 @@ global $conf;
 
 // Prepare configuration
 $conf['vjs_conf'] = unserialize($conf['vjs_conf']);
+$conf['vjs_sync'] = unserialize($conf['vjs_sync']);
 
 // Register the allowed extentions to the global conf in order
 // to sync them with other contents

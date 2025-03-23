@@ -27,27 +27,8 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-// Generate default value
-$sync_options = array(
-    'mediainfo'         => 'mediainfo',
-    'ffmpeg'            => 'ffmpeg',
-    'exiftool'          => 'exiftool',
-    'ffprobe'           => 'ffprobe',
-    'metadata'          => true,
-    'representative'    => true,
-    'poster'            => true,
-    'postersec'         => 4,
-    'output'            => 'jpg',
-    'posteroverlay'     => false,
-    'posteroverwrite'   => false,
-    'thumb'             => false,
-    'thumbsec'          => 5,
-    'thumbsize'         => "120x68",
-    'simulate'          => true,
-    'cat_id'            => 0,
-    'subcats_included'  => true,
-);
-
+// Update sync options if submitted in admin site
+$sync_options = $conf['vjs_sync'];
 if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 {
     // Override default value from the form
@@ -69,6 +50,11 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
 
     // Merge default value with user configuration
     $sync_options = array_merge($sync_options, $sync_options_form);
+
+    // Update sync options in DB but in simulation mode
+    $sync_options_stored = $sync_options;
+    $sync_options_stored['simulate'] = true;
+    conf_update_param('vjs_sync', serialize($sync_options));
 
     // Filter on existing poster
     $OVERWRITE = '';
@@ -156,7 +142,7 @@ display_select_cat_wrapper($query,
                            'categories',
                            false);
 
-// send value to template
+// Send value to template
 $template->assign(
     array(
         'SUBCATS_INCLUDED_CHECKED'  => $sync_options['subcats_included'] ? 'checked="checked"' : '',
