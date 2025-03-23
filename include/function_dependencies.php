@@ -43,16 +43,16 @@ if ($sync_options['metadata'] and isset($sync_options['mediainfo']) and !class_e
 function check($binary)
 {
 	global $logger;
-//	$logger->debug('checking '.$binary.':');
+	$logger->debug('checking '.$binary.':');
 
-	// Determine appropriate argument
-	if (str_contains($binary, 'exiftool')) {
+	// Determine appropriate argument (str_contains requires PHP8)
+	if (strpos($binary, 'exiftool') !== false) {
 		$cmd = $binary.' -ver';
 	}
-	else if (str_contains($binary, 'ffmpeg') || str_contains($binary, 'ffprobe')) {
+	else if ((strpos($binary, 'ffmpeg') !== false)  || (strpos($binary, 'ffprobe') !== false)) {
 		$cmd = $binary.' -version';
 	} 
-	else if (str_contains($binary, 'mediainfo')) {
+	else if (strpos($binary, 'mediainfo') !== false) {
 		$cmd = $binary.' --Version';
 	}
 	else { 
@@ -93,10 +93,10 @@ foreach ($sync_binaries as $binary => $path)
 	{
 		$sync_options[$binary] = $path;
 	}
-	else /* Case where $binary cannot be called */
+	else /* Case where $binary cannot be called (str_contains requires PHP8) */
 	{
 		$sync_options[$binary] = false;
-		if (str_contains($binary, 'ffmpeg'))
+		if (strpos($binary, 'ffmpeg') !== false)
 		{
 			$warnings[] = l10n('SYNC_POSTER_ERROR');
 			$sync_options['poster'] = false;
