@@ -205,7 +205,7 @@ $template->assign(array(
     'F_ACTION' => $self_url,
     'SYNC_URL' => $sync_url,
     'DELETE_URL' => $delete_url,
-    'TN_SRC' => DerivativeImage::thumb_url($picture).'?'.time(),
+    'TN_SRC' => DerivativeImage::thumb_url($picture),
     'TITLE' => render_element_name($picture),
     'EXIF' => $exif,
     'INFOS' => $infos,
