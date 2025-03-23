@@ -159,11 +159,6 @@ while ($row = pwg_db_fetch_assoc($result))
 		$in = $filename;
 		$out = $output_dir.$file_wo_ext['filename'].'.'.$sync_options['output'];
 		
-		/* Will report it */
-		$infos[] = l10n('POSTER').' '.$out;
-		$sync_arr['poster'] = $out;
-		$logger->debug('sync: $out = '.$out);
-
 		/* Create folder if needed */
 		if (!is_dir($output_dir))
 		{
@@ -224,6 +219,11 @@ while ($row = pwg_db_fetch_assoc($result))
 			}
 			else	/* We have a poster, lets update the database */
 			{
+				/* Will report it */
+				$infos[] = l10n('POSTER').' '.$out;
+				$sync_arr['poster'] = $out;
+				$logger->debug('sync: $out = '.$out);
+
 				/* Will not need to adopt this poster */
 				$representative_created = true;
 				
@@ -259,24 +259,24 @@ while ($row = pwg_db_fetch_assoc($result))
 		{
 			/* Extension in lowercase */
 			$ilcfile = $output_dir.$file_wo_ext['filename'].'.'.strtolower($extension);
-			$logger->debug('sync: $ilcfile = '.$ilcfile);
+//  			$logger->debug('sync: $ilcfile = '.$ilcfile);
 			if (is_file($ilcfile) and $representative_ext != $extension)
 			{
 				/* We have a poster, create query for updating the database */
 				$query = "UPDATE ".IMAGES_TABLE." SET representative_ext = '".$extension."' WHERE id = ".$row['id'].";";
 				$out = $ilcfile;
-				$logger->debug('sync: $query = '.$query);
+// 				$logger->debug('sync: $query = '.$query);
 			}
 			
 			/* Extension in uppercase */
 			$iucfile = $output_dir.$file_wo_ext['filename'].'.'.strtoupper($extension);
-			$logger->debug('sync: $iucfile = '.$iucfile);
+// 			$logger->debug('sync: $iucfile = '.$iucfile);
 			if (is_file($iucfile) and $representative_ext != $extension)
 			{
 				/* We have a poster, create query for updating the database */
 				$query = "UPDATE ".IMAGES_TABLE." SET representative_ext = '".$extension."' WHERE id = ".$row['id'].";";
 				$out = $iucfile;
-				$logger->debug('sync: $query = '.$query);
+// 				$logger->debug('sync: $query = '.$query);
 				
 				/* Rename file with extension in lowercase */
 				if (is_file($ilcfile)) 
