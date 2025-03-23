@@ -1,6 +1,8 @@
 Changes from 15.d to 15.e
 - Fixes #247: sync options are stored in the database and reused
 - Fixes #246: UK translation including a tab instead of a space
+- Fixes video thumbnail not always displayed correctly in single image mode
+- Fixes unwanted info listed in the information section after a sync in single image mode
 
 Changes from 15.c to 15.d
 - Adds missing translations
