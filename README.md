@@ -12,7 +12,7 @@ A [plugin](http://piwigo.org/ext/extension_view.php?eid=610) which extends [Piwi
 * brings [Videojs](http://videojs.com/) port for piwigo
 
 ## Installation & Configuration
-After installation, you must [configure](https://github.com/Piwigo/piwigo-videojs/wiki/How-to-install-the-plugin#installation) your Piwigo with the LocalFiles Editor plugin and [install](https://github.com/Piwigo/piwigo-videojs/wiki/How-to-install-the-plugin#requirements) `ExifTool`, `FFmpeg` or `MediaInfo` on your server to extract metadata and generate posters of a video. If `ExifTool`, `FFmpeg` or `MediaInfo` cannot be installed, we explain [here](https://github.com/Piwigo/piwigo-videojs/wiki/How-to-install-the-plugin#upload-video-posters-manually) how to upload posters manually.
+After installation, you must [configure](https://github.com/Piwigo/piwigo-videojs/wiki/How-to-install-the-plugin#installation) your Piwigo with the LocalFiles Editor plugin and [install](https://github.com/Piwigo/piwigo-videojs/wiki/How-to-install-the-plugin#requirements) `ExifTool`, `FFmpeg` or `MediaInfo` on your server to extract metadata and generate posters of a video. If `FFmpeg` cannot be installed, we explain [here](https://github.com/Piwigo/piwigo-videojs/wiki/How-to-install-the-plugin#upload-video-posters-manually) how to upload posters manually.
 
 ## Supported formats
 The supported formats are those [supported by most browsers](https://caniuse.com/?search=video):
