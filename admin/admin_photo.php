@@ -103,7 +103,7 @@ if (isset($videojs_metadata) and isset($videojs_metadata['metadata']))
     // Add some value by human readable string
     if (isset($exif['width']) and isset($exif['height']))
     {
-        $exif['resolution'] = $exif['width'] ."x". $exif['height'];
+        $exif['Resolution'] = $exif['width'] ."x". $exif['height'];
     }
     include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
     isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";

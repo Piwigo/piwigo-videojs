@@ -71,115 +71,18 @@ if (isset($xml["version"]))
 	}
 }
 
-/* General */
 if (isset($xml->media))
 {
         $general = $xml->media->track[0];
-}else{
+} else{
         $general = $xml->File->track[0];
 }
-
-if (isset($general->Format))
-{
-    $exif['format'] = (string)$general->Format;
-}
-if (isset($general->Format_Profile))
-{
-    $exif['formatprofile'] = (string)$general->Format_Profile;
-}
-if (isset($general->CodecID))
-{
-    $exif['codecid'] = (string)$general->CodecID;
-}
-if (isset($general->InternetMediaType)) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
-{
-    $exif['type'] = (string)$general->InternetMediaType;
-}
-if (isset($general->FileSize))
-{
-    $exif['filesize'] = round($general->FileSize/1024);
-}
-if (isset($general->Duration))
-{
-    $exif['duration'] = (string)$general->Duration;
-    if ($xml["version"] != '0.2') { // Old format
-       $exif['playtime_seconds'] = (int)($general->Duration);
-    } else { // New format
-       $exif['playtime_seconds'] = round($general->Duration, 0);
-    }
-}
-if (isset($general->BitRate_String))  //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
-{
-    $exif['overall_bit_rate'] = (string)$general->BitRate_String;
-}
-if (isset($general->xyz) or isset($general->comapplequicktimelocationISO6709))	//Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
-{
-    isset($general->xyz) ? $gps = (string)$general->xyz : $gps = (string)$general->comapplequicktimelocationISO6709;
-    //$test = "+35.6445-139.7455-029.201/";
-    //print_r(preg_split('/(\+|\-)/', $general->xyz, -1, PREG_SPLIT_DELIM_CAPTURE));
-    $value = preg_split('/(\+|\-|\/)/', $gps, -1, PREG_SPLIT_DELIM_CAPTURE);
-    $exif['latitude'] = $value[1].$value[2];
-    $exif['longitude'] = $value[3].$value[4];
-}
-if (isset($general->Model) or isset($general->comapplequicktimemodel)) 	//Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
-{
-    isset($general->Model) ? $exif['model'] = (string)$general->Model : $exif['model'] = (string)$general->comapplequicktimemodel;
-}
-if (isset($general->comapplequicktimesoftware) and isset($exif['model']))  //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
-{
-    $exif['model'] .= " ". (string)$general->comapplequicktimesoftware;
-}
-if (isset($general->Make) or isset($general->comapplequicktimemake)) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
-{
-    isset($general->Make) ? $exif['make'] = (string)$general->Make : $exif['make'] = (string)$general->comapplequicktimemake;
-}
-if (isset($general->Recorded_Date))
-{
-    $exif['date_creation'] = (string)$general->Recorded_Date;
-}
-if (!isset($exif['date_creation']) and isset($general->Encoded_Date))
-{// http://piwigo.org/forum/viewtopic.php?pid=158021#p158021
-    $exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general->Encoded_Date));
-}
-
-
-/* Video */
 if (isset($xml->media))
 {
         $video = $xml->media->track[1];
-}else{
+} else{
         $video = $xml->File->track[1];
 }
-
-if (isset($video->BitRate))
-{
-    $exif['bitrate'] = (string)$video->BitRate;
-}
-if (isset($video->Width))
-{
-    $exif['width'] = (string)$video->Width;
-}
-if (isset($video->Height))
-{
-    $exif['height'] = (string)$video->Height;
-}
-if (isset($video->DisplayAspectRatio))
-{
-    $exif['display_aspect_ratio'] = (string)$video->DisplayAspectRatio;
-}
-if (isset($video->Rotation) and (int)$video->Rotation != 0)
-{
-    include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
-    //print (int)$video->Rotation[0];
-    $rotation_code = pwg_image::get_rotation_code_from_angle((int)$video->Rotation);
-    $exif['rotation'] = $rotation_code;
-}
-if (isset($video->FrameRate))
-{
-    $exif['frame_rate'] = (string)$video->FrameRate;
-}
-
-/* Audio */
 if (isset($xml->media))
 {
         $audio = $xml->media->track[2];
@@ -187,22 +90,169 @@ if (isset($xml->media))
         $audio = $xml->File->track[2];
 }
 
-if (isset($audio->Channels))
+include_once("function_metadata.php");
+
+/* For debugging */
+global $logger;
+$logger->debug('mediainfo: ===================================>>');
+$logger->debug('mediainfo: ===> $general...');
+logMetadata('mediainfo', $general);
+$logger->debug('mediainfo: ===> $video...');
+logMetadata('mediainfo', $video);
+$logger->debug('mediainfo: ===> $audio...');
+logMetadata('mediainfo', $audio);
+$logger->debug('mediainfo: <<===================================');
+
+/* For the Piwigo SQL table */
+if (isset($general['FileSize']))
 {
-    $exif['channel'] = (string)$audio->Channels;
+	// The size must be stored in kB
+    $exif['filesize'] = (float)$general['FileSize'] / 1024;
 }
-if (isset($audio->SamplingRate))
+if (isset($video['Width']))
 {
-    $exif['sampling_rate'] = (string)$audio->SamplingRate;
+    $exif['width'] = (string)$video['Width'];
+}
+if (isset($video['Height']))
+{
+    $exif['height'] = (string)$video['Height'];
+}
+if (isset($video['Rotation']) and (int)$video['Rotation'] != 0)
+{
+    include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
+    //print (int)$video->Rotation[0];
+    $rotation_code = pwg_image::get_rotation_code_from_angle((int)$video['Rotation']);
+    $exif['rotation'] = $rotation_code;
+}
+if (isset($general['Recorded_Date']))
+{
+    $exif['date_creation'] = (string)$general['Recorded_Date'];
+}
+if (!isset($exif['date_creation']) and isset($general['Encoded_Date']))
+{  // http://piwigo.org/forum/viewtopic.php?pid=158021#p158021
+    $exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general['Encoded_Date']));
+}
+if (isset($general['xyz']) or isset($general['comapplequicktimelocationISO6709']))	//Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+{
+    isset($general['xyz']) ? $gps = (string)$general['xyz'] : $gps = (string)$general['comapplequicktimelocationISO6709'];
+    //$test = "+35.6445-139.7455-029.201/";
+    //print_r(preg_split('/(\+|\-)/', $general['xyz'], -1, PREG_SPLIT_DELIM_CAPTURE));
+    $value = preg_split('/(\+|\-|\/)/', $gps, -1, PREG_SPLIT_DELIM_CAPTURE);
+    $exif['latitude'] = $value[1].$value[2];
+    $exif['longitude'] = $value[3].$value[4];
 }
 
-if (isset($audio->Channel_s_))
+/* For the VideoJS SQL table */
+if (isset($general['FileSize']))
 {
-    $exif['channel'] = (string)$audio->Channel_s_;
+    // In a readable format
+    $exif['FileSize'] = formatBytes((float)$general['FileSize']);
 }
-if (isset($audio->SamplingRate))
+if (isset($general['Format']))
 {
-    $exif['sampling_rate'] = (string)$audio->SamplingRate;
+    $exif['FileType'] = (string)$general['Format'];
+}
+if (isset($general['InternetMediaType'])) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+{
+    $exif['MIMEtype'] = (string)$general['InternetMediaType'];
+}
+if (isset($general['Duration']))
+{
+	// Duration as "hh:mm:ss.xxx"
+    $exif['Duration'] = formatDuration((float)$general['Duration']);
+	// Number of seconds
+    if ($xml["version"] != '0.2') { // Old format
+       $exif['DurationSeconds'] = round((float)$general['Duration'], 3);
+    } else { // New format
+       $exif['DurationSeconds'] = round((float)$general['Duration'], 3);
+    }
+}
+if (isset($general['OverallBitRate']))
+{
+    $exif['AvgBitrate'] = formatBitRate((float)$general['OverallBitRate']);
+}
+if (isset($video['DisplayAspectRatio_String'])) {
+	$exif['AspectRatio'] = (string)$video['DisplayAspectRatio_String'];
+} 
+elseif (isset($video['DisplayAspectRatio']))
+{
+    $exif['AspectRatio'] = (string)$video['DisplayAspectRatio'];
+}
+
+/* Video */
+if (isset($video['BitRate']))
+{
+    $exif['VideoBitrate'] = (string)$video['BitRate'];
+}
+if (isset($video['FrameRate']))
+{
+    $exif['VideoFrameRate'] = round((float)$video['FrameRate'],2).' fps';
+}
+if (isset($video['CodecID']))
+{
+    $exif['VideoCodecID'] = (string)$video['CodecID'];
+}
+if (isset($video['CodecID_Info']))
+{
+    $exif['VideoCodecInfo'] = (string)$video['CodecID_Info'];
+}
+
+/* Audio */
+if (isset($audio['CodecID']))
+{
+	$exif['AudioCodecID'] = $audio['CodecID'];
+}
+if (isset($audio['Format_Info']))
+{
+	$exif['AudioCodecInfo'] = $audio['Format_Info'];
+}
+if (isset($audio['Channels']))
+{
+    $exif['AudioChannels'] = (string)$audio['Channels'];
+}
+if (isset($audio['SamplingRate']))
+{
+    $exif['AudioSampleRate'] = (string)$audio['SamplingRate'];
+}
+if (isset($audio['Channel_s_']))
+{
+    $exif['AudioChannels'] = (string)$audio['Channel_s_'];
+}
+if (isset($audio['SamplingRate']))
+{
+    $exif['AudioSampleRate'] = ((float)$audio['SamplingRate']/1000).' kHz';
+}
+
+/* Title, Author, etc. */
+if (isset($general['Title']))
+{
+    $exif['Title'] = $general['Title'];
+}
+if (isset($general['Genre']))
+{
+    $exif['Genre'] = $general['Genre'];
+}
+if (isset($general['Artist']))
+{
+    $exif['Artist'] = $general['Artist'];
+}
+if (isset($general['Description']))
+{
+    $exif['Description'] = $general['Description'];
+}
+
+/* Camera, Software */
+if (isset($general['Model']) or isset($general['comapplequicktimemodel'])) 	//Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+{
+    isset($general['Model']) ? $exif['Model'] = (string)$general['Model'] : $exif['Model'] = (string)$general['comapplequicktimemodel'];
+}
+if (isset($general['comapplequicktimesoftware']) and isset($exif['Model']))  //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+{
+    $exif['Model'] .= " ". (string)$general['comapplequicktimesoftware'];
+}
+if (isset($general['Make']) or isset($general['comapplequicktimemake'])) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+{
+    isset($general['Make']) ? $exif['Make'] = (string)$general['Make'] : $exif['Make'] = (string)$general['comapplequicktimemake'];
 }
 
 ?>

@@ -1,10 +1,11 @@
 Changes from 15.d to 15.e
+– In single image mode, the [Synchronize metadata] command creates a poster if needed
+- Extracts more metadata (some tag names were renamed)
 - Fixes #246: the UK translation included a tab instead of a space
 - Fixes #247: retaining the user's sync options in the database
 - Fixes #248: replacing str-contains() with strpos() for PHP 7 compatibility
 - Fixes video thumbnail not always displayed correctly in single image mode
 - Fixes unwanted info listed in the information section after a sync in single image mode
-– The [Synchronize metadata] command creates a poster if needed in single image mode
 
 Changes from 15.c to 15.d
 - Adds missing translations

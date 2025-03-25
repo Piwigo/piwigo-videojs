@@ -48,42 +48,36 @@ if (isset($output[0]))
 	$general = $output[0];
 }
 
-/* General */
+include_once("function_metadata.php");
+
+/* For debugging */
 global $logger;
+$logger->debug('exiftool: ===================================>>');
+logMetadata('exiftool', $general);
+$logger->debug('exiftool: <<===================================');
+
+/* For the Piwigo SQL table */
 if (isset($general['FileSize']))
 {
-	$exif['filesize'] = round($general['FileSize']/1024);
+	// The size must be stored in kB
+	$exif['filesize'] = (float)$general['FileSize'] / 1024;
 }
-if (isset($general['Duration']))
+if (isset($general['ImageWidth']))
 {
-	if (is_array($general['Duration']))
-	{
-		$durationArray = $general['Duration'];
-		foreach ($durationArray as $key => $value)
-		{
-			$logger->debug('exiftool: $durationArray has '.$value.' for key '.$key);
-		}
-		$duration = $durationArray['Scale'] * $durationArray['Value'];
-		$logger->debug('exiftool: duration of '.round($duration).' seconds');
-		$exif['duration'] = round($duration * 1000, 0);
-	}
-	else 
-	{
-		$logger->debug('exiftool: duration of '.$general['Duration'].' seconds');
-		$exif['duration'] = round($general['Duration']*1000, 0);
-	}
+	$exif['width'] = (string)$general['ImageWidth'];
 }
-if (isset($general['TrackDuration']))
+if (isset($general['ImageHeight']))
 {
-	$exif['playtime_seconds'] = round($general['TrackDuration'], 0);
+	$exif['height'] = (string)$general['ImageHeight'];
 }
-if (isset($general['AvgBitrate']))
+if (isset($general['Rotation']) and (int)$general['Rotation'] != 0)
 {
-	$exif['bitrate'] = (string)$general['AvgBitrate'];
+	include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
+	$rotation_code = pwg_image::get_rotation_code_from_angle((int)$general['Rotation']);
+	$exif['rotation'] = $rotation_code;
 }
 if (isset($general['MediaCreateDate']))
 {
-	$logger->debug('exiftool: date creation is '.$general['MediaCreateDate']);
 	if (str_contains($general['MediaCreateDate'], ':'))
 	{
 		if ((strcmp($general['MediaCreateDate'], "0000:00:00 00:00:00") !== 0) and
@@ -102,47 +96,95 @@ if (isset($general['GPSLatitude']) and isset($general['GPSLongitude']))
 	$exif['latitude'] = $general['GPSLatitude'];
 	$exif['longitude'] = $general['GPSLongitude'];
 }
-if (isset($general['MajorBrand']))
+
+/* For the VideoJS SQL table */
+if (isset($general['FileSize']))
 {
-	$exif['codecid'] = $general['MajorBrand'];
-}
-if (isset($general['MIMEType']))
-{
-	$exif['type'] = $general['MIMEType'];
+    // In a readable format
+	$exif['FileSize'] = formatBytes((float)$general['FileSize']);
 }
 if (isset($general['FileType']))
 {
-	$exif['format'] = $general['FileType'];
+	$exif['FileType'] = $general['FileType'];
+}
+if (isset($general['MIMEType']))
+{
+	$exif['MIMEtype'] = $general['MIMEType'];
+}
+if (isset($general['Duration']))
+{
+	// Duration as "hh:mm:ss.xxx", Duration of number of seconds
+	if (is_array($general['Duration']))
+	{
+		$durationArray = $general['Duration'];
+		$duration = $durationArray['Scale'] * $durationArray['Value'];
+		$exif['Duration'] = formatDuration((float)($duration * 1000));
+		$exif['DurationSeconds'] = round((float)($duration * 1000), 3);
+	}
+	else 
+	{
+		$exif['Duration'] = formatDuration((float)$general['Duration']);
+		$exif['DurationSeconds'] = round((float)$general['Duration'], 3);
+	}
+}
+if (!isset($exif['Duration']) and isset($general['TrackDuration']))
+{
+	// Duration as "hh:mm:ss.xxx"
+	$exif['Duration'] = formatDuration((float)$general['TrackDuration']);
+	// Duration of number of seconds
+	$exif['DurationSeconds'] = round($general['TrackDuration'], 3);
+}
+if (isset($general['AvgBitrate']))
+{
+	$exif['AvgBitrate'] = formatBitRate((float)$general['AvgBitrate']);
 }
 
 /* Video */
-if (isset($general['ImageWidth']))
-{
-	$exif['width'] = (string)$general['ImageWidth'];
-}
-if (isset($general['ImageHeight']))
-{
-	$exif['height'] = (string)$general['ImageHeight'];
-}
-if (isset($general['Rotation']) and (int)$general['Rotation'] != 0)
-{
-	include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
-	$rotation_code = pwg_image::get_rotation_code_from_angle((int)$general['Rotation']);
-	$exif['rotation'] = $rotation_code;
-}
 if (isset($general['VideoFrameRate']))
 {
-	$exif['frame_rate'] = $general['VideoFrameRate'];
+	$exif['VideoFrameRate'] = round($general['VideoFrameRate'],2).' fps';
+}
+if (isset($general['MajorBrand']))
+{
+	$exif['VideoCodecID'] = $general['MajorBrand'];
 }
 
 /* Audio */
+if (isset($general['AudioFormat']))
+{
+	$exif['AudioCodecID'] = $general['AudioFormat'];
+}
+if (isset($general['AudioBitsPerSample']))
+{
+	$exif['AudioBitsPerSample'] = (string)$general['AudioBitsPerSample'];
+}
 if (isset($general['AudioChannels']))
 {
-	$exif['channel'] = (string)$general['AudioChannels'];
+	$exif['AudioChannels'] = (string)$general['AudioChannels'];
 }
 if (isset($general['AudioSampleRate']))
 {
-	$exif['sampling_rate'] = (string)$general['AudioSampleRate'];
+	$exif['AudioSampleRate'] = ((float)$general['AudioSampleRate']/1000).' kHz';
 }
+
+/* Title, Author, etc. */
+if (isset($general['Title']))
+{
+    $exif['Title'] = $general['Title'];
+}
+if (isset($general['Genre']))
+{
+    $exif['Genre'] = $general['Genre'];
+}
+if (isset($general['Artist']))
+{
+    $exif['Artist'] = $general['Artist'];
+}
+if (isset($general['Description']))
+{
+    $exif['Description'] = $general['Description'];
+}
+
+/* Camera, Software */
 
 ?>

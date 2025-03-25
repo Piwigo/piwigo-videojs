@@ -85,10 +85,10 @@ while ($row = pwg_db_fetch_assoc($result))
 	$exif = array();
 	if ($sync_options['metadata'])
 	{
-		/* Retrieve metadata with MediaInfo, ExifTool or FFprobe */
+		/* Retrieve metadata with MediaInfo, FFprobe or ExifTool */
 		if (isset($sync_options['mediainfo']) and $sync_options['mediainfo']) { include('mediainfo.php'); }
-		if (isset($sync_options['exiftool']) and $sync_options['exiftool']) { include('exiftool.php'); }
 		if (isset($sync_options['ffprobe']) and $sync_options['ffprobe']) { include('ffprobe.php'); }
+		if (isset($sync_options['exiftool']) and $sync_options['exiftool']) { include('exiftool.php'); }
 		
 		/* Did we retrieve metadata successfully? */
 		if (isset($exif))
@@ -113,7 +113,7 @@ while ($row = pwg_db_fetch_assoc($result))
 					$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
 					pwg_query($query);
 	
-					/* Use our own metadata SQL table */
+					/* Update VideoJS SQL table */
 					$query = "INSERT INTO ".$prefixeTable."image_videojs (metadata,date_metadata_update,id) VALUES ('".serialize($exif)."',CURDATE(),'".$row['id']."') ON DUPLICATE KEY UPDATE metadata='".serialize($exif)."',date_metadata_update=CURDATE(),id='".$row['id']."';";
 					pwg_query($query);
 				}
