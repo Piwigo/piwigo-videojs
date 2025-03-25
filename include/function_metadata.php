@@ -62,17 +62,9 @@ function logMetadata($prefix, $general) {
 	global $logger;
 	foreach ($general as $key => $value) {
 		if (is_array($value)) {
-			foreach ($value as $subKey => $subValue) {
-				if (is_array($subValue)) {
-					foreach ($subValue as $subSubKey => $subSubValue) {
-						$logger->debug($prefix.': ['.$key.']['.$subKey.']['.$subSubKey.'][] => '.$subSubValue);
-					}
-				} else {
-					$logger->debug($prefix.': ['.$key.']['.$subKey.'] => '.$subValue);
-				}
-			}
+			logMetadata($prefix.' ['.$key.']', $value);
 		} else {
-			$logger->debug($prefix.': ['.$key.'] => '.$value);
+			$logger->debug($prefix.' ['.$key.'] => '.$value);
 		}
 	}
 }
