@@ -76,6 +76,7 @@ $available_height = array(
 );
 
 // Update conf if submitted in admin site
+$vjs_config = $conf['vjs_conf'];
 if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 {
 	// keep the value in the admin form
@@ -100,8 +101,13 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 	);
 	$customcss = $_POST['vjs_customcss'];
 
-	// Update config to DB
-	conf_update_param('vjs_conf', serialize($conf['vjs_conf']));
+    // Merge default value with user configuration
+    $vjs_config = array_merge($vjs_config, $vjs_config_form);
+
+    // Update sync options in DB but in simulation mode
+    conf_update_param('vjs_sync', serialize($vjs_config));
+
+	// Update custum CSS in DB
 	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_customcss'] ."' WHERE param='vjs_customcss'";
 	pwg_query($query);
 
@@ -120,8 +126,10 @@ list($nb_videos) = pwg_db_fetch_row( pwg_query($query) );
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NOT NULL AND ".SQL_VIDEOS.";";
 list($nb_videos_thumb) = pwg_db_fetch_row( pwg_query($query) );
 
+// Send user options result to template
+$template->assign($vjs_config);
+
 // Send value to template
-$template->assign($conf['vjs_conf']);
 $template->assign(
 	array(
             'AVAILABLE_PLAYERS'     => $available_players,
