@@ -33,7 +33,7 @@ function plugin_install()
     if (!defined('VIDEOJS_PATH'))
         define('VIDEOJS_PATH', PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)).'/');
 
-    $conf['vjs_conf'] = array(
+    $default_config = array(
         'skin'        => 'vjs-default-skin',
         'max_height'  => '720',
         'preload'     => 'auto',
