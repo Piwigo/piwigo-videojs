@@ -73,6 +73,10 @@ class piwigo_videojs_maintain extends PluginMaintain
     if (empty($conf['vjs_conf']))
     {
       conf_update_param('vjs_conf', $this->default_conf, true);
+      
+      /* Add a comment to the entry */
+      $q = 'UPDATE '.CONFIG_TABLE.' SET `comment` = "Player settings for piwigo-videojs plugin" WHERE `param` = "vjs_conf";';
+      pwg_query( $q );
     }
     else
     {
@@ -107,6 +111,10 @@ class piwigo_videojs_maintain extends PluginMaintain
     if (empty($conf['vjs_sync']))
     {
       conf_update_param('vjs_sync', $this->default_sync_options, true);
+
+      /* Add a comment to the entry */
+      $q = 'UPDATE '.CONFIG_TABLE.' SET `comment` = "Sync settings for piwigo-videojs plugin" WHERE `param` = "vjs_sync";';
+      pwg_query( $q );
     }
     else
     {
