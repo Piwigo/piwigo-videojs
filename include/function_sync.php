@@ -120,7 +120,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			}
 		}
 	}
-	else	/* Fetch metadata as we will need $exif['playtime_seconds'] */
+	else	/* Fetch metadata as we will need $exif['DurationSeconds'] */
 	{
 		/* Will report it */
 		$infos[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DATABASE');
@@ -135,7 +135,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			$video_metadata = unserialize($videojs_metadata['metadata']);
 			$exif = array_merge($exif, $video_metadata);
 		}
-		if (!isset($exif['playtime_seconds']) and ($sync_options['poster'] or $sync_options['thumb']))
+		if (!isset($exif['DurationSeconds']) and ($sync_options['poster'] or $sync_options['thumb']))
 		{
 			/* Will report it */
 			$warnings[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DURATION_ERROR');
@@ -170,8 +170,10 @@ while ($row = pwg_db_fetch_assoc($result))
 		{
 			/* Will report it */
 			$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('DIR_NOT_WRITABLE');
+			continue;
 		}
-		else if (isset($exif['playtime_seconds']) and $sync_options['postersec'] and !$sync_options['simulate'])
+		
+		if (isset($exif['DurationSeconds']) and $sync_options['postersec'] and !$sync_options['simulate'])
 		{   /* We really want to create the poster */
 			$posters++;
 			
@@ -196,11 +198,12 @@ while ($row = pwg_db_fetch_assoc($result))
 			
 			/* If video is shorter fallback to half duration */
 			$posterSec = $sync_options['postersec'];
-			if ($sync_options['postersec'] > $exif['playtime_seconds'])
+			if ($sync_options['postersec'] > $exif['DurationSeconds'])
 			{
 				/* Will report it */
 				$warnings[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DURATION_SHORT');
-				$posterSec = (int)round($exif['playtime_seconds']/2, 2, PHP_ROUND_HALF_DOWN);
+				$posterSec = (int)round($exif['DurationSeconds']/2, 2, PHP_ROUND_HALF_DOWN);
+				$logger->debug(l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DURATION_SHORT'));
 			}
 			
 			/* Default output to JPG */
@@ -216,6 +219,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			{
 				/* Will report it */
 				$errors[] = l10n('VIDEO').' '.$filename.' — '.l10n('POSTER_ERROR');
+				$logger->debug(l10n('VIDEO').' '.$filename.' — '.l10n('POSTER_ERROR'));
 			}
 			else	/* We have a poster, lets update the database */
 			{
@@ -246,6 +250,7 @@ while ($row = pwg_db_fetch_assoc($result))
 	/* Should we adopt a poster? */
 	if ($sync_options['representative'] and !$representative_created)
 	{
+		$logger->debug(l10n('VIDEO').' '.$filename.' — Adopt poster…');
 		/* Initialisation */
 		$output_dir = dirname($row['path']) . '/pwg_representative/';
 		$file_wo_ext = pathinfo($row['path']);
@@ -312,7 +317,7 @@ while ($row = pwg_db_fetch_assoc($result))
 	/* Create multiple frames for VideoJS player */
 	if ($sync_options['thumb'])
 	{
-		if (isset($exif['playtime_seconds']) and isset($sync_options['thumbsec']) and isset($sync_options['thumbsize']))
+		if (isset($exif['DurationSeconds']) and isset($sync_options['thumbsec']) and isset($sync_options['thumbsize']))
 		{
 			/* Initialise file name and path */
 			$file_wo_ext = pathinfo($filename);
@@ -364,7 +369,7 @@ while ($row = pwg_db_fetch_assoc($result))
 		
 				/* Loop over all frames */
 				$in = $filename;
-				for ($second=0; $second <= $exif['playtime_seconds']; $second += $sync_options['thumbsec'])
+				for ($second=0; $second <= $exif['DurationSeconds']; $second += $sync_options['thumbsec'])
 				{
 					/* Output filename */
 					$out = $output_dir.$file_wo_ext['filename']."-th_".$second.'.'.$sync_options['output'];

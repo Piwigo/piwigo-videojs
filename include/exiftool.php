@@ -51,10 +51,12 @@ if (isset($output[0]))
 include_once("function_metadata.php");
 
 /* For debugging */
+/* 
 global $logger;
 $logger->debug('exiftool: ===================================>>');
 logMetadata('exiftool', $general);
 $logger->debug('exiftool: <<===================================');
+ */
 
 /* For the Piwigo SQL table */
 if (isset($general['FileSize']))

@@ -94,6 +94,7 @@ include_once("function_metadata.php");
 
 /* For debugging */
 global $logger;
+/* 
 $logger->debug('mediainfo: ===================================>>');
 $logger->debug('mediainfo: ===> $general...');
 logMetadata('mediainfo', $general);
@@ -102,6 +103,7 @@ logMetadata('mediainfo', $video);
 $logger->debug('mediainfo: ===> $audio...');
 logMetadata('mediainfo', $audio);
 $logger->debug('mediainfo: <<===================================');
+ */
 
 /* For the Piwigo SQL table */
 if (isset($general['FileSize']))
