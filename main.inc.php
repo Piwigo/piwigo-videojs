@@ -24,8 +24,8 @@ function videojs_load_lang(){
 global $conf;
 
 // Prepare configuration
-$conf['vjs_conf'] = safe_unserialize($conf['vjs_conf']);
-$conf['vjs_sync'] = safe_unserialize($conf['vjs_sync']);
+$conf['vjs_conf'] = unserialize($conf['vjs_conf']);
+$conf['vjs_sync'] = unserialize($conf['vjs_sync']);
 
 // Register the allowed extentions to the global conf in order
 // to sync them with other contents

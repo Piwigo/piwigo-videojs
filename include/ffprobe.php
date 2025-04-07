@@ -80,7 +80,6 @@ if (isset($output['streams']) and is_array($output['streams']) and !empty($outpu
 include_once("function_metadata.php");
 
 /* For debugging */
-/*
 global $logger;
 $logger->debug('ffprobe: ===================================>>');
 $logger->debug('ffprobe: ===> $general...');
@@ -90,7 +89,6 @@ logMetadata('ffprobe', $video);
 $logger->debug('ffprobe: ===> $audio...');
 logMetadata('ffprobe', $audio);
 $logger->debug('ffprobe: <<===================================');
- */
 
 /* For the Piwigo SQL table */
 if (isset($general['size']))
@@ -114,7 +112,7 @@ if (isset($video['tags']['rotate']) and (int)$video['tags']['rotate'] != 0)
 }
 if (isset($general['tags']['creation_time']))
 {
-//	$logger->debug('ffprobe: date creation is '.$general['tags']['creation_time']);
+	$logger->debug('ffprobe: date creation is '.$general['tags']['creation_time']);
 	$exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general['tags']['creation_time']));
 }
 if (isset($general['tags']['location']))

@@ -78,30 +78,6 @@ $available_height = array(
 // Update conf if submitted in admin site
 if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 {
-	check_input_parameter('vjs_skin', $_POST, false, '/^('.implode('|', array_keys($available_skins)).')$/');
-	check_input_parameter('vjs_max_height', $_POST, false, '/^('.implode('|', array_keys($available_height)).')$/');
-	check_input_parameter('vjs_preload', $_POST, false, '/^('.implode('|', array_keys($available_preload)).')$/');
-	check_input_parameter('vjs_volume', $_POST, false, '/^\d(\.\d)?$/');
-	check_input_parameter('vjs_language', $_POST, false, '/^\d+$/');
-	check_input_parameter('vjs_player', $_POST, false, '/^('.implode('|', array_keys($available_players)).')$/');
-
-	$boolean_fields = array(
-		'vjs_controls',
-		'vjs_autoplay',
-		'vjs_loop',
-		'vjs_upscale',
-		'vjs_zoomrotate',
-		'vjs_thumbnails',
-		'vjs_watermark',
-		'vjs_resolution',
-		'vjs_metadata',
-	);
-
-	foreach ($boolean_fields as $boolean_field)
-	{
-		check_input_parameter($boolean_field, $_POST, false, '/^(true|false)$/');
-	}
-
 	// keep the value in the admin form
 	$conf['vjs_conf'] = array(
 		  'skin'        => $_POST['vjs_skin'],
@@ -122,10 +98,12 @@ if (isset($_POST['submit']) && !empty($_POST['vjs_skin']))
 		  'player'		=> $_POST['vjs_player'],
 		  'metadata'	=> get_boolean($_POST['vjs_metadata']),
 	);
+	$customcss = $_POST['vjs_customcss'];
 
 	// Update config to DB
-	conf_update_param('vjs_conf', $conf['vjs_conf'], true);
-	conf_update_param('vjs_customcss', $_POST['vjs_customcss'], true);
+	conf_update_param('vjs_conf', serialize($conf['vjs_conf']));
+	$query = "UPDATE ". CONFIG_TABLE ." SET value='". $_POST['vjs_customcss'] ."' WHERE param='vjs_customcss'";
+	pwg_query($query);
 
 	// the prefilter changes, we must delete compiled templatess
 	$template->delete_compiled_templates();
@@ -142,10 +120,8 @@ list($nb_videos) = pwg_db_fetch_row( pwg_query($query) );
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NOT NULL AND ".SQL_VIDEOS.";";
 list($nb_videos_thumb) = pwg_db_fetch_row( pwg_query($query) );
 
-// Send user options result to template
-$template->assign($conf['vjs_conf']);
-
 // Send value to template
+$template->assign($conf['vjs_conf']);
 $template->assign(
 	array(
             'AVAILABLE_PLAYERS'     => $available_players,
