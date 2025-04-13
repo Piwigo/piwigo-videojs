@@ -82,9 +82,9 @@ function vjs_format_exif_data($exif, $filename, $map)
 	}
 
 	// If video, fetch sql metadata
-	//print_r($picture)."\n<br/>\n";
-	//print_r($exif)."\n<br/>\n";
-	//print_r($map)."\n<br/>\n";
+// 	echo '<pre>'; print_r($picture); echo '</pre>';
+// 	echo '<pre>'; print_r($exif); echo '</pre>';
+// 	echo '<pre>'; print_r($map); echo '</pre>';
 	/* Use our own metadata sql table */
 	$query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$picture['current']['id'].";";
 	$result = pwg_query($query);
@@ -92,7 +92,7 @@ function vjs_format_exif_data($exif, $filename, $map)
 	if (is_array($exif) and isset($videojs_metadata) and is_array($videojs_metadata) and isset($videojs_metadata['metadata']))
 	{
 		$video_metadata = unserialize($videojs_metadata['metadata']);
-		//print_r($video_metadata);
+		// echo '<pre>'; print_r($video_metadata); echo '</pre>';
 		$exif = array_merge($exif, $video_metadata);
 		// Add some value by human readable string
 		if (isset($exif['width']) and isset($exif['height']))
@@ -103,7 +103,7 @@ function vjs_format_exif_data($exif, $filename, $map)
 		isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
 		ksort($exif);
 	}
-	//print_r($exif)."\n<br/>\n";
+	// echo '<pre>'; print_r($exif); echo '</pre>';
 	return $exif;
 }
 

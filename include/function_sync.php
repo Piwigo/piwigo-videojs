@@ -114,7 +114,8 @@ while ($row = pwg_db_fetch_assoc($result))
 					pwg_query($query);
 	
 					/* Update VideoJS SQL table */
-					$query = "INSERT INTO ".$prefixeTable."image_videojs (metadata,date_metadata_update,id) VALUES ('".serialize($exif)."',CURDATE(),'".$row['id']."') ON DUPLICATE KEY UPDATE metadata='".serialize($exif)."',date_metadata_update=CURDATE(),id='".$row['id']."';";
+					$sqlMetadata = pwg_db_real_escape_string(serialize($exif));
+					$query = "INSERT INTO ".$prefixeTable."image_videojs (metadata,date_metadata_update,id) VALUES ('".$sqlMetadata."',CURDATE(),'".$row['id']."') ON DUPLICATE KEY UPDATE metadata='".$sqlMetadata."',date_metadata_update=CURDATE(),id='".$row['id']."';";
 					pwg_query($query);
 				}
 			}
