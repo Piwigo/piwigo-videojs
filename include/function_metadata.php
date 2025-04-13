@@ -49,6 +49,7 @@ function formatBitRate($bps, $precision = 1) {
     return round($bps, $precision).' '.$units[$pow];
 }
 
+// Returns the video duration as "hh:mm:ss.sss"
 function formatDuration($secs) {
 	$hours = floor($secs / 3600);
 	$secsMinutes = $secs - $hours * 3600;
@@ -58,6 +59,7 @@ function formatDuration($secs) {
 	return sprintf("%02d:%02d:%02.3f", $hours, $minutes, $seconds);
 }
 
+// Logs arrays, sub-arrays… of metadata
 function logMetadata($prefix, $general) {
 	global $logger;
 	foreach ($general as $key => $value) {
