@@ -121,8 +121,10 @@ while ($row = pwg_db_fetch_assoc($result))
 			}
 		}
 	}
-	else	/* Fetch metadata as we will need $exif['DurationSeconds'] */
+	else if ($sync_options['poster'] or $sync_options['thumb'])
 	{
+		/* Fetch metadata as we will need $exif['DurationSeconds'] */
+
 		/* Will report it */
 		$infos[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DATABASE');
 		$sync_arr['database'] = l10n('SYNC_DATABASE');
@@ -136,7 +138,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			$video_metadata = unserialize($videojs_metadata['metadata']);
 			$exif = array_merge($exif, $video_metadata);
 		}
-		if (!isset($exif['DurationSeconds']) and ($sync_options['poster'] or $sync_options['thumb']))
+		if (!isset($exif['DurationSeconds']))
 		{
 			/* Will report it */
 			$warnings[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DURATION_ERROR');
