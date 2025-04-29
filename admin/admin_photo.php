@@ -92,6 +92,7 @@ if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1)
 }
 
 // Fetch metadata from db
+$exif = array();
 $query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$_GET['image_id'].";";
 $result = pwg_query($query);
 $videojs_metadata = pwg_db_fetch_assoc($result);
