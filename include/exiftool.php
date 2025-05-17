@@ -56,7 +56,7 @@ global $logger;
 $logger->debug('exiftool: ===================================>>');
 logMetadata('exiftool', $general);
 $logger->debug('exiftool: <<===================================');
- */
+// */
 
 /* For the Piwigo SQL table */
 if (isset($general['FileSize']))
@@ -83,9 +83,9 @@ if (isset($general['MediaCreateDate']))
 	if (str_contains($general['MediaCreateDate'], ':'))
 	{
 		if ((strcmp($general['MediaCreateDate'], "0000:00:00 00:00:00") !== 0) and
-			($timestamp = strtotime($general['MediaCreateDate'])) === true)
+			($timestamp = strtotime((string)$general['MediaCreateDate'])))
 		{
-			$exif['date_creation'] = date('Y-m-d H:i:s', strtotime($timestamp));
+			$exif['date_creation'] = date('Y-m-d H:i:s', $timestamp);
 		}
 	}
 	else
