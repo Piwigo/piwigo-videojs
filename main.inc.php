@@ -225,7 +225,7 @@ function vjs_render_media($content, $picture)
 	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 	// Add the current file in array
 	$videos[] = array(
-				'src' => $strm ? $strm : embellish_url($picture['current']['element_url']),
+				'src' => $strm ? $strm : embellish_url($picture['current']['download_url']),
 				'ext' => $extension,
 				'resolution' => 'SD',
 			);

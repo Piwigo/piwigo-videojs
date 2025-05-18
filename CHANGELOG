@@ -1,8 +1,9 @@
 Changes from 15.e to 15.f
+- Fixes #188: by adopting the url prepared for downloading a picture
 - Fixes #250: by escaping special characters before storing metadata in the database
 - Fixes non-initialised variable leading to a warning
 - Retrieves metadata from the database only when really necessary
-- Fixed a bug preventing the retrieval of the media creation date (MediaCreateDate)
+- Fixes a bug preventing the retrieval of the media creation date (MediaCreateDate)
 
 Changes from 15.d to 15.e
 – In single image mode, the [Synchronize metadata] command creates a poster if needed
