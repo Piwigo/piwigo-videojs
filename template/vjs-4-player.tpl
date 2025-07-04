@@ -26,17 +26,24 @@
 </script>
 <style>
 {literal}
-.video-js {padding-top: {/literal}{$RATIO}{literal}%}
-.vjs-fullscreen {padding-top: 0px}
-.videocontent{ width:80%; max-width:{/literal}{$WIDTH}{literal}px; margin: 0 auto;}
+.video-js {
+    padding-top: {/literal}{$RATIO}{literal}%; /* Server-side calculated aspect ratio */
+    width: 100% !important; /* Ensure it fills container */
+    height: 0 !important; /* Height is controlled by padding-top */
+}
+.vjs-fullscreen {padding-top: 0px !important;} /* Reset padding in fullscreen */
+.video-container {
+    width: 100%; /* Use full available width */
+    max-width: {/literal}{$WIDTH}{literal}px; /* Respect configured max width */
+    margin: 0 auto; /* Center the container */
+}
 {/literal}
 </style>
 {/html_head}
 
-<div class="wrapper">
- <div class="videocontent">
+<div class="video-container">
 {literal}
-<video id="my_video_1" class="video-js {/literal}{$VIDEOJS_SKIN}{literal}" {/literal}{$OPTIONS}{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} datasetup='{}' x-webkit-airplay="allow" width="auto" height="auto">
+<video id="my_video_1" class="video-js {/literal}{$VIDEOJS_SKIN}{literal}" {/literal}{$OPTIONS}{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} data-setup='{}' x-webkit-airplay="allow">
 {/literal}
 {if not empty($videos)}
 {foreach from=$videos item=video}
@@ -47,7 +54,6 @@
     <p>Video Playback Not Supported<br/>Your browser does not support the video tag.</p>
 </video>
 {/literal}
- </div>
 </div>
 
 {literal}

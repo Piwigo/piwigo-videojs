@@ -22,10 +22,20 @@
 <script type="text/javascript">
   videojs.options.flash.swf = "{$VIDEOJS_PATH}video-js-5/video-js.swf"
 </script>
+<style>
+.video-js{ margin: 0 auto; }
+/* Ensure the video container takes up available width */
+.video-container {
+    width: 100%;
+    max-width: {$DERIV_MAX_WIDTH}px; /* Optional: if you still want a max width from config */
+    margin: 0 auto;
+}
+</style>
 {/html_head}
 
+<div class="video-container">
 {literal}
-<video id="my_video_1" class="video-js vjs-fluid vjs-big-play-centered {/literal}{$VIDEOJS_SKIN}{literal}" {/literal}{$OPTIONS}{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} datasetup='{}' x-webkit-airplay="allow">
+<video id="my_video_1" class="video-js vjs-fluid vjs-big-play-centered {/literal}{$VIDEOJS_SKIN}{literal}" {/literal}{$OPTIONS}{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} data-setup='{ "fluid": true }' x-webkit-airplay="allow">
 {/literal}
 {if not empty($videos)}
 {foreach from=$videos item=video}
@@ -36,6 +46,7 @@
     <p>Video Playback Not Supported<br/>Your browser does not support the video tag.</p>
 </video>
 {/literal}
+</div>
 
 {literal}
 <script type="text/javascript">
