@@ -224,11 +224,20 @@ function vjs_render_media($content, $picture)
 	$vjs_extensions = array('ogg', 'ogv', 'mp4', 'm4v', 'webm', 'webmv');
 	$files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
 	// Add the current file in array
-	$videos[] = array(
-				'src' => $strm ? $strm : embellish_url($picture['current']['download_url']),
-				'ext' => $extension,
-				'resolution' => 'SD',
-			);
+	if ( empty($conf['original_url_protection']) )
+	{
+		$videos[] = array(
+					'src' => $strm ? $strm : embellish_url($picture['current']['element_url']),
+					'ext' => $extension,
+					'resolution' => 'SD',
+				);
+	} else {
+		$videos[] = array(
+					'src' => $strm ? $strm : embellish_url($picture['current']['download_url']),
+					'ext' => $extension,
+					'resolution' => 'SD',
+				);
+	}
 	// Add any other video source format
 	foreach ($files_ext as $file_ext) {
 		$file = $file_dir."/pwg_representative/".$file_wo_ext['filename'].".".$file_ext;

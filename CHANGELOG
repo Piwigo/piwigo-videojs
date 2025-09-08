@@ -1,3 +1,7 @@
+Changes from 15.f to 15.g
+- Fixes #253: by adopting the url prepared for downloading a picture only 
+              when $conf['original_url_protection'] is not empty.
+
 Changes from 15.e to 15.f
 - Fixes #188: by adopting the url prepared for downloading a picture
 - Fixes #250: by escaping special characters before storing metadata in the database
