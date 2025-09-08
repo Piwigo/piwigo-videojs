@@ -80,7 +80,8 @@ if (isset($general['Rotation']) and (int)$general['Rotation'] != 0)
 }
 if (isset($general['MediaCreateDate']))
 {
-	if (str_contains($general['MediaCreateDate'], ':'))
+	/*  (str_contains requires PHP8) */
+	if (strpos($general['MediaCreateDate'], ':') !== false)
 	{
 		if ((strcmp($general['MediaCreateDate'], "0000:00:00 00:00:00") !== 0) and
 			($timestamp = strtotime((string)$general['MediaCreateDate'])))

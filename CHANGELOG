@@ -1,6 +1,7 @@
 Changes from 15.f to 15.g
 - Fixes #253: by adopting the url prepared for downloading a picture only 
               when $conf['original_url_protection'] is not empty.
+- Fixes #259: by replacing str_contains() with strpos() for PHP 7 compatibility
 
 Changes from 15.e to 15.f
 - Fixes #188: by adopting the url prepared for downloading a picture
@@ -15,7 +16,7 @@ Changes from 15.d to 15.e
 - Fixes #243: by checking the value of the returned creation date
 - Fixes #246: the UK translation included a tab instead of a space
 - Fixes #247: by retaining the user's sync options in the database
-- Fixes #248: by replacing str-contains() with strpos() for PHP 7 compatibility
+- Fixes #248: by replacing str_contains() with strpos() for PHP 7 compatibility
 - Fixes video thumbnail not always displayed correctly in single image mode
 - Fixes unwanted info listed in the information section after a sync in single image mode
 
