@@ -151,7 +151,7 @@ if (isset($video['bit_rate']))
 if (isset($video['avg_frame_rate']))
 {
 	$parts = explode("/", $video['avg_frame_rate']);
-	if (is_array($parts)) {
+	if (is_array($parts) && (float)$parts[1] != 0) {
 		$rate = (float)$parts[0] / (float)$parts[1];
 		$exif['VideoFrameRate'] = round($rate,2).' fps';
 	}
