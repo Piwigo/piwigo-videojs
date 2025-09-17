@@ -169,8 +169,8 @@ function vjs_render_media($content, $picture)
 	//print $height .">". $MAX_HEIGHT;
 	if ( $height > $MAX_HEIGHT )
 	{
+		$width  = round($width * $MAX_HEIGHT / $height);
 		$height = $MAX_HEIGHT;
-		$width  = round(16 * $MAX_HEIGHT / 9, 0);
 		//print "MAX_HEIGHT height=" . $height . " width=". $width;
 	}
 
@@ -178,8 +178,8 @@ function vjs_render_media($content, $picture)
 	$upscale = isset($conf['vjs_conf']['upscale']) ? strbool($conf['vjs_conf']['upscale']) : false;
 	if ( $upscale and $height < $MAX_HEIGHT )
 	{
+		$width  = round($width * $MAX_HEIGHT / $height);
 		$height = $MAX_HEIGHT;
-		$width  = round(16 * $MAX_HEIGHT / 9, 0);
 		//print "UPSCALE height=" . $height . " width=". $width;
 	}
 

@@ -35,6 +35,7 @@
 .video-container {
     width: 100%; /* Use full available width */
     max-width: {/literal}{$WIDTH}{literal}px; /* Respect configured max width */
+    max-height: 100vh;
     margin: 0 auto; /* Center the container */
 }
 {/literal}

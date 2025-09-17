@@ -28,6 +28,7 @@
 .video-container {
     width: 100%;
     max-width: {$DERIV_MAX_WIDTH}px; /* Optional: if you still want a max width from config */
+    max-height: 100vh;
     margin: 0 auto;
 }
 </style>
