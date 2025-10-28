@@ -151,8 +151,15 @@ if (isset($video['bit_rate']))
 if (isset($video['avg_frame_rate']))
 {
 	$parts = explode("/", $video['avg_frame_rate']);
-	if (is_array($parts)) {
+	if (is_array($parts) && count($parts) >= 2 && $parts[1] != 0) {
 		$rate = (float)$parts[0] / (float)$parts[1];
+		$exif['VideoFrameRate'] = round($rate,2).' fps';
+	}
+}
+if (!isset($exif['VideoFrameRate']) && isset($general['duration']) && isset($video['nb_frames'])) {
+	// Case where the frame rate could not be deduced from 'avg_frame_rate'
+	if ($video['nb_frames'] > 0) {
+		$rate = $video['nb_frames'] / (float)$general['duration'];
 		$exif['VideoFrameRate'] = round($rate,2).' fps';
 	}
 }
