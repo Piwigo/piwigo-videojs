@@ -404,6 +404,8 @@ SELECT *
 			'VIDEOJS_POSTER_URL' => embellish_url(get_gallery_home_url().$poster),
 			'VIDEOJS_PATH'       => embellish_url(get_gallery_home_url().VIDEOJS_PATH),
 			'WIDTH'              => $width,
+			'HEIGHT'             => $height,
+			'ASPECT_RATIO'       => $width / $height,
 			'RATIO'              => $ratio,
 			'OPTIONS'            => $options,
 			'VIDEOJS_SKIN'       => $skin,
