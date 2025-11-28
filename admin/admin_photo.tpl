@@ -30,21 +30,25 @@
 				<ul>
 					{foreach from=$INFOS key=name item=data}
 						{if $name == 'poster'}
-							<li>{'POSTER'|@translate} {$data}</li>
+							<li>{'POSTER'|@translate}: {$data}</li>
+						{else if $name == 'videoCount'}
+							<li>{'VIDEO_SRC'|@translate}: {$data}</li>
 						{else if $name == 'videos'}
 							<ul>
 							{foreach from=$data item=video}
 								<li>{$video}</li>
 							{/foreach}
 							</ul>
+						{elseif $name == 'thumbnailCount'}
+							<li>{'SYNC_THUMB'|@translate}: {$data}</li>
 						{elseif $name == 'thumbnails'}
 							<ul>
 							{foreach from=$data item=thumb}
-								<li>thumbnail at second="{$thumb.second}" source="{$thumb.source}"</li>
+								<li>{$thumb.second} s — {$thumb.source}</li>
 							{/foreach}
 							</ul>
-						{elseif !is_numeric($name)}
-							<li>{$name}: {$data}</li>
+						{elseif $name == 'subtitle'}
+							<li>Subtitle: {$data}</li>
 						{/if}
 					{/foreach}
 				</ul>

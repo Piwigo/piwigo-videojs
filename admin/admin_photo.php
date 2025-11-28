@@ -127,7 +127,7 @@ foreach ($files_ext as $file_ext) {
     }
 }
 //print_r($videossrc);
-$infos[l10n('VIDEO_SRC')] = count($videossrc);
+$infos['videoCount'] = count($videossrc);
 $infos['videos'] = $videossrc;
 
 /* Try to guess the poster extension */
@@ -184,7 +184,7 @@ if ( is_array ( $matches ) and !empty($matches) ) {
 //print_r($thumbnails);
 // Sort thumbnails by second
 !empty($sort['second']) and array_multisort($sort['second'], SORT_ASC, $thumbnails);
-$infos[l10n('SYNC_THUMB')] = count($thumbnails);
+$infos['thumbnailCount'] = count($thumbnails);
 $infos['thumbnails'] = $thumbnails;
 
 /* Try to find WebVTT */
@@ -192,7 +192,7 @@ $file = $output_dir.$parts['filename'].'.vtt';
 file_exists($file) ? $subtitle = embellish_url(get_gallery_home_url() .$file) : $subtitle = null;
 if (isset($subtitle))
 {
-    $infos['Subtitle'] = $subtitle;
+    $infos['subtitle'] = $subtitle;
 }
 
 /*
