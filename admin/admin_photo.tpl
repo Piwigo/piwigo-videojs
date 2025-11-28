@@ -39,15 +39,15 @@
 								<li>{$video}</li>
 							{/foreach}
 							</ul>
-						{elseif $name == 'thumbnailCount'}
+						{else if $name == 'thumbnailCount'}
 							<li>{'SYNC_THUMB'|@translate}: {$data}</li>
-						{elseif $name == 'thumbnails'}
+						{else if $name == 'thumbnails'}
 							<ul>
 							{foreach from=$data item=thumb}
 								<li>{$thumb.second} s — {$thumb.source}</li>
 							{/foreach}
 							</ul>
-						{elseif $name == 'subtitle'}
+						{else if $name == 'subtitle'}
 							<li>Subtitle: {$data}</li>
 						{/if}
 					{/foreach}
