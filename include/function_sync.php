@@ -102,8 +102,11 @@ while ($row = pwg_db_fetch_assoc($result))
 			{
 				/* Will report it */
 				$metadata++;
-				$infos[] = l10n('VIDEO').' '.$filename. ' — '.l10n('SYNC_METADATA').': '.count($exif).' '.vjs_pprint_r($exif);
-				$sync_arr['metadata'] = count($exif).' '.vjs_pprint_r($exif);
+				$infos[] = l10n('VIDEO').': '.$filename;
+				$infos[] = l10n('METADATA_COUNT').' '.count($exif);
+				$infos[] = l10n('SYNC_METADATA').': '.' '.vjs_pprint_r($exif);
+				$sync_arr['metadataCount'] = count($exif);
+				$sync_arr['metadata'] = vjs_pprint_r($exif);
 				
 				/* Save metadata */
 				if ($sync_options['metadata'] and !$sync_options['simulate'])
@@ -227,7 +230,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			else	/* We have a poster, lets update the database */
 			{
 				/* Will report it */
-				$infos[] = l10n('POSTER').' '.$out;
+				$infos[] = l10n('POSTER').': '.$out;
 				$sync_arr['poster'] = $out;
 				$logger->debug('sync: $out = '.$out);
 
@@ -372,6 +375,7 @@ while ($row = pwg_db_fetch_assoc($result))
 		
 				/* Loop over all frames */
 				$in = $filename;
+				$infos[] = l10n('SYNC_THUMB').':';
 				for ($second=0; $second <= $exif['DurationSeconds']; $second += $sync_options['thumbsec'])
 				{
 					/* Output filename */
@@ -379,8 +383,8 @@ while ($row = pwg_db_fetch_assoc($result))
 					
 					/* Will report it */
 					$thumbs++;
-					$infos[] = l10n('SYNC_THUMB').' — '.$second.' s — '.$out;
-					$sync_arr['thumbnail'][] = $second.' s — '.$out;
+					$infos[] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$second.' s — '.$out;
+					$sync_arr['thumbnails'][] = $second.' s — '.$out;
 					
 					/* Create frame, default output to JPG */
 					$ffmpeg = $sync_options['ffmpeg'] ." -ss ".$second." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -vf ".$scale." -y \"".$out. "\"";

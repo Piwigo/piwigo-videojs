@@ -134,16 +134,18 @@ jQuery(".showInfo").tipTip({
 		<ul>
 			{foreach from=$infos key=name item=detail}
 			    {if $name == 'file'}
-			    	<li>{'VIDEO'|@translate} {$detail}</li>
+			    	<li>{'VIDEO'|@translate}: {$detail}</li>
 			    {else}
-			    	<ul style="list-style-type:none;">
-					{if $name == 'metadata'}
+			    	<ul style="list-style-type:circle;">
+					{if $name == 'metadataCount'}
 						<li>{'METADATA_COUNT'|@translate} {$detail}</li>
+					{else if $name == 'metadata'}
+						<li>{'SYNC_METADATA'|@translate}: {$detail}</li> 
 					{else if $name == 'database'}
 						<li>{$detail}</li>
 					{else if $name == 'poster'}
-						<li>{'POSTER'|@translate} {$detail}</li>
-					{else if $name == 'thumbnail'}
+						<li>{'POSTER'|@translate}: {$detail}</li>
+					{else if $name == 'thumbnails'}
 						<li>{'SYNC_THUMB'|@translate}:</li>
 						<ul style="list-style-type:none;">
 							{foreach from=$detail item=thumb}

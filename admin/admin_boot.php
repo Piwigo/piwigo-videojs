@@ -164,23 +164,23 @@ function vjs_dbSet($fields, $data = array())
 }
 
 /* Pretty Print recursive */
-function vjs_pprint_r(array $array, $glue = ', <br/>', $size = 10)
+function vjs_pprint_r(array $array, $glue = '<br/>&nbsp;&nbsp;&nbsp;&nbsp;', $size = 6)
 {
         // Split $EXIF keys array in chuck of $size for nicer display
         $chunk_arr = array_chunk( array_keys($array), $size, true);
 
         // Generate ouput
-        $output = "\r\n<br/>";
+        $output = '';
         foreach ( $chunk_arr as $row ) {
                 foreach ( $row as $key ) {
                         //printf('[%2s] ', $key);
-                        $output .= $key.", ";
+                        $output .= $key.', ';
                 }
-                $output .= "<br/>";
+                $output .= $glue;
         }
 
         // Removes last $glue from string
-        strlen($glue) > 0 and $output = substr($output, 0, -strlen($glue));
+        strlen($glue) > 0 and $output = substr($output, 0, -strlen(', '.$glue));
 
         return (string) $output;
 }
