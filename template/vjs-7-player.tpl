@@ -2,44 +2,76 @@
 <link href="{$VIDEOJS_PATH}video-js-7/video-js.min.css" rel="stylesheet">
 <script src="{$VIDEOJS_PATH}video-js-7/video.min.js"></script>
 <style>
-.video-js{ margin: 0 auto; }
-/* Ensure the video container takes up available width */
+{literal}
 .video-container {
     width: 100%;
-    max-width: {$DERIV_MAX_WIDTH}px; /* Optional: if you still want a max width from config */
-    max-width: min({$DERIV_MAX_WIDTH}px, calc(100vh * {$ASPECT_RATIO}));
-    max-height: 100vh;
+    max-width: {/literal}{$WIDTH}{literal}px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.video-js {
+    position: relative;
+    padding-top: {/literal}{$RATIO}{literal}%;
+    width: 100%;
+    height: 0;
+    max-width: {/literal}{$WIDTH}{literal}px;
     margin: 0 auto;
 }
+
+/* Ensure video element maintains aspect ratio */
+.video-js .vjs-tech {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+}
+
+/* Override vjs-fluid class */
+.video-js.vjs-fluid {
+    padding-top: {/literal}{$RATIO}{literal}% !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .video-container {
+        max-width: 100vw;
+        max-height: 80vh;
+    }
+    
+    .video-js {
+        max-height: 80vh;
+    }
+}
+{/literal}
 </style>
 {/html_head}
-
 <div class="video-container">
-{literal}
-<video id="my_video_1" class="video-js vjs-fluid" {/literal}{$OPTIONS}{literal} poster={/literal}"{$VIDEOJS_POSTER_URL}"{literal} data-setup='{ "fluid": true }' x-webkit-airplay="allow">
-{/literal}
+<video id="my_video_1" class="video-js vjs-fluid" {$OPTIONS} poster="{$VIDEOJS_POSTER_URL}" data-setup='{}' x-webkit-airplay="allow">
 {if not empty($videos)}
 {foreach from=$videos item=video}
-{literal}    <source src={/literal}"{$video.src}"{literal} type='{/literal}{$video.ext}{literal}'>{/literal}
+    <source src="{$video.src}" type="{$video.ext}">
 {/foreach}
 {/if}
-{literal}
     <p>Video Playback Not Supported<br/>Your browser does not support the video tag.</p>
 </video>
-{/literal}
 </div>
-
 {footer_script}
 {literal}
-// const player = videojs("my_video_1"); // Video.js will auto-initialize with data-setup
-
-// player.ready(function(){
-    // Custom dimension logic removed to allow vjs-fluid to work.
-    // If specific max dimensions are still strictly needed,
-    // they should ideally be handled by the container's CSS.
-    // let max_height = {/literal}{$DERIV_MAX_HEIGHT}{literal};
-    // let max_width = {/literal}{$DERIV_MAX_WIDTH}{literal};
-    // console.log("Video.js player ready. Max dimensions (config): " + max_width + "x" + max_height);
-// });
+// Once the video is ready
+videojs("my_video_1", {}, function(){
+    var player = this;
+    player.volume({/literal}{$volume}{literal});
+    
+    // Force aspect ratio
+    var tech = player.el().querySelector('.vjs-tech');
+    if (tech) {
+        tech.style.objectFit = 'contain';
+    }
+});
 {/literal}
 {/footer_script}

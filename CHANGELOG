@@ -2,6 +2,8 @@ Changes from 15.g to 16.a
 - Improves output of synchronisations
 - Fixes #261: Smarty template engine was interpreting 'is_numeric' as a variable 
               modifier rather than as a PHP function call.
+- Fixes #256: by correcting width/height calculations, adopting @rmedranollamas code 
+              for vjs-4-player, recoding vjs-5/6/7 players
 
 Changes from 15.f to 15.g
 - Fixes #253: by adopting the url prepared for downloading a picture only 

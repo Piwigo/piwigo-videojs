@@ -139,7 +139,7 @@ function vjs_render_media($content, $picture)
 	{
 		$MAX_HEIGHT = $user['maxheight'];
 	}
-	//print "MAX_HEIGHT=" . $MAX_HEIGHT;
+	//print "MAX_HEIGHT=" . $MAX_HEIGHT . "px • ";
 	//print_r($user);
 
 	$extension = vjs_get_mimetype_from_ext(get_extension($picture['current']['path']));
@@ -147,13 +147,17 @@ function vjs_render_media($content, $picture)
 	//print_r($extension);
 
 	// Video file -- Guess resolution base on height
+	$width = 0;
+	$height = 0;
 	if (isset($picture['current']['width']))
 	{
 		$width = $picture['current']['width'];
+		//print "width=". $width . "px • ";
 	}
 	if (isset($picture['current']['height']))
 	{
 		$height = $picture['current']['height'];
+		//print "height=" . $height . "px</br>";
 	}
 	if ( !isset($width) || !isset($height) || $width == 0 || $height == 0)
 	{
@@ -162,16 +166,17 @@ function vjs_render_media($content, $picture)
 		// This is the case for ogv video for example.
 		$height = 480;
 		$width  = round(16 * 480 / 9, 0);
+		//print "FALLBACK height=" . $height . 'px • width='. $width . 'px</br>';
 	}
-	//print "Video height=" . $height . " width=". $width;
 
-	// Resize if video is too height
-	//print $height .">". $MAX_HEIGHT;
+	// Resize if video is too high
+	$ratio = $width/$height;
 	if ( $height > $MAX_HEIGHT )
 	{
+		//print 'Height ' . $height .'px > '. $MAX_HEIGHT . 'px • ratio=' . $ratio . ' • ';
 		$height = $MAX_HEIGHT;
-		$width  = round(16 * $MAX_HEIGHT / 9, 0);
-		//print "MAX_HEIGHT height=" . $height . " width=". $width;
+		$width  = round($ratio * $MAX_HEIGHT, 0);
+		//print 'MAX_HEIGHT height=' . $height . ' width='. $width;
 	}
 
 	// Upscale if video is too small
@@ -179,8 +184,8 @@ function vjs_render_media($content, $picture)
 	if ( $upscale and $height < $MAX_HEIGHT )
 	{
 		$height = $MAX_HEIGHT;
-		$width  = round(16 * $MAX_HEIGHT / 9, 0);
-		//print "UPSCALE height=" . $height . " width=". $width;
+		$width  = round($ratio * $MAX_HEIGHT, 0);
+		print 'UPSCALE height=' . $height . 'px • width='. $width . 'px</br>';
 	}
 
 	// Load parameter, fallback to default if unset
@@ -394,16 +399,16 @@ SELECT *
 
 	// Ensure the ratio is always below 100%, there is for sure a better way!
 	$ratio = round($height/$width*100, 2);
-	if ($ratio >= 100)
+/*	if ($ratio >= 100)
 	{
 		$ratio = round($width/$height*100, 2);
 	}
-
+*/
 	// Get max-height and max-width from the picture derivative settings of the current session
 	$deriv_type = pwg_get_session_var('picture_deriv', $conf['derivative_default_size']);
 	$type_map = ImageStdParams::get_defined_type_map();
 	$deriv_max_height = array_key_exists($deriv_type, $type_map) ? $type_map[$deriv_type]->max_height() : 480;
-	$deriv_max_width  = array_key_exists($deriv_type, $type_map) ? $type_map[$deriv_type]->max_width()  : round(16 * 480 / 9, 0);
+	$deriv_max_width  = array_key_exists($deriv_type, $type_map) ? $type_map[$deriv_type]->max_width()  : round($ratio * 480, 0);
 
 	// Assign the template variables
 	// We use here the piwigo's get_gallery_home_url function to build
@@ -413,6 +418,7 @@ SELECT *
 			'VIDEOJS_POSTER_URL' => embellish_url(get_gallery_home_url().$poster),
 			'VIDEOJS_PATH'       => embellish_url(get_gallery_home_url().VIDEOJS_PATH),
 			'WIDTH'              => $width,
+			'HEIGHT'			 => $height,
 			'RATIO'              => $ratio,
 			'OPTIONS'            => $options,
 			'VIDEOJS_SKIN'       => $skin,
