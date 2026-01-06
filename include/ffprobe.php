@@ -90,7 +90,7 @@ logMetadata('ffprobe', $video);
 $logger->debug('ffprobe: ===> $audio...');
 logMetadata('ffprobe', $audio);
 $logger->debug('ffprobe: <<===================================');
- */
+// */
 
 /* For the Piwigo SQL table */
 if (isset($general['size']))
@@ -209,5 +209,17 @@ if (isset($general['tags']['description']))
 }
 
 /* Camera, Software */
+if (isset($general['tags']['com.apple.quicktime.make']))
+{
+    $exif['Make'] = $general['tags']['com.apple.quicktime.make'];
+}
+if (isset($general['tags']['com.apple.quicktime.model']))
+{
+    $exif['Model'] = $general['tags']['com.apple.quicktime.model'];
+}
+if (isset($general['tags']['com.apple.quicktime.software']))
+{
+    $exif['Software'] = $general['tags']['com.apple.quicktime.software'];
+}
 
 ?>

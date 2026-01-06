@@ -51,7 +51,7 @@ if (isset($output[0]))
 include_once("function_metadata.php");
 
 /* For debugging */
-/* 
+/*
 global $logger;
 $logger->debug('exiftool: ===================================>>');
 logMetadata('exiftool', $general);
@@ -199,5 +199,17 @@ if (isset($general['Description']))
 }
 
 /* Camera, Software */
+if (isset($general['Make']))
+{
+    $exif['Make'] = $general['Make'];
+}
+if (isset($general['Model']))
+{
+    $exif['Model'] = $general['Model'];
+}
+if (isset($general['Software']))
+{
+    $exif['Software'] = $general['Software'];
+}
 
 ?>

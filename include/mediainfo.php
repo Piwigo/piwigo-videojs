@@ -93,8 +93,8 @@ if (isset($xml->media))
 include_once("function_metadata.php");
 
 /* For debugging */
+/*
 global $logger;
-/* 
 $logger->debug('mediainfo: ===================================>>');
 $logger->debug('mediainfo: ===> $general...');
 logMetadata('mediainfo', $general);
@@ -103,7 +103,7 @@ logMetadata('mediainfo', $video);
 $logger->debug('mediainfo: ===> $audio...');
 logMetadata('mediainfo', $audio);
 $logger->debug('mediainfo: <<===================================');
- */
+// */
 
 /* For the Piwigo SQL table */
 if (isset($general['FileSize']))
@@ -244,6 +244,10 @@ if (isset($general['Description']))
 }
 
 /* Camera, Software */
+if (isset($general['Make']) or isset($general['comapplequicktimemake'])) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
+{
+    isset($general['Make']) ? $exif['Make'] = (string)$general['Make'] : $exif['Make'] = (string)$general['comapplequicktimemake'];
+}
 if (isset($general['Model']) or isset($general['comapplequicktimemodel'])) 	//Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     isset($general['Model']) ? $exif['Model'] = (string)$general['Model'] : $exif['Model'] = (string)$general['comapplequicktimemodel'];
@@ -251,10 +255,6 @@ if (isset($general['Model']) or isset($general['comapplequicktimemodel'])) 	//No
 if (isset($general['comapplequicktimesoftware']) and isset($exif['Model']))  //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {
     $exif['Model'] .= " ". (string)$general['comapplequicktimesoftware'];
-}
-if (isset($general['Make']) or isset($general['comapplequicktimemake'])) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
-{
-    isset($general['Make']) ? $exif['Make'] = (string)$general['Make'] : $exif['Make'] = (string)$general['comapplequicktimemake'];
 }
 
 ?>
