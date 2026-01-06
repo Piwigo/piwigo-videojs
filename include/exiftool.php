@@ -151,6 +151,10 @@ if (isset($general['AvgBitrate']))
 {
 	$exif['AvgBitrate'] = formatBitRate((float)$general['AvgBitrate']);
 }
+if (isset($general['GPSAltitude']))
+{
+	$exif['GPSAltitude'] = $general['GPSAltitude'].' m';
+}
 
 /* Video */
 if (isset($general['VideoFrameRate']))
@@ -196,6 +200,10 @@ if (isset($general['Artist']))
 if (isset($general['Description']))
 {
     $exif['Description'] = $general['Description'];
+}
+if (isset($general['Copyright']))
+{
+    $exif['Copyright'] = $general['Copyright'];
 }
 
 /* Camera, Software */
