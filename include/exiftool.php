@@ -124,10 +124,20 @@ if (isset($general['Duration']))
 		$exif['Duration'] = formatDuration((float)($duration * 1000));
 		$exif['DurationSeconds'] = round((float)($duration * 1000), 3);
 	}
-	else 
+	else
 	{
-		$exif['Duration'] = formatDuration((float)$general['Duration']);
-		$exif['DurationSeconds'] = round((float)$general['Duration'], 3);
+		$parts = explode(':', $general['Duration']);
+		if (count($parts) == 3) 
+		{
+			$duration = ($parts[0] * 3600) + ($parts[1] * 60) + (float)$parts[2];
+			$exif['Duration'] = formatDuration((float)($duration));
+			$exif['DurationSeconds'] = round((float)($duration), 3);
+		}
+		else
+		{
+			$exif['Duration'] = formatDuration((float)$general['Duration']);
+			$exif['DurationSeconds'] = round((float)$general['Duration'], 3);
+		}
 	}
 }
 if (!isset($exif['Duration']) and isset($general['TrackDuration']))

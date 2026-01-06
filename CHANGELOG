@@ -1,3 +1,7 @@
+Changes from 16.a to 16.b
+- Fixes #262: by detecting when the duration is returned by ExifTool as 
+              a "hh:mm:ss.xxx" string.
+
 Changes from 15.g to 16.a
 - Improves output of synchronisations
 - Fixes #261: Smarty template engine was interpreting 'is_numeric' as a variable 
