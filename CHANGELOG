@@ -1,6 +1,7 @@
 Changes from 16.a to 16.b
 - Fixes #262: by detecting when the duration is returned by ExifTool as 
               a "hh:mm:ss.xxx" string.
+- Fixes #263: by adding configuration information to Config tab
 - Fixes #264: by adding translations of description
 - Retrieves 'Make', 'Model' and 'Software' tags with FFprobe and ExifTool
 - Retrieves 'Copyright' and 'GPSAltitude' with ExifTool
