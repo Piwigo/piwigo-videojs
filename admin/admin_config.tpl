@@ -44,6 +44,7 @@
   <ul>
     <li class="update_summary_new">{$NB_VIDEOS} {'VIDEOS'|@translate}</li>
     <li class="update_summary_new">{$NB_VIDEOS_THUMB} {'VIDEOS_THUMB'|@translate}</li>
+    <li class="update_summary_new">{$NB_VIDEOS_GEOTAGGED} {'VIDEOS_GEOTAGGED'|@translate}</li>
   </ul>
 </div>
 
