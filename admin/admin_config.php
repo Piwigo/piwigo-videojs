@@ -142,6 +142,10 @@ list($nb_videos) = pwg_db_fetch_row( pwg_query($query) );
 $query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `representative_ext` IS NOT NULL AND ".SQL_VIDEOS.";";
 list($nb_videos_thumb) = pwg_db_fetch_row( pwg_query($query) );
 
+// All videos with supported extensions by VideoJS and with GPS data
+$query = "SELECT COUNT(*) FROM ".IMAGES_TABLE." WHERE `latitude` IS NOT NULL and `longitude` IS NOT NULL AND ".SQL_VIDEOS.";";
+list($nb_videos_geotagged) = pwg_db_fetch_row( pwg_query($query) );
+
 // Send user options result to template
 $template->assign($conf['vjs_conf']);
 
@@ -156,6 +160,7 @@ $template->assign(
             'CUSTOM_CSS'            => htmlspecialchars($customcss),
             'NB_VIDEOS'             => $nb_videos,
             'NB_VIDEOS_THUMB'       => $nb_videos_thumb,
+            'NB_VIDEOS_GEOTAGGED'   => $nb_videos_geotagged,
 	)
 );
 
