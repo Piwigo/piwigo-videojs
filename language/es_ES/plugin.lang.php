@@ -102,8 +102,7 @@ $lang['DIR_NOT_WRITABLE'] = 'directorio sin acceso de escritura';
 $lang['FILE_NOT_READABLE'] = 'Archivo no legible';
 $lang['INTRO_CONFIG'] = 'Este plugin:';
 $lang['INTRO_METADATA'] = 'extrae metadatos con <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> o <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> (si está disponible)';
-$lang['INTRO_SUPPORT'] = '
-Consulte la <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">documentación del plugin</a> para obtener información adicional y consulte los <a href="https://piwigo.org/forum/" target="_blank">foros</a> si encuentra algún problema.<br/>Para informar sobre errores y sugerir nuevas funciones, cree un nuevo <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">problema</a>.';
+$lang['INTRO_SUPPORT'] = 'Consulte la <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">documentación del plugin</a> para obtener información adicional y consulte los <a href="https://piwigo.org/forum/" target="_blank">foros</a> si encuentra algún problema.<br/>Para informar sobre errores y sugerir nuevas funciones, cree un nuevo <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">problema</a>.';
 $lang['INTRO_THUMB'] = 'produce miniaturas con <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a> (si está disponible)';
 $lang['INTRO_VIDEOJS'] = 'agrega el reproductor de video HTML5 de código abierto <a href="http://www.videojs.com/" target="_blank">VideoJS</a>';
 $lang['METADATA'] = 'Metadatos';
