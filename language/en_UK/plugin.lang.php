@@ -123,6 +123,8 @@ $lang['SYNC_THUMB_ERROR'] = 'FFmpeg could not generate the thumbnails, check log
 $lang['SYNC_THUMBSEC'] = 'Create a thumbnail every N seconds where N =';
 $lang['SYNC_THUMBSEC_DESC'] = 'These thumbnails are only used by VideoJS.';
 $lang['SYNC_THUMBSIZE'] = 'Size of the thumbnail:';
+$lang['SYNC_THUMBOVERWRITE'] = 'Overwrite existing thumbnails';
+$lang['SYNC_THUMBOVERWRITE_DESC'] = 'Replace existing thumbnails with new ones. If unchecked, videos which already have thumbnails are skipped.';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Size in pixel, keep it small, default is fine, Youtube use 190x68.';
 $lang['SYNC_THUMBSIZE_ERROR'] = 'Invalid thumbnail size, fallback to default value of 120 px';
 

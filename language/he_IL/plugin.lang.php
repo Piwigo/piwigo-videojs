@@ -39,6 +39,8 @@ $lang['SYNC_THUMB'] = 'תמונות קטעי וידאו של VideoJS';
 $lang['SYNC_THUMBSEC'] = 'צור תמונה ממוזערת כל N שניות כאשר N =';
 $lang['SYNC_THUMBSEC_DESC'] = 'תמונות אלו משמשות רק על ידי VideoJS.';
 $lang['SYNC_THUMBSIZE'] = 'גודל התמונה הממוזערת:';
+$lang['SYNC_THUMBOVERWRITE'] = 'לדרוס את התמונות הממוזערות הקיימות';
+$lang['SYNC_THUMBOVERWRITE_DESC'] = 'להחליף תמונות ממוזערות קיימות בחדשות. אם לא מסומן, סרטונים שכבר יש להם תמונות ממוזערות ידולגו.';
 $lang['SYNC_THUMBSIZE_DESC'] = 'גודל בפיקסלים, שמור על גודל קטן, ברירת המחדל טובה, Youtube משתמש ב-190x68.';
 $lang['SYNC_THUMBSIZE_ERROR'] = 'גודל תמונה ממוזערת לא חוקי, חזור לערך ברירת המחדל של 120 פיקסל';
 $lang['SYNC_THUMBS_NEW'] = 'תמונות ממוזערות של VideoJS נוצרו';

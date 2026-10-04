@@ -42,6 +42,7 @@ class piwigo_videojs_maintain extends PluginMaintain
     'thumb' => false,
     'thumbsec' => 5,
     'thumbsize' => "120x68",
+    'thumboverwrite' => false,
     'simulate' => true,
     'cat_id' => 0,
     'subcats_included' => true,

@@ -104,6 +104,10 @@ function vjs_sync_options_html($sync_options, $metadata_title = true, $thumbsize
     if ($sync_options['thumb']) {
         $thumb_checked = 'checked="checked"';
     }
+    $thumboverwrite_checked = '';
+    if (!empty($sync_options['thumboverwrite'])) {
+        $thumboverwrite_checked = 'checked="checked"';
+    }
     
     return '
     '.($metadata_title ? '<legend>'.l10n('SYNC_METADATA').'</legend>' : '').'
@@ -152,12 +156,51 @@ function vjs_sync_options_html($sync_options, $metadata_title = true, $thumbsize
         <a class="icon-info-circled-1" title="'.l10n('SYNC_THUMBSEC_DESC').'"></a>
       </li>
       <li>
-        <label>'.l10n('SYNC_THUMBSIZE').'</label><br/>
+        <label><input type="checkbox" name="vjs_thumboverwrite" value="1" '.$thumboverwrite_checked.'> '.l10n('SYNC_THUMBOVERWRITE').'</label>
+        <a class="icon-info-circled-1" title="'.l10n('SYNC_THUMBOVERWRITE_DESC').'"></a>
+      </li>
+      <li>
+        <label>'.l10n('SYNC_THUMBSIZE').'</label>'.($thumbsize_inline ? '' : '<br/>').'
         <input type="text" name="vjs_thumbsize" value="'.$sync_options['thumbsize'].'" size="6" placeholder="120x68" required/>
         <a class="icon-info-circled-1" title="'.l10n('SYNC_THUMBSIZE_DESC').'"></a>
       </li>
     </ul>
-'));
+';
+}
+
+// Read the sync options submitted by the form built by vjs_sync_options_html(),
+// and save them in the database (in simulation mode) as the user's defaults
+function vjs_sync_options_from_post($sync_options)
+{
+    // Override default value from the form
+    $sync_options_form = array(
+        'metadata'          => isset($_POST['vjs_metadata']),
+        'representative'    => isset($_POST['vjs_representative']),
+        'poster'            => isset($_POST['vjs_poster']),
+        'postersec'         => $_POST['vjs_postersec'],
+        'output'            => $_POST['vjs_output'],
+        'posteroverlay'     => isset($_POST['vjs_posteroverlay']),
+        'posteroverwrite'   => isset($_POST['vjs_posteroverwrite']),
+        'thumb'             => isset($_POST['vjs_thumb']),
+        'thumbsec'          => $_POST['vjs_thumbsec'],
+        'thumbsize'         => $_POST['vjs_thumbsize'],
+        'thumboverwrite'    => isset($_POST['vjs_thumboverwrite']),
+        'simulate'          => false,
+    );
+
+    // Ensure thumbsec remains bewteen 1 and 60 seconds
+    $sync_options_form['thumbsec'] = max(1, $sync_options_form['thumbsec']);
+    $sync_options_form['thumbsec'] = min($sync_options_form['thumbsec'], 60);
+
+    // Merge default value with user data from the form
+    $sync_options = array_merge($sync_options, $sync_options_form);
+
+    // Update sync options in DB but in simulation mode
+    $sync_options_backup = $sync_options;
+    $sync_options_backup['simulate'] = true;
+    conf_update_param('vjs_sync', serialize($sync_options_backup));
+
+    return $sync_options;
 }
 
 // Hook to perform the action on in global mode

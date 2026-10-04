@@ -76,6 +76,8 @@ $lang['SYNC_POSTEROVERLAY'] = 'Filmes hatás hozzáadása';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Alkalmazzon átfedést a plakátok létrehozására.';
 
 $lang['SYNC_THUMBSIZE'] = 'Bélyegkép mérete';
+$lang['SYNC_THUMBOVERWRITE'] = 'Írja felül a létező bélyegképeket';
+$lang['SYNC_THUMBOVERWRITE_DESC'] = 'A meglévő bélyegképeket újakkal váltja fel. Ha törli a jelölést, a már bélyegképpel rendelkező videók kimaradnak.';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Méret pixelben, hagyja kicsin, alapértelmezett finom, Youtube alapértelmezett 190x68';
 $lang['SYNC_THUMBSEC'] = 'Készítsen bélyegképet minden másodperceben. ';
 $lang['SYNC_THUMBSEC_DESC'] = 'Készítsen bélyegképet minden x másodpercben. ';

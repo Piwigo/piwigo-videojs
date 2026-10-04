@@ -39,3 +39,5 @@ $lang['SYNC_POSTEROVERLAY'] = 'Aldoni filmefekton';
 $lang['SYNC_THUMBSEC'] = 'Krei miniaturon ĉiun sekundon.';
 $lang['SYNC_THUMBSEC_DESC'] = 'Krei miniaturon ĉiujn x sekundojn.';
 $lang['SYNC_THUMBSIZE'] = 'Grandeco de la miniaturo';
+$lang['SYNC_THUMBOVERWRITE'] = 'Anstataŭigi ekzistantajn miniaturojn';
+$lang['SYNC_THUMBOVERWRITE_DESC'] = 'Anstataŭigi ekzistantajn miniaturojn per novaj. Se ne markita, videoj kiuj jam havas miniaturojn estas preterlasataj.';

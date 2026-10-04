@@ -103,6 +103,7 @@ function vjs_end_add_uploaded_file($image_infos)
         $sync_options['representative'] = true;
         $sync_options['poster'] = true;
         $sync_options['posteroverwrite'] = true;
+        $sync_options['thumboverwrite'] = true;
         $sync_options['simulate'] = false;
         $sync_options['subcats_included'] = false;
 

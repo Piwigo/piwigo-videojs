@@ -78,6 +78,8 @@ $lang['SYNC_POSTEROVERLAY_DESC'] = 'Aplicar una capa de superposición en la cre
 $lang['SYNC_THUMBSEC'] = 'Crear una miniatura por cada segundos.';
 $lang['SYNC_THUMBSEC_DESC'] = 'Crear una miniatura cada x segundo.';
 $lang['SYNC_THUMBSIZE'] = 'Dimensión de la miniatura';
+$lang['SYNC_THUMBOVERWRITE'] = 'Sobrescribir miniaturas existentes';
+$lang['SYNC_THUMBOVERWRITE_DESC'] = 'Sustituir las miniaturas existentes por otras nuevas. Si se desmarca, se omitirán los vídeos que ya tengan miniaturas.';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Tamaño en píxeles, que sea pequeña, por defecto está muy bien, el uso en Youtube 190x68 .';
 $lang['SYNC_POSTER_ERROR'] = 'Creación de póster y miniatura desactivados porque FFmpeg no está instalado o su ruta de acceso es incorrecta.';
 $lang['SYNC_POSTER_REQUIRE'] = 'Requiere <a href="http://www.ffmpeg.org" target="_blank">FFmpeg</a>:';

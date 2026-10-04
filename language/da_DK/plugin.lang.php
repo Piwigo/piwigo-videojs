@@ -79,6 +79,8 @@ $lang['SYNC_POSTEROVERLAY_DESC'] = 'Indfør en billedtilretning (overlay) på pl
 $lang['SYNC_THUMBSEC'] = 'Opret et miniaturebillede hvert sekund';
 $lang['SYNC_THUMBSEC_DESC'] = 'Opret et miniaturebillede hvert x sekunder.';
 $lang['SYNC_THUMBSIZE'] = 'Størrelse på miniaturebillede';
+$lang['SYNC_THUMBOVERWRITE'] = 'Overskriv eksisterende miniaturebilleder';
+$lang['SYNC_THUMBOVERWRITE_DESC'] = 'Overskriv eksisterende miniaturebilleder med nye. Hvis uafkrydset, springes videoer, der allerede har miniaturebilleder, over.';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Størrelse i pixels, hold det småt, standarden er fin. Youtube anvender 190*68.';
 $lang['INTRO_METADATA'] = 'udtrækker metadata med <a href="https://exiftool.org" target="_blank">ExifTool</a>, <a href="http://mediaarea.net/en/MediaInfo" target="_blank">MediaInfo</a> eller <a href="http://www.ffmpeg.org" target="_blank">FFprobe</a> (hvis tilgængelig)';
 $lang['INTRO_SUPPORT'] = 'Se <a href="https://github.com/xbgmsharp/piwigo-videojs/wiki" target="_blank">plugin-dokumentationen</a> for yderligere oplysninger samt besøg <a href="https://piwigo.org/forum/" target="_blank">forummet</a>, hvis du løber ind i problemer.<br/>For at rapportere fejl og foreslå nye funktioner, bedes du oprette en ny <a href="https://github.com/xbgmsharp/piwigo-videojs/issues" target="_blank">sag</a> (issue).';

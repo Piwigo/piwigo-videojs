@@ -123,6 +123,8 @@ $lang['SYNC_THUMB_ERROR'] = 'FFmpeg n\'a pas pu générer les vignettes, vérifi
 $lang['SYNC_THUMBSEC'] = 'Créer une vignette toutes les N secondes où N = ';
 $lang['SYNC_THUMBSEC_DESC'] = 'Ces miniatures sont seulement utilisées par VideoJS.';
 $lang['SYNC_THUMBSIZE'] = 'Taille de la miniature :';
+$lang['SYNC_THUMBOVERWRITE'] = 'Remplacer les miniatures existantes';
+$lang['SYNC_THUMBOVERWRITE_DESC'] = 'Remplace les miniatures existantes par de nouvelles. Si décoché, les vidéos qui ont déjà des miniatures sont ignorées.';
 $lang['SYNC_THUMBSIZE_DESC'] = 'Taille en pixels, gardez une petite taille, celle par défaut est correcte, Youtube utilise 190x68';
 $lang['SYNC_THUMBSIZE_ERROR'] = 'taille de vignette non valide, retour à la valeur par défaut de 120 px';
 

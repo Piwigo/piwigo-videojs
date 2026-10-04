@@ -43,6 +43,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
         'thumb'             => isset($_POST['thumb']),
         'thumbsec'          => $_POST['thumbsec'],
         'thumbsize'         => $_POST['thumbsize'],
+        'thumboverwrite'    => isset($_POST['thumboverwrite']),
         'simulate'          => isset($_POST['simulate']),
         'cat_id'            => isset($_POST['cat_id']) ? (int)$_POST['cat_id'] : 0,
         'subcats_included'  => isset($_POST['subcats_included']),

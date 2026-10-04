@@ -7,6 +7,8 @@
 // +-----------------------------------------------------------------------+
 $lang['SYNC_THUMBSIZE_DESC'] = 'Velikost v slikovnih pikah (px), naj bo majhna, privzeto je v redu, Youtube uporablja 190x68.';
 $lang['SYNC_THUMBSIZE'] = 'Velikost sličice';
+$lang['SYNC_THUMBOVERWRITE'] = 'Prepiši obstoječe sličice';
+$lang['SYNC_THUMBOVERWRITE_DESC'] = 'Zamenja obstoječe sličice z novimi. Če počistite potrditveno polje, se videoposnetki, ki že imajo sličice, preskočijo.';
 $lang['SYNC_THUMBSEC_DESC'] = 'Ustvarite sličico vsakih x sekund.';
 $lang['SYNC_THUMBSEC'] = 'Ustvarite sličico vsako sekundo';
 $lang['SYNC_POSTEROVERLAY_DESC'] = 'Uporabite prekrivanje na ustvarjanju plakata.';

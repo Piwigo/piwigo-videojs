@@ -39,6 +39,8 @@ $lang['SYNC_THUMB'] = 'VideoJS 썸네일';
 $lang['SYNC_THUMBSEC'] = 'N초마다 썸네일을 생성합니다. 여기서 N =';
 $lang['SYNC_THUMBSEC_DESC'] = '이 썸네일은 VideoJS에서만 사용됩니다.';
 $lang['SYNC_THUMBSIZE'] = '썸네일 크기:';
+$lang['SYNC_THUMBOVERWRITE'] = '기존 썸네일 덮어쓰기';
+$lang['SYNC_THUMBOVERWRITE_DESC'] = '기존 썸네일을 새 썸네일로 교체합니다. 선택 해제하면 이미 썸네일이 있는 동영상은 건너뜁니다.';
 $lang['SYNC_THUMBSIZE_DESC'] = '픽셀 단위 크기, 작게 유지, 기본값으로 충분, 유튜브는 190x68 사용.';
 $lang['SYNC_THUMBSIZE_ERROR'] = '썸네일 크기가 유효하지 않습니다. 기본값 120px으로 대체합니다.';
 $lang['SYNC_THUMBS_NEW'] = '1개의 VideoJS 썸네일 생성됨';

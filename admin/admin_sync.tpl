@@ -227,6 +227,10 @@ jQuery(".showInfo").tipTip({
 		<a class="icon-info-circled-1" title="{'SYNC_THUMBSEC_DESC'|@translate}"></a>
       </li>
       <li>
+		<label><input type="checkbox" name="thumboverwrite" value="1" {if isset($thumboverwrite) and $thumboverwrite}checked="checked"{/if}> {'SYNC_THUMBOVERWRITE'|@translate}</label>
+		<a class="icon-info-circled-1" title="{'SYNC_THUMBOVERWRITE_DESC'|@translate}"></a>
+      </li>
+      <li>
 		<label>{'SYNC_THUMBSIZE'|@translate}</label>
 		<input type="text" name="thumbsize" value="{$thumbsize}" size="6" placeholder="120x68" required/>
 		<a class="icon-info-circled-1" title="{'SYNC_THUMBSIZE_DESC'|@translate}"></a>

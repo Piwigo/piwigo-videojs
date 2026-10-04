@@ -349,7 +349,10 @@ while ($row = pwg_db_fetch_assoc($result))
 				continue;
 			}
 			
-			if ($sync_options['thumbsec'] and !$sync_options['simulate'])
+			/* Keep the existing thumbnails unless overwriting is requested */
+			$keep_thumbs = empty($sync_options['thumboverwrite']) && !empty(glob($output_dir.$file_wo_ext['filename']."-th_*"));
+			
+			if ($sync_options['thumbsec'] and !$sync_options['simulate'] and !$keep_thumbs)
 			{   /* We really want to create the frames */
 				/* Delete any previous frames, avoiding duplication on different output format */
 				$filematch = $output_dir.$file_wo_ext['filename']."-th_*";
