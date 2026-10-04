@@ -1,4 +1,7 @@
 Changes from 16.b to 16.c
+- Fixes #269: retrieves the author (Author, Artist, Performer or
+              com.apple.quicktime.author tags) and stores it in the Piwigo
+              'author' field when this field is empty.
 - Fixes #271: "Overwrite existing posters" is now honoured by the Batch Manager
               action and by the VideoJS tab of the Edit Photo page.
 

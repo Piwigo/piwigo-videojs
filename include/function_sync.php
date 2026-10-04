@@ -113,7 +113,15 @@ while ($row = pwg_db_fetch_assoc($result))
 				{
 					/* Update Piwigo SQL table */
 					$dbfields = explode(",", "filesize,width,height,latitude,longitude,date_creation,rotation");
-					$query = "UPDATE ".IMAGES_TABLE." SET ".vjs_dbSet($dbfields, $exif).", `date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
+					$set = vjs_dbSet($dbfields, $exif);
+
+					/* Fill the author only if empty in the database */
+					if (isset($exif['author']) and strlen($exif['author']) > 0)
+					{
+						$authorEsc = pwg_db_real_escape_string($exif['author']);
+						$set .= ($set !== '' ? ', ' : '')."`author`=IF(`author` IS NULL OR `author`='', '".$authorEsc."', `author`)";
+					}
+					$query = "UPDATE ".IMAGES_TABLE." SET ".$set.($set !== '' ? ', ' : '')."`date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
 					pwg_query($query);
 	
 					/* Update VideoJS SQL table */

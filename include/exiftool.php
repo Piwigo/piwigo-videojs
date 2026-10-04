@@ -100,6 +100,16 @@ if (isset($general['GPSLatitude']) and isset($general['GPSLongitude']))
 	$exif['longitude'] = $general['GPSLongitude'];
 }
 
+/* Author: 'Author' (includes QuickTime 'com.apple.quicktime.author'), then 'Artist' */
+foreach (array('Author', 'Artist') as $authorTag)
+{
+	if (isset($general[$authorTag]) and strlen(trim((string)$general[$authorTag])) > 0)
+	{
+		$exif['author'] = trim((string)$general[$authorTag]);
+		break;
+	}
+}
+
 /* For the VideoJS SQL table */
 if (isset($general['FileSize']))
 {

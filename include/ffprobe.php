@@ -125,6 +125,16 @@ if (isset($general['tags']['location']))
 	$exif['longitude'] = $value[3].rtrim($value[4],'/');
 }
 
+/* Author: 'author', then 'artist', then 'com.apple.quicktime.author' */
+foreach (array('author', 'artist', 'com.apple.quicktime.author') as $authorTag)
+{
+	if (isset($general['tags'][$authorTag]) and strlen(trim((string)$general['tags'][$authorTag])) > 0)
+	{
+		$exif['author'] = trim((string)$general['tags'][$authorTag]);
+		break;
+	}
+}
+
 /* For the VideoJS SQL table */
 if (isset($general['size']))
 {

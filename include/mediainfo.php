@@ -144,6 +144,16 @@ if (isset($general['xyz']) or isset($general['comapplequicktimelocationISO6709']
     $exif['longitude'] = $value[3].$value[4];
 }
 
+/* Author: 'Author', then 'Artist', then 'Performer', then 'com.apple.quicktime.author' */
+foreach (array('Author', 'Artist', 'Performer', 'comapplequicktimeauthor') as $authorTag)
+{
+    if (isset($general[$authorTag]) and strlen(trim((string)$general[$authorTag])) > 0)
+    {
+        $exif['author'] = trim((string)$general[$authorTag]);
+        break;
+    }
+}
+
 /* For the VideoJS SQL table */
 if (isset($general['FileSize']))
 {
