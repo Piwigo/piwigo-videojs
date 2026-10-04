@@ -1,3 +1,7 @@
+Changes from 16.b to 16.c
+- Fixes #271: "Overwrite existing posters" is now honoured by the Batch Manager
+              action and by the VideoJS tab of the Edit Photo page.
+
 Changes from 16.a to 16.b
 - Fixes #262: by detecting when the duration is returned by ExifTool as 
               a "hh:mm:ss.xxx" string.

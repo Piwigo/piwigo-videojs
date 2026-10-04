@@ -73,7 +73,7 @@ if (isset($_GET['delete_extra']) and $_GET['delete_extra'] == 1)
     array_push( $page['infos'], 'Thumbnails and Subtitle and extra videos source deleted');
 }
 
-// Get default sync options
+// Get user's sync options
 $sync_options = $conf['vjs_sync'];
 
 // Sync metadata to db and create poster if needed, share code
@@ -81,8 +81,8 @@ if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1)
 {
     $sync_options['metadata'] = true;
     $sync_options['representative'] = true;
-    $sync_options['poster'] = true;
-    $sync_options['posteroverwrite'] = false;
+    // Only (re)create the poster if overwriting is allowed (saved sync option) or none exists yet
+    $sync_options['poster'] = !empty($sync_options['posteroverwrite']) || empty($picture['representative_ext']);
     $sync_options['simulate'] = false;
     $sync_options['subcats_included'] = false;
     require_once(dirname(__FILE__).'/../include/function_sync.php');

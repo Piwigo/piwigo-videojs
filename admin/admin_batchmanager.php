@@ -201,6 +201,12 @@ function vjs_element_set_global_action($action, $collection)
         conf_update_param('vjs_sync', serialize($sync_options_backup));
     }
 
+    // Skip videos which already have a poster unless overwriting is requested
+    if (!$sync_options['posteroverwrite'])
+    {
+        $query .= ' AND representative_ext IS NULL';
+    }
+
     // Do the work, share with admin sync and photo
     require_once(dirname(__FILE__).'/../include/function_sync.php');
 
