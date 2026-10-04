@@ -109,7 +109,15 @@ if (isset($video['height']))
 if (isset($video['tags']['rotate']) and (int)$video['tags']['rotate'] != 0)
 {
 	include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
-	$rotation_code = pwg_image::get_rotation_code_from_angle((int)$video['tags']['rotate']);
+	// Account for negative numbers
+	$angle = ((int)$video['tags']['rotate'] + 360) % 360;
+	$rotation_code = pwg_image::get_rotation_code_from_angle($angle);
+	$exif['rotation'] = $rotation_code;
+} elseif (isset($video['side_data_list'][0]['rotation']) and (int)$video['side_data_list'][0]['rotation'] != 0) {
+	include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
+	// Account for negative numbers
+	$angle = ((int)$video['side_data_list'][0]['rotation'] + 360) % 360;
+	$rotation_code = pwg_image::get_rotation_code_from_angle($angle);
 	$exif['rotation'] = $rotation_code;
 }
 if (isset($general['tags']['creation_time']))
