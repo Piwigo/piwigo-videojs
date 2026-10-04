@@ -142,6 +142,7 @@ if (isset($general['xyz']) or isset($general['comapplequicktimelocationISO6709']
     $value = preg_split('/(\+|\-|\/)/', $gps, -1, PREG_SPLIT_DELIM_CAPTURE);
     $exif['latitude'] = $value[1].$value[2];
     $exif['longitude'] = $value[3].$value[4];
+    if (($altitude = vjs_iso6709_altitude($gps)) !== '') { $exif['GPSAltitude'] = $altitude; }
 }
 
 /* Author: 'Author', then 'Artist', then 'Performer', then 'com.apple.quicktime.author' */

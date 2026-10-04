@@ -61,6 +61,16 @@ function vjs_clean_keywords($keywords) {
 	return implode(', ', $list);
 }
 
+/* Returns the altitude (e.g. '29.2 m') of an ISO 6709 location such as '+35.6445-139.7455+029.201/', or '' */
+function vjs_iso6709_altitude($gps) {
+	$value = preg_split('/(\+|\-|\/)/', (string)$gps, -1, PREG_SPLIT_DELIM_CAPTURE);
+	if (isset($value[5]) and isset($value[6]) and ($value[5] === '+' or $value[5] === '-') and is_numeric($value[6]))
+	{
+		return (float)($value[5].$value[6]).' m';
+	}
+	return '';
+}
+
 // Returns the file size in KB, MB, GB or TB
 function formatBytes($bytes, $precision = 1) { 
     $units = array('B', 'KB', 'MB', 'GB', 'TB'); 

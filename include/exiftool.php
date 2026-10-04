@@ -115,6 +115,19 @@ if (($value = vjs_first_text($general, array('Title'))) !== '') { $exif['name'] 
 if (($value = vjs_first_text($general, array('Description', 'Comment', 'Synopsis'))) !== '') { $exif['comment'] = $value; }
 if (($value = vjs_clean_keywords(vjs_first_text($general, array('Keywords', 'Subject', 'Category')))) !== '') { $exif['tags'] = $value; }
 
+/* Place names (City, State, Country): shown as 'Location' (not added to the tags) */
+$places = array();
+foreach (array('City' => array('City', 'LocationShownCity'),
+               'State' => array('State', 'Province-State', 'LocationShownProvinceState'),
+               'Country' => array('Country', 'Country-PrimaryLocationName', 'LocationShownCountryName')) as $place => $names)
+{
+	if (($value = vjs_first_text($general, $names)) !== '') { $places[] = $value; }
+}
+if (count($places) > 0)
+{
+	$exif['Location'] = implode(', ', $places);
+}
+
 /* For the VideoJS SQL table */
 if (isset($general['FileSize']))
 {

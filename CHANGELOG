@@ -1,4 +1,11 @@
 Changes from 16.b to 16.c
+- Fixes #244: retrieves the title, the description or comment and the keywords
+              from the video. The title and the description fill the Piwigo
+              'name' and 'comment' fields when these are empty; the keywords are
+              added as Piwigo tags (existing tags are kept). The copyright is
+              now shown with all three tools. The GPS altitude is also
+              retrieved with ffprobe and MediaInfo; with ExifTool, the city,
+              state and country are shown as 'Location'.
 - Fixes #269: retrieves the author (Author, Artist, Performer or
               com.apple.quicktime.author tags) and stores it in the Piwigo
               'author' field when this field is empty.
@@ -6,11 +13,6 @@ Changes from 16.b to 16.c
               videos; it now offers all the Batch Manager synchronization
               options (metadata, posters, thumbnails), the rotation, and the
               'Delete VideoJS thumbnails' command at the top of Information.
-- Fixes #244: retrieves the title, the description or comment and the keywords
-              from the video. The title and the description fill the Piwigo
-              'name' and 'comment' fields when these are empty; the keywords are
-              added as Piwigo tags (existing tags are kept). The copyright is
-              now shown with all three tools.
 - Fixes #271: "Overwrite existing posters" is now honoured by the Batch Manager
               action and by the VideoJS tab of the Edit Photo page: only the
               poster step is skipped for videos which already have a poster.

@@ -123,6 +123,7 @@ if (isset($general['tags']['location']))
 	$value = preg_split('/(\+|\-|\/)/', $gps, -1, PREG_SPLIT_DELIM_CAPTURE);
 	$exif['latitude'] = $value[1].$value[2];
 	$exif['longitude'] = $value[3].rtrim($value[4],'/');
+	if (($altitude = vjs_iso6709_altitude($gps)) !== '') { $exif['GPSAltitude'] = $altitude; }
 }
 
 /* Author: 'author', then 'artist', then 'com.apple.quicktime.author' */
