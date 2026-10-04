@@ -154,6 +154,11 @@ foreach (array('Author', 'Artist', 'Performer', 'comapplequicktimeauthor') as $a
     }
 }
 
+/* Name, comment and tags, for the Piwigo SQL tables (used only to fill empty fields and add tags) */
+if (($value = vjs_first_text($general, array('Title', 'Movie'))) !== '') { $exif['name'] = $value; }
+if (($value = vjs_first_text($general, array('Description', 'Comment'))) !== '') { $exif['comment'] = $value; }
+if (($value = vjs_clean_keywords(vjs_first_text($general, array('Keywords')))) !== '') { $exif['tags'] = $value; }
+
 /* For the VideoJS SQL table */
 if (isset($general['FileSize']))
 {
@@ -252,6 +257,8 @@ if (isset($general['Description']))
 {
     $exif['Description'] = $general['Description'];
 }
+
+if (($value = vjs_first_text($general, array('Copyright'))) !== '') { $exif['Copyright'] = $value; }
 
 /* Camera, Software */
 if (isset($general['Make']) or isset($general['comapplequicktimemake'])) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).

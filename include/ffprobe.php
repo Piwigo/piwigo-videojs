@@ -135,6 +135,12 @@ foreach (array('author', 'artist', 'com.apple.quicktime.author') as $authorTag)
 	}
 }
 
+/* Name, comment and tags, for the Piwigo SQL tables (used only to fill empty fields and add tags) */
+$tags_lc = isset($general['tags']) ? array_change_key_case($general['tags'], CASE_LOWER) : array();
+if (($value = vjs_first_text($tags_lc, array('title'))) !== '') { $exif['name'] = $value; }
+if (($value = vjs_first_text($tags_lc, array('description', 'comment', 'synopsis'))) !== '') { $exif['comment'] = $value; }
+if (($value = vjs_clean_keywords(vjs_first_text($tags_lc, array('keywords', 'category')))) !== '') { $exif['tags'] = $value; }
+
 /* For the VideoJS SQL table */
 if (isset($general['size']))
 {
@@ -217,6 +223,8 @@ if (isset($general['tags']['description']))
 {
     $exif['Description'] = $general['tags']['description'];
 }
+
+if (($value = vjs_first_text($tags_lc, array('copyright'))) !== '') { $exif['Copyright'] = $value; }
 
 /* Camera, Software */
 if (isset($general['tags']['com.apple.quicktime.make']))

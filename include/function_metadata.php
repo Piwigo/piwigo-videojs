@@ -25,6 +25,42 @@
 *
 ************************************************/
 
+/* Returns the first non-empty value found in $source (array or SimpleXMLElement)
+ * for the given key names, as a trimmed string. Array values are joined with ', '. */
+function vjs_first_text($source, $names) {
+	foreach ($names as $name)
+	{
+		if (isset($source[$name]))
+		{
+			$value = $source[$name];
+			if (is_array($value))
+			{
+				$value = implode(', ', array_filter(array_map('strval', $value), 'strlen'));
+			}
+			$value = trim((string)$value);
+			if (strlen($value) > 0)
+			{
+				return $value;
+			}
+		}
+	}
+	return '';
+}
+
+/* Cleans up a keyword list (separated by , ; or newlines): returns it as 'a, b, c' without duplicates */
+function vjs_clean_keywords($keywords) {
+	$list = array();
+	foreach (preg_split('/[,;\r\n]+/', (string)$keywords) as $keyword)
+	{
+		$keyword = trim($keyword);
+		if (strlen($keyword) > 0 and !in_array(mb_strtolower($keyword), array_map('mb_strtolower', $list)))
+		{
+			$list[] = $keyword;
+		}
+	}
+	return implode(', ', $list);
+}
+
 // Returns the file size in KB, MB, GB or TB
 function formatBytes($bytes, $precision = 1) { 
     $units = array('B', 'KB', 'MB', 'GB', 'TB'); 

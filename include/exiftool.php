@@ -110,6 +110,11 @@ foreach (array('Author', 'Artist') as $authorTag)
 	}
 }
 
+/* Name, comment and tags, for the Piwigo SQL tables (used only to fill empty fields and add tags) */
+if (($value = vjs_first_text($general, array('Title'))) !== '') { $exif['name'] = $value; }
+if (($value = vjs_first_text($general, array('Description', 'Comment', 'Synopsis'))) !== '') { $exif['comment'] = $value; }
+if (($value = vjs_clean_keywords(vjs_first_text($general, array('Keywords', 'Subject', 'Category')))) !== '') { $exif['tags'] = $value; }
+
 /* For the VideoJS SQL table */
 if (isset($general['FileSize']))
 {

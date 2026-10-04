@@ -2,16 +2,21 @@ Changes from 16.b to 16.c
 - Fixes #269: retrieves the author (Author, Artist, Performer or
               com.apple.quicktime.author tags) and stores it in the Piwigo
               'author' field when this field is empty.
+- Fixes #270: Edit Photo: a single 'VideoJS' tab replaces the Rotate tab for
+              videos; it now offers all the Batch Manager synchronization
+              options (metadata, posters, thumbnails), the rotation, and the
+              'Delete VideoJS thumbnails' command at the top of Information.
+- Fixes #244: retrieves the title, the description or comment and the keywords
+              from the video. The title and the description fill the Piwigo
+              'name' and 'comment' fields when these are empty; the keywords are
+              added as Piwigo tags (existing tags are kept). The copyright is
+              now shown with all three tools.
 - Fixes #271: "Overwrite existing posters" is now honoured by the Batch Manager
               action and by the VideoJS tab of the Edit Photo page: only the
               poster step is skipped for videos which already have a poster.
 - New option 'Overwrite existing thumbnails' (Synchronize tab, Batch Manager and
               Edit Photo): when unchecked, videos which already have VideoJS
               thumbnails keep them.
-- Fixes #270: Edit Photo: a single 'VideoJS' tab replaces the Rotate tab for
-              videos; it now offers all the Batch Manager synchronization
-              options (metadata, posters, thumbnails), the rotation, and the
-              'Delete VideoJS thumbnails' command at the top of Information.
 - Replacing a video (e.g. with the Photo Update plugin) or uploading a new one
               now refreshes its metadata and poster, and its thumbnails if the
               option is ticked; old thumbnails and extra sources are deleted.

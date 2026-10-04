@@ -121,9 +121,25 @@ while ($row = pwg_db_fetch_assoc($result))
 						$authorEsc = pwg_db_real_escape_string($exif['author']);
 						$set .= ($set !== '' ? ', ' : '')."`author`=IF(`author` IS NULL OR `author`='', '".$authorEsc."', `author`)";
 					}
+					/* Fill the name and the comment only if empty in the database */
+					foreach (array('name', 'comment') as $textField)
+					{
+						if (isset($exif[$textField]) and strlen($exif[$textField]) > 0)
+						{
+							$textEsc = pwg_db_real_escape_string($exif[$textField]);
+							$set .= ($set !== '' ? ', ' : '')."`".$textField."`=IF(`".$textField."` IS NULL OR `".$textField."`='', '".$textEsc."', `".$textField."`)";
+						}
+					}
 					$query = "UPDATE ".IMAGES_TABLE." SET ".$set.($set !== '' ? ', ' : '')."`date_metadata_update`=CURDATE() WHERE `id`=".$row['id'].";";
 					pwg_query($query);
 	
+					/* Add the keywords as Piwigo tags (existing tags are kept) */
+					if (isset($exif['tags']) and strlen($exif['tags']) > 0)
+					{
+						include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
+						add_tags(get_tag_ids($exif['tags']), array($row['id']));
+					}
+
 					/* Update VideoJS SQL table */
 					$sqlMetadata = pwg_db_real_escape_string(serialize($exif));
 					$query = "INSERT INTO ".$prefixeTable."image_videojs (metadata,date_metadata_update,id) VALUES ('".$sqlMetadata."',CURDATE(),'".$row['id']."') ON DUPLICATE KEY UPDATE metadata='".$sqlMetadata."',date_metadata_update=CURDATE(),id='".$row['id']."';";
