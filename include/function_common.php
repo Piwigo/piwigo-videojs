@@ -133,8 +133,16 @@ function vjs_dbSet($fields, $data = array())
 /* Pretty Print recursive */
 function vjs_pprint_r(array $array, $glue = '<br/>&nbsp;&nbsp;&nbsp;&nbsp;', $size = 6)
 {
+        // Sort the keys alphabetically, the ones starting with a lowercase letter (Piwigo fields) first
+        $keys = array_keys($array);
+        usort($keys, function ($a, $b) {
+                $lowerA = (int) ctype_lower(substr((string) $a, 0, 1));
+                $lowerB = (int) ctype_lower(substr((string) $b, 0, 1));
+                return $lowerA !== $lowerB ? $lowerB - $lowerA : strcasecmp((string) $a, (string) $b);
+        });
+
         // Split $EXIF keys array in chuck of $size for nicer display
-        $chunk_arr = array_chunk( array_keys($array), $size, true);
+        $chunk_arr = array_chunk( $keys, $size, true);
 
         // Generate ouput
         $output = '';

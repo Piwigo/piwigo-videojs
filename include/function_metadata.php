@@ -30,18 +30,27 @@
 function vjs_first_text($source, $names) {
 	foreach ($names as $name)
 	{
-		if (isset($source[$name]))
+		/* MediaInfo (SimpleXMLElement) stores its fields as child elements */
+		if ($source instanceof SimpleXMLElement and isset($source->{$name}))
+		{
+			$value = $source->{$name};
+		}
+		else if (isset($source[$name]))
 		{
 			$value = $source[$name];
-			if (is_array($value))
-			{
-				$value = implode(', ', array_filter(array_map('strval', $value), 'strlen'));
-			}
-			$value = trim((string)$value);
-			if (strlen($value) > 0)
-			{
-				return $value;
-			}
+		}
+		else
+		{
+			continue;
+		}
+		if (is_array($value))
+		{
+			$value = implode(', ', array_filter(array_map('strval', $value), 'strlen'));
+		}
+		$value = trim((string)$value);
+		if (strlen($value) > 0)
+		{
+			return $value;
 		}
 	}
 	return '';
@@ -69,6 +78,40 @@ function vjs_iso6709_altitude($gps) {
 		return (float)($value[5].$value[6]).' m';
 	}
 	return '';
+}
+
+/* Returns 'HDR10 (PQ)' or 'HLG' from a transfer characteristic given by name or by
+ * ITU-T H.273 code (16 = SMPTE ST 2084, 18 = ARIB STD-B67), 'Dolby Vision' if flagged, or '' */
+function vjs_hdr_label($transfer, $dolbyVision = false) {
+	$transfer = strtolower(trim((string)$transfer));
+	$hdr = array();
+	if ($transfer === '16' or strpos($transfer, '2084') !== false or $transfer === 'pq')
+	{
+		$hdr[] = 'HDR10 (PQ)';
+	}
+	else if ($transfer === '18' or strpos($transfer, 'b67') !== false or $transfer === 'hlg')
+	{
+		$hdr[] = 'HLG';
+	}
+	if ($dolbyVision)
+	{
+		$hdr[] = 'Dolby Vision';
+	}
+	return implode(' + ', $hdr);
+}
+
+/* Summarizes tracks from their languages: '2 (eng, fra)', or '1' if no language is known */
+function vjs_track_summary($languages) {
+	$known = array();
+	foreach ($languages as $language)
+	{
+		$language = trim((string)$language);
+		if ($language !== '' and strtolower($language) !== 'und' and !in_array($language, $known))
+		{
+			$known[] = $language;
+		}
+	}
+	return count($languages).(count($known) > 0 ? ' ('.implode(', ', $known).')' : '');
 }
 
 // Returns the file size in KB, MB, GB or TB

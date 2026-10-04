@@ -234,6 +234,23 @@ if (isset($general['Copyright']))
     $exif['Copyright'] = $general['Copyright'];
 }
 
+/* Color (QuickTime 'nclc' or 'nclx' color information; numeric codes as ITU-T H.273) */
+$colorNames = array(
+	'ColorPrimaries' => array(1 => 'BT.709', 5 => 'BT.601 PAL', 6 => 'BT.601 NTSC', 9 => 'BT.2020', 12 => 'Display P3'),
+	'TransferCharacteristics' => array(1 => 'BT.709', 13 => 'sRGB', 14 => 'BT.2020', 15 => 'BT.2020', 16 => 'SMPTE ST 2084 (PQ)', 18 => 'ARIB STD-B67 (HLG)'),
+	'MatrixCoefficients' => array(1 => 'BT.709', 5 => 'BT.601', 6 => 'BT.601', 9 => 'BT.2020 non-constant', 10 => 'BT.2020 constant'));
+foreach ($colorNames as $colorTag => $names)
+{
+	if (isset($general[$colorTag]) and $general[$colorTag] !== '')
+	{
+		$exif[$colorTag] = isset($names[$general[$colorTag]]) ? $names[$general[$colorTag]] : (string)$general[$colorTag];
+	}
+}
+if (isset($general['TransferCharacteristics']) and ($value = vjs_hdr_label($general['TransferCharacteristics'])) !== '')
+{
+	$exif['HDR'] = $value;
+}
+
 /* Camera, Software */
 if (isset($general['Make']))
 {

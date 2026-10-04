@@ -261,6 +261,54 @@ if (isset($general['Description']))
 
 if (($value = vjs_first_text($general, array('Copyright'))) !== '') { $exif['Copyright'] = $value; }
 
+/* Video details */
+if (($value = vjs_first_text($video, array('Format_Profile'))) !== '')
+{
+    $exif['VideoProfile'] = $value;
+    if (($level = vjs_first_text($video, array('Format_Level'))) !== '' and strpos($value, '@') === false)
+    {
+        $exif['VideoProfile'] .= ' @ L'.$level;
+    }
+}
+if (($value = vjs_first_text($video, array('ChromaSubsampling'))) !== '') { $exif['ChromaSubsampling'] = $value; }
+if (($value = vjs_first_text($video, array('BitDepth'))) !== '') { $exif['VideoBitDepth'] = $value; }
+if (($value = vjs_first_text($video, array('ScanType'))) !== '') { $exif['ScanType'] = $value; }
+if (($value = vjs_first_text($video, array('colour_primaries'))) !== '') { $exif['ColorPrimaries'] = $value; }
+if (($value = vjs_first_text($video, array('transfer_characteristics'))) !== '') { $exif['TransferCharacteristics'] = $value; }
+if (($value = vjs_first_text($video, array('matrix_coefficients'))) !== '') { $exif['MatrixCoefficients'] = $value; }
+$hdrFormat = vjs_first_text($video, array('HDR_Format'));
+if ($hdrFormat !== '')
+{
+    $exif['HDR'] = $hdrFormat;
+}
+else if (($value = vjs_hdr_label(isset($exif['TransferCharacteristics']) ? $exif['TransferCharacteristics'] : '')) !== '')
+{
+    $exif['HDR'] = $value;
+}
+
+/* Audio, subtitle tracks and chapters */
+$audioLanguages = array();
+$subtitleLanguages = array();
+$tracks = isset($xml->media) ? $xml->media->track : $xml->File->track;
+foreach ($tracks as $track)
+{
+    $type = (string)$track['type'];
+    if ($type == 'Audio') { $audioLanguages[] = vjs_first_text($track, array('Language')); }
+    if ($type == 'Text') { $subtitleLanguages[] = vjs_first_text($track, array('Language')); }
+    if ($type == 'Menu')
+    {
+        // Chapters are listed as _hh_mm_ss_mmm elements
+        $chapters = 0;
+        foreach ($track->children() as $name => $child)
+        {
+            if (preg_match('/^_\d\d_\d\d_\d\d_\d+$/', $name)) { $chapters++; }
+        }
+        if ($chapters > 0) { $exif['Chapters'] = (string)$chapters; }
+    }
+}
+if (count($audioLanguages) > 0) { $exif['AudioTracks'] = vjs_track_summary($audioLanguages); }
+if (count($subtitleLanguages) > 0) { $exif['SubtitleTracks'] = vjs_track_summary($subtitleLanguages); }
+
 /* Camera, Software */
 if (isset($general['Make']) or isset($general['comapplequicktimemake'])) //Not present in XML schema version 2.0beta1 (https://mediaarea.net/mediainfo/mediainfo_2_0.xsd).
 {

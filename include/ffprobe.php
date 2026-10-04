@@ -227,6 +227,72 @@ if (isset($general['tags']['description']))
 
 if (($value = vjs_first_text($tags_lc, array('copyright'))) !== '') { $exif['Copyright'] = $value; }
 
+/* Video details */
+if (isset($video['display_aspect_ratio']) and $video['display_aspect_ratio'] !== '0:1')
+{
+	$exif['AspectRatio'] = (string)$video['display_aspect_ratio'];
+}
+if (isset($video['profile']) and strlen((string)$video['profile']) > 0)
+{
+	$exif['VideoProfile'] = (string)$video['profile'];
+	// The level is coded as 41 for H.264 level 4.1, 120 for HEVC level 4.0; -99 is unknown
+	if (isset($video['level']) and is_numeric($video['level']) and (int)$video['level'] > 0)
+	{
+		$divisor = ($video['codec_name'] == 'hevc') ? 30 : (($video['codec_name'] == 'h264') ? 10 : 1);
+		$exif['VideoProfile'] .= ' @ L'.round((int)$video['level'] / $divisor, 1);
+	}
+}
+if (isset($video['pix_fmt']))
+{
+	$exif['PixelFormat'] = (string)$video['pix_fmt'];
+	if (preg_match('/^(?:yuvj?|yuva)(4(?:20|22|44))/', $video['pix_fmt'], $matches))
+	{
+		$exif['ChromaSubsampling'] = implode(':', str_split($matches[1]));
+	}
+}
+if (isset($video['bits_per_raw_sample']) and (int)$video['bits_per_raw_sample'] > 0)
+{
+	$exif['VideoBitDepth'] = (string)$video['bits_per_raw_sample'];
+}
+if (isset($video['field_order']) and $video['field_order'] !== 'unknown')
+{
+	$exif['ScanType'] = ($video['field_order'] == 'progressive') ? 'Progressive' : 'Interlaced';
+}
+if (isset($video['color_primaries'])) { $exif['ColorPrimaries'] = (string)$video['color_primaries']; }
+if (isset($video['color_transfer'])) { $exif['TransferCharacteristics'] = (string)$video['color_transfer']; }
+if (isset($video['color_space'])) { $exif['MatrixCoefficients'] = (string)$video['color_space']; }
+$dolbyVision = false;
+if (isset($video['side_data_list']) and is_array($video['side_data_list']))
+{
+	foreach ($video['side_data_list'] as $sideData)
+	{
+		if (isset($sideData['side_data_type']) and stripos($sideData['side_data_type'], 'DOVI') !== false) { $dolbyVision = true; }
+	}
+}
+if (($value = vjs_hdr_label(isset($video['color_transfer']) ? $video['color_transfer'] : '', $dolbyVision)) !== '')
+{
+	$exif['HDR'] = $value;
+}
+
+/* Audio, subtitle tracks and chapters */
+$audioLanguages = array();
+$subtitleLanguages = array();
+if (isset($output['streams']) and is_array($output['streams']))
+{
+	foreach ($output['streams'] as $stream)
+	{
+		$language = isset($stream['tags']['language']) ? $stream['tags']['language'] : '';
+		if ($stream['codec_type'] == 'audio') { $audioLanguages[] = $language; }
+		if ($stream['codec_type'] == 'subtitle') { $subtitleLanguages[] = $language; }
+	}
+}
+if (count($audioLanguages) > 0) { $exif['AudioTracks'] = vjs_track_summary($audioLanguages); }
+if (count($subtitleLanguages) > 0) { $exif['SubtitleTracks'] = vjs_track_summary($subtitleLanguages); }
+if (isset($output['chapters']) and is_array($output['chapters']) and count($output['chapters']) > 0)
+{
+	$exif['Chapters'] = (string)count($output['chapters']);
+}
+
 /* Camera, Software */
 if (isset($general['tags']['com.apple.quicktime.make']))
 {

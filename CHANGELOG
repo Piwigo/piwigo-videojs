@@ -5,7 +5,13 @@ Changes from 16.b to 16.c
               added as Piwigo tags (existing tags are kept). The copyright is
               now shown with all three tools. The GPS altitude is also
               retrieved with ffprobe and MediaInfo; with ExifTool, the city,
-              state and country are shown as 'Location'.
+              state and country are shown as 'Location'. Technical details
+              are also shown: aspect ratio, codec profile and level, pixel
+              format, chroma subsampling, bit depth, scan type, color
+              primaries/transfer/matrix, HDR (HDR10, HLG, Dolby Vision),
+              audio and subtitle tracks with their languages, chapters.
+- The metadata keys listed by the synchronization are now sorted alphabetically,
+  the lowercase ones (Piwigo fields) first.
 - Fixes #269: retrieves the author (Author, Artist, Performer or
               com.apple.quicktime.author tags) and stores it in the Piwigo
               'author' field when this field is empty.
