@@ -40,6 +40,8 @@ if ($sync_options['metadata'] and isset($sync_options['mediainfo']) and !class_e
 }
 
 // Do the dependencies checks for MediaInfo & FFmpeg & FFprobe & ExifTool
+// (this file can be included several times in one request, e.g. by the upload hook)
+if (!function_exists('check')) {
 function check($binary)
 {
 	global $logger;
@@ -76,6 +78,7 @@ function check($binary)
 	    $logger->debug('ERROR: Calling '.$binary.' did fail.');
 	    return false;
     }
+}
 }
 
 /* Concat custom binary directory from local config local/config/config.inc.php */

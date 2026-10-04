@@ -9,6 +9,10 @@ Changes from 16.b to 16.c
               videos; it now offers all the Batch Manager synchronization
               options (metadata, posters, thumbnails), the rotation, and the
               'Delete VideoJS thumbnails' command at the top of Information.
+- Replacing a video (e.g. with the Photo Update plugin) or uploading a new one
+              now refreshes its metadata and poster, and its thumbnails if the
+              option is ticked; old thumbnails and extra sources are deleted.
+              The 'Update' tab of Photo Update is no longer hidden for videos.
 
 Changes from 16.a to 16.b
 - Fixes #262: by detecting when the duration is returned by ExifTool as 

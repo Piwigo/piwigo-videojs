@@ -27,10 +27,8 @@
 // Check whether we are indeed included by Piwigo.
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-// Define all videos with supported extensions
-define('SQL_VIDEOS', "(LOWER(`file`) LIKE '%.ogg' OR LOWER(`file`) LIKE '%.ogv' OR
-                LOWER(`file`) LIKE '%.mp4' OR LOWER(`file`) LIKE '%.m4v' OR
-                LOWER(`file`) LIKE '%.webm' OR LOWER(`file`) LIKE '%.webmv')");
+// Videos definition and helpers, shared with the sync and the upload hook
+include_once(dirname(__FILE__).'/../include/function_common.php');
 
 // Batch_manager support
 include_once(dirname(__FILE__).'/admin_batchmanager.php');
@@ -61,123 +59,4 @@ function vjs_add_tab($sheets, $id)
 // Hook to delete extra elements created by the plugin
 // Does apply to batch manager and photo-edit pages
 add_event_handler('begin_delete_elements', 'vjs_begin_delete_elements');
-// Function to delete extra elements created by the plugin
-function vjs_begin_delete_elements($ids)
-{
-  if (count($ids) == 0)
-  {
-    return 0;
-  }
-
-  $vjs_extensions = array(
-        'ogg',
-        'ogv',
-        'mp4',
-        'm4v',
-        'webm',
-        'webmv',
-  );
-  $files_ext = array_merge(array(), $vjs_extensions, array_map('strtoupper', $vjs_extensions) );
-
-  // Find details based on ID and if supported video files
-  $query = '
-SELECT
-    id,
-    path,
-    representative_ext
-  FROM '.IMAGES_TABLE.'
-  WHERE id IN ('.implode(',', $ids).') AND '.SQL_VIDEOS.'
-;';
-  $result = pwg_query($query);
-  while ($row = pwg_db_fetch_assoc($result))
-  {
-    if (url_is_remote($row['path']))
-    {
-      continue;
-    }
-
-    $files = array();
-    $files[] = get_element_path($row);
-
-    $ok = true;
-    if (!isset($conf['never_delete_originals']))
-    {
-      foreach ($files as $path)
-      {
-        // Don't delete the actual video or representative
-        // It is done by PWG core
-
-        // Delete any other video source format
-        $file_wo_ext = pathinfo($path);
-        $file_dir = dirname($path);
-        foreach ($files_ext as $file_ext)
-        {
-            $path_ext = $file_dir."/pwg_representative/".$file_wo_ext['filename'].".".$file_ext;
-            if (is_file($path_ext) and !unlink($path_ext))
-            {
-              $ok = false;
-              trigger_error('"'.$path_ext.'" cannot be removed', E_USER_WARNING);
-              break;
-            }
-        }
-
-        // Delete video thumbnails
-        $filematch = $file_dir."/pwg_representative/".$file_wo_ext['filename']."-th_*";
-        $matches = glob($filematch);
-        if (is_array($matches))
-        {
-            foreach($matches as $filename)
-            {
-                if (is_file($filename) and !unlink($filename))
-                {
-                   $ok = false;
-                   trigger_error('"'.$filename.'" cannot be removed', E_USER_WARNING);
-                   break;
-                }
-            }
-        } // End videos thumbnails
-      } // End for each files
-    } // End IF
-  } // End While
-} // End function
-
-/* Plugin admin functions */
-
-/* Parse array fields to SQL query */
-function vjs_dbSet($fields, $data = array())
-{
-    if (!$data) $data = &$_POST;
-    $set='';
-    foreach ($fields as $field)
-    {
-        if (isset($data[$field]) and strlen($data[$field]) > 0)
-        {
-            $set.="`$field`='".pwg_db_real_escape_string($data[$field])."', ";
-        }
-    }
-    return substr($set, 0, -2);
-}
-
-/* Pretty Print recursive */
-function vjs_pprint_r(array $array, $glue = '<br/>&nbsp;&nbsp;&nbsp;&nbsp;', $size = 6)
-{
-        // Split $EXIF keys array in chuck of $size for nicer display
-        $chunk_arr = array_chunk( array_keys($array), $size, true);
-
-        // Generate ouput
-        $output = '';
-        foreach ( $chunk_arr as $row ) {
-                foreach ( $row as $key ) {
-                        //printf('[%2s] ', $key);
-                        $output .= $key.', ';
-                }
-                $output .= $glue;
-        }
-
-        // Removes last $glue from string
-        strlen($glue) > 0 and $output = substr($output, 0, -strlen(', '.$glue));
-
-        return (string) $output;
-}
-
 ?>

@@ -55,6 +55,9 @@ add_event_handler('format_exif_data', 'vjs_format_exif_data', EVENT_HANDLER_PRIO
 // Hook to display metadata on picture page
 add_event_handler('get_element_metadata_available', 'vjs_metadata_available');
 
+// Refresh metadata, poster and thumbnails when a video is uploaded or replaced
+include_once(VIDEOJS_PATH.'include/function_upload.php');
+
 // If admin do the init
 if (defined('IN_ADMIN')) {
 	include_once(VIDEOJS_PATH.'/admin/admin_boot.php');
