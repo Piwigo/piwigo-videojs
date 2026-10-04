@@ -63,6 +63,10 @@ if (defined('IN_ADMIN')) {
 	include_once(VIDEOJS_PATH.'/admin/admin_boot.php');
 }
 
+// Hook to handle delivery of large videos in `action.php`, which is crutial
+// if `original_url_protection` is set to `'all'`.
+add_event_handler('loc_action_before_http_headers', 'vjs_handle_range_response');
+
 function vjs_format_exif_data($exif, $filename, $map)
 {
 	global $conf, $picture, $prefixeTable;
@@ -508,5 +512,10 @@ function vjs_read_strm($image)
 			return $hlsfile;
 	}
 	return false;
+}
+
+function vjs_handle_range_response()
+{
+	include_once(VIDEOJS_PATH . 'include/range_response_handler.php');
 }
 ?>
