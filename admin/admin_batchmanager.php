@@ -62,8 +62,13 @@ function vjs_loc_end_element_set_global()
 {
     global $template, $conf;
 
-    // Get user's sync options
-    $sync_options = $conf['vjs_sync'];
+    $template->append('element_set_global_plugins_actions',
+        array('ID' => 'videojs', 'NAME'=>l10n('VIDEOS_METADATA_POSTERS'), 'CONTENT' => vjs_sync_options_html($conf['vjs_sync'])));
+}
+
+// Build the sync options form fields, shared with the VideoJS tab of the photo edit page
+function vjs_sync_options_html($sync_options, $metadata_title = true, $thumbsize_inline = false)
+{
     $metadata_checked ='';
     if ($sync_options['metadata']) {
         $metadata_checked = 'checked="checked"';
@@ -100,9 +105,8 @@ function vjs_loc_end_element_set_global()
         $thumb_checked = 'checked="checked"';
     }
     
-    $template->append('element_set_global_plugins_actions',
-        array('ID' => 'videojs', 'NAME'=>l10n('VIDEOS_METADATA_POSTERS'), 'CONTENT' => '
-    <legend>'.l10n('SYNC_METADATA').'</legend>
+    return '
+    '.($metadata_title ? '<legend>'.l10n('SYNC_METADATA').'</legend>' : '').'
     <small><strong>'.l10n('SYNC_REQUIRE').'</strong></small>
     <ul>
       <li>
@@ -113,7 +117,7 @@ function vjs_loc_end_element_set_global()
     <legend>'.l10n('SYNC_POSTER_TITLE').'</legend>
     <ul>
       <li>
-        <label><input type="checkbox" name="vjs_representative" value="1" '.$representative_checked.'"> '.l10n('SYNC_REPRESENTATIVES').' </label>
+        <label><input type="checkbox" name="vjs_representative" value="1" '.$representative_checked.'> '.l10n('SYNC_REPRESENTATIVES').' </label>
         <a class="icon-info-circled-1" title="'.l10n('SYNC_REPRESENTATIVES_DESC').'"></a>
       </li>
     </ul>
@@ -173,38 +177,7 @@ function vjs_element_set_global_action($action, $collection)
     $sync_options = $conf['vjs_sync'];
     if (isset($_POST['submit']))
     {
-        // Override default value from the form
-        $sync_options_form = array(
-            'metadata'          => isset($_POST['vjs_metadata']),
-            'representative'    => isset($_POST['vjs_representative']),
-            'poster'            => isset($_POST['vjs_poster']),
-            'postersec'         => $_POST['vjs_postersec'],
-            'output'            => $_POST['vjs_output'],
-            'posteroverlay'     => isset($_POST['vjs_posteroverlay']),
-            'posteroverwrite'   => isset($_POST['vjs_posteroverwrite']),
-            'thumb'             => isset($_POST['vjs_thumb']),
-            'thumbsec'          => $_POST['vjs_thumbsec'],
-            'thumbsize'         => $_POST['vjs_thumbsize'],
-            'simulate'          => false,
-        );
-        
-        // Ensure thumbsec remains bewteen 1 and 60 seconds
-        $sync_options_form['thumbsec'] = max(1, $sync_options_form['thumbsec']);        
-        $sync_options_form['thumbsec'] = min($sync_options_form['thumbsec'], 60);
-
-        // Merge default value with user data from the form
-        $sync_options = array_merge($sync_options, $sync_options_form);
-
-        // Update sync options in DB but in simulation mode
-        $sync_options_backup = $sync_options;
-        $sync_options_backup['simulate'] = true;
-        conf_update_param('vjs_sync', serialize($sync_options_backup));
-    }
-
-    // Skip videos which already have a poster unless overwriting is requested
-    if (!$sync_options['posteroverwrite'])
-    {
-        $query .= ' AND representative_ext IS NULL';
+        $sync_options = vjs_sync_options_from_post($sync_options);
     }
 
     // Do the work, share with admin sync and photo

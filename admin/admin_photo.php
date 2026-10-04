@@ -39,11 +39,12 @@ check_input_parameter('image_id', $_GET, false, PATTERN_ID);
 
 $admin_photo_base_url = get_root_url().'admin.php?page=photo-'.$_GET['image_id'];
 $self_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;image_id='.$_GET['image_id'];
-$sync_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;sync_metadata=1&amp;image_id='.$_GET['image_id'];
 $delete_url = get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;delete_extra=1&amp;image_id='.$_GET['image_id'].'&amp;pwg_token='.get_pwg_token();
 
 global $template, $page, $conf, $prefixeTable;
 
+include_once(PHPWG_ROOT_PATH.'admin/include/functions.php');
+include_once(PHPWG_ROOT_PATH.'admin/include/image.class.php');
 include_once(PHPWG_ROOT_PATH.'admin/include/tabsheet.class.php');
 $tabsheet = new tabsheet();
 $tabsheet->set_id('photo');
@@ -73,22 +74,50 @@ if (isset($_GET['delete_extra']) and $_GET['delete_extra'] == 1)
     array_push( $page['infos'], 'Thumbnails and Subtitle and extra videos source deleted');
 }
 
+// Set the video orientation (database only, no action done on the video)
+if (isset($_POST['videojs_rotate']) and isset($_POST['angle']))
+{
+    check_pwg_token();
+
+    if (!is_numeric($_POST['angle']))
+    {
+        die('Invalid data!');
+    }
+
+    $rotation_code = pwg_image::get_rotation_code_from_angle($_POST['angle']);
+    $query = "UPDATE ".IMAGES_TABLE." SET rotation='".$rotation_code."', `date_metadata_update`=CURDATE() WHERE `id`=".$picture['id'].";";
+    pwg_query($query);
+
+    // Delete previous derivatives
+    delete_element_derivatives($picture);
+
+    array_push($page['infos'], l10n('The photo was updated'));
+
+    // Reload the picture with its new orientation
+    $query = "SELECT * FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['image_id'].";";
+    $picture = pwg_db_fetch_assoc(pwg_query($query));
+}
+
 // Get user's sync options
 $sync_options = $conf['vjs_sync'];
 
-// Sync metadata to db and create poster if needed, share code
-if (isset($_GET['sync_metadata']) and $_GET['sync_metadata'] == 1)
+// Sync metadata, posters and thumbnails as requested, share code
+if (isset($_POST['vjs_sync']))
 {
-    $sync_options['metadata'] = true;
-    $sync_options['representative'] = true;
-    // Only (re)create the poster if overwriting is allowed (saved sync option) or none exists yet
-    $sync_options['poster'] = !empty($sync_options['posteroverwrite']) || empty($picture['representative_ext']);
-    $sync_options['simulate'] = false;
+    check_pwg_token();
+
+    $sync_options = vjs_sync_options_from_post($sync_options);
     $sync_options['subcats_included'] = false;
+
+    $query = "SELECT * FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['image_id'].";";
     require_once(dirname(__FILE__).'/../include/function_sync.php');
     $page['errors'] = $errors;
     $page['warnings'] = $warnings;
     $page['infos'] = $infos;
+
+    // Reload the picture, its poster may have changed
+    $query = "SELECT * FROM ".IMAGES_TABLE." WHERE ".SQL_VIDEOS." AND id = ".$_GET['image_id'].";";
+    $picture = pwg_db_fetch_assoc(pwg_query($query));
 }
 
 // Fetch metadata from db
@@ -210,7 +239,14 @@ $template->assign(array(
     'IMAGE_ID'   => $_GET['image_id'],
     'PWG_TOKEN'  => get_pwg_token(),
     'F_ACTION'   => $self_url,
-    'SYNC_URL'   => $sync_url,
+    'SYNC_OPTIONS' => vjs_sync_options_html($sync_options, false, true),
+    'angles'     => array(
+        array('value' =>   0, 'name' => l10n('0°')),
+        array('value' =>  90, 'name' => l10n('90° right')),
+        array('value' => 270, 'name' => l10n('90° left')),
+        array('value' => 180, 'name' => l10n('180°')),
+    ),
+    'angle_selected' => pwg_image::get_rotation_angle_from_code($picture['rotation']),
     'DELETE_URL' => $delete_url,
     'TN_SRC'     => DerivativeImage::thumb_url($picture),
     'TITLE'      => render_element_name($picture),

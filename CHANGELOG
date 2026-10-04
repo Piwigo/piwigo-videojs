@@ -5,6 +5,10 @@ Changes from 16.b to 16.c
 - Fixes #271: "Overwrite existing posters" is now honoured by the Batch Manager
               action and by the VideoJS tab of the Edit Photo page: only the
               poster step is skipped for videos which already have a poster.
+- Fixes #270: Edit Photo: a single 'VideoJS' tab replaces the Rotate tab for
+              videos; it now offers all the Batch Manager synchronization
+              options (metadata, posters, thumbnails), the rotation, and the
+              'Delete VideoJS thumbnails' command at the top of Information.
 
 Changes from 16.a to 16.b
 - Fixes #262: by detecting when the duration is returned by ExifTool as 

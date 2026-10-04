@@ -50,14 +50,9 @@ function vjs_add_tab($sheets, $id)
 			'url' => get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_photo.php&amp;image_id='.$_GET['image_id'],
 			);
 
-		unset($sheets['coi'], $sheets['update']);
-		unset($sheets['rotate'], $sheets['update']);
-
-		/* Replace the RotateImage by a our own */
-		$sheets['rotate'] = array(
-			'caption' => 'Rotate',
-			'url' => get_root_url().'admin.php?page=plugin&amp;section=piwigo-videojs/admin/admin_rotate.php&amp;image_id='.$_GET['image_id'],
-			);
+		// The VideoJS tab replaces Rotate and Center of Interest for videos;
+		// other tabs (such as Update from Photo Update) are left untouched
+		unset($sheets['coi'], $sheets['rotate']);
 	}
 
 	return $sheets;
