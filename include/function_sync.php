@@ -136,11 +136,7 @@ while ($row = pwg_db_fetch_assoc($result))
 	{
 		/* Fetch metadata as we will need $exif['DurationSeconds'] */
 
-		/* Will report it */
-		$infos[] = l10n('VIDEO').' '.$filename.' — '.l10n('SYNC_DATABASE');
-		$sync_arr['database'] = l10n('SYNC_DATABASE');
-		
-		/* Fetch metadata from the database */
+		/* Fetch metadata from the database, silently: nothing is updated */
 		$query = "SELECT * FROM ".$prefixeTable."image_videojs WHERE `id`=".$row['id'].";";
 		$sql_metadata = pwg_query($query);
 		$videojs_metadata = pwg_db_fetch_assoc($sql_metadata);
@@ -156,8 +152,9 @@ while ($row = pwg_db_fetch_assoc($result))
 		}
 	}
 
-	/* Should we create a poster? */
-	if ($sync_options['poster'])
+	/* Should we create a poster? Not if one exists and overwriting is not allowed */
+	$keep_poster = empty($sync_options['posteroverwrite']) && !empty($row['representative_ext']);
+	if ($sync_options['poster'] and !$keep_poster)
 	{
 		/* Full-res file available? */
 		$file_wo_ext = pathinfo($row['path']);
@@ -316,7 +313,7 @@ while ($row = pwg_db_fetch_assoc($result))
 			$posters++;
 			
 			/* Will report it */
-			$infos[] = l10n('POSTER').' '.$out;
+			$infos[] = l10n('POSTER').': '.$out;
 			$sync_arr['poster'] = $out;
 			$logger->debug('sync: adopt poster '.$out);
 

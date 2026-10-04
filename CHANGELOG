@@ -3,7 +3,8 @@ Changes from 16.b to 16.c
               com.apple.quicktime.author tags) and stores it in the Piwigo
               'author' field when this field is empty.
 - Fixes #271: "Overwrite existing posters" is now honoured by the Batch Manager
-              action and by the VideoJS tab of the Edit Photo page.
+              action and by the VideoJS tab of the Edit Photo page: only the
+              poster step is skipped for videos which already have a poster.
 
 Changes from 16.a to 16.b
 - Fixes #262: by detecting when the duration is returned by ExifTool as 

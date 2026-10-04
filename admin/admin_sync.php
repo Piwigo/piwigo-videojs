@@ -56,13 +56,6 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     $sync_options_backup['simulate'] = true;
     conf_update_param('vjs_sync', serialize($sync_options_backup));
 
-    // Filter on existing poster
-    $OVERWRITE = '';
-    if (!$sync_options['posteroverwrite'])
-    {
-        $OVERWRITE = ' AND representative_ext IS NULL ';
-    }
-
     // Filter on selected ablum
     if ( $sync_options['cat_id'] != 0 )
     {
@@ -77,7 +70,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
         $query='
             SELECT id, file, path, representative_ext
             FROM '.IMAGES_TABLE.' INNER JOIN '.IMAGE_CATEGORY_TABLE.' ON id=image_id
-            WHERE '. SQL_VIDEOS .' '. $OVERWRITE .'
+            WHERE '. SQL_VIDEOS .'
             AND category_id IN ('.implode(',', $cat_ids).')
             GROUP BY id';
     }
@@ -85,7 +78,7 @@ if ( isset($_POST['submit']) and isset($_POST['postersec']) )
     {
         $query = 'SELECT id, file, path, representative_ext
             FROM '.IMAGES_TABLE.'
-            WHERE '.SQL_VIDEOS.' '. $OVERWRITE .';';
+            WHERE '.SQL_VIDEOS.';';
     }
 
     // Do the work, share with batch manager

@@ -141,8 +141,6 @@ jQuery(".showInfo").tipTip({
 						<li>{'METADATA_COUNT'|@translate} {$detail}</li>
 					{else if $name == 'metadata'}
 						<li>{'SYNC_METADATA'|@translate}: {$detail}</li> 
-					{else if $name == 'database'}
-						<li>{$detail}</li>
 					{else if $name == 'poster'}
 						<li>{'POSTER'|@translate}: {$detail}</li>
 					{else if $name == 'thumbnails'}
